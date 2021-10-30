@@ -13,7 +13,7 @@ const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
 
 //const User = require('./models/User');
-//const User = require('src/Models/User.js');
+const User = require('./models/User.js');
 // #Importing the userController
 
 app.use(express.json());
@@ -28,6 +28,25 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
   });
+
+app.get("/Create", (req, res) => {
+    const newStudent = new User ({
+      name: "Iman_46-7934", 
+      age : 21
+      });
+  
+    newStudent.save(function(err, res){
+    });
+      res.status(200).send("User created!");
+    });
+
+app.get("/users",(req, res,next)=> {
+    User.find({},function(err,data){
+    filtered = data.filter((user) => user.age===21);
+    res.status(200).send(filtered);
+  });
+});
+
 
 // #Routing to usercontroller here
 
