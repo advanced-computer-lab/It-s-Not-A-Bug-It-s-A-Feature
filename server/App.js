@@ -35,6 +35,35 @@ app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
   });
 
+  app.get('/addAdmin', (req, res) => {
+    //add admin to the db
+    const newUser = new User({
+      firstName: 'Aya',
+      lastName: 'Elgamal',
+      address: 'Cairo',
+      countryCode:11587 ,
+      phoneNo: 01005257603,
+      age: 22,
+      username:'aya.elgamal',
+      password:'123',
+      nationality:'Egyptian',
+      email:'aya.elgamal',
+      creditCardNo:123,
+      passportNo: 12345,
+      isAdmin:true
+      
+    })
+    newUser.save(function(err,user){
+      if(err){
+        console.log(err);
+      }
+      else{
+        res.status(200).send(user)
+        console.log('Done!')
+      }
+    })
+  });
+
 // app.get("/Create", (req, res) => {
 //     const newStudent = new User ({
 //       name: "Iman_46-7934", 
