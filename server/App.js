@@ -1,7 +1,8 @@
 // External variables
 const express = require("express");
 const mongoose = require('mongoose');
-//const Router = require("./routes")
+//var router = express.Router();
+//const Router = require("./routes");
 const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
 
@@ -11,6 +12,9 @@ dotenv.config({path:__dirname+'/.env'});
 const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
+
+const usersRouter = require('./routes/adminController.js');
+app.use('/Admin', usersRouter);
 
 //const User = require('./models/User');
 const User = require('./models/User.js');
@@ -25,27 +29,29 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .catch(err => console.log(err));
 
 
+
+
 app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
   });
 
-app.get("/Create", (req, res) => {
-    const newStudent = new User ({
-      name: "Iman_46-7934", 
-      age : 21
-      });
+// app.get("/Create", (req, res) => {
+//     const newStudent = new User ({
+//       name: "Iman_46-7934", 
+//       age : 21
+//       });
   
-    newStudent.save(function(err, res){
-    });
-      res.status(200).send("User created!");
-    });
+//     newStudent.save(function(err, res){
+//     });
+//       res.status(200).send("User created!");
+//     });
 
-app.get("/users",(req, res,next)=> {
-    User.find({},function(err,data){
-    filtered = data.filter((user) => user.age===21);
-    res.status(200).send(filtered);
-  });
-});
+// app.get("/users",(req, res,next)=> {
+//     User.find({},function(err,data){
+//     filtered = data.filter((user) => user.age===21);
+//     res.status(200).send(filtered);
+//   });
+// });
 
 
 // #Routing to usercontroller here
