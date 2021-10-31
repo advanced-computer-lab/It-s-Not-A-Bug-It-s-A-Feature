@@ -13,6 +13,9 @@ const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
 
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
 
@@ -20,9 +23,8 @@ app.use('/Admin', usersRouter);
 const User = require('./models/User.js');
 // #Importing the userController
 
-app.use(express.json());
-//app.use(express.urlencoded({extended: true}));
-app.use(express.json()) // To parse the incoming requests with JSON payloads// configurations
+
+//app.use(express.json()) // To parse the incoming requests with JSON payloads// configurations
 // Mongo DB
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result =>console.log("MongoDB is now connected") )

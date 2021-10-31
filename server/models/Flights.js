@@ -8,14 +8,6 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  departureTime: {
-    type: da,
-    required: true,
-  },
-  arrivalTime: {
-    type: time,
-    required: true,
-  },
   departureDate: {
     type: Date,
     required: true,
