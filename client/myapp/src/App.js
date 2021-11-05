@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import allFlights from './components/allFlights';
+import allFlights from './components/AllFlights';
 import editFlight from './components/editFlight';
 // import axios from 'axios';
 
