@@ -29,7 +29,7 @@ class App extends Component {
           <Routes>
         <Route exact path='/' component={TestView} />
         <Route path='/admin/editFlight/:id' component={EditFlight} />
-        <Route path='/admin/allFlights' component={TestView} />    
+        <Route path='/test' component={TestView} />    
         </Routes>
         </div>
       //  </Router>

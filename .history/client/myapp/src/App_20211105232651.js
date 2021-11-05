@@ -24,15 +24,15 @@ class App extends Component {
   
   render() {
     return (
-      //  <Router>
+      <Router>
         <div>
-          <Routes>
+          {/* <Routes> */}
         <Route exact path='/' component={TestView} />
         <Route path='/admin/editFlight/:id' component={EditFlight} />
-        <Route path='/admin/allFlights' component={TestView} />    
-        </Routes>
+        <Route path='/test' component={TestView} />    
+        {/* </Routes> */}
         </div>
-      //  </Router>
+       </Router>
     );
   }
 }

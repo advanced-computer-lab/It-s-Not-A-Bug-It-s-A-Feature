@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { Route, Routes } from "react-router-dom";
 import EditFlight from './components/EditFlight';
-import TestView from './components/TestView';
+import testView from './components/TestView';
 
 // function App() {
 //   return (
@@ -24,15 +24,12 @@ class App extends Component {
   
   render() {
     return (
-      //  <Router>
+      <Router>
         <div>
-          <Routes>
-        <Route exact path='/' component={TestView} />
-        <Route path='/admin/editFlight/:id' component={EditFlight} />
-        <Route path='/admin/allFlights' component={TestView} />    
-        </Routes>
+        <Route exact path='/' component={testView} />
+        <Route path='/admin/editFlight/:id' component={EditFlight} />    
         </div>
-      //  </Router>
+      </Router>
     );
   }
 }
