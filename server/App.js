@@ -15,6 +15,9 @@ const MongoURI = process.env.ATLAS_URI;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+var cors= require('cors');
+
+app.use(cors);
 
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
