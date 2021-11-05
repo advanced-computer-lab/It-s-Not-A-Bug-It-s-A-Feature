@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 var cors= require('cors');
 
-app.use(cors);
+app.use(cors());
 
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
