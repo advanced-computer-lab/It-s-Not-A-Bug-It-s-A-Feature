@@ -8,16 +8,16 @@ import createFlight from './components/createFlight';
 
 function App() {
   return(
-         <Router> 
-           <Route path='/admin/createFlight' >{createFlight}</Route>
-         </Router> 
-         );
+    <Routes>
+        <div>
+       {/* <Route exact path='/' component={allFlights} />
+       <Route path='/admin/allFlights' component={allFlights} />  
+  <Route path='/admin/editFlight' component={editFlight} /> */}
+        <Route path='/admin/createFlight' component={createFlight} />
+
+        </div>
+      </Routes>  
+  );
 }
 
 export default App;
-
-
-  {/*
-    <Route exact path='/' component={allFlights} />
-       <Route path='/admin/allFlights' component={allFlights} />  
-  <Route path='/admin/editFlight' component={editFlight} /> */}

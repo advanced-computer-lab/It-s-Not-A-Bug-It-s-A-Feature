@@ -9,7 +9,7 @@ import createFlight from './components/createFlight';
 function App() {
   return(
          <Router> 
-           <Route path='/admin/createFlight' >{createFlight}</Route>
+           <Route path='/admin/createFlight' ><h1>Test route</h1></Route>
          </Router> 
          );
 }
