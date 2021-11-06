@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router , Route} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import {useState,useEffect} from 'react';
 import Button from '@material-ui/core/Button';
@@ -18,7 +18,7 @@ import { styled } from '@material-ui/core/styles';
 // import DeleteIcon from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
-
+import {Link}from 'react-router-dom';
 
 function ViewAllFlights() {
     const[rows, setRows]= useState([]); 
@@ -28,9 +28,11 @@ function ViewAllFlights() {
       
      },[]);
     return (
-        helper(rows)
-    )
+       helper(rows)
+      )
 }
+
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
     [`&.${tableCellClasses.head}`]: {
