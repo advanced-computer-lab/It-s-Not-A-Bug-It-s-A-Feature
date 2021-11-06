@@ -71,5 +71,14 @@ router.route('/').get((req, res) => {
 
 });
 
+router.route('/deleteFlight/:id').delete((req,res)=>{
+  var id = req.params.id;
+  console.log(`Deleting flight ID ${id}`);
+  Flights.findByIdAndRemove(id, req.body)
+        .then((result)=>{
+          res.send("Done!");
+        })
+        .catch(err => res.status(404).json({ error: 'No such flight' }));
+});
 
   module.exports = router;
