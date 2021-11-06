@@ -1,10 +1,13 @@
 // External variables
+//const postRoutes = require('./routes/post.js');
 const express = require("express");
 const mongoose = require('mongoose');
 //var router = express.Router();
 //const Router = require("./routes");
 const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
+var cors = require('cors');
+
 
 //const userController = require('./Routes/userController');
 
@@ -12,9 +15,10 @@ dotenv.config({path:__dirname+'/.env'});
 const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
+app.use(cors());
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended : false}));
 
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
@@ -33,7 +37,7 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
-app.get("/Home", (req, res) => {
+ app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
   });
 
