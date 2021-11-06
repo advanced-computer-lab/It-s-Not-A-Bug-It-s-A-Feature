@@ -1,11 +1,14 @@
 
 // External variables
+//const postRoutes = require('./routes/post.js');
 const express = require("express");
 const mongoose = require('mongoose');
 //var router = express.Router();
 //const Router = require("./routes");
 const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
+var cors = require('cors');
+
 
 //const userController = require('./Routes/userController');
 
@@ -14,11 +17,16 @@ const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
 
+
 app.use(express.json());
+
+var cors= require('cors');
+app.use(cors());
 app.use(express.urlencoded({extended: false}));
 var cors= require('cors');
 
 app.use(cors());
+
 
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
@@ -37,7 +45,7 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
-app.get("/Home", (req, res) => {
+ app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
   });
 
@@ -70,35 +78,7 @@ app.get("/Home", (req, res) => {
     })
   });
 
-// app.get("/Create", (req, res) => {
-//     const newStudent = new User ({
-//       name: "Iman_46-7934", 
-//       age : 21
-//       });
-  
-//     newStudent.save(function(err, res){
-//     });
-//       res.status(200).send("User created!");
-//     });
-
-// app.get("/users",(req, res,next)=> {
-//     User.find({},function(err,data){
-//     filtered = data.filter((user) => user.age===21);
-//     res.status(200).send(filtered);
-//   });
-// });
-
-
-// #Routing to usercontroller here
-
-// app.post('/add-user', userController.addUser)
-// app.get('/view-users',userController.viewUsers)
-// app.get('/get-all-users/:name', userController.getUser)
-// app.put('/update-user/:id',userController.updateUser)
-// app.delete('/delete-user/:id',userController.deleteUser)                                    
-
-
-// Starting server
+ 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
   });
