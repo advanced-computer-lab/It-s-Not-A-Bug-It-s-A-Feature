@@ -18,7 +18,7 @@ router.route('/').get((req, res) => {
 
 
 
-  router.route('/createFlights').post((req, res) => {
+  router.route('/createFlights').get((req, res) => {
     console.log(req.body);
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
@@ -57,7 +57,7 @@ router.route('/').get((req, res) => {
         query.push({arrivalTime: {"$gte": arrivalTime , "$lt": arrivalTime2 }});
       }
       else{ //time not specified
-        const arrivalDate=new Date(rq.arrivalDate.substring(0,10)+"T00:00:00.000Z");
+        var arrivalDate=new Date(rq.arrivalDate.substring(0,10)+"T00:00:00.000Z");
         var arrivalDate2= new Date(arrivalDate.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
         query.push({arrivalDate: {"$gte": arrivalDate.toISOString() , "$lt": arrivalDate2.toISOString()}});
       }
