@@ -18,7 +18,11 @@ router.route('/').get((req, res) => {
 
 
 
+<<<<<<< HEAD
   router.route('/createFlights').get((req, res) => {
+=======
+  router.route('/createFlight').post((req, res) => {
+>>>>>>> d53e351375f21f586873ca436889f8cd19a44e7d
     console.log(req.body);
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
@@ -71,5 +75,46 @@ router.route('/').get((req, res) => {
 
 });
 
+router.route('/deleteFlight/:id').delete((req,res)=>{
+  var id = req.params.id;
+  console.log(`Deleting flight ID ${id}`);
+  Flights.findByIdAndRemove(id, req.body)
+        .then((result)=>{
+          res.send("Done!");
+        })
+        .catch(err => res.status(404).json({ error: 'No such flight' }));
+  });
+
+  router.route('/editFlight/:id').get((req, res) => {
+    Flights.findById(req.params.id)
+    .then(flight => res.send(flight))
+    .catch(err => res.status(400).send('Error: '+err));
+   
+  });
+
+  router.route('/editFlight/:id').post(async (req, res) => {
+    Flights.findByIdAndUpdate({_id : (req.params.id)},
+      {departureDate:Date.parse(req.body.departureDate),
+        flightNo : Number(req.body.flightNo),
+        arrivalDate : Date.parse(req.body.arrivalDate),
+        economySeats: Number(req.body.economySeats),
+        businessSeats : Number(req.body.businessSeats),
+        arrivalAirport : req.body.arrivalAirport,
+        departureAirport : req.body.departureAirport,
+        departureTerminal : req.body.departureTerminal,
+        arrivalTerminal : req.body.arrivalTerminal
+      }, {runValidators: true}, function(err, result){
+
+      if(err){
+          res.send(err)
+      }
+      else{
+          res.send(result)
+      }
+
+});
+});
+
 
   module.exports = router;
+
