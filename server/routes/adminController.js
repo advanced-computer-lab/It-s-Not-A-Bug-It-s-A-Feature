@@ -39,21 +39,23 @@ router.route('/').get((req, res) => {
   });
 
     function dateQuery(date,type){  
+      var result=JSON.parse('{}');
       var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
       var date2= new Date(date1.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
-      result={type: {$gte:date1.toISOString(), $lt:date2.toISOString()}};
+      result[type]={$gte:date1.toISOString(), $lt:date2.toISOString()};
       return result;
     }
 
     function timeQuery(date,time,type)
     {
-      var result;
-      var string = new String((date).substring(0,10) +'T'+time+':00:00.000Z');
+      var result=JSON.parse('{}');
+      var t=time;
+      if(time.length==1) t='0'+time;
+      var string = new String((date).substring(0,10) +'T'+t+':00:00.000Z');
       console.log(string);
       var time1 = new Date(string).toISOString();
-      console.log(string)
       var time2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
-      result ={type:{$gte:time1,$lt:time2}};
+      result[type]={$gte:time1,$lt:time2};
 
       return result;
     }

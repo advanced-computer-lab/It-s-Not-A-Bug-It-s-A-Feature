@@ -24,14 +24,14 @@ function SearchFlights() {
       axios.get('http://localhost:8000/Admin/searchFlights',{ params:
           {
             flightNo:'1',
-            arrivalDate:'',
+            arrivalDate:'2016-05-19T16:00:00.000Z',
             arrivalAirport:'',
             arrivalTerminal:'',
-            arrivalTime:'',
-            departureDate:'',
+            arrivalTime:'7',
+            departureDate:'2016-05-18T16:00:00.000Z',
             departureAirport:'',
-            departureTerminal:'',
-            departureTime:'' 
+            departureTerminal:'6',
+            departureTime:'1' 
           }     
     })
     .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
