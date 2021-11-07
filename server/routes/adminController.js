@@ -23,6 +23,7 @@ router.route('/').get((req, res) => {
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
     const arrivalDate = Date.parse(req.body.arrivalDate); 
+    const departureDate = Date.parse(req.body.arrivalDate); 
     const economySeats = Number(req.body.economySeats); 
     const businessSeats = Number(req.body.businessSeats); 
     const arrivalAirport = req.body.arrivalAirport; 
