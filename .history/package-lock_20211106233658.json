@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "It-s-Not-A-Bug-It-s-A-Feature",
   "lockfileVersion": 2,
   "requires": true,
@@ -59,10 +58,4 @@
       "integrity": "sha1-IpnwLG3tMNSllhsLn3RSShj2NPw="
     }
   }
-=======
-  "name": "Project",
-  "lockfileVersion": 2,
-  "requires": true,
-  "packages": {}
->>>>>>> Temp
 }
