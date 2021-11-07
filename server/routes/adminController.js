@@ -39,47 +39,59 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).send('Error: '+err));  
   });
 
+    function dateQuery(date,type){
+      
+      var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
+      var date2= new Date(date1.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
+      result={type: {$gte:date1.toISOString(), $lt:date2.toISOString()}};
+      return result;
+    }
+
+    function timeQuery(date,time,type)
+    {
+      var result;
+      var string = new String((date).substring(0,10) +'T'+time+':00:00.000Z');
+      console.log(string);
+      var time1 = new Date(string).toISOString();
+      console.log(string)
+      var time2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
+      result ={type:{$gte:time1,$lt:time2}};
+
+      return result;
+    }
   router.route('/searchFlights').get((req, res,next) => {
     var query =[];
     var rq=req.query;
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     console.log(rq);
 
-    if(rq.flightNo !='')       query.push({'flightNo': rq.flightNo });
-    if(rq.arrivalAirport != '') query.push({'arrivalAirport': new RegExp(rq.arrivalAirport,'i')});
-    if(rq.arrivalTerminal != '')query.push({'arrivalTerminal': new RegExp(rq.arrivalTerminal,'i')});
-  
+    if(rq.flightNo !='')       query.push({flightNo:rq.flightNo });
+    if(rq.arrivalAirport != '') query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+    if(rq.arrivalTerminal != '')query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
+    if(rq.departureAirport != '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
+    if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
     if(rq.arrivalDate != ''){     
       if(rq.arrivalTime!=''){   //time specified  
-        if(String(rq.arrivalTime.length)==1) var arrivalTime='0'+rq.arrivalTime;
-        var string = new String((rq.arrivalDate).substring(0,10) +'T'+arrivalTime+':00:00.000Z');
-        var arrivalTime = new Date(string).toISOString();
-        var arrivalTime2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
-        query.push({arrivalTime: {"$gte": arrivalTime , "$lt": arrivalTime2 }});
+        query.push(timeQuery(arrivalDate,arrivalTime,'arrivalTime'));
       }
-      else{ //time not specified
-        const arrivalDate=new Date(rq.arrivalDate.substring(0,10)+"T00:00:00.000Z");
-        var arrivalDate2= new Date(arrivalDate.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
-        query.push({arrivalDate: {"$gte": arrivalDate.toISOString() , "$lt": arrivalDate2.toISOString()}});
+        query.push(dateQuery(arrivalDate,'arrivalDate'));
       }
-  }
+
+      if(rq.departureDate != ''){     
+        if(rq.departureTime!=''){   //time specified  
+          query.push(timeQuery(departureDate,departureTime,'departureTime'));
+        }
+          query.push(dateQuery(departureDate,'departureDate'));
+        }
+    
+  console.log(query);
 
     var anded = {$and : query};
-    console.log(query);
+    console.log(anded);
 
-    // if(query.length>0)
-      Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then(flightsearch => res.send(flightsearch));
+    if(query.length>0)
+       Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
 
-});
-
-router.route('/deleteFlight/:id').delete((req,res)=>{
-  var id = req.params.id;
-  console.log(`Deleting flight ID ${id}`);
-  Flights.findByIdAndRemove(id, req.body)
-        .then((result)=>{
-          res.send("Done!");
-        })
-        .catch(err => res.status(404).json({ error: 'No such flight' }));
-});
-
+}); 
   module.exports = router;
