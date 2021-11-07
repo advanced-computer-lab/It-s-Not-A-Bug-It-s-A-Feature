@@ -65,6 +65,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   function createData(DepartureDate, ArrivalDate, EconomySeats, BusinessSeats, ArrivalAirport , DepartureTerminal, ArrivalTerminal, DeleteIcon, UpdateIcon) {
     return { DepartureDate, ArrivalDate, EconomySeats, BusinessSeats, ArrivalAirport , DepartureTerminal, ArrivalTerminal, DeleteIcon, UpdateIcon };
   }
+  function goToUpdate(id){
+    window.location = '/admin/editFlight/' + id;
+  }
   
   // Not working as i want 
   // function deleteButton(){
@@ -110,7 +113,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
               </Button>
               }</StyledTableCell>
   
-              <StyledTableCell align="right">{
+              <StyledTableCell onClick={()=>goToUpdate(row._id)} align="right">{
                 <Button variant="outlined" >
                        Update
               </Button>
