@@ -5,7 +5,6 @@ import  ViewAllFlights from './components/viewAllFlights.js';
 // import { render } from "react-dom";
 import EditFlight from './components/EditFlight';
 import Search from './components/searchComponent.js'
-import SearchFlights from './components/SearchFlights.js';
 
 function App() {
   return(
@@ -14,7 +13,6 @@ function App() {
            <Route path='/admin/createFlight' component={createFlight}></Route>
            <Route path='/admin/editFlight/:id' component={EditFlight} />
            <Route path ={"/admin/home"} component={Search}/>
-           <Route path={"/admin/searchFlights"} component={SearchFlights}/>
          </Router> 
          );
   }

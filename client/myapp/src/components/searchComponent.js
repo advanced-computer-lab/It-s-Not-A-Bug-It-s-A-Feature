@@ -54,9 +54,6 @@ export default function Main() {
     })
     .then(res=> {
       setRows(res.data);
-      console.log(res.data);
-      console.log(d)
-      res.redirect('/searchFlights');
     }).catch(err=>console.log(err))
     
    };
