@@ -1,11 +1,8 @@
-
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
-import {useState,useEffect} from 'react';
+import React, { Component } from 'react';
+
 import Button from '@material-ui/core/Button';
-// import allFlights from './components/viewAllFlights.js';
+import {useState,useEffect} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,21 +12,34 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { styled } from '@material-ui/core/styles';
-// import DeleteIcon from '@material-ui/core/Button'
+import ReactDOM from 'react-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
-import UpdateIcon from '@material-ui/icons/Update';
-import {Link}from 'react-router-dom';
+import { FormHelperText } from '@material-ui/core';
 
-function ViewAllFlights() {
-    const[rows, setRows]= useState([]); 
-    useEffect(()=>{
-        axios.get('http://localhost:8000/Admin/allFlights')
-      .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
-      
-     },[]);
-    return (
-       helper(rows)
-      )
+
+
+function SearchFlights() {
+  const[rows, setRows]= useState([]); 
+  useEffect(()=>{
+      axios.get('http://localhost:8000/Admin/searchFlights',{ params:
+          {
+            flightNo:'1',
+            arrivalDate:'2016-05-19T16:00:00.000Z',
+            arrivalAirport:'',
+            arrivalTerminal:'',
+            arrivalTime:'7',
+            departureDate:'2016-05-18T16:00:00.000Z',
+            departureAirport:'',
+            departureTerminal:'6',
+            departureTime:'1' 
+          }     
+    })
+    .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
+    
+   },[]);
+
+  return helper(rows)
+    
 }
 
 
@@ -72,35 +82,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   return(<DeleteRoundedIcon style={noPointer} ></DeleteRoundedIcon>);
   //   }
   
-  function deleteFlight(id){
-    // confirmation alert is shown before deletion
-    const r = window.confirm("Do you really want to delete this item?"); 
-    if(r === true){ 
-      fetch(`http://localhost:8000/admin/deleteFlight/${id}`, {
-        method: 'DELETE',
-        header: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        var rows;
-        fetch('http://localhost:8000/Admin/allFlights', {
-          method: 'GET',
-          header: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(res => rows = res.data).catch(err => console.log(err))
-        return(helper(rows));
-      }); // refreshing the page is not working !!!
-    }
-  }
-  
   function helper(rows){
-    return(<TableContainer component={Paper} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    return(<TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -132,7 +115,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
               <StyledTableCell align="right">{row.arrivalTerminal}</StyledTableCell>
               <StyledTableCell align="right">{row.departureTerminal}</StyledTableCell>
               <StyledTableCell align="right">{
-              <Button variant="outlined" onClick={()=>deleteFlight(row._id)} startIcon={<DeleteIcon />}>
+              <Button variant="outlined" startIcon={<DeleteIcon />}>
                   Delete
               </Button>
               }</StyledTableCell>
@@ -149,5 +132,5 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
       </Table>
     </TableContainer>);
   }
-  
-export default ViewAllFlights;
+  export default SearchFlights;
+

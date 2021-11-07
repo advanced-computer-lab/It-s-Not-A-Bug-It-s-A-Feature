@@ -7,9 +7,9 @@ import ReactDOM from 'react-dom';
 import { useParams } from "react-router";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import DateTimePicker from '@material-ui/lab/DateTimePicker';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
