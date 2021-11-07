@@ -23,16 +23,15 @@ function SearchFlights() {
   useEffect(()=>{
       axios.get('http://localhost:8000/Admin/searchFlights',{ params:
           {
-            flightNo:'2',
+            flightNo:'1',
             arrivalDate:'',
             arrivalAirport:'',
             arrivalTerminal:'',
             arrivalTime:'',
             departureDate:'',
-            departutreAirport:'',
+            departureAirport:'',
             departureTerminal:'',
             departureTime:'' 
-
           }     
     })
     .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))

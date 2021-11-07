@@ -23,7 +23,6 @@ router.route('/').get((req, res) => {
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
     const arrivalDate = Date.parse(req.body.arrivalDate); 
-    const departureDate = Date.parse(req.body.arrivalDate); 
     const economySeats = Number(req.body.economySeats); 
     const businessSeats = Number(req.body.businessSeats); 
     const arrivalAirport = req.body.arrivalAirport; 
@@ -39,8 +38,7 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).send('Error: '+err));  
   });
 
-    function dateQuery(date,type){
-      
+    function dateQuery(date,type){  
       var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
       var date2= new Date(date1.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
       result={type: {$gte:date1.toISOString(), $lt:date2.toISOString()}};
@@ -63,30 +61,26 @@ router.route('/').get((req, res) => {
     var query =[];
     var rq=req.query;
     res.setHeader('Access-Control-Allow-Origin', '*');
-
     console.log(rq);
-
-    if(rq.flightNo !='')       query.push({flightNo:rq.flightNo });
-    if(rq.arrivalAirport != '') query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
-    if(rq.arrivalTerminal != '')query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
+    if(rq.flightNo !='')          query.push({flightNo:rq.flightNo });
+    if(rq.arrivalAirport != '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+    if(rq.arrivalTerminal != '')  query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
     if(rq.departureAirport != '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
     if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
+  
     if(rq.arrivalDate != ''){     
-      if(rq.arrivalTime!=''){   //time specified  
-        query.push(timeQuery(arrivalDate,arrivalTime,'arrivalTime'));
-      }
-        query.push(dateQuery(arrivalDate,'arrivalDate'));
-      }
+      if(rq.arrivalTime!='')//time specified  
+        query.push(timeQuery(rq.arrivalDate,rq.arrivalTime,'arrivalTime'));
+      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+    }
 
-      if(rq.departureDate != ''){     
-        if(rq.departureTime!=''){   //time specified  
-          query.push(timeQuery(departureDate,departureTime,'departureTime'));
-        }
-          query.push(dateQuery(departureDate,'departureDate'));
-        }
+    if(rq.departureDate != ''){     
+      if(rq.departureTime!='')  //time specified  
+        query.push(timeQuery(rq.departureDate,rq.departureTime,'departureTime'));
+      query.push(dateQuery(rq.departureDate,'departureDate'));
+    }
     
-  console.log(query);
-
+    console.log(query);
     var anded = {$and : query};
     console.log(anded);
 
