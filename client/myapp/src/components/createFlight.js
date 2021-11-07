@@ -18,6 +18,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import { validateDateRange } from '@mui/lab/internal/pickers/date-utils';
 
 
 
@@ -28,20 +29,39 @@ export default function CreateFlight() {
       departureDate:"",arrivalDate:""
     });
     const [flightError, setFlightError] =useState({
-      flightNo:true,
-      economySeats:true,businessSeats:true,departureAirport:true,arrivalAirport:true,departureTerminal:true,arrivalTerminal:true,
-      departureDate:true,arrivalDate:true
+      flightNo:false,
+      economySeats:false,businessSeats:false,departureAirport:false,arrivalAirport:false,departureTerminal:false,arrivalTerminal:false,
+      departureDate:false,arrivalDate:false
     });
-   
-   
+    const [errorMessage, setErrorMessage] =useState({
+      flightNo:"",
+      economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
+      departureDate:"",arrivalDate:""
+    });
+    
+    function validateData(){
+      if(!(flightError.flightNo|| flightError.economySeats|| flightError.businessSeats ||flightError.departureAirport ||flightError.arrivalAirport ||
+        flightError.departureTerminal ||flightError.arrivalTerminal ||
+        flightError.departureDate ||flightError.arrivalDate)){
+          if(flightData.flightNo==''){
+          setFlightError((prevState => {return {...prevState,["flightNo"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This field is requiered'};}));return false;}
+        }
+        else return false;
+        return true;
+    }
     
      const onSubmit = (e) => { 
       e.preventDefault();
+      if(validateData())
   
   
       axios.post('http://localhost:8000/admin/createFlight/' , flightData)
         .then(res => alert('Flight Added Successfuly'), )
-        .catch(err => alert('Please Enter a Valid Inputs'));
+        .catch(
+          setFlightError((prevState => {return {...prevState,["flightNo"]: true};})),
+          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This ID is Taked please choose another one'};}))
+        );
   
       
       };
@@ -58,7 +78,7 @@ export default function CreateFlight() {
             <React.Fragment>
             
                 <React.Fragment>
-                  {DataForm(flightData,setFlight,flightError,setFlightError)}
+                  {DataForm(flightData,setFlight,flightError,setFlightError,errorMessage,setErrorMessage)}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
   
                     <Button
@@ -125,7 +145,7 @@ const theme = createTheme();
 
 
 
- function DataForm( d,setData,error,setError) {
+ function DataForm( d,setData,error,setError,helperText,setHelperText) {
   
   
   return (
@@ -141,17 +161,17 @@ const theme = createTheme();
             variant="standard"
             value={d.flightNo}
             error={error.flightNo}
+            helperText={helperText.flightNo}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                 
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(!(value!='' && Number(value))){setError((prevState => {return {...prevState,[name]: true};}));
+                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));
+              setData((prevState => {return {...prevState,[name]: value};}));}
           }}
             
           />
