@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -27,9 +26,15 @@ function ViewAllFlights() {
       .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
       
      },[]);
+    
+    // const refreshPage = () => {
+    //   setRows({});
+    // }
+
     return (
-       helper(rows)
-      )
+      helper(rows)
+    )
+    
 }
 
 
@@ -76,31 +81,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     // confirmation alert is shown before deletion
     const r = window.confirm("Do you really want to delete this item?"); 
     if(r === true){ 
-      fetch(`http://localhost:8000/admin/deleteFlight/${id}`, {
-        method: 'DELETE',
-        header: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+      axios.delete(`http://localhost:8000/admin/deleteFlight/${id}`)
+      .then((response) => {
+        window.location.reload(true);
       })
-      .then(response => response.json())
-      .then(data => {
-        var rows;
-        fetch('http://localhost:8000/Admin/allFlights', {
-          method: 'GET',
-          header: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(res => rows = res.data).catch(err => console.log(err))
-        return(helper(rows));
-      }); // refreshing the page is not working !!!
+      // fetch(`http://localhost:8000/admin/deleteFlight/${id}`, {
+      //   method: 'DELETE',
+      //   header: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   }
+      // })
+      // .then(response => response.json()); // refreshing the page is not working !!!
+      // window.location.reload();
+      // // this.setRows({});
     }
+
+    
   }
   
   function helper(rows){
-    return(<TableContainer component={Paper} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    return(<TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -132,7 +133,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
               <StyledTableCell align="right">{row.arrivalTerminal}</StyledTableCell>
               <StyledTableCell align="right">{row.departureTerminal}</StyledTableCell>
               <StyledTableCell align="right">{
-              <Button variant="outlined" onClick={()=>deleteFlight(row._id)} startIcon={<DeleteIcon />}>
+              <Button variant="outlined" onClick={()=>{deleteFlight(row._id)}} startIcon={<DeleteIcon />}>
                   Delete
               </Button>
               }</StyledTableCell>
