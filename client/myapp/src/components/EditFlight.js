@@ -123,12 +123,13 @@ export default class EditFlight extends Component {
       }
       onChangeDeptDate(e) {
         this.setState({
-          departureDate: e.target.value
+          // departureDate: e.target.value
+          departureDate: e
         })
       }
       onChangeArrDate(e) {
         this.setState({
-          arrivalDate: e.target.value
+          arrivalDate: e
         })
       }
       onChangeEconSeats(e) {
@@ -295,8 +296,9 @@ export default class EditFlight extends Component {
             fullWidth
             variant="standard" />}
             value={this.state.departureDate}
-            onChange={this.onChangeDeptDate}
-          />
+            onChange={(newValue) => {
+              this.onChangeDeptDate(newValue);
+            }}            />
         </LocalizationProvider>
         </div>
         <div>
@@ -309,8 +311,9 @@ export default class EditFlight extends Component {
             fullWidth
             variant="standard" />}
             value={this.state.arrivalDate}
-            onChange={this.onChangeArrDate}
-          />
+            onChange={(newValue) => {
+              this.onChangeArrDate(newValue);
+            }}          />
           </LocalizationProvider>
         </div>
         </Box>
