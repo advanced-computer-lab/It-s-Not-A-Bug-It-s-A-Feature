@@ -27,7 +27,12 @@ function SearchFlights() {
             arrivalDate:'',
             arrivalAirport:'',
             arrivalTerminal:'',
-            arrivalTime:''
+            arrivalTime:'',
+            departureDate:'',
+            departutreAirport:'',
+            departureTerminal:'',
+            departureTime:'' 
+
           }     
     })
     .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
