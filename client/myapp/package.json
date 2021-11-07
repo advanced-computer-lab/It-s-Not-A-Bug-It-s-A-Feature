@@ -21,12 +21,9 @@
     "@types/material-ui": "^0.21.12",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-<<<<<<< HEAD
     "react-scripts": "^4.0.3",
-=======
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
->>>>>>> d53e351375f21f586873ca436889f8cd19a44e7d
     "web-vitals": "^1.1.2"
   },
   "scripts": {
