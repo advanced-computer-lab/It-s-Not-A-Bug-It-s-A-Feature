@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
-
+import {useState,useEffect} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,7 +19,9 @@ import { FormHelperText } from '@material-ui/core';
 
 
 function SearchFlights() {
-const response = axios.get('http://localhost:8000/Admin/searchFlights', { params:
+  const[rows, setRows]= useState([]); 
+  useEffect(()=>{
+      axios.get('http://localhost:8000/Admin/searchFlights',{ params:
           {
             flightNo:'2',
             arrivalDate:'',
@@ -27,10 +29,12 @@ const response = axios.get('http://localhost:8000/Admin/searchFlights', { params
             arrivalTerminal:'',
             arrivalTime:''
           }     
-    }
-    ).then(data => {console.log(data.data);  }).catch(err=>console.log(err));
-    // console.log(response);
-  return helper(response)
+    })
+    .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
+    
+   },[]);
+
+  return helper(rows)
     
 }
 
