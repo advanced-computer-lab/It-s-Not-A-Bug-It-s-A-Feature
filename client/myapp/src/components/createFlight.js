@@ -14,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+
+
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
@@ -25,6 +27,11 @@ export default function CreateFlight() {
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
       departureDate:"",arrivalDate:""
     });
+    const [flightError, setFlightError] =useState({
+      flightNo:true,
+      economySeats:true,businessSeats:true,departureAirport:true,arrivalAirport:true,departureTerminal:true,arrivalTerminal:true,
+      departureDate:true,arrivalDate:true
+    });
    
    
     
@@ -33,9 +40,10 @@ export default function CreateFlight() {
   
   
       axios.post('http://localhost:8000/admin/createFlight/' , flightData)
-        .then(res => console.log(res.data));
+        .then(res => alert('Flight Added Successfuly'), )
+        .catch(err => alert('Please Enter a Valid Inputs'));
   
-      window.location = '/';
+      
       };
   
     return (
@@ -50,7 +58,7 @@ export default function CreateFlight() {
             <React.Fragment>
             
                 <React.Fragment>
-                  {DataForm(flightData,setFlight)}
+                  {DataForm(flightData,setFlight,flightError,setFlightError)}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
   
                     <Button
@@ -117,9 +125,8 @@ const theme = createTheme();
 
 
 
-
-function DataForm( d,setData) {
-
+ function DataForm( d,setData,error,setError) {
+  
   
   return (
     <React.Fragment>     
@@ -133,8 +140,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.flightNo}
+            error={error.flightNo}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                  
                   return {
@@ -155,8 +165,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.economySeats}
+            error={error.economySeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -176,8 +189,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.businessSeats}
+            error={error.businessSeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -197,8 +213,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.departureAirport}
+            error={error.departureAirport}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -218,8 +237,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.arrivalAirport}
+            error={error.arrivalAirport}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -239,8 +261,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.departureTerminal}
+            error={error.departureTerminal}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -260,8 +285,11 @@ function DataForm( d,setData) {
             fullWidth
             variant="standard"
             value={d.arrivalTerminal}
+            error={error.arrivalTerminal}
             onChange={(event) =>  {
               const {name, value} = event.target;
+              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
+              else setError((prevState => {return {...prevState,[name]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -278,11 +306,14 @@ function DataForm( d,setData) {
             renderInput={(props) => <TextField {...props} required 
             label="Departure Date"
             fullWidth
-            variant="standard" />}
+            variant="standard" error={error.departureDate}/>}
             label="Departure Date"
             id="departureDate"
             value={d.departureDate}
             onChange={(event) =>  {
+              if(event !=null)setError((prevState => {return {...prevState,["departureDate"]: false};}));
+              else setError((prevState => {return {...prevState,["departureDate"]: true};}));
+              
               setData((prevState => {
                   return {
                       ...prevState,
@@ -302,12 +333,14 @@ function DataForm( d,setData) {
             name="arrivalDate"
             label="Arrival Date"
             fullWidth
-            variant="standard" />
+            variant="standard" error={error.arrivalDate} />
           }
             id="arrivalDate"
             name="arrivalDate"
             value={d.arrivalDate}
             onChange={(event) =>  {
+              if(event !=null)setError((prevState => {return {...prevState,["arrivalDate"]: false};}));
+              else setError((prevState => {return {...prevState,["arrivalDate"]: true};}));
               setData((prevState => {
                   return {
                       ...prevState,
@@ -325,3 +358,4 @@ function DataForm( d,setData) {
     </React.Fragment>
   );
 }
+
