@@ -14,6 +14,7 @@ function App() {
            <Route path='/admin/editFlight/:id' component={EditFlight} />
          </Router> 
          );
+  }
 
 
 
