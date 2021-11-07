@@ -174,7 +174,7 @@ export default function InputWithIcon() {
         id="input-with-sx" 
         label="Flight No" 
         variant="standard" 
-        onChange={this.onChangeFlightNo}
+        // onChange={this.onChangeFlightNo}
 
         />
       </Box> 

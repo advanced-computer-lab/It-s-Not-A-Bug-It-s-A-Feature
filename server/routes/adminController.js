@@ -18,11 +18,7 @@ router.route('/').get((req, res) => {
 
 
 
-<<<<<<< HEAD
-  router.route('/createFlights').get((req, res) => {
-=======
   router.route('/createFlight').post((req, res) => {
->>>>>>> d53e351375f21f586873ca436889f8cd19a44e7d
     console.log(req.body);
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
@@ -75,23 +71,6 @@ router.route('/').get((req, res) => {
     if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
   
     if(rq.arrivalDate != ''){     
-<<<<<<< HEAD
-      if(rq.arrivalTime!=''){   //time specified  
-        if(String(rq.arrivalTime.length)==1) var arrivalTime='0'+rq.arrivalTime;
-        var string = new String((rq.arrivalDate).substring(0,10) +'T'+arrivalTime+':00:00.000Z');
-        var arrivalTime = new Date(string).toISOString();
-        var arrivalTime2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
-        query.push({arrivalTime: {"$gte": arrivalTime , "$lt": arrivalTime2 }});
-      }
-      else{ //time not specified
-        var arrivalDate=new Date(rq.arrivalDate.substring(0,10)+"T00:00:00.000Z");
-        var arrivalDate2= new Date(arrivalDate.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
-        query.push({arrivalDate: {"$gte": arrivalDate.toISOString() , "$lt": arrivalDate2.toISOString()}});
-      }
-  }
-
-    var anded = {$and : query};
-=======
       if(rq.arrivalTime!='')//time specified  
         query.push(timeQuery(rq.arrivalDate,rq.arrivalTime,'arrivalTime'));
       query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
@@ -103,7 +82,6 @@ router.route('/').get((req, res) => {
       query.push(dateQuery(rq.departureDate,'departureDate'));
     }
     
->>>>>>> 7ecc72ca9b365d60566f0a5b9b008c289ce09245
     console.log(query);
     var anded = {$and : query};
     console.log(anded);
