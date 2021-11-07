@@ -37,5 +37,40 @@ router.route('/').get((req, res) => {
     .then(()=>res.send('Flight Added'))
     .catch(err => res.status(400).send('Error: '+err));  
   });
+  router.route('/searchFlights').get((req, res,next) => {
+    var query =[];
+    var rq=req.query;
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
+    console.log(rq);
+
+    if(rq.flightNo !='')       query.push({flightNo:rq.flightNo });
+    if(rq.arrivalAirport != '') query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+    if(rq.arrivalTerminal != '')query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
+  
+    if(rq.arrivalDate != ''){     
+      if(rq.arrivalTime!=''){   //time specified  
+        var arrivalTime=rq.arrivalTime;
+        if(String(rq.arrivalTime.length)==1)  arrivalTime='0'+rq.arrivalTime;
+        var string = new String((rq.arrivalDate).substring(0,10) +'T'+arrivalTime+':00:00.000Z');
+        console.log(string);
+        var arrivalTime = new Date(string).toISOString();
+        console.log(string)
+        var arrivalTime2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
+        query.push({arrivalTime:{$gte:arrivalTime,$lt:arrivalTime2}});
+      }
+        var arrivalDate=new Date(rq.arrivalDate.substring(0,10)+"T00:00:00.000Z");
+        var arrivalDate2= new Date(arrivalDate.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
+        query.push({arrivalDate:{$gte:arrivalDate.toISOString(),$lt:arrivalDate2.toISOString()}});
+      }
+  
+  console.log(query);
+
+    var anded = {$and : query};
+    console.log(anded);
+
+    if(query.length>0)
+       Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+
+});
   module.exports = router;
