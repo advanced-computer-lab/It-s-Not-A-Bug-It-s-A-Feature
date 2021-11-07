@@ -55,8 +55,7 @@ router.route('/').get((req, res) => {
       var time1 = new Date(string).toISOString();
       console.log(string)
       var time2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
-      result ={type:{$gte:time1,$lt:time2}});
-
+      result ={type:{$gte:time1,$lt:time2}};
       return result;
     }
   router.route('/searchFlights').get((req, res,next) => {
