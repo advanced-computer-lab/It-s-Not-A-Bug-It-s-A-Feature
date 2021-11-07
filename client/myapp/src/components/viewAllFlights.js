@@ -72,6 +72,33 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   return(<DeleteRoundedIcon style={noPointer} ></DeleteRoundedIcon>);
   //   }
   
+  function deleteFlight(id){
+    // confirmation alert is shown before deletion
+    const r = window.confirm("Do you really want to delete this item?"); 
+    if(r === true){ 
+      fetch(`http://localhost:8000/admin/deleteFlight/${id}`, {
+        method: 'DELETE',
+        header: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        var rows;
+        fetch('http://localhost:8000/Admin/allFlights', {
+          method: 'GET',
+          header: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => rows = res.data).catch(err => console.log(err))
+        return(helper(rows));
+      }); // refreshing the page is not working !!!
+    }
+  }
+  
   function helper(rows){
     return(<TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -105,7 +132,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
               <StyledTableCell align="right">{row.arrivalTerminal}</StyledTableCell>
               <StyledTableCell align="right">{row.departureTerminal}</StyledTableCell>
               <StyledTableCell align="right">{
-              <Button variant="outlined" startIcon={<DeleteIcon />}>
+              <Button variant="outlined" onClick={()=>deleteFlight(row._id)} startIcon={<DeleteIcon />}>
                   Delete
               </Button>
               }</StyledTableCell>
