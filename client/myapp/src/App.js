@@ -7,7 +7,7 @@ export default function CustomizedTables() {
   return (
     <Router>
       <Route path ={"/AllFlights"} component={ViewAllFlights}/>
-      <Route path={"/ViewFlights"} component={SearchFlights}/>
+      <Route path={"/SearchFlights"} component={SearchFlights}/>
 
      </Router>
   );
