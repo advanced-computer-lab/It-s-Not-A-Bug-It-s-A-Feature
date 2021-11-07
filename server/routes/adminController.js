@@ -79,6 +79,38 @@ router.route('/deleteFlight/:id').delete((req,res)=>{
           res.send("Done!");
         })
         .catch(err => res.status(404).json({ error: 'No such flight' }));
+  });
+
+  router.route('/editFlight/:id').get((req, res) => {
+    Flights.findById(req.params.id)
+    .then(flight => res.send(flight))
+    .catch(err => res.status(400).send('Error: '+err));
+   
+  });
+
+  router.route('/editFlight/:id').post(async (req, res) => {
+    Flights.findByIdAndUpdate({_id : (req.params.id)},
+      {departureDate:Date.parse(req.body.departureDate),
+        flightNo : Number(req.body.flightNo),
+        arrivalDate : Date.parse(req.body.arrivalDate),
+        economySeats: Number(req.body.economySeats),
+        businessSeats : Number(req.body.businessSeats),
+        arrivalAirport : req.body.arrivalAirport,
+        departureAirport : req.body.departureAirport,
+        departureTerminal : req.body.departureTerminal,
+        arrivalTerminal : req.body.arrivalTerminal
+      }, {runValidators: true}, function(err, result){
+
+      if(err){
+          res.send(err)
+      }
+      else{
+          res.send(result)
+      }
+
+});
 });
 
+
   module.exports = router;
+

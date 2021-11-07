@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 //const Router = require("./routes");
 const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
-var cors = require('cors');
 
 
 //const userController = require('./Routes/userController');
@@ -16,8 +15,10 @@ var cors = require('cors');
 const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
+var cors= require('cors');
+var ReactDOM = require('react-dom')
 
-
+app.use(cors())
 app.use(express.json());
 
 var cors= require('cors');

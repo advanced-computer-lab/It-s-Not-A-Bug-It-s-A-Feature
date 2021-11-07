@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
   flightNo: {
     type: Number,
     required: true,
+    unique: true,
   },
   departureDate: {
     type: Date,
