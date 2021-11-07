@@ -29,31 +29,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import axios from 'axios';
-// import {helper} from './SearchFlights.js';
 
-// function SearchFlights() {
-  
-//   const[rows, setRows]= useState([]); 
-//   useEffect(()=>{
-//       axios.get('http://localhost:8000/Admin/searchFlights',{ params:
-//           {
-//             flightNo:flightData.flightNo,
-//             arrivalDate:flightData.arrivalDate,
-//             arrivalAirport:flightData.arrivalAirport,
-//             arrivalTerminal:flightData.arrivalTerminal,
-//             arrivalTime:flightData.arrivalTime,
-//             departureDate:flightData.departureDate,
-//             departureAirport:flightData.departureTime,
-//             departureTerminal:flightData.departureTerminal,
-//             departureTime:flightData.departureTime 
-//           }     
-//     })
-//     .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
-    
-//    },[]);
-//    return rows;
-//   // return helper(rows)
-// }
  
 export default function Main() { 
     const [d, setData] =useState({
@@ -78,7 +54,6 @@ export default function Main() {
     })
     .then(res=> {
       setRows(res.data);
-      // setData(res.Data);
       console.log(res.data);
       console.log(d)
       res.redirect('/searchFlights');
@@ -87,7 +62,10 @@ export default function Main() {
    };
 
   return (
+   
     <div>
+          <div>
+
     
     <Stack direction="row" spacing={1}>
         <div>
@@ -135,9 +113,9 @@ export default function Main() {
 
         />
       </Box> 
-      </div>
-      <br></br>
-      <div>{helper(rows)}</div>        
+    </div>
+      
+           
         
     {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
        <DateRangePicker
@@ -307,7 +285,9 @@ export default function Main() {
                       }}>
              Search
         </Button>
-      
+        </div>
+
+        <div>{helper(rows)}</div>  
     </div>
 
 
