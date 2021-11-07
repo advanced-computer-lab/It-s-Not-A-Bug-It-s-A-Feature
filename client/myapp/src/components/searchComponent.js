@@ -20,33 +20,33 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-function onChangeFlightNo (){
+// function onChangeFlightNo (){
 
-}
-function onChangeArrivalAirport (){
+// }
+// function onChangeArrivalAirport (){
   
-}
-function onChangeDepartureAirport(){
+// }
+// function onChangeDepartureAirport(){
   
-}
-function onChangeArrivalTerminal (){
+// }
+// function onChangeArrivalTerminal (){
   
-}
-function onChangeDepartureTerminal (){
+// }
+// function onChangeDepartureTerminal (){
   
-}
-function onChangeArrivalTime (){
+// }
+// function onChangeArrivalTime (){
   
-}
-function onChangeDepartureTime (){
+// }
+// function onChangeDepartureTime (){
   
-}
-function onChangeArrivalDate (){
+// }
+// function onChangeArrivalDate (){
   
-}
-function onChangeDepartureDate (){
+// }
+// function onChangeDepartureDate (){
   
-}
+// }
 export default function InputWithIcon() {
     const [value, setValue] = React.useState([null, null]);
   return (
@@ -61,7 +61,7 @@ export default function InputWithIcon() {
         label="City or Airport" 
         variant="standard" 
         helperText="Leaving from"
-        onChange={this.onChangeDepartureAirport}
+        // onChange={this.onChangeDepartureAirport}
         />
         </Box>
   
@@ -73,7 +73,7 @@ export default function InputWithIcon() {
         label="City or Airport" 
         variant="standard" 
         helperText="Going to" 
-        onChange={this.onChangeArrivalAirport}
+        // onChange={this.onChangeArrivalAirport}
 
         />
       </Box> 
@@ -95,7 +95,7 @@ export default function InputWithIcon() {
              id="input-with-sx" 
              variant="standard" 
              helperText="Departing"
-             onChange={this.onChangeDepartureDate}
+            //  onChange={this.onChangeDepartureDate}
             />
             <Box sx={{ mx: 3, my :0.5 }}>to</Box>
             <DateRangeTwoToneIcon sx={{ color: 'action.active', mr: 1, mt: 1.5 }}/>
@@ -104,7 +104,7 @@ export default function InputWithIcon() {
             variant="standard" 
             helperText="Arrival" 
             placeholder='mm/dd/yy'
-            onChange={this.onChangeArrivalDate}
+            // onChange={this.onChangeArrivalDate}
 
             />
           </React.Fragment>
@@ -121,7 +121,7 @@ export default function InputWithIcon() {
         id="time1"
         type="time"
         variant="standard" 
-        onChange={this.onChangeDepartureTime}
+        // onChange={this.onChangeDepartureTime}
         InputLabelProps={{
           shrink: true,
         }}
@@ -137,7 +137,7 @@ export default function InputWithIcon() {
                 id="time2"
                 type="time"
                 variant="standard" 
-                onChange={this.onChangeArrivalTime}
+                // onChange={this.onChangeArrivalTime}
                 InputLabelProps={{
                 shrink: true,
                 }}
@@ -155,7 +155,7 @@ export default function InputWithIcon() {
         label="Terminal No" 
         variant="standard" 
         helperText="Departing"/>
-        onChange={this.onChangeDepartureTerminal}
+        {/* onChange={this.onChangeDepartureTerminal} */}
 
         </Box>
   
@@ -166,7 +166,7 @@ export default function InputWithIcon() {
         label="Terminal No" 
         variant="standard" 
         helperText="Arrial" 
-        onChange={this.onChangeArrivalTerminal}
+        // onChange={this.onChangeArrivalTerminal}
         />
       </Box> 
       <Box  sx={{ display: 'flex', alignItems: 'right',mr:1.5}}>
