@@ -17,17 +17,55 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {useState, useEffect} from 'react';
 
 
-export default function createFlight() {
-  // const[rows, setRows]= useState([]); 
-  // useEffect(()=>{
-  //     axios.get('http://localhost:8000/Admin//createFlight')
-  //   .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
+export default function CreateFlight() {
+  const [flightData, setFlight] =useState({
+      flightNo:"",
+      eSeatsNo:"",bSeatsNo:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
+      departureDate:"",arrivalDate:""
+    });
+   
     
-  //  },[]);
-
-  return (
-    Checkout()
-  );
+     const handleNext = () => { 
+       console.log(flightData);
+       console.log("Handle Next");
+      
+      };
+  
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {myAppBar()}
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            <Typography component="h1" variant="h4" align="center">
+              Create Flight
+            </Typography>
+            <React.Fragment>
+            
+                <React.Fragment>
+                  {DataForm(flightData,setFlight)}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+  
+                    <Button
+                      variant="contained"
+                      onClick={(e) => {handleNext(e);
+                      console.log("onClick");
+                      }}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      Create
+                    </Button>
+                  </Box>
+                </React.Fragment>
+              
+            </React.Fragment>
+          </Paper>
+          <Copyright />
+        </Container>
+      </ThemeProvider>
+    )
+  
+  
 }
 
 
@@ -45,24 +83,9 @@ function Copyright() {
   );
 }
 
-
-
-
-
-const theme = createTheme();
-
-function Checkout() {
-  
-
-  const handleNext = () => {
-    
-  };
-
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar
+function myAppBar(){
+  return(
+    <AppBar
         position="absolute"
         color="default"
         elevation={0}
@@ -77,53 +100,79 @@ function Checkout() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Create Flight
-          </Typography>
-          <React.Fragment>
-          
-              <React.Fragment>
-                {DataForm()}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Create
-                  </Button>
-                </Box>
-              </React.Fragment>
-            
-          </React.Fragment>
-        </Paper>
-        <Copyright />
-      </Container>
-    </ThemeProvider>
-  );
+  )
 }
 
 
 
+const theme = createTheme();
 
-function DataForm() {
+// function Layout() {
+//   const [flightData, setFlight] =useState({
+//     flightNo:null,
+//     eSeatsNo:null,bSeatsNo:null,departureAirport:null,arrivalAirport:null,departureTerminal:null,arrivalTerminal:null,
+//     departureDate:null,arrivalDate:null
+//   });
+ 
   
-  const [flightNo, setflightNo] = useState(null);
-  const [eSeatsNo, setESeatsNo] = useState(null);
-  const [bSeatsNo, setBSeatsNo] = useState(null);
-  const [departureAirport, setDepartureAirport] = React.useState(null);
-  const [arrivalAirport, setArrivalAirport] = React.useState(null);
-  const [departureTerminal, setDepartureTerminal] = React.useState(null);
-  const [arrivalTerminal, setArrivalTerminal] = React.useState(null);
-  const [departureDate, setDepartureDate] = React.useState(null);
-  const [arrivalDate, setArrivalDate] = React.useState(null);
+//    const handleNext = () => { 
+//     // console.log(flightData);
+//     // console.log(f.flightNo
+//     //   //,eSeatsNo,bSeatsNo,departureAirport,arrivalAirport,departureTerminal,arrivalTerminal,departureDate,arrivalDate
+//     //   );
+//     };
 
-  const printAll = () => {
-     console.log(flightNo,eSeatsNo,bSeatsNo,departureAirport,arrivalAirport,departureTerminal,arrivalTerminal,departureDate,arrivalDate);
-   };
+//   return (
+//     <ThemeProvider theme={theme}>
+//       <CssBaseline />
+//       {myAppBar()}
+//       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+//         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+//           <Typography component="h1" variant="h4" align="center">
+//             Create Flight
+//           </Typography>
+//           <React.Fragment>
+          
+//               <React.Fragment>
+//                 {DataForm(flightData,setFlight)}
+//                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+
+//                   <Button
+//                     variant="contained"
+//                     onClick={handleNext()}
+//                     sx={{ mt: 3, ml: 1 }}
+//                   >
+//                     Create
+//                   </Button>
+//                 </Box>
+//               </React.Fragment>
+            
+//           </React.Fragment>
+//         </Paper>
+//         <Copyright />
+//       </Container>
+//     </ThemeProvider>
+//   );
+// }
+
+
+
+
+function DataForm( d,setData) {
+  
+  // const [flightNo, setflightNo] = useState(null);
+  // const [eSeatsNo, setESeatsNo] = useState(null);
+  // const [bSeatsNo, setBSeatsNo] = useState(null);
+  // const [departureAirport, setDepartureAirport] = React.useState(null);
+  // const [arrivalAirport, setArrivalAirport] = React.useState(null);
+  // const [departureTerminal, setDepartureTerminal] = React.useState(null);
+  // const [arrivalTerminal, setArrivalTerminal] = React.useState(null);
+  // const [departureDate, setDepartureDate] = React.useState(null);
+  // const [arrivalDate, setArrivalDate] = React.useState(null);
+
+  
+
+ 
   
   return (
     <React.Fragment>     
@@ -136,39 +185,71 @@ function DataForm() {
             label="Flight Number"
             fullWidth
             variant="standard"
-            value={flightNo}
-            onChange={(newValue) => {
-              setflightNo(newValue.target.value);
-              printAll();
-            }}
+            value={d.flightNo}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
             id="economySeats"
-            name="economySeats"
+            name="eSeatsNo"
             label="Number of Economy Seats"
             fullWidth
             variant="standard"
-            value={eSeatsNo}
-            onChange={(newValue) => {
-              setESeatsNo(newValue.target.value);
-            }}
+            value={d.eSeatsNo}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="businessSeats"
-            name="businessSeats"
+            id="bSeatsNo"
+            name="bSeatsNo"
             label="Number of Business Seats"
             fullWidth
             variant="standard"
-            value={bSeatsNo}
-            onChange={(newValue) => {
-              setBSeatsNo(newValue.target.value);
-            }}
+            value={d.bSeatsNo}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -179,10 +260,21 @@ function DataForm() {
             label="Departure Airport"
             fullWidth
             variant="standard"
-            value={departureAirport}
-            onChange={(newValue) => {
-              setDepartureAirport(newValue.target.value);
-            }}
+            value={d.departureAirport}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -193,10 +285,21 @@ function DataForm() {
             label="Arrival Airport"
             fullWidth
             variant="standard"
-            value={arrivalAirport}
-            onChange={(newValue) => {
-              setArrivalAirport(newValue.target.value);
-            }}
+            value={d.arrivalAirport}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -207,10 +310,21 @@ function DataForm() {
             label="Departure Terminal"
             fullWidth
             variant="standard"
-            value={departureTerminal}
-            onChange={(newValue) => {
-              setDepartureTerminal(newValue.target.value);
-            }}
+            value={d.departureTerminal}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+           
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -221,10 +335,21 @@ function DataForm() {
             label="Arrival Terminal"
             fullWidth
             variant="standard"
-            value={arrivalTerminal}
-            onChange={(newValue) => {
-              setArrivalTerminal(newValue.target.value);
-            }}
+            value={d.arrivalTerminal}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      [name]: value
+                  });
+                  return {
+                      ...prevState,
+                      [name]: value
+                  };
+              }));
+          }}
+        
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -236,10 +361,22 @@ function DataForm() {
             variant="standard" />}
             label="Departure Date"
             id="departureDate"
-            value={departureDate}
-            onChange={(newValue) => {
-              setDepartureDate(newValue);
-            }}
+            value={d.departureDate}
+            onChange={(event) =>  {
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      ["departureDate"]: event
+                  });
+                  return {
+                      ...prevState,
+                      ["departureDate"]: event
+                  };
+              }));
+          }}
+            // onChange={(newValue) => {
+            //   setData({[newValue.target.name]:newValue.target.value});
+            // }}
           />
           </LocalizationProvider>
         </Grid>
@@ -249,14 +386,27 @@ function DataForm() {
             renderInput={(props) => <TextField {...props} 
             required 
             id="arrivalDate"
+            name="arrivalDate"
             label="Arrival Date"
             fullWidth
-            variant="standard" />}
+            variant="standard" />
+          }
             id="arrivalDate"
-            value={arrivalDate}
-            onChange={(newValue) => {
-              setArrivalDate(newValue);
-            }}
+            name="arrivalDate"
+            value={d.arrivalDate}
+            onChange={(event) =>  {
+              setData((prevState => {
+                  console.log({
+                      ...prevState,
+                      ["arrivalDate"]: event
+                  });
+                  return {
+                      ...prevState,
+                      ["arrivalDate"]: event
+                  };
+              }));
+          }}
+            
           />
           </LocalizationProvider>
         </Grid>
