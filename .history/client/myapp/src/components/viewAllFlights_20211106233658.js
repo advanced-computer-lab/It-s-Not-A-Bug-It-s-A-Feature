@@ -73,7 +73,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   }
   
   function helper(rows){
-    return(<TableContainer component={Paper} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    return(<TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>

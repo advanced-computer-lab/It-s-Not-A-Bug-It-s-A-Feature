@@ -105,8 +105,11 @@ function Checkout() {
 
 
 function DataForm() {
-  const [departureDate, setDepartureDate] = React.useState(null);
-  const [arrivalDate, setArrivalDate] = React.useState(null);
+  const [value, setValue] = React.useState(Date.now);
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
   return (
     <React.Fragment>
       
@@ -184,37 +187,29 @@ function DataForm() {
         <Grid item xs={12} sm={6}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DateTimePicker
-            renderInput={(props) => <TextField {...props} required 
-            label="Departure Date"
+            renderInput={(props) => <TextField {...props} label="Arrival Date"
             fullWidth
             variant="standard" />}
+            required
             label="Departure Date"
             id="departureDate"
-            value={departureDate}
+            value={value}
             onChange={(newValue) => {
-              setDepartureDate(newValue);
+              setValue(newValue);
             }}
           />
           </LocalizationProvider>
         </Grid>
         <Grid item xs={12} sm={6}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateTimePicker
-            renderInput={(props) => <TextField {...props} 
-            required 
+          <TextField
+            required
             id="arrivalDate"
+            name="arrivalDate"
             label="Arrival Date"
             fullWidth
-            variant="standard" />}
-            id="arrivalDate"
-            value={departureDate}
-            onChange={(newValue) => {
-              setArrivalDate(newValue);
-            }}
+            variant="standard"
           />
-          </LocalizationProvider>
         </Grid>
-       
       
       </Grid>
     </React.Fragment>

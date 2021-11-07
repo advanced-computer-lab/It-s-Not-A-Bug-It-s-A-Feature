@@ -11,9 +11,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 
 export default function createFlight() {
   // const[rows, setRows]= useState([]); 
@@ -90,7 +90,7 @@ function Checkout() {
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                   >
-                    Create
+                    'Create'
                   </Button>
                 </Box>
               </React.Fragment>
@@ -105,8 +105,6 @@ function Checkout() {
 
 
 function DataForm() {
-  const [departureDate, setDepartureDate] = React.useState(null);
-  const [arrivalDate, setArrivalDate] = React.useState(null);
   return (
     <React.Fragment>
       
@@ -161,61 +159,13 @@ function DataForm() {
             variant="standard"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="departureTerminal"
-            name="departureTerminal"
-            label="Departure Terminal"
-            fullWidth
-            variant="standard"
+        
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
+            label="Use this address for payment details"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="arrivalTerminal"
-            name="arrivalTerminal"
-            label="Arrival Terminal"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateTimePicker
-            renderInput={(props) => <TextField {...props} required 
-            label="Departure Date"
-            fullWidth
-            variant="standard" />}
-            label="Departure Date"
-            id="departureDate"
-            value={departureDate}
-            onChange={(newValue) => {
-              setDepartureDate(newValue);
-            }}
-          />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateTimePicker
-            renderInput={(props) => <TextField {...props} 
-            required 
-            id="arrivalDate"
-            label="Arrival Date"
-            fullWidth
-            variant="standard" />}
-            id="arrivalDate"
-            value={departureDate}
-            onChange={(newValue) => {
-              setArrivalDate(newValue);
-            }}
-          />
-          </LocalizationProvider>
-        </Grid>
-       
-      
       </Grid>
     </React.Fragment>
   );

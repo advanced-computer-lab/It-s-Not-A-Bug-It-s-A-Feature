@@ -23,7 +23,7 @@ import {Link}from 'react-router-dom';
 function ViewAllFlights() {
     const[rows, setRows]= useState([]); 
     useEffect(()=>{
-        axios.get('http://localhost:8000/Admin/allFlights')
+        axios.get('http://localhost:3000/Admin/allFlights')
       .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
       
      },[]);
@@ -73,7 +73,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   }
   
   function helper(rows){
-    return(<TableContainer component={Paper} style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+    return(<TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>

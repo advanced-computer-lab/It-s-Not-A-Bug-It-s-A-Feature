@@ -13,10 +13,12 @@ import  ViewAllFlights from './components/viewAllFlights.js';
 
 function App() {
   return(
+    <div class = "App">
          <Router> 
            <Route path ={"/AllFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={createFlight}></Route>
          </Router> 
+         </div>
          );
 }
 

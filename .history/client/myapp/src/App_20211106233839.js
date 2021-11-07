@@ -8,16 +8,17 @@ import createFlight from './components/createFlight';
 
 import  ViewAllFlights from './components/viewAllFlights.js';
 
-
+export default function CustomizedTables() {
 
 
 function App() {
   return(
          <Router> 
+           <Route path='/admin/createFlight' >{createFlight}</Route>
            <Route path ={"/AllFlights"} component={ViewAllFlights}></Route>
-           <Route path='/admin/createFlight' component={createFlight}></Route>
          </Router> 
          );
 }
 
 export default App;
+

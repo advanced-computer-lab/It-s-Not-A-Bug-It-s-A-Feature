@@ -18,7 +18,7 @@ router.route('/').get((req, res) => {
 
 
 
-  router.route('/createFlight').post((req, res) => {
+  router.route('/createFlights').post((req, res) => {
     console.log(req.body);
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 

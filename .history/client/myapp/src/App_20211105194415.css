@@ -1,26 +1,6 @@
-.ml-2{
-  margin-top: 20px  !important;
-  margin-left: 20px !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
-
-.ml-1 {
-  margin-left: 20px !important;
-}
-
-.px-2 {
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-}
-
-.p-3 {
-  padding: 20px !important;
-}
 .App {
   text-align: center;
 }
-
 
 .App-logo {
   height: 40vmin;
