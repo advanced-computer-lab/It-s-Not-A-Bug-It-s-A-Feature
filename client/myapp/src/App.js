@@ -10,11 +10,11 @@ import SearchFlights from './components/SearchFlights.js';
 function App() {
   return(
          <Router> 
-           <Route path ={"/AllFlights"} component={ViewAllFlights}></Route>
+           <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={createFlight}></Route>
            <Route path='/admin/editFlight/:id' component={EditFlight} />
-           <Route path ={"/Home"} component={Search}/>
-           <Route path={"/SearchFlights"} component={SearchFlights}/>
+           <Route path ={"/admin/home"} component={Search}/>
+           <Route path={"/admin/searchFlights"} component={SearchFlights}/>
          </Router> 
          );
   }
