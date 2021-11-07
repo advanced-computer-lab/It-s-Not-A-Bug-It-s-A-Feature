@@ -13,6 +13,7 @@ const app = express();
 const port = process.env.PORT || "8000";
 const MongoURI = process.env.ATLAS_URI;
 var cors= require('cors');
+var ReactDOM = require('react-dom')
 
 app.use(cors())
 app.use(express.json());

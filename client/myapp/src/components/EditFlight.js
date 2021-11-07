@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 
 
@@ -75,20 +77,23 @@ export default class EditFlight extends Component {
             arrivalTerminal : 'e'
           }
           //this one works
-         axios.get('http://localhost:8000/admin/editFlight/' + this.props.match.params.id)
+          var self = this;
+          axios.get('http://localhost:8000/admin/editFlight/' + this.props.match.params.id)
           .then(function (res) {
             console.log(res.data.flightNo);
-            this.state = {
+            self.setState ({
               flightNo: res.data.flightNo,
-              departureDate : new Date(2018, 11, 24, 10, 33, 30, 0),
-              arrivalDate : new Date(2018, 11, 25, 10, 33, 30, 0),
-              economySeats : 4,
-              businessSeats : 2,
-              arrivalAirport : 'e',
-              departureAirport : 'e',
-              departureTerminal : 'e',
-              arrivalTerminal : 'e'
-            }
+              departureDate : res.data.departureDate,
+              arrivalDate :res.data.arrivalDate,
+              economySeats :res.data.economySeats,
+              businessSeats :res.data.businessSeats,
+              arrivalAirport : res.data.arrivalAirport,
+              departureAirport : res.data.departureAirport,
+              departureTerminal : res.data.departureTerminal,
+              arrivalTerminal : res.data.arrivalTerminal
+            });
+            // this.render();
+
           })
           .catch(function (error) {
             console.log(error);
@@ -107,6 +112,10 @@ export default class EditFlight extends Component {
 
         
       }
+
+      // componentDidUpdate(props, state){
+        
+      // }
       onChangeFlightNo(e) {
         this.setState({
           flightNo: e.target.value
@@ -201,55 +210,117 @@ export default class EditFlight extends Component {
       <div>
       <TextField
           required
-          id="outlined-number"
-          label="Number"
+          id="FlightNo"
+          fullWidth
+          variant="standard"
+          label="Flight Number"
           type="number"
           defaultValue= {this.state.flightNo}
+          onChange={this.onChangeFlightNo}
           InputLabelProps={{
             shrink: true,
           }}
         />
         <TextField
           required
-          id="outlined-required"
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Number of Economy Seats"
+          type="number"
+          defaultValue= {this.state.economySeats}
+          onChange={this.onChangeEconSeats}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Number of Business Seats"
+          type="number"
+          defaultValue= {this.state.businessSeats}
+          onChange={this.onChangeBusinessSeats}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
           label="dept ariport"
           defaultValue= {this.state.departureAirport}
+          onChange={this.onChangeDeptAirport}
         />
         <TextField
           required
-          id="outlined-required"
+          id="filled-required"
+          fullWidth
+          variant="standard"
           label="arrival ariport"
           defaultValue= {this.state.arrivalAirport}
+          onChange={this.onChangeArrAirport}
         />
         <TextField
           required
-          id="outlined-required"
-          label="Departure Terminal"
+          id="filled-required"
+          fullWidth
+          variant="standard"
+                              label="Departure Terminal"
           defaultValue= {this.state.departureTerminal}
+          onChange={this.onChangeDeptTerminal}
         />
         <TextField
           required
-          id="outlined-required"
-          label="Arrival Terminal"
+          id="filled-required"
+          fullWidth
+          variant="standard"
+                    label="Arrival Terminal"
           defaultValue= {this.state.arrivalTerminal}
+          onChange={this.onChangeArrTerminal}
         />
         
         </div>
         <div>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DateTimePicker
-          label="Departure date & time"
-          value={this.state.departureDate}
-          onChange={this.onChangeDeptDate}
-          renderInput={(params) => <TextField {...params} />}
-        />  
+            renderInput={(props) => <TextField {...props} 
+            required 
+            id="departureDate"
+            label="Departure date & time"
+            fullWidth
+            variant="standard" />}
+            value={this.state.departureDate}
+            onChange={this.onChangeDeptDate}
+          />
         </LocalizationProvider>
         </div>
+        <div>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+            renderInput={(props) => <TextField {...props} 
+            required 
+            id="arrivalDate"
+            label="Arrival date & time"
+            fullWidth
+            variant="standard" />}
+            value={this.state.arrivalDate}
+            onChange={this.onChangeArrDate}
+          />
+          </LocalizationProvider>
+        </div>
         </Box>
+        
+        <Button variant="contained" type="submit" onClick={this.onSubmit} sx={{ mt: 3, ml: 1 }}> Save </Button>
         
       </form>
       
     </div>
         )
     }
+    
 }
