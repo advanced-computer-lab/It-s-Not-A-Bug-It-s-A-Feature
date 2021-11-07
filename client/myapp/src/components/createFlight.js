@@ -14,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import {useState, useEffect} from 'react';
+
 
 export default function createFlight() {
   // const[rows, setRows]= useState([]); 
@@ -27,6 +29,7 @@ export default function createFlight() {
     Checkout()
   );
 }
+
 
 
 function Copyright() {
@@ -104,12 +107,26 @@ function Checkout() {
 }
 
 
+
+
 function DataForm() {
+  
+  const [flightNo, setflightNo] = useState(null);
+  const [eSeatsNo, setESeatsNo] = useState(null);
+  const [bSeatsNo, setBSeatsNo] = useState(null);
+  const [departureAirport, setDepartureAirport] = React.useState(null);
+  const [arrivalAirport, setArrivalAirport] = React.useState(null);
+  const [departureTerminal, setDepartureTerminal] = React.useState(null);
+  const [arrivalTerminal, setArrivalTerminal] = React.useState(null);
   const [departureDate, setDepartureDate] = React.useState(null);
   const [arrivalDate, setArrivalDate] = React.useState(null);
+
+  const printAll = () => {
+     console.log(flightNo,eSeatsNo,bSeatsNo,departureAirport,arrivalAirport,departureTerminal,arrivalTerminal,departureDate,arrivalDate);
+   };
+  
   return (
-    <React.Fragment>
-      
+    <React.Fragment>     
       <Grid container spacing={4}>
         <Grid item xs={12} >
           <TextField
@@ -119,6 +136,11 @@ function DataForm() {
             label="Flight Number"
             fullWidth
             variant="standard"
+            value={flightNo}
+            onChange={(newValue) => {
+              setflightNo(newValue.target.value);
+              printAll();
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -129,6 +151,10 @@ function DataForm() {
             label="Number of Economy Seats"
             fullWidth
             variant="standard"
+            value={eSeatsNo}
+            onChange={(newValue) => {
+              setESeatsNo(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -139,6 +165,10 @@ function DataForm() {
             label="Number of Business Seats"
             fullWidth
             variant="standard"
+            value={bSeatsNo}
+            onChange={(newValue) => {
+              setBSeatsNo(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -149,6 +179,10 @@ function DataForm() {
             label="Departure Airport"
             fullWidth
             variant="standard"
+            value={departureAirport}
+            onChange={(newValue) => {
+              setDepartureAirport(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -159,6 +193,10 @@ function DataForm() {
             label="Arrival Airport"
             fullWidth
             variant="standard"
+            value={arrivalAirport}
+            onChange={(newValue) => {
+              setArrivalAirport(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -169,6 +207,10 @@ function DataForm() {
             label="Departure Terminal"
             fullWidth
             variant="standard"
+            value={departureTerminal}
+            onChange={(newValue) => {
+              setDepartureTerminal(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -179,6 +221,10 @@ function DataForm() {
             label="Arrival Terminal"
             fullWidth
             variant="standard"
+            value={arrivalTerminal}
+            onChange={(newValue) => {
+              setArrivalTerminal(newValue.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -207,7 +253,7 @@ function DataForm() {
             fullWidth
             variant="standard" />}
             id="arrivalDate"
-            value={departureDate}
+            value={arrivalDate}
             onChange={(newValue) => {
               setArrivalDate(newValue);
             }}
