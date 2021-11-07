@@ -78,7 +78,7 @@ export default class EditFlight extends Component {
         this.onChangeBusinessSeats= this.onChangeBusinessSeats.bind(this);
         this.onChangeArrAirport = this.onChangeArrAirport.bind(this);
         this.onChangeDeptAirport = this.onChangeDeptAirport.bind(this);
-        this.onChangeDeptTerminal.No = this.onChangeDeptTerminal.bind(this);
+        this.onChangeDeptTerminal = this.onChangeDeptTerminal.bind(this);
         this.onChangeArrTerminal = this.onChangeArrTerminal.bind(this);
         
         this.onSubmit = this.onSubmit.bind(this);
@@ -101,14 +101,14 @@ export default class EditFlight extends Component {
           // var self = this;
           this.state = {
             flightNo: 0,
-            departureDate : new Date(2018, 11, 24, 10, 33, 30, 0),
-            arrivalDate : new Date(2018, 11, 25, 10, 33, 30, 0),
-            economySeats : 4,
-            businessSeats : 2,
-            arrivalAirport : 'e',
-            departureAirport : 'e',
-            departureTerminal : 'e',
-            arrivalTerminal : 'e'
+            departureDate : new Date(2000, 1, 1, 1, 33, 30, 0),
+            arrivalDate : new Date(2000, 1, 1, 1, 33, 30, 0),
+            economySeats : 0,
+            businessSeats : 0,
+            arrivalAirport : '',
+            departureAirport : '',
+            departureTerminal : '',
+            arrivalTerminal : ''
           }
           //this one works
           var self = this;
@@ -226,9 +226,15 @@ export default class EditFlight extends Component {
     render() {
       if (this.state.flightNo === 0)
     return(
-      <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
-    </Box>
+      <div style={{
+        position: 'absolute', left: '50%', top: '50%',
+        transform: 'translate(-50%, -50%)'
+    }}>
+      <Box sx={{ display: 'flex' }} >
+        <CircularProgress />
+      </Box>
+    </div>
+
     )
     else return(
 
@@ -252,12 +258,13 @@ export default class EditFlight extends Component {
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
-            Create Flight
+            Edit Flight #{this.state.flightNo}
           </Typography>
           <React.Fragment>
           
               <React.Fragment>
-              <React.Fragment>
+              {DataForm(this)}
+              {/* {<React.Fragment>
       
       <Grid container spacing={4}>
         <Grid item xs={12} >
@@ -382,15 +389,10 @@ export default class EditFlight extends Component {
        
       
       </Grid>
-    </React.Fragment>                
+    </React.Fragment>  } */}
+
     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  {/* <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    Create
-                  </Button> */}
+                
                   <Button variant="contained" type="submit" onClick={this.onSubmit} sx={{ mt: 3, ml: 1 }}> Save </Button>
       
                 </Box>
@@ -543,4 +545,132 @@ export default class EditFlight extends Component {
     //     )
     }
     
+}
+function DataForm(self){
+  return(
+ <React.Fragment>
+      
+      <Grid container spacing={4}>
+        <Grid item xs={12} >
+        <TextField
+          required
+          id="FlightNo"
+          fullWidth
+          variant="standard"
+          label="Flight Number"
+          type="number"
+          defaultValue= {self.state.flightNo}
+          onChange={self.onChangeFlightNo}
+          
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Number of Economy Seats"
+          type="number"
+          defaultValue= {self.state.economySeats}
+          onChange={self.onChangeEconSeats}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Number of Business Seats"
+          type="number"
+          defaultValue= {self.state.businessSeats}
+          onChange={self.onChangeBusinessSeats}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="dept ariport"
+          defaultValue= {self.state.departureAirport}
+          onChange={self.onChangeDeptAirport}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="arrival ariport"
+          defaultValue= {self.state.arrivalAirport}
+          onChange={self.onChangeArrAirport}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Departure Terminal"
+          defaultValue= {self.state.departureTerminal}
+          onChange={self.onChangeDeptTerminal}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <TextField
+          required
+          id="filled-required"
+          fullWidth
+          variant="standard"
+          label="Arrival Terminal"
+          defaultValue= {self.state.arrivalTerminal}
+          onChange={self.onChangeArrTerminal}
+        />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+            renderInput={(props) => <TextField {...props} 
+            required 
+            id="departureDate"
+            label="Departure date & time"
+            fullWidth
+            variant="standard" />}
+            value={self.state.departureDate}
+            onChange={(newValue) => {
+              self.onChangeDeptDate(newValue);
+            }}            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+            renderInput={(props) => <TextField {...props} 
+            required 
+            id="arrivalDate"
+            label="Arrival date & time"
+            fullWidth
+            variant="standard" />}
+            value={self.state.arrivalDate}
+            onChange={(newValue) => {
+              self.onChangeArrDate(newValue);
+            }}          />
+          </LocalizationProvider>
+        </Grid>
+       
+      
+      </Grid>
+    </React.Fragment>  
+  );
 }
