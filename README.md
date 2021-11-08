@@ -4,7 +4,7 @@ Requirement ID - Team Member: Functional Requirement
 
 3- all of us: The system should have an already existing user called Administrator.
 
-4-Aya ElGamal:The system should allow the Administrator to create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
+4-Aya Elgamal:The system should allow the Administrator to create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
 
 5-Basant Allam:The system should allow the Administrator  to search through all existing flights using search criteria including flight number, departure and arrival times, dates and airport terminals.
 
