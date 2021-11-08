@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import Box from '@material-ui/core/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from '@mui/material/Link';
