@@ -39,24 +39,25 @@ export default function Main() {
 
       const[rows, setRows]= useState([]); 
      const onSubmit=()=>{
-      // axios.get('http://localhost:8000/Admin/searchFlights',{ params:
-      //     {
-      //       flightNo:d.flightNo,
-      //       arrivalDate:d.arrivalDate,
-      //       arrivalAirport:d.arrivalAirport,
-      //       arrivalTerminal:d.arrivalTerminal,
-      //       arrivalTime:d.arrivalTime,
-      //       departureDate:d.departureDate,
-      //       departureAirport:d.departureTime,
-      //       departureTerminal:d.departureTerminal,
-      //       departureTime:d.departureTime 
+      axios.get('http://localhost:8000/Admin/searchFlights',{ params:
+          {
+            flightNo:d.flightNo,
+            arrivalDate:d.arrivalDate,
+            arrivalAirport:d.arrivalAirport,
+            arrivalTerminal:d.arrivalTerminal,
+            arrivalTime:d.arrivalTime,
+            departureDate:d.departureDate,
+            departureAirport:d.departureAirport,
+            departureTerminal:d.departureTerminal,
+            departureTime:d.departureTime 
           
-      //     }     
-    // })
-    // .then(res=> {
+          }     
+    })
+    .then(res=> {
       console.log(d)
-    //   setRows(res.data);
-    // }).catch(err=>console.log(err))
+      setRows(res.data);
+      console.log(res.data)
+    }).catch(err=>console.log(err))
     
    };
 

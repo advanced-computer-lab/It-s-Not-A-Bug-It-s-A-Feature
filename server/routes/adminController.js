@@ -41,19 +41,19 @@ router.route('/').get((req, res) => {
     var result=JSON.parse('{}');
     var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
     var date2= new Date(date1.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
-    result[type]={$gte:date1.toISOString(), $lt:date2.toISOString()};
+    result[type]= JSON.parse('{}');
+    result[type]["$gte"]=new Date(date1);
+    result[type]["$lt"]=new Date(date2);
     return result;
   }
 
   function timeQuery(date,time,type)
   {
     var result=JSON.parse('{}');
-    var t=time;
-    if(time.length==1) t='0'+time;
-    var string = new String((date).substring(0,10) +'T'+t+':00:00.000Z');
+    var string = new String((date).substring(0,10) +'T'+time+':00.000Z');
     console.log(string);
-    var time1 = new Date(string).toISOString();
-    var time2 = new Date(new Date(string).getTime() + (1*60*60*1000)).toISOString(); //+1 hr
+    var time1 = new Date(string);
+    var time2 = new Date(new Date(string).getTime() + (1*60*60*1000)); //+1 hr
     result[type]={$gte:time1,$lt:time2};
 
     return result;
@@ -73,20 +73,22 @@ router.route('/').get((req, res) => {
   
     if(rq.arrivalDate != ''){     
       if(rq.arrivalTime!='')//time specified  
-      query.push(timeQuery(rq.arrivalDate,rq.arrivalTime,'arrivalTime'));
-    query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
-  }
+        query.push(timeQuery(rq.arrivalDate,rq.arrivalTime,'arrivalDate'));
+     else
+      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+    }
 
   if(rq.departureDate != ''){     
     if(rq.departureTime!='')  //time specified  
-      query.push(timeQuery(rq.departureDate,rq.departureTime,'departureTime'));
+      query.push(timeQuery(rq.departureDate,rq.departureTime,'departureDate'));
+   else
     query.push(dateQuery(rq.departureDate,'departureDate'));
   }
     var anded = {$and : query};
     console.log(query);
 
         if(query.length>0)
-       Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+           Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
 });
 
 router.route('/deleteFlight/:id').delete((req,res)=>{
