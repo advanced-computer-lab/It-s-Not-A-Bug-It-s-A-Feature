@@ -167,11 +167,10 @@ const theme = createTheme();
               if(!(value!='' && Number(value))){setError((prevState => {return {...prevState,[name]: true};}));
                 if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
-                setData((prevState => {return {...prevState,[name]: ''};}));
             }
               else{setError((prevState => {return {...prevState,[name]: false};}));
-              setHelperText((prevState => {return {...prevState,[name]: ''};}));
-              setData((prevState => {return {...prevState,[name]: value};}));}
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
             
           />
@@ -186,16 +185,18 @@ const theme = createTheme();
             variant="standard"
             value={d.economySeats}
             error={error.economySeats}
+            helperText={helperText.economySeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(!(value!='' && Number(value) &&Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
             
           />
@@ -210,16 +211,18 @@ const theme = createTheme();
             variant="standard"
             value={d.businessSeats}
             error={error.businessSeats}
+            helperText={helperText.businessSeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='' && Number(value))setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(!(value!='' && Number(value) &&Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
             
           />
@@ -234,16 +237,15 @@ const theme = createTheme();
             variant="standard"
             value={d.departureAirport}
             error={error.departureAirport}
+            helperText={helperText.departureAirport}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(value==''){setError((prevState => {return {...prevState,[name]: true};}));
+              setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
             
           />
@@ -258,16 +260,15 @@ const theme = createTheme();
             variant="standard"
             value={d.arrivalAirport}
             error={error.arrivalAirport}
+            helperText={helperText.arrivalAirport}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(value==''){setError((prevState => {return {...prevState,[name]: true};}));
+              setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
             
           />
@@ -282,16 +283,15 @@ const theme = createTheme();
             variant="standard"
             value={d.departureTerminal}
             error={error.departureTerminal}
+            helperText={helperText.departureTerminal}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(value==''){setError((prevState => {return {...prevState,[name]: true};}));
+              setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
            
           />
@@ -306,16 +306,15 @@ const theme = createTheme();
             variant="standard"
             value={d.arrivalTerminal}
             error={error.arrivalTerminal}
+            helperText={helperText.arrivalTerminal}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(value!='')setError((prevState => {return {...prevState,[name]: false};}));
-              else setError((prevState => {return {...prevState,[name]: true};}));
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      [name]: value
-                  };
-              }));
+              if(value==''){setError((prevState => {return {...prevState,[name]: true};}));
+              setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
           }}
         
           />
@@ -326,14 +325,17 @@ const theme = createTheme();
             renderInput={(props) => <TextField {...props} required 
             label="Departure Date"
             fullWidth
-            variant="standard" error={error.departureDate}/>}
+            variant="standard" error={error.departureDate}
+            helperText={helperText.departureDate}/>}
             label="Departure Date"
             id="departureDate"
             value={d.departureDate}
+
             onChange={(event) =>  {
-              if(event !=null)setError((prevState => {return {...prevState,["departureDate"]: false};}));
-              else setError((prevState => {return {...prevState,["departureDate"]: true};}));
-              
+              if(event !=null){setError((prevState => {return {...prevState,["departureDate"]: false};}));
+              setHelperText((prevState => {return {...prevState,["departureDate"]: ''};}));}
+              else {setError((prevState => {return {...prevState,["departureDate"]: true};}));
+              setHelperText((prevState => {return {...prevState,["departureDate"]: 'This field is requiered'};}));}
               setData((prevState => {
                   return {
                       ...prevState,
@@ -353,14 +355,17 @@ const theme = createTheme();
             name="arrivalDate"
             label="Arrival Date"
             fullWidth
-            variant="standard" error={error.arrivalDate} />
+            variant="standard" error={error.arrivalDate} 
+            helperText={helperText.arrivalDate}/>
           }
             id="arrivalDate"
             name="arrivalDate"
             value={d.arrivalDate}
             onChange={(event) =>  {
-              if(event !=null)setError((prevState => {return {...prevState,["arrivalDate"]: false};}));
-              else setError((prevState => {return {...prevState,["arrivalDate"]: true};}));
+              if(event !=null){setError((prevState => {return {...prevState,["arrivalDate"]: false};}));
+              setHelperText((prevState => {return {...prevState,["arrivalDate"]: ''};}));}
+              else {setError((prevState => {return {...prevState,["arrivalDate"]: true};}));
+              setHelperText((prevState => {return {...prevState,["arrivalDate"]: 'This field is requiered'};}));}
               setData((prevState => {
                   return {
                       ...prevState,
