@@ -1,10 +1,6 @@
 import * as React from 'react';
 
 import Box from '@material-ui/core/Box';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Location from '@material-ui/icons/LocationOnSharp';
 import Table from '@material-ui/core/Table';
@@ -18,16 +14,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import DateIcon from '';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import react, { useEffect, useState } from "react";
-import DateRangePicker from '@material-ui/lab/DateRangePicker';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import Paper from '@material-ui/core/Container';
-import Stack from '@material-ui/core/Stack';
+import Stack from '@mui/material/Stack';
 import { styled } from '@material-ui/core/styles';
-import DateRangeTwoToneIcon from '@material-ui/icons/DateRangeTwoTone';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import axios from 'axios';
 
  
@@ -91,7 +81,6 @@ export default function Main() {
           />
         </Box>
   
-    <div><SwapHorizIcon sx={{color: 'action.active' , mt:2.5}} /></div>
     
     <Box  sx={{ display: 'flex', alignItems: 'flex-end' }}>
      <Location sx={{ color: 'action.active', mr: 1, my: 2.8 }} />

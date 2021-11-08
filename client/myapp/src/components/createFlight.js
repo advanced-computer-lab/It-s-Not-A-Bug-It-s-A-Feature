@@ -11,9 +11,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import DateTimePicker from '@material-ui/lab/DateTimePicker';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 
 import {useState, useEffect} from 'react';
@@ -86,10 +86,14 @@ export default function CreateFlight() {
   
       axios.post('http://localhost:8000/admin/createFlight/' , flightData)
         .then(res => alert('Flight Added Successfuly'), )
-        .catch(
-          setFlightError((prevState => {return {...prevState,["flightNo"]: true};})),
-          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This Flight Number is taked please choose another one'};}))
-        );
+        .catch((error) => {
+          if( error.response ){
+            return (setFlightError((prevState => {return {...prevState,["flightNo"]: true};})),
+             setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This Flight Number is taked please choose another one'};}))
+            )
+          }
+      });
+        
   
       
       };
