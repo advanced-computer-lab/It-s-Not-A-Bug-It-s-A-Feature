@@ -229,6 +229,7 @@ export default class EditFlight extends Component {
         this.setState(prevState => ({
           errorMessage: { ...prevState.errorMessage, businessSeats: "This field is required" }
         }));
+      }
 
       else {
         this.setState(prevState => ({
@@ -239,7 +240,7 @@ export default class EditFlight extends Component {
       this.setState({
         businessSeats: e.target.value
       });
-    }
+    
   }
   onChangeArrAirport(e) {
     const { name, value } = e.target;
@@ -254,11 +255,11 @@ export default class EditFlight extends Component {
         flightError: { ...prevState.flightError, arrivalAirport: false },
         errorMessage: { ...prevState.errorMessage, arrivalAirport: "" }
       }));
-
+    }
       this.setState({
         arrivalAirport: e.target.value
       })
-    }
+    
   }
   onChangeDeptAirport(e) {
     const { name, value } = e.target;
@@ -273,11 +274,11 @@ export default class EditFlight extends Component {
         flightError: { ...prevState.flightError, departureAirport: false },
         errorMessage: { ...prevState.errorMessage, departureAirport: "" }
       }));
-
+    }
       this.setState({
         departureAirport: e.target.value
       })
-    }
+    
   }
   onChangeArrTerminal(e) {
     const { name, value } = e.target;
@@ -292,11 +293,11 @@ export default class EditFlight extends Component {
         flightError: { ...prevState.flightError, arrivalTerminal: false },
         errorMessage: { ...prevState.errorMessage, arrivalTerminal: "" }
       }));
-
+    }
       this.setState({
         arrivalTerminal: e.target.value
       })
-    }
+    
   }
   onChangeDeptTerminal(e) {
     const { name, value } = e.target;
