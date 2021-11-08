@@ -9,7 +9,6 @@ const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
 
 
-//const userController = require('./Routes/userController');
 
 //App variables
 const app = express();
@@ -20,19 +19,13 @@ var ReactDOM = require('react-dom')
 
 app.use(cors())
 app.use(express.json());
-
-var cors= require('cors');
-app.use(cors());
 app.use(express.urlencoded({extended: false}));
-var cors= require('cors');
 
-app.use(cors());
 
 
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
 
-//const User = require('./models/User');
 const User = require('./models/User.js');
 // #Importing the userController
 
