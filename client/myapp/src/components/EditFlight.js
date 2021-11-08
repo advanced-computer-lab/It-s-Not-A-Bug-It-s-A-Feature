@@ -15,23 +15,6 @@ import Grid from '@mui/material/Grid';
 
 
 
-// export default function EditFlight() {
-//   const[list, setList]= useState([]); 
-//   const { id } = useParams();
-
-//  useEffect(()=>{
-    
-//   axios.get('http://localhost:8000/admin/editFlight/' + id)
-//   .then(res=> {setList(res.data);console.log(res)}).catch(err=>console.log(err))
-//  },[]);
-
-
-
-//  return (
-//      list.map(a=>{return (<div><label>{a.flightNo}</label><br/></div>)})
-//      );
-// }
-
 export default class EditFlight extends Component {
 
     constructor(props) {
@@ -49,22 +32,7 @@ export default class EditFlight extends Component {
         
         this.onSubmit = this.onSubmit.bind(this);
     
-        // var self = this;
-        // var f = axios.get('http://localhost:8000/admin/editFlight/' + this.props.match.params.id)
-        //   .then(res => console.log(res.data), this.setState({events: res.data}));
-        // this.state = {
-          // flightNo: 0,
-          // departureDate : new Date(2018, 11, 24, 10, 33, 30, 0),
-          // arrivalDate : new Date(2018, 11, 25, 10, 33, 30, 0),
-          // economySeats : 4,
-          // businessSeats : 2,
-          // arrivalAirport : 'e',
-          // departureAirport : 'e',
-          // departureTerminal : 'e',
-          // arrivalTerminal : 'e'
-          
-        // }
-          // var self = this;
+      
           this.state = {
             flightNo: 0,
             departureDate : new Date(2018, 11, 24, 10, 33, 30, 0),
@@ -99,23 +67,9 @@ export default class EditFlight extends Component {
             console.log(error);
           });
 
-
-      //     axios.get('http://localhost:8000/admin/editFlight/' + this.props.match.params.id)
-      // .then(res => {
-      //   const persons = res.data;
-      //   this.setState({ persons });
-      // })
-
-          
-        
-
-
         
       }
 
-      // componentDidUpdate(props, state){
-        
-      // }
       onChangeFlightNo(e) {
         this.setState({
           flightNo: e.target.value

@@ -114,109 +114,64 @@ export default function Main() {
       
            
         
-    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-       <DateRangePicker
-       sx={{ color: 'action.active'}}
-        startText=""
-        endText=""
-        value={d.departureDate}
-        onChange={(event) =>  {
-          setData((prevState => {
-              return {
-                  ...prevState,
-                  ["departureDate"]: event
-              };
-          }));
-      }} 
-        renderInput={(startProps, endProps) => (
-          <React.Fragment>
-           <DateRangeTwoToneIcon sx={{ color: 'action.active', mr: 1, mt: 1.5 }}/>
-           <TextField {...startProps} 
-             id="input-with-sx" 
-             variant="standard" 
-             helperText="Departing"
-             value={d.departureDate}
-            onChange={(event) =>  {
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      ["departureDate"]: event
-                  };
-              }));
-          }}            />
-            <Box sx={{ mx: 3, my :0.5 }}>to</Box>
-            <DateRangeTwoToneIcon sx={{ color: 'action.active', mr: 1, mt: 1.5 }}/>
-            <TextField {...endProps} 
-            id="input-with-sx"  
-            variant="standard" 
-            helperText="Arrival" 
-            placeholder='mm/dd/yy'
-            value={d.arrivalDate}
-            onChange={(event) =>  {
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      ["arrivalDate"]: event
-                  };
-              }));
-          }}
-            />
-          </React.Fragment>
-        )}
+    <Stack component="form" noValidate spacing={3}>
+      <TextField
+        id="departureDate"
+        label="Departure Date"
+        type="date"
+        // value="departureDate"
+        defaultValue="2017-05-24"
+        sx={{ width: 220 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
-      </LocalizationProvider> */}
-
-    </Stack>
-
-    <Stack direction="row" spacing={1} sx={{ml:3.8,mt:1.5}}>
-
-    {/* <Box   sx={{color: 'action.active',display: 'flex', alignItems: 'right',mt:2 , mr:1.5}}>
-    <TextField
-        id="time1"
+      <TextField
+        id="departureTime"
+        label="Departure Time "
         type="time"
-        variant="standard" 
-        value={d.departureTime}
-            onChange={(event) =>  {
-              setData((prevState => {
-                  return {
-                      ...prevState,
-                      ["departureTime"]: event
-                  };
-              }));
-          }}         
+        // value="departureTime"
+        // defaultValue="07:30"
         InputLabelProps={{
           shrink: true,
         }}
         inputProps={{
           step: 300, // 5 min
         }}
-    
-        helperText="Departing Time"
+        sx={{ width: 150 }}
       />
-      </Box>
-   <Box sx={{ color: 'action.active',display: 'flex', alignItems: 'right',mt:2,mr:1.5}}>
         <TextField
-                id="time2"
-                type="time"
-                variant="standard" 
-                value={d.arrivalTime}
-                    onChange={(event) =>  {
-                    setData((prevState => {
-                        return {
-                            ...prevState,
-                            ["arrivalTime"]: event
-                        };
-                    }));
-                }}              
-                InputLabelProps={{
-                shrink: true,
-                }}
-                inputProps={{
-                step: 300, // 5 min
-                }}
-              helperText="Arrival Time"
-            /> 
-            </Box> */}
+        id="arrivalTime"
+        label="Arrival Time "
+        type="time"
+        // value="arrivalTime"
+        // defaultValue="08:30"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={{
+          step: 300, // 5 min
+        }}
+        sx={{ width: 150 }}
+      />
+      <TextField
+        id="date"
+        label="arrrivalDate"
+        type="date"
+        // value={d.arrivalDate}
+        defaultValue="2017-05-24"
+        sx={{ width: 220 }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+    </Stack>
+
+    </Stack>
+
+    <Stack direction="row" spacing={1} sx={{ml:3.8,mt:1.5}}>
+
+    
 
      <Box  sx={{ display: 'flex', alignItems: 'right',mr:1.5 }}>
 
