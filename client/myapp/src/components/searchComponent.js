@@ -39,22 +39,24 @@ export default function Main() {
 
       const[rows, setRows]= useState([]); 
      const onSubmit=()=>{
-      axios.get('http://localhost:8000/Admin/searchFlights',{ params:
-          {
-            flightNo:d.flightNo,
-            arrivalDate:d.arrivalDate,
-            arrivalAirport:d.arrivalAirport,
-            arrivalTerminal:d.arrivalTerminal,
-            arrivalTime:d.arrivalTime,
-            departureDate:d.departureDate,
-            departureAirport:d.departureTime,
-            departureTerminal:d.departureTerminal,
-            departureTime:d.departureTime 
-          }     
-    })
-    .then(res=> {
-      setRows(res.data);
-    }).catch(err=>console.log(err))
+      // axios.get('http://localhost:8000/Admin/searchFlights',{ params:
+      //     {
+      //       flightNo:d.flightNo,
+      //       arrivalDate:d.arrivalDate,
+      //       arrivalAirport:d.arrivalAirport,
+      //       arrivalTerminal:d.arrivalTerminal,
+      //       arrivalTime:d.arrivalTime,
+      //       departureDate:d.departureDate,
+      //       departureAirport:d.departureTime,
+      //       departureTerminal:d.departureTerminal,
+      //       departureTime:d.departureTime 
+          
+      //     }     
+    // })
+    // .then(res=> {
+      console.log(d)
+    //   setRows(res.data);
+    // }).catch(err=>console.log(err))
     
    };
 
@@ -119,18 +121,30 @@ export default function Main() {
         id="departureDate"
         label="Departure Date"
         type="date"
-        // value="departureDate"
+        value={d.departureDate}
+        name="departureDate"
         defaultValue="2017-05-24"
         sx={{ width: 220 }}
         InputLabelProps={{
           shrink: true,
         }}
+        onChange={(event) =>  {
+          const {name, value} = event.target;
+          setData((prevState => {
+              return {
+                  ...prevState,
+                  [name]: value
+              };
+          }));
+      }
+    }
       />
       <TextField
         id="departureTime"
         label="Departure Time "
         type="time"
-        // value="departureTime"
+        name="departureTime"
+        value={d.departureTime}
         // defaultValue="07:30"
         InputLabelProps={{
           shrink: true,
@@ -139,11 +153,33 @@ export default function Main() {
           step: 300, // 5 min
         }}
         sx={{ width: 150 }}
+        onChange={(event) =>  {
+          const {name, value} = event.target;
+          setData((prevState => {
+              return {
+                  ...prevState,
+                  [name]: value
+              };
+          }));
+      }
+    }
       />
         <TextField
         id="arrivalTime"
         label="Arrival Time "
         type="time"
+        value={d.arrivalTime}
+        name="arrivalTime"
+        onChange={(event) =>  {
+          const {name, value} = event.target;
+          setData((prevState => {
+              return {
+                  ...prevState,
+                  [name]: value
+              };
+          }));
+      }
+    }
         // value="arrivalTime"
         // defaultValue="08:30"
         InputLabelProps={{
@@ -157,13 +193,25 @@ export default function Main() {
       <TextField
         id="date"
         label="arrrivalDate"
+        name="arrivalDate"
         type="date"
-        // value={d.arrivalDate}
+        value={d.arrivalDate}
         defaultValue="2017-05-24"
         sx={{ width: 220 }}
+        
         InputLabelProps={{
           shrink: true,
         }}
+        onChange={(event) =>  {
+          const {name, value} = event.target;
+          setData((prevState => {
+              return {
+                  ...prevState,
+                  [name]: value
+              };
+          }));
+      }
+    }
       />
     </Stack>
 
