@@ -1,6 +1,11 @@
 import * as React from 'react';
 
 import Box from '@material-ui/core/Box';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Link from '@mui/material/Link';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import TextField from '@material-ui/core/TextField';
 import Location from '@material-ui/icons/LocationOnSharp';
 import Table from '@material-ui/core/Table';
@@ -11,6 +16,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CssBaseline from '@mui/material/CssBaseline';
+import myAppBar from './createFlight';
 // import DateIcon from '';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import react, { useEffect, useState } from "react";
@@ -19,9 +26,11 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { AppBar } from '@mui/material';
 
  
 export default function Main() { 
+  const theme = createTheme();
     const [d, setData] =useState({
         flightNo:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
         departureDate:"",arrivalDate:"",departureTime:"",arrivalTime:""
@@ -52,12 +61,33 @@ export default function Main() {
    };
 
   return (
-   
+    <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <AppBar
+        position="absolute"
+        color="default"
+        elevation={0}
+        sx={{
+          position: 'relative',
+          borderBottom: (t) => `1px solid ${t.palette.divider}`,
+        }}
+      >
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap>
+            overReact
+          </Typography>
+        </Toolbar>
+      </AppBar>
     <div>
+    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}style={{marginVertical:50,}}>
+            <Typography component="h2" variant="h4" align="center">
+               Search Flights
+            </Typography>
           <div>
-
+          <br></br>
     
-    <Stack direction="row" spacing={1}>
+    <Stack direction="row" spacing={1} style={{marginVertical:10,}}>
         <div>
 
         <Box  sx={{ display: 'flex', alignItems: 'flex-end' }}>
@@ -271,15 +301,28 @@ export default function Main() {
         />
       </Box> 
     </Stack>
-     <Button variant="contained"  size='small' sx={{ alignItems: 'right',ml:100 , mb:10}} id="search"onClick={(e) => {onSubmit(e);
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+     <Button variant="contained"  sx={{ mt: 3, ml: 1 }} id="search"onClick={(e) => {onSubmit(e);
                       }}>
              Search
         </Button>
+        </Box>
         </div>
+        
+        </Paper>
+        </Container>
 
         <div>{helper(rows)}</div>  
     </div>
-
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        overReact
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+    </ThemeProvider>
 
   );
       }
