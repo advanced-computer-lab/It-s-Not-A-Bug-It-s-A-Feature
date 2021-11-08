@@ -38,6 +38,10 @@ export default function Main() {
 
       const[rows, setRows]= useState([]); 
      const onSubmit=()=>{
+       if(d.departureTime!=""&&d.departureDate==""){alert('Cannot Add Time without Date');
+       setData((prevState => {return {...prevState,["departureTime"]: '' };}));}
+       if(d.arrivalTime!=""&&d.arrivalDate==""){alert('Cannot Add Time without Date');
+       setData((prevState => {return {...prevState,["arrivalTime"]: '' };}));}
       axios.get('http://localhost:8000/Admin/searchFlights',{ params:
           {
             flightNo:d.flightNo,
