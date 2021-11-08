@@ -1,6 +1,8 @@
 # It-s-Not-A-Bug-It-s-A-Feature
 
-Requirement ID- team member: functional requirement
+Requirement ID - Team Member: Functional Requirement
+
+3- all of us: The system should have an already existing user called Administrator.
 
 4-Aya ElGamal:The system should allow the Administrator to create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
 
