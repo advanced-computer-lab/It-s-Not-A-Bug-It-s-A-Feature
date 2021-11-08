@@ -18,7 +18,6 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { validateDateRange } from '@mui/lab/internal/pickers/date-utils';
 
 
 
@@ -193,8 +192,9 @@ const theme = createTheme();
             helperText={helperText.flightNo}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(!(value!='' && Number(value))){setError((prevState => {return {...prevState,[name]: true};}));
+              if(!(value!='' && Number(value) &&Number(value)>=0)){setError((prevState => {return {...prevState,[name]: true};}));
                 if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
             }
               else{setError((prevState => {return {...prevState,[name]: false};}));
@@ -219,7 +219,7 @@ const theme = createTheme();
               const {name, value} = event.target;
               if(!(value!='' && Number(value) &&Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
                 if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
-                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(Number(value)<=0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
                 setData((prevState => {return {...prevState,[name]: ''};}));
             }
