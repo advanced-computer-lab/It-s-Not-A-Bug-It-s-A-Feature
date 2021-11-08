@@ -40,15 +40,44 @@ export default function CreateFlight() {
     });
     
     function validateData(){
-      if(!(flightError.flightNo|| flightError.economySeats|| flightError.businessSeats ||flightError.departureAirport ||flightError.arrivalAirport ||
-        flightError.departureTerminal ||flightError.arrivalTerminal ||
-        flightError.departureDate ||flightError.arrivalDate)){
-          if(flightData.flightNo==''){
+      if((flightError.flightNo|| flightError.economySeats|| flightError.businessSeats ||flightError.departureAirport 
+        ||flightError.arrivalAirport ||flightError.departureTerminal ||flightError.arrivalTerminal ||
+        flightError.departureDate ||flightError.arrivalDate))return false;
+        let res =true;
+        if(flightData.flightNo==''){
           setFlightError((prevState => {return {...prevState,["flightNo"]: true};}));
-          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This field is requiered'};}));return false;}
+          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This field is requiered'};}));res= false;}
+        if(flightData.economySeats==''){
+          setFlightError((prevState => {return {...prevState,["economySeats"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["economySeats"]: 'This field is requiered'};}));res= false;}
+        if(flightData.businessSeats==''){
+          setFlightError((prevState => {return {...prevState,["businessSeats"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["businessSeats"]: 'This field is requiered'};}));res= false;}
+        if(flightData.departureAirport==''){
+          setFlightError((prevState => {return {...prevState,["departureAirport"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["departureAirport"]: 'This field is requiered'};}));res= false;}
+        if(flightData.arrivalAirport==''){
+          setFlightError((prevState => {return {...prevState,["arrivalAirport"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["arrivalAirport"]: 'This field is requiered'};}));res= false;}
+        if(flightData.departureTerminal==''){
+          setFlightError((prevState => {return {...prevState,["departureTerminal"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["departureTerminal"]: 'This field is requiered'};}));res= false;}
+        if(flightData.arrivalTerminal==''){
+          setFlightError((prevState => {return {...prevState,["arrivalTerminal"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["arrivalTerminal"]: 'This field is requiered'};}));res= false;}
+        if(flightData.departureDate==''){
+          setFlightError((prevState => {return {...prevState,["departureDate"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["departureDate"]: 'This field is requiered'};}));res= false;}
+        if(flightData.arrivalDate==''){
+          setFlightError((prevState => {return {...prevState,["arrivalDate"]: true};}));
+          setErrorMessage((prevState => {return {...prevState,["arrivalDate"]: 'This field is requiered'};}));res= false;}
+        if(flightData.arrivalDate!='' && flightData.departureDate!='' && flightData.departureDate>=flightData.arrivalDate){
+          setErrorMessage((prevState => {return {...prevState,["arrivalDate"]: 'Enter an Arrival Date after the Departure Date'};}));res= false;
+          setFlightError((prevState => {return {...prevState,["arrivalDate"]: true};}));
+          setFlight((prevState => { return {...prevState,["arrivalDate"]: null};}));
         }
-        else return false;
-        return true;
+        
+        return res;
     }
     
      const onSubmit = (e) => { 
@@ -60,7 +89,7 @@ export default function CreateFlight() {
         .then(res => alert('Flight Added Successfuly'), )
         .catch(
           setFlightError((prevState => {return {...prevState,["flightNo"]: true};})),
-          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This ID is Taked please choose another one'};}))
+          setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This Flight Number is taked please choose another one'};}))
         );
   
       
@@ -355,6 +384,7 @@ const theme = createTheme();
             name="arrivalDate"
             label="Arrival Date"
             fullWidth
+            value={d.arrivalDate}
             variant="standard" error={error.arrivalDate} 
             helperText={helperText.arrivalDate}/>
           }
