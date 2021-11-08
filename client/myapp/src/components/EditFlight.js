@@ -202,7 +202,7 @@ export default class EditFlight extends Component {
           errorMessage: { ...prevState.errorMessage, economySeats: "This field is required" }
         }));
 
-      else {
+      }else {
         this.setState(prevState => ({
           flightError: { ...prevState.flightError, economySeats: false },
           errorMessage: { ...prevState.errorMessage, economySeats: "" }
@@ -212,7 +212,7 @@ export default class EditFlight extends Component {
       this.setState({
         economySeats: e.target.value
       })
-    }
+    
   }
   onChangeBusinessSeats(e) {
     const { name, value } = e.target;
@@ -345,7 +345,7 @@ export default class EditFlight extends Component {
       // var koloTmam = false;
 
       axios.post('http://localhost:8000/admin/editFlight/' + this.props.match.params.id, flight)
-        .then(res => {console.log(res.data); window.location = '/allflights';})
+        .then(res => {console.log(res.data); window.location = '/admin/allflights';})
         // .catch(
         //   this.setState(prevState => ({
         //     flightError: { ...prevState.flightError, flightNo: true },

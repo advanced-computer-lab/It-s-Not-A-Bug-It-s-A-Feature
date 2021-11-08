@@ -189,6 +189,7 @@ const theme = createTheme();
             id="flightNo"
             name="flightNo"
             label="Flight Number"
+            type="number"
             fullWidth
             variant="standard"
             value={d.flightNo}
@@ -196,8 +197,7 @@ const theme = createTheme();
             helperText={helperText.flightNo}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(!(value!='' && Number(value) &&Number(value)>=0)){setError((prevState => {return {...prevState,[name]: true};}));
-                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+              if(!(value!='' && Number(value)>=0)){setError((prevState => {return {...prevState,[name]: true};}));
                 if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
             }
@@ -216,13 +216,13 @@ const theme = createTheme();
             label="Number of Economy Seats"
             fullWidth
             variant="standard"
+            type="number"
             value={d.economySeats}
             error={error.economySeats}
             helperText={helperText.economySeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(!(value!='' && Number(value) &&Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
-                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
                 if(Number(value)<=0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
                 setData((prevState => {return {...prevState,[name]: ''};}));
@@ -242,13 +242,13 @@ const theme = createTheme();
             label="Number of Business Seats"
             fullWidth
             variant="standard"
+            type="number"
             value={d.businessSeats}
             error={error.businessSeats}
             helperText={helperText.businessSeats}
             onChange={(event) =>  {
               const {name, value} = event.target;
-              if(!(value!='' && Number(value) &&Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
-                if(!Number(value))setHelperText((prevState => {return {...prevState,[name]: 'Enter a number'};}));
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
                 if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
                 if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
                 setData((prevState => {return {...prevState,[name]: ''};}));
