@@ -39,6 +39,23 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  currBusinessSeats:{
+    type: Number,
+    required: true,
+  },
+  currEconomySeats:{
+    type: Number,
+    required: true,
+  },
+  businessPrice:{
+    type: Number,
+    required: true,
+  },
+  economyPrice:{
+    type: Number,
+    required: true,
+  },
+  
 
 });
 
