@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-//var dt = new Date();
-//long integer_date=dt.getTime();
 
 const UserSchema = new mongoose.Schema({
   flightNo: {
