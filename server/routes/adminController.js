@@ -30,8 +30,14 @@ router.route('/').get((req, res) => {
     const departureTerminal = req.body.departureTerminal; 
     const arrivalTerminal = req.body.arrivalTerminal; 
 
+    const currBusinessSeats = businessSeats;
+    const currEconomySeats = economySeats;
+    const businessPrice = Number(req.body.businessPrice); 
+    const economyPrice = Number(req.body.economyPrice); 
+
     const newFlight = new Flights({flightNo,departureDate,arrivalDate,economySeats
-      ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal});
+      ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal,
+          currBusinessSeats,currEconomySeats,businessPrice, economyPrice});
 
     newFlight.save()
     .then(()=>res.send('Flight Added'))

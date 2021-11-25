@@ -62,3 +62,17 @@ const UserSchema = new mongoose.Schema({
 const Flights = mongoose.model("Flights", UserSchema);
 
 module.exports = Flights;
+
+// {
+//   "flightNo": 25632589874,
+//   "departureDate": "2016-05-12T21:29:00.000Z",
+//   "arrivalDate": "2012-12-12T21:29:00.000Z",
+//   "economySeats": 12,
+//   "businessSeats": 12,
+//   "arrivalAirport": "Monaco",
+//   "departureAirport": "Tokyo",
+//   "departureTerminal": "Terminal 12",
+//   "arrivalTerminal": "terminal 12",
+//   "businessPrice": "10",
+//   "economyPrice": "20"
+// }

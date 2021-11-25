@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-
+const Flights = require('../models/Flights.js');
+const User = require('../models/User.js');
 
 const UserSchema = new mongoose.Schema({
   reservationID: {
@@ -10,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   userID: { //FK
     //type: mongoose.Types.ObjectId, 
     type: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    required: true,
+    //required: true,
   },
   adultsNo: {
     type: Number,
@@ -26,19 +27,19 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   deptFlight: { //FK
-    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flight'},
-    required: true,
+    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flights'},
+    //required: true,
   },
   arrFlight: { //FK
-    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flight'},
-    required: true,
+    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flights'},
+    //required: true,
   },
   deptSeats: {
-    type: Int16Array,
+    type: [Number],
     required: true,
   },
   arrSeats: {
-    type: Int16Array,
+    type: [Number],
     required: true,
   },
   price: { //calculated
