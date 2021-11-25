@@ -26,6 +26,9 @@ app.use(express.urlencoded({extended: false}));
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
 
+const usersRouter2 = require('./routes/userController.js');
+app.use('/user', usersRouter2);
+
 const User = require('./models/User.js');
 // #Importing the userController
 
