@@ -22,6 +22,8 @@ import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
 import WorkSection from "./Sections/WorkSection.js";
 
+import SectionBasics from "./Sections/SectionBasics.js";
+
 const dashboardRoutes = [];
 
 const useStyles = makeStyles(styles);
@@ -44,6 +46,7 @@ export default function LandingPage(props) {
         {...rest}
       />
       <Parallax filter image={require("./../../../assets/img/landing-bg.jpg").default}>
+      <SectionBasics />
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
