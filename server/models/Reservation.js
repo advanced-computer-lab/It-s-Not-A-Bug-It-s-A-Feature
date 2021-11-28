@@ -9,9 +9,9 @@ const UserSchema = new mongoose.Schema({
     unique: true,
   },
   userID: { //FK
-    //type: mongoose.Types.ObjectId, 
-    type: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    //required: true,
+    
+    type: String,
+    required: true,
   },
   adultsNo: {
     type: Number,
@@ -27,12 +27,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   deptFlight: { //FK
-    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flights'},
-    //required: true,
+    type: String,
+    required: true,
   },
   arrFlight: { //FK
-    type: {type: mongoose.Schema.Types.ObjectId, ref: 'Flights'},
-    //required: true,
+    type: String,
+    required: true,
   },
   deptSeats: {
     type: [Number],

@@ -16,6 +16,13 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).send('Error: '+err));
   });
 
+    //for testing to be removed
+    router.route('/allUsers').get((req, res) => {
+      User.find()
+      .then(user => res.send(user))
+      .catch(err => res.status(400).send('Error: '+err));
+    });
+
 
 
   router.route('/createFlight').post((req, res) => {
@@ -97,20 +104,36 @@ router.route('/').get((req, res) => {
     var anded = {$and : query};
     console.log(query);
 
-        if(query.length>0)
-           Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+    if(query.length>0)
+        Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
 });
 
-router.route('/deleteFlight/:id').delete((req,res)=>{
+router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
+ deleteCorresspondingRes(id); //delete all corresponding reservations in reservation table
   Flights.findByIdAndRemove(id, req.body)
         .then((result)=>{
           res.send("Done!");
         })
         .catch(err => res.status(404).json({ error: 'No such flight' }));
 });
+function deleteCorresspondingRes(FlightID){
+  var query =[];
+  query.push({deptFlight:FlightID});
+  query.push({arrFlight:FlightID});
+  console.log(query);
+  var orred = {$or : query};
+  console.log(orred);
+  Reservation.find(orred, 'userID').toArray(function(err,userIDs){
+    if(err) throw error;
+    else{
+      console.log(userIDs);
+      User.find(userIDs,'email');
+    }
+  })
 
+}
 router.route('/editFlight/:id').get((req, res) => {
   Flights.findById(req.params.id)
   .then(flight => res.send(flight))

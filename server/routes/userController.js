@@ -3,7 +3,7 @@ var router = require('express').Router();
 let Flights = require('../models/Flights.js');
 let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
-
+var loggedUserID=-1;
 var loggedIn = true;
 
 // TODO: this variable is to be filled when the user logs in
@@ -27,27 +27,29 @@ router.route('/allRes').get((req, res) => {
     .catch(err => res.status(400).send('Error: ' + err));
 });
 
-router.route('/res').post(async (req, res) => { //reserving a flight
+router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
   if (!loggedIn)
     res.status(200).send("Log in first"); //todo - redirect to login 
   else {
     console.log(req.body);
     const adultsNo = Number(req.body.adultsNo);
     const childrenNo = Number(req.body.childrenNo);
-    const seatClass = (req.body.seatClass);
-    const deptFlight = ObjectID(req.body.deptFlight);
-    const arrFlight = ObjectID(req.body.arrFlight);
+    const seatClass = req.body.seatClass;
+    const deptFlight = req.body.deptFlight;//selected flight from frontend
+    const arrFlight = req.body.arrFlight;//selected flight from frontend
     var deptSeats = [];
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
     const reservationID = Number(req.body.resID); //change, shoould not be input
-    const userID = ObjectID("619fd0f4b6432ae913f8784a"); //changeee
+    const userID = ObjectID("619fd0f4b6432ae913f8784a"); //change to commented line below
+   // const userID = loggedUserID;  userID of logged in user which is a global var saved in back end
+    const passengers = adultsNo + childrenNo;
+
     var price = await calculatePrice(deptFlight, seatClass, passengers)
       + await calculatePrice(arrFlight, seatClass, passengers);
 
 
-    const passengers = adultsNo + childrenNo;
     try {
       if (passengers !== deptSeats.length || passengers !== arrSeats.length)
         throw 'number of passengers does not match number of seats';
@@ -102,7 +104,8 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
-router.route('/cancelReservation/:id').get((req,res)=>{
+router.route('/cancelReservation/:id').post((req,res)=>{
+  console.log("entered cancel function");
   if(!loggedIn) // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
   else{
@@ -110,10 +113,10 @@ router.route('/cancelReservation/:id').get((req,res)=>{
 
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
     // get the reservation
-    var reservation = Reservations.findbyId(id).then().catch(err => res.status(404).json({ error: 'No such reservation!' }));
+    var reservation = Reservation.findById(id).then().catch(err => res.status(404).json({ error: 'No such reservation!' }));
 
     // then get the departure flight by using its ID in the fetched reservation
-    var flightId = Flights.findbyId(reservation.get('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
+    var flightId = Flights.findById(reservation.get('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
     // get departure date of the flight
     var deptDate = flightId.get('departureDate')
     var now = new Date();
@@ -124,7 +127,8 @@ router.route('/cancelReservation/:id').get((req,res)=>{
     }
 
     console.log(`Deleting reservation ID ${id}`);
-    Reservations.findByIdAndRemove(id, req.body)
+    Reservation.findByIdAndRemove(id, req.body)
+    //need to increment seat no. in both dep and arr flights 
     .then((result)=>{
       res.send(`Done! Reservation ${id} is successfully deleted.`);
 
@@ -189,8 +193,8 @@ router.route('/searchFlights').get((req, res,next) => {
 // "adultsNo": "2",
 // "childrenNo":"2",
 // "seatClass":"Economy",
-// "deptFlight": "619fe791b0c98c9ea451953b",
-// "arrFlight":"619fe7e6b0c98c9ea451953d",
+// "deptFlight": "61a3b4fad3b416f71f8ba8ce",
+// "arrFlight":"61a3b642d3b416f71f8ba8f2",
 //  "deptSeats":[1,3,4,5],
 // "arrSeats" :[3,16,19,22]
 
