@@ -9,6 +9,19 @@ var loggedIn = true;
 // TODO: this variable is to be filled when the user logs in
 var curUserId = null;
 
+// for sending emails
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
+  }
+});
+
 router.route('/').get((req, res) => {
   if (!loggedIn)
     res.status(200).send("Hello Guest User!");
@@ -102,6 +115,7 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
+// TODO: increment the value of available seats in the flight
 router.route('/cancelReservation/:id').get((req,res)=>{
   if(!loggedIn) // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
@@ -113,7 +127,7 @@ router.route('/cancelReservation/:id').get((req,res)=>{
     var reservation = Reservations.findbyId(id).then().catch(err => res.status(404).json({ error: 'No such reservation!' }));
 
     // then get the departure flight by using its ID in the fetched reservation
-    var flightId = Flights.findbyId(reservation.get('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
+    var flightId = Flights.findbyId(reservation.select('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
     // get departure date of the flight
     var deptDate = flightId.get('departureDate')
     var now = new Date();
@@ -128,9 +142,10 @@ router.route('/cancelReservation/:id').get((req,res)=>{
     .then((result)=>{
       res.send(`Done! Reservation ${id} is successfully deleted.`);
 
-      // TODO: email user with the canceled reservation details + the refunded amount
+      // email user with the canceled reservation details + the refunded amount
       // use the 'result' parameter in the then part.
-
+      var own = User.findById(curUserId)
+      sendEmail(own, result);
     })
     .catch(err => res.status(404).json({ error: 'No such reservation!' }));
   }
@@ -202,6 +217,30 @@ router.route('/editProfile/:id').get((req,res)=>{
   .catch(err => res.status(400).send('Error: ' + err));
 });
 
+function sendEmail(owner, reservation){
+  let userEmail = owner.select('email');
+  let name = owner.firstName
+  let resID = reservation.select('reservationID');
+  let price = reservation.select('price');
+
+  let textmsg = 'Hi, ' + name + '!\n' + '\t Your reservation ' + resID +
+   ' has been canceled. $' + price + ' has been refunded to your account.';
+
+  let mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: userEmail,
+    subject: 'Reservation Canceled',
+    text: textmsg
+  };
+
+  transporter.sendMail(mailOptions, function(err, data) {
+    if (err) {
+      console.log("Error " + err);
+    } else {
+      console.log("Email sent successfully");
+    }
+  });
+}
 
 //http://localhost:8000/user/res
 // the request body:
