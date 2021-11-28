@@ -6,6 +6,8 @@ var ObjectID = require('mongodb').ObjectID;
 
 var loggedIn = true;
 
+// TODO: this variable is to be filled when the user logs in
+var curUserId = null;
 
 router.route('/').get((req, res) => {
   if (!loggedIn)
@@ -79,10 +81,62 @@ async function calculatePrice(flightID, seatClass, seats) {
   return oneSeat * seats;
 }
 
+// see reservations made by the current user only.
+router.route('/myReservations').get((req,res)=>{
+  if(!loggedIn){ // TODO: should be directed to login page
+    res.status(200).send("Hello Guest User!");
+  }
+  else{
+    Reservation.find({userID: curUserId})
+    .then(reserv => res.send(reserv))
+    .catch(err => res.status(400).send('Error: ' + err));
+  }
+})
+
+// (Req. 24) Get summary of the selected reservation
+router.route('/myReservations/:id').get((req, res) => {
+  var resID = req.params.id;
+  Reservation.find({reservationID: resID})
+  .then(reserv => res.send(reserv))
+  .catch(err => res.status(400).send('Error: ' + err));
+});
+
+// cancel reservation made by user. The reservation is deleted from the database
+router.route('/cancelReservation/:id').get((req,res)=>{
+  if(!loggedIn) // TODO: should be directed to login page
+    res.status(200).send("Hello Guest User!");
+  else{
+    var id = req.params.id;
+
+    // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
+    // get the reservation
+    var reservation = Reservations.findbyId(id).then().catch(err => res.status(404).json({ error: 'No such reservation!' }));
+
+    // then get the departure flight by using its ID in the fetched reservation
+    var flightId = Flights.findbyId(reservation.get('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
+    // get departure date of the flight
+    var deptDate = flightId.get('departureDate')
+    var now = new Date();
+    var days = (deptDate.getTime() - now.getTime()) / (1000*3600*24); // calculate difference in days.
+    if(days <= 2){
+      res.status(401).send(`Cannot cancel reservation because less than 48 hours are left.`);
+      return;
+    }
+
+    console.log(`Deleting reservation ID ${id}`);
+    Reservations.findByIdAndRemove(id, req.body)
+    .then((result)=>{
+      res.send(`Done! Reservation ${id} is successfully deleted.`);
+
+      // TODO: email user with the canceled reservation details + the refunded amount
+      // use the 'result' parameter in the then part.
+
+    })
+    .catch(err => res.status(404).json({ error: 'No such reservation!' }));
+  }
+})
 
 module.exports = router;
-
-
 
 //http://localhost:8000/user/res
 // the request body:
