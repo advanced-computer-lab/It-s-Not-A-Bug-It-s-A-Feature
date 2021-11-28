@@ -20,6 +20,7 @@ router.route('/').get((req, res) => {
 
   router.route('/createFlight').post((req, res) => {
     console.log(req.body);
+    console.log("abt to create new flight");
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
     const arrivalDate = Date.parse(req.body.arrivalDate); 
@@ -42,7 +43,10 @@ router.route('/').get((req, res) => {
     newFlight.save()
     .then(()=>res.send('Flight Added'))
     .catch(err => res.status(400).send('Error: '+err));  
+
   });
+
+  
   function dateQuery(date,type){  
     var result=JSON.parse('{}');
     var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
@@ -116,7 +120,7 @@ router.route('/editFlight/:id').get((req, res) => {
 
 router.route('/editFlight/:id').post(async (req, res) => {
   Flights.findByIdAndUpdate({ _id: (req.params.id) },
-    {
+    {//notify passengers!!
       departureDate: Date.parse(req.body.departureDate),
       flightNo: Number(req.body.flightNo),
       arrivalDate: Date.parse(req.body.arrivalDate),

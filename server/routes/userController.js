@@ -82,7 +82,50 @@ async function calculatePrice(flightID, seatClass, seats) {
 
 module.exports = router;
 
+function dateQuery(date,type){  
+  var result=JSON.parse('{}');
+  var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
+  var date2= new Date(date1.getTime() + (24 * 60 * 60 * 1000)); //24 hrs of the day
+  result[type]= JSON.parse('{}');
+  result[type]["$gte"]=new Date(date1);
+  result[type]["$lt"]=new Date(date2);
+  return result;
+}
+function seatQuery(adults,children,cabin){
+  var cabinClass="currEconomySeats";
+  if(cabin=='Business')//enum
+      cabinClass="currBusinessSeats";
+    var sum=adults;
+    if(children!='') sum+=children;
+    var seatQuery=JSON.parse('{}');
+    seatQuery[cabinClass] = JSON.parse('{}');
+    seatQuery[cabinClass]["$gte"]=sum;
+    return seatQuery;
+}
 
+router.route('/searchFlights').get((req, res,next) => {
+  var query =[];
+  var rq=req.query;
+  console.log(rq);
+  //may add price range later
+
+  if(rq.arrivalAirport != '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+  if(rq.departureAirport != '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
+  if(rq.arrivalTerminal != '')  query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
+  if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
+  if(rq.arrivalDate != '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+  if(rq.departureDate != '')    query.push(dateQuery(rq.departureDate,'departureDate'));
+  if(rq.cabin != '' && rq.adultsNo != '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
+
+  //required cabin if no. of seats is mentioned
+  //required adults if children are mentioned
+    
+  console.log(query);
+
+  if(query.length>0)
+      Flights.find({$and : query}, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+});
+//  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
 
 //http://localhost:8000/user/res
 // the request body:
