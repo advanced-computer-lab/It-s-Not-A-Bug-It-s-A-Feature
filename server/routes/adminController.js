@@ -1,5 +1,6 @@
 var router = require('express').Router();
 const Flights = require('../models/Flights.js');
+const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
 
@@ -98,7 +99,7 @@ router.route('/').get((req, res) => {
   if(rq.departureDate != ''){     
     if(rq.departureTime!='')  //time specified  
       query.push(timeQuery(rq.departureDate,rq.departureTime,'departureDate'));
-   else
+    else
     query.push(dateQuery(rq.departureDate,'departureDate'));
   }
     var anded = {$and : query};
@@ -111,25 +112,28 @@ router.route('/').get((req, res) => {
 router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
- deleteCorresspondingRes(id); //delete all corresponding reservations in reservation table
+  var emails=deleteResForFlight(id); //delete all corresponding reservations in reservation table & email clients
+  //send emails to var above
   Flights.findByIdAndRemove(id, req.body)
         .then((result)=>{
           res.send("Done!");
         })
         .catch(err => res.status(404).json({ error: 'No such flight' }));
 });
-function deleteCorresspondingRes(FlightID){
+function deleteResForFlight(FlightID){
   var query =[];
   query.push({deptFlight:FlightID});
   query.push({arrFlight:FlightID});
   console.log(query);
   var orred = {$or : query};
   console.log(orred);
-  Reservation.find(orred, 'userID').toArray(function(err,userIDs){
+
+  Reservation.find(orred, 'userID' , function(err,userIDs){
     if(err) throw error;
     else{
-      console.log(userIDs);
-      User.find(userIDs,'email');
+      console.log(userIDs);  
+      Reservation.findByIdAndDelete(orred);
+      return User.find(userIDs,'email');
     }
   })
 
