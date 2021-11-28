@@ -89,7 +89,7 @@ export default function CreateFlight() {
         .catch((error) => {
           if( error.response ){
             return (setFlightError((prevState => {return {...prevState,["flightNo"]: true};})),
-             setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This Flight Number is taken please choose another one'};}))
+             setErrorMessage((prevState => {return {...prevState,["flightNo"]: 'This Flight Number is taked please choose another one'};}))
             )
           }
       });
