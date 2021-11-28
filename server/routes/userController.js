@@ -182,6 +182,27 @@ router.route('/searchFlights').get((req, res,next) => {
 });
 //  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
 
+// req. 28: allow user to edit the profile information
+// id = user ID
+router.route('/editProfile/:id').get((req,res) => {
+  User.findById(req.params.id)
+  .then(user => res.send(user))
+  .catch(err => res.status(400).send('Error: '+err));
+});
+
+// Post the updated profile information to the database
+router.route('/editProfile/:id').get((req,res)=>{
+  User.findByIdAndUpdate({ _id : req.params.id},{
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    passportNo: req.body.passportNo,
+    email: req.body.email
+  })
+  .then(user => res.send(user))
+  .catch(err => res.status(400).send('Error: ' + err));
+});
+
+
 //http://localhost:8000/user/res
 // the request body:
 // {
