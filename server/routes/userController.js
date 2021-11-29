@@ -105,25 +105,36 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
+ 
 router.route('/cancelReservation/:id').post((req,res)=>{
-  console.log("entered cancel function");
+  console.log("about to cancel reservation!!");
   if(!loggedIn) // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
   else{
     var id = req.params.id;
-
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
     // get the reservation
-    var reservation = Reservation.findById(id).then().catch(err => res.status(404).json({ error: 'No such reservation!' }));
+    cancelRes(id);
+  }
+}
+ );
+
+async function cancelRes(id){
+  var reservation;
+    await Reservation.findById(id).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
+    console.log(reservation);
+    console.log(reservation['deptFlight']);
 
     // then get the departure flight by using its ID in the fetched reservation
-    var flightId = Flights.findById(reservation.get('deptFlight')).then().catch(err => res.status(404).json({ error: 'No such flight!' }));
+    var depDate;
+    await Flights.findById(reservation['deptFlight'],{'departureDate':1,_id:0}).then(dd=>depDate=dd).catch(err => res.status(404).json({ error: 'No such flight!' }));
     // get departure date of the flight
-    var deptDate = flightId.get('departureDate')
+    console.log(depDate);
+    depDate=depDate['departureDate'];
     var now = new Date();
-    var days = (deptDate.getTime() - now.getTime()) / (1000*3600*24); // calculate difference in days.
+    var days = (depDate.getTime() - now.getTime()) / (1000*3600*24); // calculate difference in days.
     if(days <= 2){
-      res.status(401).send(`Cannot cancel reservation because less than 48 hours are left.`);
+      console.log('Cannot cancel reservation because less than 48 hours are left.');
       return;
     }
 
@@ -139,7 +150,8 @@ router.route('/cancelReservation/:id').post((req,res)=>{
     })
     .catch(err => res.status(404).json({ error: 'No such reservation!' }));
   }
-})
+
+
 
 module.exports = router;
 function dateQuery(date,type){  

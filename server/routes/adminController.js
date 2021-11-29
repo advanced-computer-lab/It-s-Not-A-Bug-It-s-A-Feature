@@ -112,17 +112,17 @@ router.route('/').get((req, res) => {
 router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
- // deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
-  //send emails to var above
+  deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
+  
 
   console.log("emails");
-  emails(id);
-  //5 line shaghala bas commented temporarily for testing:
-  //Flights.findByIdAndRemove(id, req.body) 
-  //      .then((result)=>{
-  //        res.send("Done!");
-  //      })
-   //     .catch(err => res.status(404).json({ error: 'No such flight' }));
+  var emails=emails(id);
+  //TODO send emails using returned array from function above
+  Flights.findByIdAndRemove(id, req.body) 
+       .then((result)=>{
+         res.send("Flight Deleted!");
+       })
+       .catch(err => res.status(404).json({ error: 'No such flight' }));
 });
 async function deleteResForFlight(FlightID){
   var query =[];
@@ -147,7 +147,6 @@ async function deleteResForFlight(FlightID){
     query.push({'deptFlight':FlightID});
     query.push({'arrFlight':FlightID});
     console.log(query);
-
     console.log({$or : query});
     var userID;
     await Reservation.find({$or : query},{'userID':1,_id:0}).then(userIDs=>
@@ -170,8 +169,7 @@ async function deleteResForFlight(FlightID){
         emails.push(res[i]['email']);
       
       console.log(emails);
-
-      
+      return emails;
       }
     }
   
@@ -185,8 +183,11 @@ router.route('/editFlight/:id').get((req, res) => {
 });
 
 router.route('/editFlight/:id').post(async (req, res) => {
-  Flights.findByIdAndUpdate({ _id: (req.params.id) },
-    {//notify passengers!!
+  var id=req.params.id;
+  Flights.findByIdAndUpdate({ _id: (id) },
+    {
+      
+
       departureDate: Date.parse(req.body.departureDate),
       flightNo: Number(req.body.flightNo),
       arrivalDate: Date.parse(req.body.arrivalDate),
@@ -199,6 +200,11 @@ router.route('/editFlight/:id').post(async (req, res) => {
     })
     .then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
+    //TODO notify passengers via email
+    var emails=emails(id);
+
+
 });
 
   module.exports = router;
