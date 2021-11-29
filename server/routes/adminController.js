@@ -4,7 +4,18 @@ const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
 
-
+// transporter for sending emails 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
+  }
+});
 
 router.route('/').get((req, res) => {
     res.status(200).send("Hello Admin!");
@@ -114,16 +125,22 @@ router.route('/deleteFlight/:id').delete((req,res)=>{
   console.log(`Deleting flight ID ${id}`);
   deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
   
-
-  console.log("emails");
-  var emails=emails(id);
-  //TODO send emails using returned array from function above
+  // send emails using returned array from function above
   Flights.findByIdAndRemove(id, req.body) 
        .then((result)=>{
          res.send("Flight Deleted!");
        })
        .catch(err => res.status(404).json({ error: 'No such flight' }));
+  
+  var emailText = 'Hi!\n The flight with the following ID ' + id + 
+  ' has been canceled. Your reservation on this flight has been canceled, and the reservation price has been refunded to your account.';
+  console.log("emails");
+  var userEmails=emails(id);
+    userEmails.forEach(element => {
+      sendEmail(element, emailText);
+    });
 });
+
 async function deleteResForFlight(FlightID){
   var query =[];
   query.push({'deptFlight':FlightID});
@@ -172,7 +189,6 @@ async function deleteResForFlight(FlightID){
       return emails;
       }
     }
-  
 
 
 router.route('/editFlight/:id').get((req, res) => {
@@ -202,9 +218,32 @@ router.route('/editFlight/:id').post(async (req, res) => {
     .catch(err => res.status(400).send('Error: ' + err));
 
     //TODO notify passengers via email
-    var emails=emails(id);
+    var userEmails=emails(id);
+    var emailText = 'Hi!\n The flight with the following ID ' + id + ' has been updated. Please re-check the details of your reservation.';
 
+    userEmails.forEach(element => {
+      sendEmail(element, emailText);
+    });
 
 });
 
+
+function sendEmail(email, emailText){
+  let userEmail = email;
+  
+  let mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: userEmail,
+    subject: 'Reservation Canceled',
+    text: emailText
+  };
+
+  transporter.sendMail(mailOptions, function(err, data) {
+    if (err) {
+      console.log("Error " + err);
+    } else {
+      console.log("Email sent successfully");
+    }
+  });
+}
   module.exports = router;

@@ -3,11 +3,25 @@ var router = require('express').Router();
 let Flights = require('../models/Flights.js');
 let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
+const { text } = require('express');
 var loggedUserID=-1;
 var loggedIn = true;
 
 // TODO: this variable is to be filled when the user logs in
 var curUserId = null;
+
+// transporter for the refund email 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
+  }
+});
 
 router.route('/').get((req, res) => {
   if (!loggedIn)
@@ -105,7 +119,6 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
- 
 router.route('/cancelReservation/:id').post((req,res)=>{
   console.log("about to cancel reservation!!");
   if(!loggedIn) // TODO: should be directed to login page
@@ -140,20 +153,89 @@ async function cancelRes(id){
 
     console.log(`Deleting reservation ID ${id}`);
     Reservation.findByIdAndRemove(id, req.body)
-    //need to increment seat no. in both dep and arr flights 
     .then((result)=>{
       res.send(`Done! Reservation ${id} is successfully deleted.`);
 
-      // TODO: email user with the canceled reservation details + the refunded amount
-      // use the 'result' parameter in the then part.
+      // increment available seats in both dep and arr flights 
+      updateFlightSeats(reservation, 'deptFlight');
+      updateFlightSeats(reservation, 'arrFlight');
 
+      // email user with the canceled reservation details + the refunded amount
+      // use the 'result' parameter in the then part.
+      var own = User.findById(curUserId)
+      var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
+        ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
+      sendEmail(own,textmsg);
     })
     .catch(err => res.status(404).json({ error: 'No such reservation!' }));
   }
 
+// this function increments the available seats in the dept and
+// arrival flights of a reservation.
+// `whichFlight` field indicates whether the flight is dept or arr
+function updateFlightSeats(reservation, whichFlight){
+  // get ID of dep flight
+  var flightID = reservation[whichFlight];
+  // fetch the flight from the DB
+  var reservedFlight = Flights.findById(flightID).then().catch(err => console.log(err));
+  // create variable with the new no. of available seats
+  var numSeats = reservation['adultsNo'] + reservation['childrenNo'];
+  
+  // post updates to database
+  // if economy, add to economy, else add to business
+  if(reservation['seatClass'] == 'Business')
+    Flights.findByIdAndUpdate({_id: flightID}, {
+      currBusinessSeats: reservedFlight['currBusinessSeats']+numSeats
+    }).then(flight => res.send(flight))
+    .catch(err => res.status(400).send('Error: ' + err));
+  else if(reservation['seatClass'] == 'Economy')
+    Flights.findByIdAndUpdate({_id: flightID}, {
+      currEconomySeats: reservedFlight['currEconomySeats']+numSeats
+    }).then(flight => res.send(flight))
+    .catch(err => res.status(400).send('Error: ' + err));
+}
 
+// req. 28: allow user to edit the profile information
+// id = user ID
+router.route('/editProfile/:id').get((req,res) => {
+  User.findById(req.params.id)
+  .then(user => res.send(user))
+  .catch(err => res.status(400).send('Error: '+err));
+});
+
+// Post the updated profile information to the database
+router.route('/editProfile/:id').get((req,res)=>{
+  User.findByIdAndUpdate({ _id : req.params.id},{
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    passportNo: req.body.passportNo,
+    email: req.body.email
+  })
+  .then(user => res.send(user))
+  .catch(err => res.status(400).send('Error: ' + err));
+});
+
+function sendEmail(owner, emailText){
+  let userEmail = owner['email'];
+  
+  let mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: userEmail,
+    subject: 'Reservation Canceled',
+    text: emailText
+  };
+
+  transporter.sendMail(mailOptions, function(err, data) {
+    if (err) {
+      console.log("Error " + err);
+    } else {
+      console.log("Email sent successfully");
+    }
+  });
+}
 
 module.exports = router;
+
 function dateQuery(date,type){  
   var result=JSON.parse('{}');
   var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
