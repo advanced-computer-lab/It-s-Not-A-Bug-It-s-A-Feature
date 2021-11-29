@@ -112,7 +112,7 @@ router.route('/').get((req, res) => {
 router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
-  deleteResForFlight(id); //delete all corresponding reservations in reservation table & email clients
+ // deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
   //send emails to var above
 
   console.log("emails");
@@ -130,17 +130,16 @@ async function deleteResForFlight(FlightID){
   query.push({'arrFlight':FlightID});
   console.log(query);
 
-  var orred = {$or : query};
-  console.log(orred);
+  console.log({$or : query});
   var ResID;
 
-  await Reservation.find(orred,'_id').then(ResIDs=>
+  await Reservation.find({$or : query},'_id').then(ResIDs=>
   ResID=ResIDs);
   console.log("ID of reservations to be deleted:");
   console.log(ResID);
   console.log({$or:ResID});
   if(ResID.length>0)
-    await Reservation.deleteMany({$or:ResID}).then(console.log("deleted res (?)")); //not deleted idk whyyy
+    await Reservation.deleteMany({$or:ResID}).then(console.log("deleted corresponding to flight reservations")); 
   }
 
   async function emails(FlightID){
@@ -148,20 +147,32 @@ async function deleteResForFlight(FlightID){
     query.push({'deptFlight':FlightID});
     query.push({'arrFlight':FlightID});
     console.log(query);
-    var orred = {$or : query};
-    console.log(orred);
+
+    console.log({$or : query});
     var userID;
-    await Reservation.find(orred,{'userID':1,_id:0}).then(userIDs=>
+    await Reservation.find({$or : query},{'userID':1,_id:0}).then(userIDs=>
       userID=userIDs);
-  
       console.log("userIDs that need to be informed");
-      console.log(userID);
+      //console.log(userID);
+      var UID=[];
+      for(var i = 0; i < userID.length; i++) {    
+        UID.push({});
+        UID[i]['_id']=userID[i]['userID'];
+    }
+    console.log(UID);
+    var res;
       if(userID.length>0)
-      await User.find({$or:userID},{'email':1,_id:0}).then(result =>  //returns all emails or none idk whyyy
-      console.log(result)
-      )
+        await User.find({$or:UID},{'email':1,_id:0}).then(result =>  
+      res=result);
+      console.log(res);
+      var emails=[];
+      for(var i = 0; i < res.length; i++) {    
+        emails.push(res[i]['email']);
       
+      console.log(emails);
+
       
+      }
     }
   
 
