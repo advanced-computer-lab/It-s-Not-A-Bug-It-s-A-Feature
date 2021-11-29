@@ -8,9 +8,14 @@ import  Login from './views/users/login.js';
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
 import Search from './views/admin/searchComponent.js'
+import { ThemeProvider } from '@material-ui/styles';
+
+
+
 
 function App() {
   return(
+    
          <Router> 
            
            <Route path ={"/login"} component={Login}></Route>
@@ -20,6 +25,8 @@ function App() {
            <Route path='/admin/editFlight/:id' component={EditFlight} />
            <Route path ={"/admin/search"} component={Search}/>
          </Router> 
+         
+
          );
   }
 
