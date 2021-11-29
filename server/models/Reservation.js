@@ -8,8 +8,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  userID: { //FK
-    
+  userID: { 
     type: String,
     required: true,
   },
@@ -26,11 +25,11 @@ const UserSchema = new mongoose.Schema({
     enum : ['Business','Economy'],
     required: true,
   },
-  deptFlight: { //FK
+  deptFlight: { 
     type: String,
     required: true,
   },
-  arrFlight: { //FK
+  arrFlight: { 
     type: String,
     required: true,
   },
@@ -45,7 +44,7 @@ const UserSchema = new mongoose.Schema({
   price: { //calculated
     type: Number,
     required: true,
-  },
+  }
 
 });
 

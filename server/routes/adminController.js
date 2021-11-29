@@ -112,32 +112,60 @@ router.route('/').get((req, res) => {
 router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
-  var emails=deleteResForFlight(id); //delete all corresponding reservations in reservation table & email clients
+  deleteResForFlight(id); //delete all corresponding reservations in reservation table & email clients
   //send emails to var above
-  Flights.findByIdAndRemove(id, req.body)
-        .then((result)=>{
-          res.send("Done!");
-        })
-        .catch(err => res.status(404).json({ error: 'No such flight' }));
+
+  console.log("emails");
+  emails(id);
+  //5 line shaghala bas commented temporarily for testing:
+  //Flights.findByIdAndRemove(id, req.body) 
+  //      .then((result)=>{
+  //        res.send("Done!");
+  //      })
+   //     .catch(err => res.status(404).json({ error: 'No such flight' }));
 });
-function deleteResForFlight(FlightID){
+async function deleteResForFlight(FlightID){
   var query =[];
-  query.push({deptFlight:FlightID});
-  query.push({arrFlight:FlightID});
+  query.push({'deptFlight':FlightID});
+  query.push({'arrFlight':FlightID});
   console.log(query);
+
   var orred = {$or : query};
   console.log(orred);
+  var ResID;
 
-  Reservation.find(orred, 'userID' , function(err,userIDs){
-    if(err) throw error;
-    else{
-      console.log(userIDs);  
-      Reservation.findByIdAndDelete(orred);
-      return User.find(userIDs,'email');
+  await Reservation.find(orred,'_id').then(ResIDs=>
+  ResID=ResIDs);
+  console.log("ID of reservations to be deleted:");
+  console.log(ResID);
+  console.log({$or:ResID});
+  if(ResID.length>0)
+    await Reservation.deleteMany({$or:ResID}).then(console.log("deleted res (?)")); //not deleted idk whyyy
+  }
+
+  async function emails(FlightID){
+    var query =[];
+    query.push({'deptFlight':FlightID});
+    query.push({'arrFlight':FlightID});
+    console.log(query);
+    var orred = {$or : query};
+    console.log(orred);
+    var userID;
+    await Reservation.find(orred,{'userID':1,_id:0}).then(userIDs=>
+      userID=userIDs);
+  
+      console.log("userIDs that need to be informed");
+      console.log(userID);
+      if(userID.length>0)
+      await User.find({$or:userID},{'email':1,_id:0}).then(result =>  //returns all emails or none idk whyyy
+      console.log(result)
+      )
+      
+      
     }
-  })
+  
 
-}
+
 router.route('/editFlight/:id').get((req, res) => {
   Flights.findById(req.params.id)
   .then(flight => res.send(flight))

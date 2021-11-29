@@ -22,9 +22,10 @@ router.route('/allUsers').get((req, res) => {
     .catch(err => res.status(400).send('Error: ' + err));
 });
 router.route('/allRes').get((req, res) => {
-  Reservation.find()
-    .then(reservation => res.send(reservation))
-    .catch(err => res.status(400).send('Error: ' + err));
+  Reservation.deleteMany({});
+   Reservation.find()
+     .then(reservation => res.send(reservation))
+     .catch(err => res.status(400).send('Error: ' + err));
 });
 
 router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
@@ -41,8 +42,8 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
-    const reservationID = Number(req.body.resID); //change, shoould not be input
-    const userID = ObjectID("619fd0f4b6432ae913f8784a"); //change to commented line below
+    const reservationID = Number(req.body.resID); //change, should not be input
+    const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
    // const userID = loggedUserID;  userID of logged in user which is a global var saved in back end
     const passengers = adultsNo + childrenNo;
 
@@ -72,13 +73,13 @@ async function calculatePrice(flightID, seatClass, seats) {
   var oneSeat;
   if (seatClass == 'Business') {
     await Flights.findById(flightID)
-      .then(flight => oneSeat = flight.businessPrice)
-      .catch(err => res.status(400).send('Error: ' + err));
+      .then(flight => oneSeat = flight.businessPrice) //syntax?
+      .catch();
   }
   else {
     await Flights.findById(flightID)
       .then(flight => oneSeat = flight.economyPrice)
-      .catch(err => res.status(400).send('Error: ' + err));
+      .catch();
   }
   return oneSeat * seats;
 }
@@ -183,6 +184,30 @@ router.route('/searchFlights').get((req, res,next) => {
 
   if(query.length>0)
       Flights.find({$and : query}, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+});
+
+
+router.route('/createUser').post((req,res,next)=>{
+  console.log(req.body);
+  console.log("abt to create new user");
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName; 
+  const address = req.body.address; 
+  const countryCode = Number(req.body.countryCode); 
+  const phoneNo = Number(req.body.phoneNo); 
+  const age = Number(req.body.age); 
+  const username = req.body.username; 
+  const password = req.body.password; 
+  const nationality = req.body.nationality; 
+  const email = req.body.email;
+  const creditCardNo =Number(req.body.creditCardNo);
+  const passportNo = (req.body.passportNo); 
+  const isAdmin = Boolean(req.body.isAdmin); 
+  const newUser = new User({firstName,lastName,address,countryCode,phoneNo,age,username,password,nationality,email,creditCardNo,passportNo,isAdmin});
+
+  newUser.save()
+  .then(()=>res.send('User Added'))
+  .catch(err => res.status(400).send('Error: '+err));  
 });
 //  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
 
