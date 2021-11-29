@@ -2,7 +2,7 @@ import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 
 // @material-ui/icons
 
@@ -22,7 +22,7 @@ import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
 import WorkSection from "./Sections/WorkSection.js";
 
-import SectionBasics from "./Sections/SectionBasics.js";
+//import SectionBasics from "./Sections/SectionBasics.js";
 
 const dashboardRoutes = [];
 
@@ -46,7 +46,6 @@ export default function LandingPage(props) {
         {...rest}
       />
       <Parallax filter image={require("./../../../assets/img/landing-bg.jpg").default}>
-      <SectionBasics />
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>

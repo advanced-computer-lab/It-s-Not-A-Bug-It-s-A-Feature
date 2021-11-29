@@ -23,7 +23,7 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import react, { useEffect, useState } from "react";
 import Paper from '@material-ui/core/Container';
 import Stack from '@mui/material/Stack';
-import { styled } from '@material-ui/core/styles';
+import { styled } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { AppBar } from '@mui/material';
