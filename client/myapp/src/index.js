@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "./assets/scss/material-kit-react.scss?v=1.10.0";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 //import {provider} from 'react-redux';
