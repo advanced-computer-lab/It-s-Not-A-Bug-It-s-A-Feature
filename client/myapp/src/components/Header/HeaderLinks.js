@@ -10,6 +10,9 @@ import { makeStyles } from "@material-ui/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
@@ -17,17 +20,86 @@ import { Apps, CloudDownload } from "@material-ui/icons";
 // core components
 import CustomDropdown from "./../CustomDropdown/CustomDropdown.js";
 import Button from "./../CustomButtons/Button.js";
+import  Login from './../../views/users/login.js';
+// import { BrowserRouter as Router, Route } from 'react-router-dom';
+// import { Router } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+
 
 import styles from "./../../assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
+
+
 export default function HeaderLinks(props) {
   const classes = useStyles();
+  let history = useHistory();
+  const [isLogged, setLogged] =useState(false);
+
+  // const onSubmit = (e) => { 
+  //   // i want to change the navbar links here
+  //   e.preventDefault();
+  //   if(e.target.id === 'login'){
+  //       setLogged(true);}
+  //   else{
+  //       setLogged(false);}
+  // }
+  // let isLogged = props.isLogged
+  let loginButton;
+  if(!isLogged){
+    loginButton = <Button
+      id="login"
+      onClick={(e) => {
+        setLogged(true);
+        //onSubmit(e);
+        // history.push('/login')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+    >
+      
+      <LoginIcon className={classes.icons} /> Login
+    </Button>;
+    }
+    else{
+      loginButton = <div>
+    <Button
+     id="logout"
+      onClick={(e) => {
+        setLogged(false);
+        //onSubmit(e);
+        // history.push('/home')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+    >
+      
+      <LogoutIcon className={classes.icons} /> Log Out
+    </Button>
+    <Button
+      onClick={(e) => {
+        // onsubmit(e);
+        // history.push('/login')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+
+    >
+      
+      <AccountCircleIcon className={classes.icons} /> My Profile
+    </Button>
+    </div>;
+    }
+
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
-        <CustomDropdown
+        {/* <CustomDropdown
           noLiPadding
           buttonText="Components"
           buttonProps={{
@@ -47,73 +119,13 @@ export default function HeaderLinks(props) {
               Documentation
             </a>,
           ]}
-        />
+        /> */}
       </ListItem>
       <ListItem className={classes.listItem}>
-        <Button
-          href="https://www.creative-tim.com/product/material-kit-react?ref=mkr-navbar"
-          color="transparent"
-          target="_blank"
-          className={classes.navLink}
-        >
-          <CloudDownload className={classes.icons} /> Download
-        </Button>
+      {loginButton}
       </ListItem>
       <ListItem className={classes.listItem}>
-        {/*<Tooltip title="Delete">
-          <IconButton aria-label="Delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>*/}
-        <Tooltip
-          id="instagram-twitter"
-          title="Follow us on twitter"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            href="https://twitter.com/CreativeTim?ref=creativetim"
-            target="_blank"
-            color="transparent"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-twitter"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-facebook"
-          title="Follow us on facebook"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.facebook.com/CreativeTim?ref=creativetim"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-facebook"} />
-          </Button>
-        </Tooltip>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-tooltip"
-          title="Follow us on instagram"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            color="transparent"
-            href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
-            target="_blank"
-            className={classes.navLink}
-          >
-            <i className={classes.socialIcons + " fab fa-instagram"} />
-          </Button>
-        </Tooltip>
+        
       </ListItem>
     </List>
   );

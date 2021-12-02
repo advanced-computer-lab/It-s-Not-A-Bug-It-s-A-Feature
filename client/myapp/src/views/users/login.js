@@ -18,6 +18,10 @@ import CardBody from "./../../components/Card/CardBody.js";
 import CardHeader from "./../../components/Card/CardHeader.js";
 import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
+import LockIcon from '@mui/icons-material/Lock';
+import { useHistory } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+
 
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 
@@ -31,13 +35,23 @@ export default function Login(props) {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+  let history = useHistory();
+
+  const [isLogged, setLogged] =useState(true);
+
+  const onSubmit = (e) => { 
+    // i want to change the navbar links here
+    e.preventDefault();
+    setLogged(true);
+    history.push('/home'); 
+  }
   return (
     <div>
       <Header
         absolute
         color="transparent"
-        brand="Material Kit React"
-        rightLinks={<HeaderLinks />}
+        brand="OverReact"
+        rightLinks={<HeaderLinks isLogged = {isLogged}/>}
         {...rest}
       />
       <div
@@ -54,41 +68,12 @@ export default function Login(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
-                    <div className={classes.socialLine}>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-twitter"} />
-                      </Button>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-facebook"} />
-                      </Button>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className={"fab fa-google-plus-g"} />
-                      </Button>
-                    </div>
+                    <h2>Welcome!</h2>
+                    
                   </CardHeader>
-                  <p className={classes.divider}>Or Be Classical</p>
                   <CardBody>
                     <CustomInput
-                      labelText="First Name..."
+                      labelText="Username..."
                       id="first"
                       formControlProps={{
                         fullWidth: true,
@@ -102,21 +87,7 @@ export default function Login(props) {
                         ),
                       }}
                     />
-                    <CustomInput
-                      labelText="Email..."
-                      id="email"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "email",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Email className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                    
                     <CustomInput
                       labelText="Password"
                       id="pass"
@@ -127,9 +98,8 @@ export default function Login(props) {
                         type: "password",
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
+                            <LockIcon className={classes.inputIconsColor}>
+                            </LockIcon>
                           </InputAdornment>
                         ),
                         autoComplete: "off",
@@ -137,8 +107,18 @@ export default function Login(props) {
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg">
-                      Get started
+                    <Button 
+                    simple color="primary" 
+                    size="lg"
+                    onClick={() => {
+                      history.push('/home') //add sign up page
+                 }}>
+                      Don't have an account?
+                    </Button>
+                    <Button simple color="primary" 
+                    size="lg"
+                    onClick={(e) => {onSubmit(e);}}>
+                      Login
                     </Button>
                   </CardFooter>
                 </form>

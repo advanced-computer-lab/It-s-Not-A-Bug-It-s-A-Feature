@@ -16,6 +16,8 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "./../../assets/jss/material-kit-react/components/headerStyle.js";
 
+import { useHistory } from 'react-router-dom';
+
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
@@ -60,7 +62,11 @@ export default function Header(props) {
     [classes.absolute]: absolute,
     [classes.fixed]: fixed,
   });
-  const brandComponent = <Button className={classes.title}>{brand}</Button>;
+  let history = useHistory();
+  const brandComponent = <Button 
+  onClick={() => {
+    history.push('/Home')}}
+  className={classes.title}>{brand}</Button>;
   return (
     <AppBar className={appBarClasses}>
       <Toolbar className={classes.container}>
