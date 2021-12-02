@@ -11,6 +11,7 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/lab": "^5.0.0-alpha.58",
     "@mui/material": "^5.2.2",
+    "axios": "^0.24.0",
     "classnames": "2.3.1",
     "date-fns": "^2.27.0",
     "moment": "2.29.1",

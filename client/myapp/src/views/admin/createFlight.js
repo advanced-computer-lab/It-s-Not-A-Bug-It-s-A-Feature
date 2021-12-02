@@ -132,7 +132,7 @@ export default function CreateFlight(props) {
           backgroundPosition: "top center",
         }}
       ></div>
-    
+    <ThemeProvider theme={theme}>
         <CssBaseline />
         {myAppBar()}
         <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -163,7 +163,7 @@ export default function CreateFlight(props) {
         </Container>
 
         
-      
+      </ThemeProvider>
       </div>
     )
   
