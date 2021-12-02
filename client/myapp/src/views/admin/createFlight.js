@@ -15,13 +15,23 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
+import { makeStyles } from "@material-ui/core/styles";
+
+import Header from "./../../components/Header/Header.js";
+import HeaderLinks from "./../../components/Header/HeaderLinks.js";
+import Footer from "./../../components/Footer/Footer.js";
+import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
+import image from "./../../assets/img/bg7.jpg";
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+const useStyles = makeStyles(styles);
 
 
 
-export default function CreateFlight() {
+export default function CreateFlight(props) {
+  const classes = useStyles();
+  const { ...rest } = props;
   const [flightData, setFlight] =useState({
       flightNo:"",
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
@@ -105,7 +115,24 @@ export default function CreateFlight() {
       };
   
     return (
-      <ThemeProvider theme={theme}>
+      <div>
+      <Header
+        absolute
+        color="transparent"
+        brand="OverReact"
+        rightLinks={<HeaderLinks />}
+        {...rest}
+      />
+      
+      <div
+        className={classes.pageHeader}
+        style={{
+          backgroundImage: "url(" + image + ")",
+          backgroundSize: "cover",
+          backgroundPosition: "top center",
+        }}
+      ></div>
+    <ThemeProvider theme={theme}>
         <CssBaseline />
         {myAppBar()}
         <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -134,7 +161,10 @@ export default function CreateFlight() {
           </Paper>
           <Copyright />
         </Container>
+
+        
       </ThemeProvider>
+      </div>
     )
   
   
