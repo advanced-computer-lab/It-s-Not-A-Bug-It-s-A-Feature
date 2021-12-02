@@ -16,7 +16,7 @@ import CardFooter from "./../../../../components/Card/CardFooter.js";
 
 import styles from "./../../../../assets/jss/material-kit-react/views/landingPageSections/teamStyle.js";
 
-import team1 from "./../../../../assets/img/faces/avatar.jpg";
+import team1 from "./../../../../assets/img/faces/aya.jpg";
 import team2 from "./../../../../assets/img/faces/christian.jpg";
 import team3 from "./../../../../assets/img/faces/kendall.jpg";
 
@@ -40,9 +40,9 @@ export default function TeamSection() {
                 <img src={team1} alt="..." className={imageClasses} />
               </GridItem>
               <h4 className={classes.cardTitle}>
-                Gigi Hadid
+                Aya Elgamal
                 <br />
-                <small className={classes.smallTitle}>Model</small>
+                <small className={classes.smallTitle}>Software Engineer</small>
               </h4>
               <CardBody>
                 <p className={classes.description}>

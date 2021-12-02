@@ -36,7 +36,7 @@ export default function Login(props) {
       <Header
         absolute
         color="transparent"
-        brand="Material Kit React"
+        brand="OverReact"
         rightLinks={<HeaderLinks />}
         {...rest}
       />
