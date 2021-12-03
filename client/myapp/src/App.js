@@ -6,6 +6,7 @@ import  ViewAllFlights from './views/admin/viewAllFlights.js';
 import  Home from './views/users/LandingPage/LandingPage.js';
 // import  userHome from './views/users/LandingPage/userLandingPage.js';
 import  Login from './views/users/login.js';
+import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
 
 // import { render } from "react-dom";
@@ -29,6 +30,7 @@ function App() {
            
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/profile"} component={Profile}></Route>
+           <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>
