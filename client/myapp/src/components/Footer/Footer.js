@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // material-ui core components
-import { List, ListItem } from "@material-ui/core";
+import { List, ListItem, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+
 
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
@@ -30,7 +31,7 @@ export default function Footer(props) {
     <footer className={footerClasses}>
       <div className={classes.container}>
         <div className={classes.left}>
-          <List className={classes.list}>
+          {/* <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
               <a
                 href="https://www.creative-tim.com/?ref=mkr-footer"
@@ -67,19 +68,24 @@ export default function Footer(props) {
                 Licenses
               </a>
             </ListItem>
-          </List>
+          </List> */}
         </div>
         <div className={classes.right}>
-          &copy; {1900 + new Date().getYear()} , made with{" "}
-          <Favorite className={classes.icon} /> by{" "}
+          &copy; {1900 + new Date().getYear()} , made 
+          {/* with{" "}
+          <Favorite className={classes.icon} />  */}
+          by{" "}
+          <Tooltip title="Aya, Basant, Iman, Khadija, Michael">
           <a
-            href="https://www.creative-tim.com?ref=mkr-footer"
+            // href="https://www.creative-tim.com?ref=mkr-footer"
             className={aClasses}
             target="_blank"
           >
-            Creative Tim
-          </a>{" "}
-          for a better web.
+            overReact team
+          </a>
+          </Tooltip>
+          {" "}
+          for better flying.
         </div>
       </div>
     </footer>
