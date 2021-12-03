@@ -13,8 +13,8 @@ import CardHeader from "./../Card/CardHeader.js";
 import CardFooter from "./../Card/CardFooter.js";
 import Grid from "@material-ui/core/Grid";
 
-import GridContainer from "./../Grid/GridContainer.js";
-import GridItem from "./../Grid/GridItem.js";
+// import GridContainer from "./../Grid/GridContainer.js";
+// import GridItem from "./../Grid/GridItem.js";
 
 // @material-ui/core components
 import makeStyles from "@material-ui/styles/makeStyles";
@@ -23,9 +23,9 @@ import LuggageIcon from '@mui/icons-material/Luggage';
 
 
 
-import styles from "./../../assets/jss/material-kit-react/components/cardStyle.js";
+// import styles from "./../../assets/jss/material-kit-react/components/cardStyle.js";
 
-const useStyles = makeStyles(styles);
+// const useStyles = makeStyles(styles);
 
 import React from 'react'
 import { getTime } from "date-fns";

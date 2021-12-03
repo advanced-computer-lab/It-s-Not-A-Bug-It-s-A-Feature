@@ -21,7 +21,7 @@ import styles from "./../../../assets/jss/material-kit-react/views/landingPage.j
 import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
 import WorkSection from "./Sections/WorkSection.js";
-
+import Search from "./Sections/SearchSection";
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 
@@ -50,16 +50,16 @@ export default function LandingPage(props) {
         }}
         {...rest}
       />
-      <Parallax filter image={require("./../../../assets/img/plane-window.jpg").default}>
+      <Parallax filter image={require("./../../../assets/img/landing-bg.jpg").default}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Take The Leap</h1>
+              <h1 className={classes.title}>Your Story Starts With Us.</h1>
               <h4>
                 You are in the right place.
               </h4>
               <br />
-              {/* <Button
+              <Button
                 color="danger"
                 size="lg"
                 href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
@@ -68,14 +68,25 @@ export default function LandingPage(props) {
               >
                 <i className="fas fa-play" />
                 Watch video
-              </Button> */}
+              </Button>
             </GridItem>
           </GridContainer>
+        
         </div>
       </Parallax>
+      {/* <div className={classNames(classes.main, classes.mainRaised)}>
+      <Search align="center"/>
+      <br/>
+      <br/>
+      <br/>
+      </div> */}
       <div className={classNames(classes.main, classes.mainRaised)}>
+      
         <div className={classes.container}>
+          <br/>
+          <Search/>
           <ProductSection />
+      
           {/* <TeamSection />
           <WorkSection /> */}
         </div>

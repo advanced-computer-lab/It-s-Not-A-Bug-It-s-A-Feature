@@ -126,7 +126,16 @@ export default class EditFlight extends Component {
 
 
   }
-
+   searchAirports = async searchText=>
+  {
+    const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+    // console.log(result);
+    let matches =allAirports.filter(airport =>{
+      const regex = new RegExp("^"+searchText,'gi');
+      return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
+    });
+    console.log(matches);//the search result
+  }
   onChangeFlightNo(e) {
     const { name, value } = e.target;
     if (!(value != '' && Number(value) && Number(value) >= 0)) {
@@ -253,13 +262,15 @@ export default class EditFlight extends Component {
     else {
       this.setState(prevState => ({
         flightError: { ...prevState.flightError, arrivalAirport: false },
-        errorMessage: { ...prevState.errorMessage, arrivalAirport: "" }
-      }));
+        errorMessage: { ...prevState.errorMessage, arrivalAirport: "" } 
+      }));        
+      searchAirports(value)
+
     }
       this.setState({
         arrivalAirport: e.target.value
       })
-    
+     
   }
   onChangeDeptAirport(e) {
     const { name, value } = e.target;
@@ -273,7 +284,9 @@ export default class EditFlight extends Component {
       this.setState(prevState => ({
         flightError: { ...prevState.flightError, departureAirport: false },
         errorMessage: { ...prevState.errorMessage, departureAirport: "" }
-      }));
+      }));      
+      searchAirports(value)
+
     }
       this.setState({
         departureAirport: e.target.value
