@@ -37,23 +37,24 @@ export default function CreateFlight(props) {
   const [flightData, setFlight] =useState({
       flightNo:"",
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
-      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:""
+      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:"",economyBaggage:"",businessBaggage:""
     });
     const [flightError, setFlightError] =useState({
       flightNo:false,
       economySeats:false,businessSeats:false,departureAirport:false,arrivalAirport:false,departureTerminal:false,arrivalTerminal:false,
-      departureDate:false,arrivalDate:false,economyPrice:false,businessPrice:false
+      departureDate:false,arrivalDate:false,economyPrice:false,businessPrice:false,economyBaggage:false,businessBaggage:false
     });
     const [errorMessage, setErrorMessage] =useState({
       flightNo:"",
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
-      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:""
+      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:"",economyBaggage:"",businessBaggage:""
     });
     
     function validateData(){
       if((flightError.flightNo|| flightError.economySeats|| flightError.businessSeats ||flightError.departureAirport 
         ||flightError.arrivalAirport ||flightError.departureTerminal ||flightError.arrivalTerminal ||
-        flightError.departureDate ||flightError.arrivalDate || flightError.economyPrice|| flightError.businessPrice))return false;
+        flightError.departureDate ||flightError.arrivalDate || flightError.economyPrice|| flightError.businessPrice|| 
+        flightError.economyBaggage || flightError.businessBaggage))return false;
         let res =true;
         if(flightData.flightNo==''){
           setFlightError((prevState => {return {...prevState,["flightNo"]: true};}));
@@ -67,6 +68,12 @@ export default function CreateFlight(props) {
         if(flightData.businessSeats==''){
           setFlightError((prevState => {return {...prevState,["businessSeats"]: true};}));
           setErrorMessage((prevState => {return {...prevState,["businessSeats"]: 'This field is requiered'};}));res= false;}
+          if(flightData.economyBaggage==''){
+            setFlightError((prevState => {return {...prevState,["economyBaggage"]: true};}));
+            setErrorMessage((prevState => {return {...prevState,["economyBaggage"]: 'This field is requiered'};}));res= false;}
+            if(flightData.businessBaggage==''){
+              setFlightError((prevState => {return {...prevState,["businessBaggage"]: true};}));
+              setErrorMessage((prevState => {return {...prevState,["businessBaggage"]: 'This field is requiered'};}));res= false;}
           if(flightData.businessPrice==''){
             setFlightError((prevState => {return {...prevState,["businessPrice"]: true};}));
             setErrorMessage((prevState => {return {...prevState,["businessPrice"]: 'This field is requiered'};}));res= false;}
@@ -393,6 +400,60 @@ const theme = createTheme();
             value={d.businessPrice}
             error={error.businessPrice}
             helperText={helperText.businessPrice}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
+          }}
+            
+          />
+        </Grid>
+        
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="economyBaggage"
+            name="economyBaggage"
+            label="Price of Economy Baggage"
+            fullWidth
+            variant="standard"
+            type="number"
+            value={d.economyBaggage}
+            error={error.economyBaggage}
+            helperText={helperText.economyBaggage}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
+          }}
+            
+          />
+        </Grid>
+        
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="businessBaggage"
+            name="businessBaggage"
+            label="Price of Business Baggage"
+            fullWidth
+            variant="standard"
+            type="number"
+            value={d.businessBaggage}
+            error={error.businessBaggage}
+            helperText={helperText.businessBaggage}
             onChange={(event) =>  {
               const {name, value} = event.target;
               if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
