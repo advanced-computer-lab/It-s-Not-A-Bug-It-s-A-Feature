@@ -55,7 +55,14 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  
+  economyBaggage:{
+    type:Number,
+    required: true
+  },
+  businessBaggage:{
+    type:Number,
+    required: true
+  }
 
 });
 
