@@ -3,6 +3,7 @@ const Flights = require('../models/Flights.js');
 const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
+var nodemailer = require('nodemailer');
 
 // transporter for sending emails 
 let transporter = nodemailer.createTransport({
