@@ -25,6 +25,7 @@ import image from "./../../assets/img/bg7.jpg";
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import { AirportShuttle } from '@material-ui/icons';
 const useStyles = makeStyles(styles);
 
 
@@ -170,7 +171,16 @@ export default function CreateFlight(props) {
   
 }
 
-
+const searchAirports = async searchText=>
+{
+  const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+  // console.log(result);
+  let matches =allAirports.filter(airport =>{
+    const regex = new RegExp("^"+searchText,'gi');
+    return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
+  });
+  console.log(matches);//the search result
+}
 
 function Copyright() {
   return (
@@ -368,7 +378,9 @@ const theme = createTheme();
             }
               else{setError((prevState => {return {...prevState,[name]: false};}));
               setHelperText((prevState => {return {...prevState,[name]: ''};}));}
-              setData((prevState => {return {...prevState,[name]: value};}));
+              setData((prevState => {return {...prevState,[name]: value};}));             
+              searchAirports(value);
+
           }}
             
           />
@@ -392,6 +404,7 @@ const theme = createTheme();
               else{setError((prevState => {return {...prevState,[name]: false};}));
               setHelperText((prevState => {return {...prevState,[name]: ''};}));}
               setData((prevState => {return {...prevState,[name]: value};}));
+              searchAirports(value);
           }}
             
           />
