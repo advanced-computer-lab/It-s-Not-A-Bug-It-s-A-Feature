@@ -4360,11 +4360,6 @@
     "name": "Morocco"
   },
   {
-    "code": "ETH",
-    "country": "Israel",
-    "name": "J Hozman Airport"
-  },
-  {
     "code": "ETZ",
     "country": "France",
     "name": "Lorraine Airport"
@@ -5638,11 +5633,6 @@
     "code": "HET",
     "country": "China",
     "name": "Huhehaote Airport"
-  },
-  {
-    "code": "HFA",
-    "country": "Israel",
-    "name": "U Michaeli Airport"
   },
   {
     "code": "HFE",
@@ -13435,11 +13425,6 @@
     "name": "Santos Dumont Airport"
   },
   {
-    "code": "SDV",
-    "country": "Israel",
-    "name": "Sde Dov Airport"
-  },
-  {
     "code": "SDY",
     "country": "United States",
     "name": "Sidney Richland Municipal Airport"
@@ -15020,11 +15005,6 @@
     "name": "Tuluksak"
   },
   {
-    "code": "TLV",
-    "country": "Israel",
-    "name": "Ben Gurion Airport"
-  },
-  {
     "code": "TMC",
     "country": "Indonesia",
     "name": "Tambolaka Airport"
@@ -15968,11 +15948,6 @@
     "code": "VCV",
     "country": "United States",
     "name": "Southern California Logistics Airport"
-  },
-  {
-    "code": "VDA",
-    "country": "Israel",
-    "name": "Ovda Airport"
   },
   {
     "code": "VDB",
