@@ -13,7 +13,7 @@ import Color from 'color';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Button from "./../../components/CustomButtons/Button.js";
+import Button from "../../../../components/CustomButtons/Button.js";
 import Button2 from "@material-ui/core/Button";
 
 
@@ -25,21 +25,15 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useState } from "react";
 
 //Things from template
-import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js";
-import textBox from "./../..//components/CustomInput/CustomInput.js";
-import { Apps, CloudDownload } from "@material-ui/icons";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
+import CustomDropdown from "../../../../components/CustomDropdown/CustomDropdown.js";
 import { Link } from "react-router-dom";
-import styles from "./../../assets/jss/material-kit-react/components/headerLinksStyle.js";
+import styles from "../../../../assets/jss/material-kit-react/components/headerLinksStyle.js";
 import { makeStyles } from "@material-ui/styles";
 
 
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -91,8 +85,9 @@ export default function Main() {
   // ----------------------------------  for the number of passengers ------------------------------
 
   const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
-  const [cabin, setCabin] = useState(""); // will store the name of the cabin that we choose 
+  const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
+  const test="_Traveller(s)";
   // we will use this to to fade the buttons 
   const [buttonFade1 , setButtonFade1]= useState(false);
   const [buttonFade2 , setButtonFade2]= useState(false);
@@ -105,6 +100,7 @@ export default function Main() {
     setCountPassengers(countPassengers+1);
     
   };
+ 
   const DecNumAdults = () => {
     if (countAdults > 1) {
         setCountPassengers(countPassengers-1);
@@ -136,31 +132,26 @@ export default function Main() {
      }
    };
 
- //_______INFANTS_________
 
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
   
  
     return (
-
-
-
-      
-
-        // <Card sx={{ minWidth: 275 ,  backgroundColor:"black" , alignContent: "center",opacity:0.1}}
-        <Card sx={{ minWidth: 275 }}>
+  <Card margin="none"
+   >
       <CardContent 
        >
            <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '20ch'},
+        '& > :not(style)': { m: 0.5, width: '24ch'},
        
       }}
       noValidate
@@ -176,21 +167,24 @@ export default function Main() {
         Leaving from
         </Typography>
       <TextField 
-    //   sx={{ Color:"white"}} 
       id="outlined-basic" 
       variant="outlined" 
       placeholder="Select origin"
+      color="warning"
       focused/>
       </div>
-    {/* <SwapHorizIcon/> */}
+    
+    {/* <SwapHorizIcon sx={{mt:28}}color="primary"/> */}
     <div>
     <Typography sx={{ fontSize: 17 }}  gutterBottom >
        Going to
         </Typography>
       <TextField 
+      
       id="outlined-basic" 
       variant="outlined" 
       placeholder="Select destination"
+      
       focused/>
       </div>
 
@@ -217,42 +211,24 @@ export default function Main() {
       placeholder="Select destination"
       focused/>
  </div>
- 
-    {/* </Box> */}
-    <div>
-    <Typography sx={{ fontSize: 17 }}  gutterBottom >
+   
+        <div>
+  <Typography sx={{ fontSize: 17 }}  gutterBottom >
        <br/>
         </Typography>
-
-      <Button
-       
-        id="demo-customized-button"
-        aria-controls="demo-customized-menu"
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        // variant="contained"
-        disableElevation
-        onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
-        size="large"
-      >
-       {countPassengers}_Traveller(s)
-      </Button>
-      <StyledMenu
-        id="demo-customized-menu"
-        MenuListProps={{
-          'aria-labelledby': 'demo-customized-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-                 
-        {/* <Divider sx={{ my: 1 }}
-        orientation='vertical' /> */}
-        {/* <MenuItem disableRipple> */}
-            Adults         
-        <div className="main_div">
+      < div/>
+ <CustomDropdown
+          noLiPadding
+          buttonText={countPassengers,test}
+          buttonProps={{
+            className: classes.navLink,
+            color: "transparent",
+            
+          }}
+          dropdownList={[
+            <Link className={classes.dropdownLink}>
+                <h4>  Adults</h4>  
+               <div className="main_div">
         <div className="center_div">
       
           <div className="btn_div">
@@ -268,33 +244,134 @@ export default function Main() {
             </div>
         </div>
       </div>
-   {/* </MenuItem> */}
-        <br/>
-        {/* <MenuItem disableRipple> */}
-            Children         
+            </Link>,
+            <a
+              className={classes.dropdownLink}
+            >
+     <h4>   Children</h4>     
+     <br/>    
+    <div className="main_div">
+    <div className="center_div">
+   
+      <div className="btn_div">
+        <Tooltip title="Delete">
+        <Button onClick={DecNumChild}>
+          <RemoveCircleOutlineSharpIcon />
+        </Button>
+        </Tooltip>
+        {countChild}
+        <Button
+           onClick={IncNumChild}>
+            < AddCircleOutlineSharpIcon />
+          </Button>
+        </div>
+    </div>
+  </div>
+            </a>,
+          ]}
+        />
+     
+ </div>
+<div> 
+   <div>
+  <Typography sx={{ fontSize: 17 }}  gutterBottom >
+       <br/>
+        </Typography>
+      < div/>
+        <CustomDropdown
+          noLiPadding
+          buttonText={cabin}
+          buttonProps={{
+            className: classes.navLink,
+            color: "transparent",
+            
+          }}
+          dropdownList={[
+            <Link className={classes.dropdownLink}
+            
+            >
+               <h4>  Economy </h4>  
+         </Link>,
+            <a 
+              className={classes.dropdownLink}
+              
+            >
+     <h4>   Business</h4>     
+        
+            </a>,
+          ]}
+        />
+  <div/>
+  </div>
+      {/* <Button
+       
+        id="demo-customized-button"
+        aria-controls="demo-customized-menu"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        // variant="contained"
+        disableElevation
+        onClick={handleClick}
+        endIcon={<KeyboardArrowDownIcon />}
+        size="large"
+      >
+       {countPassengers}_Traveller(s)
+      </Button> */}
+      {/* <StyledMenu
+        id="demo-customized-menu"
+        MenuListProps={{
+          'aria-labelledby': 'demo-customized-button',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      > */}
+            {/* Adults         
         <div className="main_div">
         <div className="center_div">
+      
+          <div className="btn_div">
+            <Tooltip title="Delete">
+            <Button2 onClick={DecNumAdults}>
+              <RemoveCircleOutlineSharpIcon />
+            </Button2>
+            </Tooltip>
+            {countAdults}
+            <Button2 onClick={IncNumAdults}>
+                < AddCircleOutlineSharpIcon />
+              </Button2>
+            </div>
+        </div>
+      </div> */}
+ 
+        {/* <br/> */}
+        
+            {/* Children         
+        <div className="main_div">
+        <div className="center_div"> */}
         {/* <Typography sx={{ fontSize: 18 ,align :"right"}}  gutterBottom >
        Helloo
         </Typography> */}
-          <div className="btn_div">
+          {/* <div className="btn_div">
             <Tooltip title="Delete">
-            <Button onClick={DecNumChild}>
+            <Button2 onClick={DecNumChild}>
               <RemoveCircleOutlineSharpIcon />
-            </Button>
-            </Tooltip>
-            {countChild}
-            <Button
+            </Button2>
+            </Tooltip> */}
+            {/* {countChild}
+            <Button2
                onClick={IncNumChild}>
                 < AddCircleOutlineSharpIcon />
-              </Button>
+              </Button2>
             </div>
         </div>
       </div>
       <br/>
-      </StyledMenu>
+      </StyledMenu> */}
 </div>
+
 <div>
+
 <Typography sx={{ fontSize: 17 }}  gutterBottom >
        <br/>
         </Typography>
@@ -310,33 +387,9 @@ variant="contained"
 disableElevation
 >Search</Button>
 </div>
+
 </Box>
- <div>
- <ListItem className={classes.listItem}>
-        <CustomDropdown
-          noLiPadding
-          buttonText="Components"
-          buttonProps={{
-            
-            color: "transparent",
-          }}
-          buttonIcon={Apps}
-          dropdownList={[
-            <gego>
-              All components
-            </gego>
-            ,
-            <a
-              // href="https://creativetimofficial.github.io/material-kit-react/#/documentation?ref=mkr-navbar"
-              // target="_blank"
-              // className={classes.dropdownLink}
-            >
-              Documentation
-            </a>,
-          ]}
-        />
-      </ListItem>
- </div>
+
       </CardContent>
     </Card>
 

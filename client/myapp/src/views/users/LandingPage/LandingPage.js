@@ -21,7 +21,7 @@ import styles from "./../../../assets/jss/material-kit-react/views/landingPage.j
 import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
 import WorkSection from "./Sections/WorkSection.js";
-
+import Search from "./Sections/SearchSection";
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 
@@ -71,11 +71,22 @@ export default function LandingPage(props) {
               </Button>
             </GridItem>
           </GridContainer>
+        
         </div>
       </Parallax>
+      {/* <div className={classNames(classes.main, classes.mainRaised)}>
+      <Search align="center"/>
+      <br/>
+      <br/>
+      <br/>
+      </div> */}
       <div className={classNames(classes.main, classes.mainRaised)}>
+      
         <div className={classes.container}>
+          <br/>
+          <Search/>
           <ProductSection />
+      
           {/* <TeamSection />
           <WorkSection /> */}
         </div>
