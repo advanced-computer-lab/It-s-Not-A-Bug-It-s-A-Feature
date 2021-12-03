@@ -32,14 +32,15 @@ import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
 export default function Flight(props) {
-    const departureTime= new Date(props.departureDate).getHours()+" : "+new Date(props.departureDate).getMinutes();
-    const arrivalTime= new Date(props.arrivalDate).getHours()+" : "+new Date(props.arrivalDate).getMinutes();
-    const duration =Math.ceil((new Date(props.arrivalDate).getTime()-new Date(props.departureDate).getTime())/(1000*60));
+  const flight =props.flight;
+    const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
+    const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
+    const duration =Math.ceil((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime())/(1000*60));
     const durationHour = Math.ceil(duration /60);
     var durationMin = Math.ceil(duration %60)+"M";
     if(durationMin=="0M")durationMin ="";
     const type =props.type;
-    var price = (type=="business")?parseInt(props.businessPrice):parseInt(props.economyPrice);
+    var price = (type=="business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
      if(props.Number>1)price = price*Number(props.Number);
     const classes = useStyles();
     const styleTime = {
@@ -63,11 +64,11 @@ export default function Flight(props) {
                   <CardBody>
                   <GridContainer justify="center" spacing={1}>
                     <GridItem  xs={12} sm={12}>
-                      <h4> Flight : {props.flightNo}</h4>
+                      <h4> Flight : {flight.flightNo}</h4>
                     </GridItem>
                    <GridItem  xs={12} sm={3}>
                      <p style={styleTime}>{departureTime}</p>
-                     <p style={{textAlign:"center"}}>{props.departureAirport}</p>
+                     <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
                       </GridItem>
                       <GridItem  xs={12} sm={3} >
                         <Grid  container direction="row" justifyContent="space-around" alignItems="center">
@@ -82,7 +83,7 @@ export default function Flight(props) {
                                               </GridItem> 
                       <GridItem  xs={12} sm={3}>
                       <p style={styleTime}>{arrivalTime}</p>
-                      <p style={{textAlign:"center"}}>{props.arrivalAirport}</p>
+                      <p style={{textAlign:"center"}}>{flight.arrivalAirport}</p>
                       </GridItem> 
                       <GridItem  xs={12} sm={3}>
                       <p style={styleTime} color="primary" >$ {price}</p>
