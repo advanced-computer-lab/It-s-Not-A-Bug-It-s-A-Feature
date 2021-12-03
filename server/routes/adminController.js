@@ -3,6 +3,7 @@ const Flights = require('../models/Flights.js');
 const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
+var nodemailer = require('nodemailer');
 
 // transporter for sending emails 
 let transporter = nodemailer.createTransport({
@@ -49,6 +50,8 @@ router.route('/').get((req, res) => {
     const departureAirport = req.body.departureAirport; 
     const departureTerminal = req.body.departureTerminal; 
     const arrivalTerminal = req.body.arrivalTerminal; 
+    const economyBaggage = Number(req.body.economyBaggage);
+    const businessBaggage = Number(req.body.businessBaggage);
 
     const currBusinessSeats = businessSeats;
     const currEconomySeats = economySeats;
@@ -57,7 +60,7 @@ router.route('/').get((req, res) => {
 
     const newFlight = new Flights({flightNo,departureDate,arrivalDate,economySeats
       ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal,
-          currBusinessSeats,currEconomySeats,businessPrice, economyPrice});
+          currBusinessSeats,currEconomySeats,businessPrice, economyPrice, economyBaggage, businessBaggage});
 
     newFlight.save()
     .then(()=>res.send('Flight Added'))
@@ -195,15 +198,12 @@ router.route('/editFlight/:id').get((req, res) => {
   Flights.findById(req.params.id)
   .then(flight => res.send(flight))
   .catch(err => res.status(400).send('Error: '+err));
- 
 });
 
 router.route('/editFlight/:id').post(async (req, res) => {
   var id=req.params.id;
   Flights.findByIdAndUpdate({ _id: (id) },
     {
-      
-
       departureDate: Date.parse(req.body.departureDate),
       flightNo: Number(req.body.flightNo),
       arrivalDate: Date.parse(req.body.arrivalDate),
@@ -212,7 +212,9 @@ router.route('/editFlight/:id').post(async (req, res) => {
       arrivalAirport: req.body.arrivalAirport,
       departureAirport: req.body.departureAirport,
       departureTerminal: req.body.departureTerminal,
-      arrivalTerminal: req.body.arrivalTerminal
+      arrivalTerminal: req.body.arrivalTerminal,
+      economyBaggage: Number(req.body.economyBaggage),
+      businessBaggage: Number(req.body.businessBaggage)
     })
     .then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
