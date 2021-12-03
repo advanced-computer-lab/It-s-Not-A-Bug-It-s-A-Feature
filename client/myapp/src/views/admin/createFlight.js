@@ -25,7 +25,6 @@ import image from "./../../assets/img/bg7.jpg";
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { AirportShuttle } from '@material-ui/icons';
 const useStyles = makeStyles(styles);
 
 
