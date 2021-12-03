@@ -87,11 +87,16 @@ export default function Main() {
   const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
   const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
-  const test="_Traveller(s)";
+  
   // we will use this to to fade the buttons 
   const [buttonFade1 , setButtonFade1]= useState(false);
   const [buttonFade2 , setButtonFade2]= useState(false);
 
+  //
+  const [arrival, setarrival] = useState("");
+  const [departure, setdeparture] = useState("");
+  const [arrivalDate, setarrivalDate] = useState("");
+  const [departureDate, setdepartureDate] = useState("");
 
   //_______ADULT__________
   const [countAdults, setCountAdults] = useState(1);
@@ -170,6 +175,7 @@ export default function Main() {
       id="outlined-basic" 
       variant="outlined" 
       placeholder="Select origin"
+      value={departure}
       color="warning"
       focused/>
       </div>
@@ -184,7 +190,7 @@ export default function Main() {
       id="outlined-basic" 
       variant="outlined" 
       placeholder="Select destination"
-      
+      value={arrival}
       focused/>
       </div>
 
@@ -197,6 +203,7 @@ export default function Main() {
       type="date"
       variant="outlined" 
       placeholder="Select destination"
+      value={departureDate}
       focused/>
       </div>
 <div>
@@ -209,6 +216,7 @@ export default function Main() {
       variant="outlined" 
       Container=""
       placeholder="Select destination"
+      value={arrivalDate}
       focused/>
  </div>
    
@@ -219,7 +227,7 @@ export default function Main() {
       < div/>
  <CustomDropdown
           noLiPadding
-          buttonText={countPassengers,test}
+          buttonText={countPassengers+" Traveller(s)"} //traveller handle
           buttonProps={{
             className: classes.navLink,
             color: "transparent",
@@ -288,13 +296,13 @@ export default function Main() {
           }}
           dropdownList={[
             <Link className={classes.dropdownLink}
-            
+            onClick={(e) => {setCabin("Economy");}}
             >
                <h4>  Economy </h4>  
          </Link>,
             <a 
               className={classes.dropdownLink}
-              
+              onClick={(e) => {setCabin("Business");}}
             >
      <h4>   Business</h4>     
         
