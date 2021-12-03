@@ -1,5 +1,6 @@
 const Reservation = require('../models/Reservation');
 var router = require('express').Router();
+var nodemailer = require('nodemailer');
 let Flights = require('../models/Flights.js');
 let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
@@ -11,17 +12,17 @@ var loggedIn = true;
 var curUserId = null;
 
 // transporter for the refund email 
-// let transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     type: 'OAuth2',
-//     user: process.env.MAIL_USERNAME,
-//     pass: process.env.MAIL_PASSWORD,
-//     clientId: process.env.OAUTH_CLIENTID,
-//     clientSecret: process.env.OAUTH_CLIENT_SECRET,
-//     refreshToken: process.env.OAUTH_REFRESH_TOKEN
-//   }
-// });
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
+  }
+});
 
 router.route('/').get((req, res) => {
   if (!loggedIn)
