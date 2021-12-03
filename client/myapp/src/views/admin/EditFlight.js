@@ -153,6 +153,10 @@ export default class EditFlight extends Component {
         matchList.innerHTML=html;
         console.log(html);
     }
+    else{
+      const htmll= `<div class= "card card-body mb-1"></div>`;
+      matchList.innerHTML=htmll;
+    }
   }
   
    searchAirports2 = async searchText=>
@@ -180,6 +184,10 @@ export default class EditFlight extends Component {
         ).join('');
         matchList2.innerHTML=html;
         console.log(html);
+    }
+    else{
+      const htmll= `<div class= "card card-body mb-1"></div>`;
+      matchList2.innerHTML=htmll;
     }
   }
   

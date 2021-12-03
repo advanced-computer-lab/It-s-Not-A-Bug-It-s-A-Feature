@@ -203,7 +203,11 @@ const outputHtml = matches=>{
     </div>`
       ).join('');
       matchList.innerHTML=html;
-      console.log(html);
+      // console.log(html);
+  }
+  else{
+    const htmll=` <div class= "card card-body mb-1">  </div>`;
+    matchList.innerHTML=htmll;
   }
 }
 
@@ -231,7 +235,11 @@ const outputHtml2 = matches=>{
     </div>`
       ).join('');
       matchList2.innerHTML=html;
-      console.log(html);
+      // console.log(html);
+  }
+  else{
+    const htmll= `<div class= "card card-body mb-1"></div>`;
+    matchList2.innerHTML=htmll;
   }
 }
 
