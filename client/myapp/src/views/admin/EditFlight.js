@@ -128,7 +128,7 @@ export default class EditFlight extends Component {
   }
    searchAirports = async searchText=>
   {
-    const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+    const allAirports = await require("./../../jsonFiles/airports.json");
     // console.log(result);
     let matches =allAirports.filter(airport =>{
       const regex = new RegExp("^"+searchText,'gi');

@@ -172,7 +172,8 @@ export default function CreateFlight(props) {
 
 const searchAirports = async searchText=>
 {
-  const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+  // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+  const allAirports = await require("./../../jsonFiles/airports.json");
   // console.log(result);
   let matches =allAirports.filter(airport =>{
     const regex = new RegExp("^"+searchText,'gi');
