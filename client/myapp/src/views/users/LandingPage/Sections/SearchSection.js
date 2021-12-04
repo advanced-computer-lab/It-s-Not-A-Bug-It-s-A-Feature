@@ -190,7 +190,7 @@ export default function Main() {
 
 <div>
  <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       From
+       Check in
         </Typography>
       <TextField 
       id="outlined-basic" 
@@ -201,7 +201,7 @@ export default function Main() {
       </div>
 <div>
    <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       To
+       Check out
         </Typography>
       <TextField 
       id="outlined-basic" 
