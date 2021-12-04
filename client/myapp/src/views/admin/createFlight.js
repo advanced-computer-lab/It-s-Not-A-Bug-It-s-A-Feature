@@ -26,6 +26,8 @@ import image from "./../../assets/img/bg7.jpg";
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 const useStyles = makeStyles(styles);
+const matchList =document.getElementById("match-List");
+const matchList2 =document.getElementById("match-List2");
 
 
 
@@ -35,23 +37,24 @@ export default function CreateFlight(props) {
   const [flightData, setFlight] =useState({
       flightNo:"",
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
-      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:""
+      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:"",economyBaggage:"",businessBaggage:""
     });
     const [flightError, setFlightError] =useState({
       flightNo:false,
       economySeats:false,businessSeats:false,departureAirport:false,arrivalAirport:false,departureTerminal:false,arrivalTerminal:false,
-      departureDate:false,arrivalDate:false,economyPrice:false,businessPrice:false
+      departureDate:false,arrivalDate:false,economyPrice:false,businessPrice:false,economyBaggage:false,businessBaggage:false
     });
     const [errorMessage, setErrorMessage] =useState({
       flightNo:"",
       economySeats:"",businessSeats:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
-      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:""
+      departureDate:"",arrivalDate:"",economyPrice:"",businessPrice:"",economyBaggage:"",businessBaggage:""
     });
     
     function validateData(){
       if((flightError.flightNo|| flightError.economySeats|| flightError.businessSeats ||flightError.departureAirport 
         ||flightError.arrivalAirport ||flightError.departureTerminal ||flightError.arrivalTerminal ||
-        flightError.departureDate ||flightError.arrivalDate || flightError.economyPrice|| flightError.businessPrice))return false;
+        flightError.departureDate ||flightError.arrivalDate || flightError.economyPrice|| flightError.businessPrice|| 
+        flightError.economyBaggage || flightError.businessBaggage))return false;
         let res =true;
         if(flightData.flightNo==''){
           setFlightError((prevState => {return {...prevState,["flightNo"]: true};}));
@@ -65,6 +68,12 @@ export default function CreateFlight(props) {
         if(flightData.businessSeats==''){
           setFlightError((prevState => {return {...prevState,["businessSeats"]: true};}));
           setErrorMessage((prevState => {return {...prevState,["businessSeats"]: 'This field is requiered'};}));res= false;}
+          if(flightData.economyBaggage==''){
+            setFlightError((prevState => {return {...prevState,["economyBaggage"]: true};}));
+            setErrorMessage((prevState => {return {...prevState,["economyBaggage"]: 'This field is requiered'};}));res= false;}
+            if(flightData.businessBaggage==''){
+              setFlightError((prevState => {return {...prevState,["businessBaggage"]: true};}));
+              setErrorMessage((prevState => {return {...prevState,["businessBaggage"]: 'This field is requiered'};}));res= false;}
           if(flightData.businessPrice==''){
             setFlightError((prevState => {return {...prevState,["businessPrice"]: true};}));
             setErrorMessage((prevState => {return {...prevState,["businessPrice"]: 'This field is requiered'};}));res= false;}
@@ -180,7 +189,60 @@ const searchAirports = async searchText=>
     return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
   });
   console.log(matches);//the search result
+  if(searchText.length===0) matches=[];
+  if(matchList!=null)
+    outputHtml(matches);
 }
+const outputHtml = matches=>{
+  if(matches.length>0){
+    const html=matches.map(match=>`
+    <div class= "card card-body mb-1">
+      <h4>${match.name}(${match.code})
+      <span class="text-primary"> ${match.country}</span> </h4>
+      
+    </div>`
+      ).join('');
+      matchList.innerHTML=html;
+      // console.log(html);
+  }
+  else{
+    const htmll=` <div class= "card card-body mb-1">  </div>`;
+    matchList.innerHTML=htmll;
+  }
+}
+
+const searchAirports2 = async searchText=>
+{
+  // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+  const allAirports = await require("./../../jsonFiles/airports.json");
+  // console.log(result);
+  let matches =allAirports.filter(airport =>{
+    const regex = new RegExp("^"+searchText,'gi');
+    return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
+  });
+  console.log(matches);//the search result
+  if(searchText.length===0) matches=[];
+  if(matchList2!=null)
+    outputHtml2(matches);
+}
+const outputHtml2 = matches=>{
+  if(matches.length>0){
+    const html=matches.map(match=>`
+    <div class= "card card-body mb-1">
+      <h4>${match.name}(${match.code})
+      <span class="text-primary"> ${match.country}</span> </h4>
+      
+    </div>`
+      ).join('');
+      matchList2.innerHTML=html;
+      // console.log(html);
+  }
+  else{
+    const htmll= `<div class= "card card-body mb-1"></div>`;
+    matchList2.innerHTML=htmll;
+  }
+}
+
 
 function Copyright() {
   return (
@@ -360,6 +422,60 @@ const theme = createTheme();
             
           />
         </Grid>
+        
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="economyBaggage"
+            name="economyBaggage"
+            label="Price of Economy Baggage"
+            fullWidth
+            variant="standard"
+            type="number"
+            value={d.economyBaggage}
+            error={error.economyBaggage}
+            helperText={helperText.economyBaggage}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
+          }}
+            
+          />
+        </Grid>
+        
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="businessBaggage"
+            name="businessBaggage"
+            label="Price of Business Baggage"
+            fullWidth
+            variant="standard"
+            type="number"
+            value={d.businessBaggage}
+            error={error.businessBaggage}
+            helperText={helperText.businessBaggage}
+            onChange={(event) =>  {
+              const {name, value} = event.target;
+              if(!(value!='' && Number(value)>=0 )){setError((prevState => {return {...prevState,[name]: true};}));
+                if(Number(value)<0)setHelperText((prevState => {return {...prevState,[name]: 'Enter a valid positive number'};}));
+                if(value=='')setHelperText((prevState => {return {...prevState,[name]: 'This field is requiered'};}));
+                setData((prevState => {return {...prevState,[name]: ''};}));
+            }
+              else{setError((prevState => {return {...prevState,[name]: false};}));
+              setHelperText((prevState => {return {...prevState,[name]: ''};}));}
+              setData((prevState => {return {...prevState,[name]: value};}));
+          }}
+            
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -384,6 +500,8 @@ const theme = createTheme();
           }}
             
           />
+            <div id="match-List"> </div>
+
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -404,11 +522,13 @@ const theme = createTheme();
               else{setError((prevState => {return {...prevState,[name]: false};}));
               setHelperText((prevState => {return {...prevState,[name]: ''};}));}
               setData((prevState => {return {...prevState,[name]: value};}));
-              searchAirports(value);
+              searchAirports2(value);
           }}
             
-          />
-        </Grid>
+          />             <div id="match-List2"> </div>
+
+               </Grid>
+
         <Grid item xs={12} sm={6}>
           <TextField
             required

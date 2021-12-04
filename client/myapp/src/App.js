@@ -8,6 +8,8 @@ import  Home from './views/users/LandingPage/LandingPage.js';
 import  Login from './views/users/login.js';
 import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
+import  SearchFlight from './views/users/SearchFlight.js';
+
 
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
@@ -31,6 +33,8 @@ function App() {
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
+           <Route path ={"/search"} component={SearchFlight}></Route>
+
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>

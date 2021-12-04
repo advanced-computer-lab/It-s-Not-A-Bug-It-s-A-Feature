@@ -270,11 +270,12 @@ function dateQuery(date,type){
   return result;
 }
 function seatQuery(adults,children,cabin){
+  console.log(adults);
   var cabinClass="currEconomySeats";
-  if(cabin=='Business')//enum
+  if(cabin==="Business")//enum
       cabinClass="currBusinessSeats";
     var sum=adults;
-    if(children!='') sum+=children;
+    if(children!=='') sum+=children;
     var seatQuery=JSON.parse('{}');
     seatQuery[cabinClass] = JSON.parse('{}');
     seatQuery[cabinClass]["$gte"]=sum;
@@ -287,21 +288,20 @@ router.route('/searchFlights').get((req, res,next) => {
   console.log(rq);
   //may add price range later
 
-  if(rq.arrivalAirport != '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
-  if(rq.departureAirport != '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
-  if(rq.arrivalTerminal != '')  query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
-  if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
-  if(rq.arrivalDate != '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
-  if(rq.departureDate != '')    query.push(dateQuery(rq.departureDate,'departureDate'));
-  if(rq.cabin != '' && rq.adultsNo != '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
+  if(rq.arrivalAirport !== '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+  if(rq.departureAirport !== '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
+
+   if(rq.arrivalDate !== '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+   if(rq.departureDate !== '')    query.push(dateQuery(rq.departureDate,'departureDate'));
+   if(rq.cabin !== '' && rq.adultsNo !== '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
 
   //required cabin if no. of seats is mentioned
   //required adults if children are mentioned
     
-  console.log(query);
-
+  console.log("query "+query);
+  anded={$and : query};
   if(query.length>0)
-      Flights.find({$and : query}, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+      Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
 });
 
 

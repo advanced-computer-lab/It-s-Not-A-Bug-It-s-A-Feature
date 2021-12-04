@@ -25,23 +25,16 @@ export default function book() {
         <div>
           <GridContainer justify="center">
             <GridItem xs={12} sm={6} md={4}>
-            <Flight
-            flightNo = "45"
-            departureDate = "2016-05-12T21:29:00.000Z"
-            arrivalDate = "2016-05-13T01:42:00.000Z"
-            economySeats = "12"
-            businessSeats = "12"
-            arrivalAirport = "Monaco"
-            departureAirport = "Tokyo"
-            departureTerminal = "Terminal 12"
-            arrivalTerminal = "terminal 12"
-            businessPrice = "100"
-            economyPrice= "20"
+            <Flight flight={{
+      flightNo:"45",
+      economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
+      departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
+    }}
             type ="business"
             Number ="5"
             />
             </GridItem>
-            <GridItem xs={12} sm={6} md={4}>
+            {/* <GridItem xs={12} sm={6} md={4}>
             <Flight
             flightNo = "45"
             departureDate = "2016-05-12T21:29:00.000Z"
@@ -56,7 +49,7 @@ export default function book() {
             economyPrice= "20"
             Number ="2.9"
             />
-             </GridItem>
+             </GridItem> */}
             </GridContainer>
         <CustomDropdown
           noLiPadding
