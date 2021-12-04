@@ -41,7 +41,10 @@ export default function Flight(props) {
     if(durationMin=="0M")durationMin ="";
     const type =props.type;
     var price = (type=="business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
+    var bag = (type=="business")?flight.businessBaggage:flight.economyBaggage;
+    bag+=" KG";
      if(props.Number>1)price = price*Number(props.Number);
+     const trav =(props.Number>1)?props.Number+" Travellers":props.Number+" Traveller";
     const classes = useStyles();
     const styleTime = {
       fontSize: 24,
@@ -94,9 +97,10 @@ export default function Flight(props) {
                         <Grid  container direction="row" justifyContent="flex-start" alignItems="left">
                         <Grid item  >
                         <LuggageIcon style={styleSpac}/> </Grid>
-                        <Typography> {type}</Typography> 
+                        <Typography> {bag}</Typography> 
                         </Grid></Grid>
                         <Grid item xs ><Typography> {type}</Typography> </Grid>
+                        <Grid item xs ><Typography> {trav} </Typography> </Grid>
                         </Grid>
                     </GridItem>
                       </GridContainer> 
