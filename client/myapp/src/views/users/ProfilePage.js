@@ -22,6 +22,9 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
+
+
+import Reservation from "./../../components/Flight/Flight.js";
 import profile from "./../../assets/img/faces/christian.jpg";
 
 import studio1 from "./../../assets/img/examples/studio-1.jpg";
@@ -110,29 +113,8 @@ export default function ProfilePage(props) {
                       tabIcon: Info,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio2}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={studio2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio4}
-                              className={navImageClasses}
-                            />
+                          <GridItem xs={20} sm={20} md={20}>
+        ////     details of our current user 
                           </GridItem>
                         </GridContainer>
                       ),
@@ -142,75 +124,43 @@ export default function ProfilePage(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work5}
-                              className={navImageClasses}
-                            />
+                          <GridItem xs={20} sm={20} md={20}>
+
+                          <Reservation flight={{
+      flightNo:"45",
+      economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
+      departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
+    }}
+            type ="business"
+            Number ="5"
+            />
+                          
                           </GridItem>
                         </GridContainer>
                       ),
                     },
-                    {
-                      tabButton: "Past Reservations",
-                      tabIcon: FlightLandIcon,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                        </GridContainer>
-                      ),
-                    },
+                    // {
+    //                   tabButton: "Past Reservations",
+    //                   tabIcon: FlightLandIcon,
+    //                   tabContent: (
+    //                     <GridContainer justify="center">
+    //                       <GridItem xs={20} sm={20} md={20}>
+
+    //                       <Reservation flight={{
+    //   flightNo:"45",
+    //   economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
+    //   departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
+    // }}
+    //         type ="business"
+    //         Number ="5"
+    //         />
+                           
+                           
+    //                       </GridItem>
+    //                     </GridContainer>
+    //                   ),
+    //                 }
+                    ,
                   ]}
                 />
               </GridItem>
