@@ -9,7 +9,7 @@ const { text } = require('express');
 var loggedIn = true;
 
 // TODO: this variable is to be filled when the user logs in
-var curUserId = "619fd0f4b6432ae913f8784a";
+var curUserId = "61abf941d37940fe2e05d678";
 
 // transporter for the refund email 
 let transporter = nodemailer.createTransport({
@@ -135,7 +135,7 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
-router.route('/cancelReservation/:id').post(async (req,res)=>{
+router.route('/cancelReservation/:id').post(async (req,res, next)=>{
   console.log("about to cancel reservation!!");
   if(!loggedIn) // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
@@ -143,8 +143,13 @@ router.route('/cancelReservation/:id').post(async (req,res)=>{
     var id = req.params.id;
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
     // get the reservation
-    var ans = cancelRes(id);
-    res.status(200).send('TODO: FIX THIS MESSAGE');
+    // var ans = cancelRes(id);
+    cancelRes(id)
+    .then(()=>res.send('Reservation canceled'))
+    .catch(err => res.status(400).send(err));  
+    
+
+    // res.status(200).send('TODO: FIX THIS MESSAGE');
     // if(ans=="error")
     //   res.status(200).send(`error: can't cancel reservation`);
     // else
