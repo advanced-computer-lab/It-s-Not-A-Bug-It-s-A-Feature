@@ -121,7 +121,7 @@ router.route('/').get((req, res) => {
 
     if(query.length>0)
         Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
-});
+      });
 
 router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
