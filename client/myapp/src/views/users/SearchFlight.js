@@ -119,6 +119,7 @@ export default function SearchFlight(props) {
 .then(res=> {
   // store data in a variable to be later used
   // setdepartFlights( res.data);
+  console.log(res.data);
   setDepart(res.data);
   console.log(depart)
   console.log("di el depart flightsss")
@@ -133,11 +134,12 @@ export default function SearchFlight(props) {
       cabin:key.type,
       adultsNo:key.adultsNo,
       childrenNo:key.childrenNo
+      
     }     
 })
 .then(res=> {
   // store data in a variable to be later used
-  // setreturnFlights ( res.data);
+  setreturnFlights ( res.data);
   setreturnn(res.data);
   console.log("di el set" + returnn )
   console.log("di hia el return flight");

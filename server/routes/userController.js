@@ -274,8 +274,9 @@ function seatQuery(adults,children,cabin){
   var cabinClass="currEconomySeats";
   if(cabin==="Business")//enum
       cabinClass="currBusinessSeats";
-    var sum=adults;
-    if(children!=='') sum+=children;
+    var sum=parseInt(adults);
+    if(children!=='') sum=parseInt(sum)+parseInt(children);
+    console.log(sum);
     var seatQuery=JSON.parse('{}');
     seatQuery[cabinClass] = JSON.parse('{}');
     seatQuery[cabinClass]["$gte"]=sum;
@@ -291,7 +292,6 @@ router.route('/searchFlights').get((req, res,next) => {
   if(rq.arrivalAirport !== '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
   if(rq.departureAirport !== '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
 
-  //  if(rq.arrivalDate !== '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
    if(rq.departureDate !== '')    query.push(dateQuery(rq.departureDate,'departureDate'));
    if(rq.cabin !== '' && rq.adultsNo !== '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
 
