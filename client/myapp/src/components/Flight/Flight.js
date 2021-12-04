@@ -38,10 +38,10 @@ export default function Flight(props) {
     const duration =Math.ceil((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime())/(1000*60));
     const durationHour = Math.ceil(duration /60);
     var durationMin = Math.ceil(duration %60)+"M";
-    if(durationMin=="0M")durationMin ="";
+    if(durationMin==="0M")durationMin ="";
     const type =props.type;
-    var price = (type=="business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
-    var bag = (type=="business")?flight.businessBaggage:flight.economyBaggage;
+    var price = (type==="Business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
+    var bag = (type==="Business")?flight.businessBaggage:flight.economyBaggage;
     bag+=" KG";
      if(props.Number>1)price = price*Number(props.Number);
      const trav =(props.Number>1)?props.Number+" Travellers":props.Number+" Traveller";
