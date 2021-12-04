@@ -15,6 +15,9 @@ import { useHistory } from 'react-router-dom';
 
 import SeatPicker from 'react-seat-picker';
 
+//TODO - RESERVED seat should be disabled
+//TODO - make sure they're reserving in the right cabin/class
+
 
 function createRows(business, econ) {
   const allSeats = business + econ;
@@ -38,11 +41,12 @@ export default function Flight(props) {
   const [currBusSeats, setCurrBusSeats] = useState((Number)(props.currBusinessSeats));
   const [currEconSeats, setCurrEconSeats] = useState((Number)(props.currEconomySeats));
   const [deptSeats, setDeptSeats] = useState([]);
-  const [retSeats, setRetSeats] = useState([]);
+  // const [retSeats, setRetSeats] = useState([]);
   // let chosenSeats = [];
   const cabin = props.type;
   const passengers = props.Number;
   const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats));
+  const isReturn = props.isReturn ==="true";
 
   SeatPicker.defaultProps = {
     addSeatCallback: function addSeatCallback(row, number, id) {
@@ -54,14 +58,14 @@ export default function Flight(props) {
         setCurrEconSeats(prevCurrEconSeats => prevCurrEconSeats + 1);
       }
       // if( === "dept"){
-        setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
+      setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
       // }
       // else{
       //   setRetSeats(prevRetSeats => [...prevRetSeats, number]);
       // }
       console.log(currBusSeats);
       console.log(deptSeats);
-      console.log(retSeats);
+      // console.log(retSeats);
     },
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
@@ -78,37 +82,24 @@ export default function Flight(props) {
       }
       console.log(currBusSeats);
       console.log(deptSeats);
-      console.log(retSeats);
+      // console.log(retSeats);
     },
   };
   let history = useHistory();
   const onSubmit = () => {
     history.push({
-      pathname: "/home", //ARO7 FEEEN B3D KEDA
+      pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
       state: {
-        deptSeats: deptSeats,
-        retSeats : retSeats
+        deptSeats: deptSeats
+        // retSeats: retSeats
       }
     });
   };
 
-  return (
-    <div className="App">
-      <div
-        display="flex"
-        flex-flexDirection="row"
-      >
-        <div >
-          <h2>Choose your seats - departure flight</h2>
-          <SeatPicker id="dept"rows={rows} maxReservableSeats={passengers} visible />
-        </div>
-        <div>
-          <h2>Choose your seats - return flight</h2>
-          <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
-        </div>
-      </div>
-      <div>
-        <Button
+  let title, submitButton;
+  if(isReturn){
+    title = <h4>Choose your seats - return flight</h4>
+    submitButton = <Button
           color="warning"
           // color="transparent"
           size="lg"
@@ -121,6 +112,26 @@ export default function Flight(props) {
             onSubmit(e);
           }}
         >Next</Button>
+  }
+  else{
+    title = <h4>Choose your seats - departure flight</h4>
+    submitButton = <div></div>
+  }
+  return (
+    <div className="App">
+      <div
+        display="flex"
+        flex-flexDirection="row"
+      >
+        <div >
+
+          {title}
+          <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
+        </div>
+      </div>
+      <div>
+        
+        {submitButton}
       </div>
     </div>
   );
