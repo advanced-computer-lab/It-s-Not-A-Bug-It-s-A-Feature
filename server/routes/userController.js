@@ -301,7 +301,7 @@ router.route('/searchFlights').get((req, res,next) => {
   console.log("query "+query);
   anded={$and : query};
   if(query.length>0)
-      Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+      Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats businessPrice economyPrice economyBaggage businessBaggage reservedSeats').then( data => res.send(data));
 });
 
 

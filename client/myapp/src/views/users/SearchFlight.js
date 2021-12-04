@@ -98,12 +98,14 @@ export default function SearchFlight(props) {
   const [returnn, setreturnn] =useState([]);
 
   const [selectedDepart, setselectedDepart] =useState([]);
+  const [selectedReturn, setselectedReturn] =useState([]);
 
 
   // const location = useLocation();
   let isLogged = props.isLogged
   // const isLogged = usekeys();
    useEffect(()=>{
+     console.log("new key is"+ key);
     axios.get('http://localhost:8000/user/searchFlights',{ params:
     {
       arrivalAirport:key.arrivalAirport,
@@ -118,7 +120,6 @@ export default function SearchFlight(props) {
   // store data in a variable to be later used
   // setdepartFlights( res.data);
   setDepart(res.data);
-  console.log(res.data);
   console.log(depart)
   console.log("di el depart flightsss")
 
@@ -138,14 +139,12 @@ export default function SearchFlight(props) {
   // store data in a variable to be later used
   // setreturnFlights ( res.data);
   setreturnn(res.data);
-  console.log(res.data);
   console.log("di el set" + returnn )
   console.log("di hia el return flight");
 }).catch(err=>console.log(err))
 
-   },[]);
+   },[key]);
 
-   console.log(key)
 
   return (
     <div>
@@ -182,12 +181,13 @@ export default function SearchFlight(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
+                          
                             {depart.map((curr)=>(
-                               <Button color={(selectedDepart==curr)?'red':'transparent'} onClick={(e) => {
+                               <Button color={(selectedDepart==curr)?'blue':'transparent'} onClick={(e) => {
                                  if(selectedDepart!=curr)setselectedDepart(curr);
                                  else setselectedDepart(null);}}>
                                    
-                              <GridItem xs={12} sm={11}> 
+                              <GridItem xs={12} sm={12}> 
                                
                                 <Flight
                                 flight={curr}
@@ -207,35 +207,22 @@ export default function SearchFlight(props) {
                       tabIcon: FlightLandIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
+                          {returnn.map((curr)=>(
+                               <Button color={(selectedReturn==curr)?'blue':'transparent'} onClick={(e) => {
+                                 if(selectedReturn!=curr)setselectedReturn(curr);
+                                 else setselectedReturn(null);}}>
+                                   
+                              <GridItem xs={12} sm={12}> 
+                               
+                                <Flight
+                                flight={curr}
+                                type={key.type}
+                                Number={key.count}
+                                
+                                />
+                                </GridItem>
+                                </Button>
+                            ))}
                         </GridContainer>
                       ),
                     },
