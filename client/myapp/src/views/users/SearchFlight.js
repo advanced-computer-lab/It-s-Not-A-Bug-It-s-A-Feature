@@ -30,17 +30,14 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
+
 
 
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
-
-
-import profile from "./../../assets/img/faces/christian.jpg";
-
-import Info from "@material-ui/icons/Info";
 // import AirplaneTicketIcon from '@material-ui/icons/AirplaneTicket';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
@@ -53,17 +50,6 @@ import {
   useLocation
 } from "react-router-dom";
 
-import studio1 from "./../../assets/img/examples/studio-1.jpg";
-import studio2 from "./../../assets/img/examples/studio-2.jpg";
-import studio3 from "./../../assets/img/examples/studio-3.jpg";
-import studio4 from "./../../assets/img/examples/studio-4.jpg";
-import studio5 from "./../../assets/img/examples/studio-5.jpg";
-import work1 from "./../../assets/img/examples/olu-eletu.jpg";
-import work2 from "./../../assets/img/examples/clem-onojeghuo.jpg";
-import work3 from "./../../assets/img/examples/cynthia-del-rio.jpg";
-import work4 from "./../../assets/img/examples/mariya-georgieva.jpg";
-import work5 from "./../../assets/img/examples/clem-onojegaw.jpg";
-
 
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 
@@ -72,7 +58,6 @@ const useStyles = makeStyles(styles);
 
 // Sections for this page
 import SearchBar from "./LandingPage/Sections/SearchSection";
-import { PartyModeSharp } from "@material-ui/icons";
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 
@@ -97,8 +82,8 @@ export default function SearchFlight(props) {
   const [depart, setDepart] =useState([]);
   const [returnn, setreturnn] =useState([]);
 
-  const [selectedDepart, setselectedDepart] =useState([]);
-  const [selectedReturn, setselectedReturn] =useState([]);
+  const [selectedDepart, setselectedDepart] =useState(null);
+  const [selectedReturn, setselectedReturn] =useState(null);
 
 
   // const location = useLocation();
@@ -226,41 +211,58 @@ export default function SearchFlight(props) {
                         </GridContainer>
                       ),
                     },
-                    ,
+                    
                     {
                       tabButton: " Confirm Reservation",
                       tabIcon: CheckIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
-                          <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                          </GridItem>
+
+                          {(() => {
+                            if (selectedDepart==null) {
+                              return (
+                                <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
+                              )
+                            } else if (selectedReturn==null) {
+                              return (
+                                <div><Typography> <h3> Please Select a Return Flight</h3></Typography></div>
+                              )
+                            } else {
+                              var priceD = (key.type==="Business")?parseInt(selectedDepart.businessPrice):parseInt(selectedDepart.economyPrice);
+                              var priceR = (key.type==="Business")?parseInt(selectedReturn.businessPrice):parseInt(selectedReturn.economyPrice);
+                              var totalPrice = (priceD+priceR)*key.count;
+                              return (
+                                <div>
+                                <GridItem xs={12} sm={12}>
+                                  <Typography> <h3>Departure Flight</h3></Typography> 
+                                </GridItem>
+                                <GridItem xs={12} sm={12}>
+                                  <Flight
+                                  flight={selectedDepart}
+                                  type={key.type}
+                                  Number={key.count}
+                                  >
+                                    </Flight> 
+                                </GridItem>
+                                <GridItem xs={12} sm={12}>
+                                <Typography> <h3>Return Flight</h3></Typography> 
+                              </GridItem>
+                              <GridItem xs={12} sm={12}>
+                                  <Flight
+                                  flight={selectedReturn}
+                                  type={key.type}
+                                  Number={key.count}
+                                  >
+                                    </Flight> 
+                      
+                                </GridItem>
+                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}>
+                                <Typography color="#f44336" fontWeight="bold" ><h3>$ {totalPrice}</h3></Typography> 
+                              </GridItem>
+                              </div>
+                              )
+                            }
+                          })()}
                         </GridContainer>
                       ),
                     },

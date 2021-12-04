@@ -272,7 +272,7 @@ var returnFlights; // variable to hold the return flights of the search query
       < div/>
  <CustomDropdown
           noLiPadding
-          buttonText={(countPassengers>1)?countPassengers+" Travellers":countPassengers+" Traveller"} //traveller handle
+          buttonText={(countPassengers>1)?countPassengers+" Travellers":countPassengers+" Traveller"} 
           buttonProps={{
             className: classes.navLink,
             color: "transparent",
