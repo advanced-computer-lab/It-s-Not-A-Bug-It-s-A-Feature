@@ -44,7 +44,6 @@ const navPillsStyle = (theme) => ({
     minWidth: "100px",
     textAlign: "center",
     transition: "all .3s",
-    padding: "10px 15px",
     color: "#555555",
     height: "auto",
     opacity: "1",

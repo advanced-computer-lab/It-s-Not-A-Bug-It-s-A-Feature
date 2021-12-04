@@ -15,7 +15,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from "../../../../components/CustomButtons/Button.js";
 import Button2 from "@material-ui/core/Button";
+import { useHistory } from "react-router";
 
+import axios from 'axios';
 
 
 // new things  for drop down menue 
@@ -78,7 +80,7 @@ const StyledMenu = styled((props) => (
 
 const useStyles = makeStyles(styles);
 export default function Main() { 
-
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
@@ -87,11 +89,20 @@ export default function Main() {
   const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
   const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
-  const test="_Traveller(s)";
+
+  
+var departFlights; // variable to hold the departure flights of the search query
+var returnFlights; // variable to hold the return flights of the search query
+  
   // we will use this to to fade the buttons 
   const [buttonFade1 , setButtonFade1]= useState(false);
   const [buttonFade2 , setButtonFade2]= useState(false);
 
+  //
+  const [arrival, setarrival] = useState("");
+  const [departure, setdeparture] = useState("");
+  const [arrivalDate, setarrivalDate] = useState("");
+  const [departureDate, setdepartureDate] = useState("");
 
   //_______ADULT__________
   const [countAdults, setCountAdults] = useState(1);
@@ -132,7 +143,51 @@ export default function Main() {
      }
    };
 
+   const onSubmit=()=>{
+    if(departureDate==""&& arrivalDate==""){alert('please enter a Date');}
+    else
+    if(departure==""){alert('please enter a departuring destination');}
+    else
+    if(arrival==""){alert('please enter an arrival destination');}
+    else{
+    axios.get('http://localhost:8000/user/searchFlights',{ params:
+        {
+          arrivalAirport:arrival,
+          departureDate:departureDate,
+          departureAirport:departure
+        }     
+    })
+    .then(res=> {
+      // store data in a variable to be later used
+      departFlights = res.data;
+      console.log(res.data)
+    }).catch(err=>console.log(err))
 
+    axios.get('http://localhost:8000/user/searchFlights',{ params:
+        {
+          arrivalAirport:departure,
+          departureDate:arrivalDate,
+          departureAirport:arrival
+        }     
+    })
+    .then(res=> {
+      // store data in a variable to be later used
+      returnFlights = res.data;
+      console.log(res.data)
+    }).catch(err=>console.log(err))
+    if(returnFlights!=null && departFlights!=null)
+    history.push({
+      pathname:"/search" ,
+      state: {
+        departure:departFlights,
+        returnFlight: returnFlights,
+        type:cabin,
+        count:countPassengers
+      } 
+   });
+   else
+   alert("Sever is not working");}
+  };
 
 
   // const handleClick = (event) => {
@@ -167,10 +222,14 @@ export default function Main() {
         Leaving from
         </Typography>
       <TextField 
-      id="outlined-basic" 
+      id="departure" 
       variant="outlined" 
       placeholder="Select origin"
+      value={departure}
       color="warning"
+      onChange={(e) => {
+        setdeparture(e.target.value);
+      }}
       focused/>
       </div>
     
@@ -184,7 +243,10 @@ export default function Main() {
       id="outlined-basic" 
       variant="outlined" 
       placeholder="Select destination"
-      
+      value={arrival}
+      onChange={(e) => {
+        setarrival(e.target.value);
+      }}
       focused/>
       </div>
 
@@ -197,6 +259,10 @@ export default function Main() {
       type="date"
       variant="outlined" 
       placeholder="Select destination"
+      value={departureDate}
+      onChange={(e) => {
+        setdepartureDate(e.target.value);  
+      }}
       focused/>
       </div>
 <div>
@@ -209,6 +275,10 @@ export default function Main() {
       variant="outlined" 
       Container=""
       placeholder="Select destination"
+      value={arrivalDate}
+      onChange={(e) => {
+        setarrivalDate(e.target.value);
+      }}
       focused/>
  </div>
    
@@ -219,7 +289,7 @@ export default function Main() {
       < div/>
  <CustomDropdown
           noLiPadding
-          buttonText={countPassengers,test}
+          buttonText={countPassengers+" Traveller(s)"} //traveller handle
           buttonProps={{
             className: classes.navLink,
             color: "transparent",
@@ -233,14 +303,14 @@ export default function Main() {
       
           <div className="btn_div">
             <Tooltip title="Delete">
-            <Button onClick={DecNumAdults}>
+            <Button2 onClick={DecNumAdults}>
               <RemoveCircleOutlineSharpIcon />
-            </Button>
+            </Button2>
             </Tooltip>
             {countAdults}
-            <Button onClick={IncNumAdults}>
+            <Button2 onClick={IncNumAdults}>
                 < AddCircleOutlineSharpIcon />
-              </Button>
+              </Button2>
             </div>
         </div>
       </div>
@@ -255,15 +325,15 @@ export default function Main() {
    
       <div className="btn_div">
         <Tooltip title="Delete">
-        <Button onClick={DecNumChild}>
+        <Button2 onClick={DecNumChild}>
           <RemoveCircleOutlineSharpIcon />
-        </Button>
+        </Button2>
         </Tooltip>
         {countChild}
-        <Button
+        <Button2
            onClick={IncNumChild}>
             < AddCircleOutlineSharpIcon />
-          </Button>
+          </Button2>
         </div>
     </div>
   </div>
@@ -288,13 +358,13 @@ export default function Main() {
           }}
           dropdownList={[
             <Link className={classes.dropdownLink}
-            
+            onClick={(e) => {setCabin("Economy");}}
             >
                <h4>  Economy </h4>  
          </Link>,
             <a 
               className={classes.dropdownLink}
-              
+              onClick={(e) => {setCabin("Business");}}
             >
      <h4>   Business</h4>     
         
@@ -385,6 +455,8 @@ aria-controls="demo-customized-menu"
 aria-haspopup="true"
 variant="contained"
 disableElevation
+onClick={(e) => {onSubmit(e);
+}}
 >Search</Button>
 </div>
 

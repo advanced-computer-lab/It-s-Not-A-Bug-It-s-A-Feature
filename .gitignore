@@ -104,10 +104,4 @@ dist
 .tern-port
 
 .history
-
 server/package-lock.json
-client/package-lock.json
-client/myapp/package-lock.json
-client/myapp/node_modules
-server/node_modules
-client/myapp/package.json
