@@ -25,6 +25,11 @@ import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
 import LockIcon from '@mui/icons-material/Lock';
 import Flight from "./../../components/Flight/Flight.js";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 import { useHistory } from 'react-router-dom';
 import {useState, useEffect} from 'react';
@@ -37,6 +42,13 @@ import Info from "@material-ui/icons/Info";
 // import AirplaneTicketIcon from '@material-ui/icons/AirplaneTicket';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
+
+import ReactDOM from "react-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  useLocation
+} from "react-router-dom";
 
 import studio1 from "./../../assets/img/examples/studio-1.jpg";
 import studio2 from "./../../assets/img/examples/studio-2.jpg";
@@ -52,16 +64,19 @@ import work5 from "./../../assets/img/examples/clem-onojegaw.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 
-import image from "./../../assets/img/bg7.jpg";
+import image from "./../../assets/img/cloud.jpg";
 const useStyles = makeStyles(styles);
 
 // Sections for this page
 import SearchBar from "./LandingPage/Sections/SearchSection";
+import { PartyModeSharp } from "@material-ui/icons";
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 
 
 export default function SearchFlight(props) {
+    const location = useLocation();
+ const param = location.state;
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -91,16 +106,19 @@ export default function SearchFlight(props) {
         rightLinks={<HeaderLinks isLogged = {isLogged}/>}
         {...rest}
       />
-      {/* <Parallax filter image={require("./../../assets/img/cloud.jpg").default}> */}
+      {/* <Parallax filter image={require("./../../assets/img/cloud.jpg").default}/> */}
          <div
         className={classes.pageHeader}
         style={{
-            backgroundColor:"rgb(229, 229, 255)",
+            // backgroundColor:"rgb(229, 229, 255)",
+            backgroundImage: "url(" + image + ")",
+
           backgroundSize: "cover",
           backgroundPosition: "top center",
          
         }}
       >
+          
       <div className={classes.container}>
           <SearchBar/>
           <GridContainer justify="center">
@@ -114,15 +132,24 @@ export default function SearchFlight(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={12} sm={12}>
-                            {props.allFlights.map((curr)=>(
+                            {/* {param.departure} */}
+                          
+                            {/* {param.departure.map((curr)=>(
+                               <div>
+                                   <GridItem xs={12} sm={1}> 
+                                   
+                                   </GridItem>
+                              <GridItem xs={12} sm={11}> 
+                               
                                 <Flight
                                 flight={curr}
-                                type={props.type}
-                                Number={props.Number}
+                                type={param.type}
+                                Number={param.count}
                                 />
-                            ))}
-                          </GridItem>
+                                </GridItem>
+                                </div>
+                            ))} */}
+                          
                         </GridContainer>
                       ),
                     },
@@ -170,7 +197,7 @@ export default function SearchFlight(props) {
         
       </div>
       </div>
-      {/* </Parallax> */}
+      
       <Footer />
     </div>
   );

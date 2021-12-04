@@ -15,7 +15,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from "../../../../components/CustomButtons/Button.js";
 import Button2 from "@material-ui/core/Button";
+import { useHistory } from "react-router";
 
+import axios from 'axios';
 
 
 // new things  for drop down menue 
@@ -34,8 +36,6 @@ import { makeStyles } from "@material-ui/styles";
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 
-var departFlights; // variable to hold the departure flights of the search query
-var returnFlights; // variable to hold the return flights of the search query
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -80,7 +80,7 @@ const StyledMenu = styled((props) => (
 
 const useStyles = makeStyles(styles);
 export default function Main() { 
-
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const classes = useStyles();
@@ -89,6 +89,10 @@ export default function Main() {
   const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
   const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
+
+  
+var departFlights; // variable to hold the departure flights of the search query
+var returnFlights; // variable to hold the return flights of the search query
   
   // we will use this to to fade the buttons 
   const [buttonFade1 , setButtonFade1]= useState(false);
@@ -140,10 +144,12 @@ export default function Main() {
    };
 
    const onSubmit=()=>{
-    if(d.departureTime!=""&&d.departureDate==""){alert('Cannot Add Time without Date');
-    setData((prevState => {return {...prevState,["departureTime"]: '' };}));}
-    if(d.arrivalTime!=""&&d.arrivalDate==""){alert('Cannot Add Time without Date');
-    setData((prevState => {return {...prevState,["arrivalTime"]: '' };}));}
+    if(departureDate==""&& arrivalDate==""){alert('please enter a Date');}
+    else
+    if(departure==""){alert('please enter a departuring destination');}
+    else
+    if(arrival==""){alert('please enter an arrival destination');}
+    else{
     axios.get('http://localhost:8000/user/searchFlights',{ params:
         {
           arrivalAirport:arrival,
@@ -169,7 +175,18 @@ export default function Main() {
       returnFlights = res.data;
       console.log(res.data)
     }).catch(err=>console.log(err))
-    
+    if(returnFlights!=null && departFlights!=null)
+    history.push({
+      pathname:"/search" ,
+      state: {
+        departure:departFlights,
+        returnFlight: returnFlights,
+        type:cabin,
+        count:countPassengers
+      } 
+   });
+   else
+   alert("Sever is not working");}
   };
 
 
@@ -205,13 +222,13 @@ export default function Main() {
         Leaving from
         </Typography>
       <TextField 
-      id="outlined-basic" 
+      id="departure" 
       variant="outlined" 
       placeholder="Select origin"
       value={departure}
       color="warning"
-      onClick={(e) => {
-        setdeparture(e);
+      onChange={(e) => {
+        setdeparture(e.target.value);
       }}
       focused/>
       </div>
@@ -227,8 +244,8 @@ export default function Main() {
       variant="outlined" 
       placeholder="Select destination"
       value={arrival}
-      onClick={(e) => {
-        setarrival(e);
+      onChange={(e) => {
+        setarrival(e.target.value);
       }}
       focused/>
       </div>
@@ -243,8 +260,8 @@ export default function Main() {
       variant="outlined" 
       placeholder="Select destination"
       value={departureDate}
-      onClick={(e) => {
-        setdepartureDate(e);  
+      onChange={(e) => {
+        setdepartureDate(e.target.value);  
       }}
       focused/>
       </div>
@@ -259,8 +276,8 @@ export default function Main() {
       Container=""
       placeholder="Select destination"
       value={arrivalDate}
-      onClick={(e) => {
-        setarrivalDate(e);
+      onChange={(e) => {
+        setarrivalDate(e.target.value);
       }}
       focused/>
  </div>
@@ -286,14 +303,14 @@ export default function Main() {
       
           <div className="btn_div">
             <Tooltip title="Delete">
-            <Button onClick={DecNumAdults}>
+            <Button2 onClick={DecNumAdults}>
               <RemoveCircleOutlineSharpIcon />
-            </Button>
+            </Button2>
             </Tooltip>
             {countAdults}
-            <Button onClick={IncNumAdults}>
+            <Button2 onClick={IncNumAdults}>
                 < AddCircleOutlineSharpIcon />
-              </Button>
+              </Button2>
             </div>
         </div>
       </div>
@@ -308,15 +325,15 @@ export default function Main() {
    
       <div className="btn_div">
         <Tooltip title="Delete">
-        <Button onClick={DecNumChild}>
+        <Button2 onClick={DecNumChild}>
           <RemoveCircleOutlineSharpIcon />
-        </Button>
+        </Button2>
         </Tooltip>
         {countChild}
-        <Button
+        <Button2
            onClick={IncNumChild}>
             < AddCircleOutlineSharpIcon />
-          </Button>
+          </Button2>
         </div>
     </div>
   </div>
