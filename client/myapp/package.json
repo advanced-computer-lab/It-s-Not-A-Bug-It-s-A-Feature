@@ -29,7 +29,9 @@
     "react-router-dom": "^5.2.0",
     "react-router-native": "^6.0.2",
     "react-scripts": "^4.0.3",
-    "react-slick": "^0.28.1"
+    "react-seat-picker": "^1.2.0",
+    "react-slick": "^0.28.1",
+    "react-tooltip": "^4.2.21"
   },
   "devDependencies": {
     "@babel/cli": "7.13.16",

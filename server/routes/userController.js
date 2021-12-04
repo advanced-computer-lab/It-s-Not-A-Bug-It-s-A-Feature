@@ -57,6 +57,20 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
+    //update reservedSeats in dept and retuern fligthts
+    await Flights.findByIdAndUpdate({ _id: (deptFlight) },
+    {
+      reservedSeats: deptSeats
+    })
+    // .then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
+    await Flights.findByIdAndUpdate({ _id: (arrFlight) },
+    {
+      reservedSeats: arrSeats
+    })
+    // .then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
+
     const reservationID = Number(req.body.resID); //change, should not be input
     const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
    // const userID = loggedUserID;  userID of logged in user which is a global var saved in back end
@@ -189,11 +203,20 @@ function updateFlightSeats(reservation, whichFlight){
       currBusinessSeats: reservedFlight['currBusinessSeats']+numSeats
     }).then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
   else if(reservation['seatClass'] == 'Economy')
     Flights.findByIdAndUpdate({_id: flightID}, {
       currEconomySeats: reservedFlight['currEconomySeats']+numSeats
     }).then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
+    //updating arr of reserved seats
+    // const seatsToRemove = reservation['deptSeats']
+    // // const seatsToRemove = reservation['arrSeats'] //todo - return flight
+    // Flights.findByIdAndUpdate({_id: flightID}, {
+    //   reservedSeats: reservedFlight['reservedSeats'].filter.(item => !(seatsToRemove.includes(item)))
+    // }).then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
 }
 
 // req. 28: allow user to edit the profile information
@@ -309,12 +332,12 @@ router.route('/createUser').post((req,res,next)=>{
 //http://localhost:8000/user/res
 // the request body:
 // {
-//   "resID":"7",
+//   "resID":"8",
 // "adultsNo": "2",
 // "childrenNo":"2",
 // "seatClass":"Economy",
-// "deptFlight": "61a3b4fad3b416f71f8ba8ce",
-// "arrFlight":"61a3b642d3b416f71f8ba8f2",
+// "deptFlight": "61ab490249533a817ec5565e",
+// "arrFlight":"61ab49e7b8a5d445caa7e84e",
 //  "deptSeats":[1,3,4,5],
 // "arrSeats" :[3,16,19,22]
 
