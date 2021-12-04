@@ -268,7 +268,7 @@ router.route('/searchFlights').get((req, res,next) => {
   if(rq.arrivalAirport !== '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
   if(rq.departureAirport !== '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
 
-   if(rq.arrivalDate !== '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+  //  if(rq.arrivalDate !== '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
    if(rq.departureDate !== '')    query.push(dateQuery(rq.departureDate,'departureDate'));
    if(rq.cabin !== '' && rq.adultsNo !== '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
 

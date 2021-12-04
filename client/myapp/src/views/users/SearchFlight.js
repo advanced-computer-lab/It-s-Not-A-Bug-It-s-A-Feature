@@ -31,6 +31,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
+
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
@@ -42,6 +44,7 @@ import Info from "@material-ui/icons/Info";
 // import AirplaneTicketIcon from '@material-ui/icons/AirplaneTicket';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
+import CheckIcon from '@mui/icons-material/Check';
 
 import ReactDOM from "react-dom";
 import {
@@ -76,7 +79,7 @@ import { PartyModeSharp } from "@material-ui/icons";
 
 export default function SearchFlight(props) {
     const location = useLocation();
- const param = location.state;
+ const key = location.state;
     const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -91,11 +94,58 @@ export default function SearchFlight(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+  const [depart, setDepart] =useState([]);
+  const [returnn, setreturnn] =useState([]);
+
+  const [selectedDepart, setselectedDepart] =useState([]);
+
 
   // const location = useLocation();
   let isLogged = props.isLogged
-  // const isLogged = useParams();
-   const [departureFlight, setdepartureFlight] = useState(null);
+  // const isLogged = usekeys();
+   useEffect(()=>{
+    axios.get('http://localhost:8000/user/searchFlights',{ params:
+    {
+      arrivalAirport:key.arrivalAirport,
+      departureDate:key.departureDate,
+      departureAirport:key.departureAirport,
+      cabin:key.type,
+      adultsNo:key.adultsNo,
+      childrenNo:key.childrenNo
+    }     
+})
+.then(res=> {
+  // store data in a variable to be later used
+  // setdepartFlights( res.data);
+  setDepart(res.data);
+  console.log(res.data);
+  console.log(depart)
+  console.log("di el depart flightsss")
+
+}).catch(err=>console.log(err))
+
+ axios.get('http://localhost:8000/user/searchFlights',{ params:
+    {
+      arrivalAirport:key.departureAirport,
+      departureDate:key.arrivalDate,
+      departureAirport:key.arrivalAirport,
+      cabin:key.type,
+      adultsNo:key.adultsNo,
+      childrenNo:key.childrenNo
+    }     
+})
+.then(res=> {
+  // store data in a variable to be later used
+  // setreturnFlights ( res.data);
+  setreturnn(res.data);
+  console.log(res.data);
+  console.log("di el set" + returnn )
+  console.log("di hia el return flight");
+}).catch(err=>console.log(err))
+
+   },[]);
+
+   console.log(key)
 
   return (
     <div>
@@ -132,23 +182,22 @@ export default function SearchFlight(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                            {/* {param.departure} */}
-                          
-                            {/* {param.departure.map((curr)=>(
-                               <div>
-                                   <GridItem xs={12} sm={1}> 
+                            {depart.map((curr)=>(
+                               <Button color={(selectedDepart==curr)?'red':'transparent'} onClick={(e) => {
+                                 if(selectedDepart!=curr)setselectedDepart(curr);
+                                 else setselectedDepart(null);}}>
                                    
-                                   </GridItem>
                               <GridItem xs={12} sm={11}> 
                                
                                 <Flight
                                 flight={curr}
-                                type={param.type}
-                                Number={param.count}
+                                type={key.type}
+                                Number={key.count}
+                                
                                 />
                                 </GridItem>
-                                </div>
-                            ))} */}
+                                </Button>
+                            ))}
                           
                         </GridContainer>
                       ),
@@ -156,6 +205,44 @@ export default function SearchFlight(props) {
                     {
                       tabButton: " Return Flight",
                       tabIcon: FlightLandIcon,
+                      tabContent: (
+                        <GridContainer justify="center">
+                          <GridItem xs={12} sm={12} md={4}>
+                            <img
+                              alt="..."
+                              src={work4}
+                              className={navImageClasses}
+                            />
+                            <img
+                              alt="..."
+                              src={studio3}
+                              className={navImageClasses}
+                            />
+                          </GridItem>
+                          <GridItem xs={12} sm={12} md={4}>
+                            <img
+                              alt="..."
+                              src={work2}
+                              className={navImageClasses}
+                            />
+                            <img
+                              alt="..."
+                              src={work1}
+                              className={navImageClasses}
+                            />
+                            <img
+                              alt="..."
+                              src={studio1}
+                              className={navImageClasses}
+                            />
+                          </GridItem>
+                        </GridContainer>
+                      ),
+                    },
+                    ,
+                    {
+                      tabButton: " Confirm Reservation",
+                      tabIcon: CheckIcon,
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={12} sm={12} md={4}>

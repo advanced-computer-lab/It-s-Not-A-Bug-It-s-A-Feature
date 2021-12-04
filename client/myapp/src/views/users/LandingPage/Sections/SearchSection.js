@@ -93,7 +93,9 @@ export default function Main() {
   
 var departFlights; // variable to hold the departure flights of the search query
 var returnFlights; // variable to hold the return flights of the search query
-  
+// const [departFlights, setdepartFlights] = useState([]);
+// const [returnFlights, setreturnFlights] = useState([]);
+
   // we will use this to to fade the buttons 
   const [buttonFade1 , setButtonFade1]= useState(false);
   const [buttonFade2 , setButtonFade2]= useState(false);
@@ -143,50 +145,31 @@ var returnFlights; // variable to hold the return flights of the search query
      }
    };
 
-   const onSubmit=()=>{
-    if(departureDate==""&& arrivalDate==""){alert('please enter a Date');}
-    else
+   const onSubmit= ()=>{
+     
     if(departure==""){alert('please enter a departuring destination');}
     else
     if(arrival==""){alert('please enter an arrival destination');}
+    else
+    if(departureDate==""&& arrivalDate==""){alert('please enter a Date');}
     else{
-    axios.get('http://localhost:8000/user/searchFlights',{ params:
-        {
-          arrivalAirport:arrival,
-          departureDate:departureDate,
-          departureAirport:departure
-        }     
-    })
-    .then(res=> {
-      // store data in a variable to be later used
-      departFlights = res.data;
-      console.log(res.data)
-    }).catch(err=>console.log(err))
-
-    axios.get('http://localhost:8000/user/searchFlights',{ params:
-        {
-          arrivalAirport:departure,
-          departureDate:arrivalDate,
-          departureAirport:arrival
-        }     
-    })
-    .then(res=> {
-      // store data in a variable to be later used
-      returnFlights = res.data;
-      console.log(res.data)
-    }).catch(err=>console.log(err))
-    if(returnFlights!=null && departFlights!=null)
     history.push({
       pathname:"/search" ,
       state: {
-        departure:departFlights,
-        returnFlight: returnFlights,
+        arrivalAirport:arrival,
+      departureDate:departureDate,
+      departureAirport:departure,
+      arrivalDate:arrivalDate,
+      adultsNo:countAdults,
+      childrenNo:countChild,
         type:cabin,
         count:countPassengers
       } 
+      
    });
-   else
-   alert("Sever is not working");}
+  //  else
+  //  alert("Sever is not working");
+}
   };
 
 
