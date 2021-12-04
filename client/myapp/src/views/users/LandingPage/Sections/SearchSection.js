@@ -34,6 +34,8 @@ import { makeStyles } from "@material-ui/styles";
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 
+var departFlights; // variable to hold the departure flights of the search query
+var returnFlights; // variable to hold the return flights of the search query
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -137,7 +139,38 @@ export default function Main() {
      }
    };
 
+   const onSubmit=()=>{
+    if(d.departureTime!=""&&d.departureDate==""){alert('Cannot Add Time without Date');
+    setData((prevState => {return {...prevState,["departureTime"]: '' };}));}
+    if(d.arrivalTime!=""&&d.arrivalDate==""){alert('Cannot Add Time without Date');
+    setData((prevState => {return {...prevState,["arrivalTime"]: '' };}));}
+    axios.get('http://localhost:8000/user/searchFlights',{ params:
+        {
+          arrivalAirport:arrival,
+          departureDate:departureDate,
+          departureAirport:departure
+        }     
+    })
+    .then(res=> {
+      // store data in a variable to be later used
+      departFlights = res.data;
+      console.log(res.data)
+    }).catch(err=>console.log(err))
 
+    axios.get('http://localhost:8000/user/searchFlights',{ params:
+        {
+          arrivalAirport:departure,
+          departureDate:arrivalDate,
+          departureAirport:arrival
+        }     
+    })
+    .then(res=> {
+      // store data in a variable to be later used
+      returnFlights = res.data;
+      console.log(res.data)
+    }).catch(err=>console.log(err))
+    
+  };
 
 
   // const handleClick = (event) => {
@@ -177,6 +210,9 @@ export default function Main() {
       placeholder="Select origin"
       value={departure}
       color="warning"
+      onClick={(e) => {
+        setdeparture(e);
+      }}
       focused/>
       </div>
     
@@ -191,6 +227,9 @@ export default function Main() {
       variant="outlined" 
       placeholder="Select destination"
       value={arrival}
+      onClick={(e) => {
+        setarrival(e);
+      }}
       focused/>
       </div>
 
@@ -204,6 +243,9 @@ export default function Main() {
       variant="outlined" 
       placeholder="Select destination"
       value={departureDate}
+      onClick={(e) => {
+        setdepartureDate(e);  
+      }}
       focused/>
       </div>
 <div>
@@ -217,6 +259,9 @@ export default function Main() {
       Container=""
       placeholder="Select destination"
       value={arrivalDate}
+      onClick={(e) => {
+        setarrivalDate(e);
+      }}
       focused/>
  </div>
    
@@ -393,6 +438,8 @@ aria-controls="demo-customized-menu"
 aria-haspopup="true"
 variant="contained"
 disableElevation
+onClick={(e) => {onSubmit(e);
+}}
 >Search</Button>
 </div>
 
