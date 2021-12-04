@@ -70,7 +70,7 @@ export default function Flight(props) {
                       <h4> Flight : {flight.flightNo}</h4>
                     </GridItem>
                    <GridItem  xs={12} sm={3}>
-                     <p style={styleTime}>{departureTime}</p>
+                     <p><Typography style={styleTime}>{departureTime}</Typography></p>
                      <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
                       </GridItem>
                       <GridItem  xs={12} sm={3} >
