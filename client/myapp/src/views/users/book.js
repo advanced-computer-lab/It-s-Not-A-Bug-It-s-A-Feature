@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import Flight from "./../../components/Flight/Flight.js";
+import SelectSeats from "./../../components/Flight/SelectSeats.js";
+import AllSeats from "./../../components/Flight/AllSeats";
 
 import GridContainer from "./../../components/Grid/GridContainer.js";
 import GridItem from "./../../components/Grid/GridItem.js";
@@ -71,6 +73,13 @@ export default function book() {
             </a>,
           ]}
         />
+        <AllSeats
+        type = "Business"
+        passengers = "3"
+        deptFlight = "75"
+        retFlight = "775"
+        />
+        
         </div>
     )
 }

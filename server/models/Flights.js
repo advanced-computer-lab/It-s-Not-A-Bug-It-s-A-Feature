@@ -62,7 +62,11 @@ const UserSchema = new mongoose.Schema({
   businessBaggage:{
     type:Number,
     required: true
-  }
+  },
+  reservedSeats: {
+    type: [Number],
+    required: true,
+  },
 
 });
 

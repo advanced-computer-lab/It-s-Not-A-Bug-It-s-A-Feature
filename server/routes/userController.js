@@ -57,6 +57,20 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
+    //update reservedSeats in dept and retuern fligthts
+    await Flights.findByIdAndUpdate({ _id: (deptFlight) },
+    {
+      reservedSeats: deptSeats
+    })
+    // .then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
+    await Flights.findByIdAndUpdate({ _id: (arrFlight) },
+    {
+      reservedSeats: arrSeats
+    })
+    // .then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
+
     const reservationID = Number(req.body.resID); //change, should not be input
     const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
    // const userID = loggedUserID;  userID of logged in user which is a global var saved in back end
@@ -189,11 +203,20 @@ function updateFlightSeats(reservation, whichFlight){
       currBusinessSeats: reservedFlight['currBusinessSeats']+numSeats
     }).then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
   else if(reservation['seatClass'] == 'Economy')
     Flights.findByIdAndUpdate({_id: flightID}, {
       currEconomySeats: reservedFlight['currEconomySeats']+numSeats
     }).then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
+    //updating arr of reserved seats
+    // const seatsToRemove = reservation['deptSeats']
+    // // const seatsToRemove = reservation['arrSeats'] //todo - return flight
+    // Flights.findByIdAndUpdate({_id: flightID}, {
+    //   reservedSeats: reservedFlight['reservedSeats'].filter.(item => !(seatsToRemove.includes(item)))
+    // }).then(flight => res.send(flight))
+    // .catch(err => res.status(400).send('Error: ' + err));
 }
 
 // req. 28: allow user to edit the profile information
@@ -247,11 +270,12 @@ function dateQuery(date,type){
   return result;
 }
 function seatQuery(adults,children,cabin){
+  console.log(adults);
   var cabinClass="currEconomySeats";
-  if(cabin=='Business')//enum
+  if(cabin==="Business")//enum
       cabinClass="currBusinessSeats";
     var sum=adults;
-    if(children!='') sum+=children;
+    if(children!=='') sum+=children;
     var seatQuery=JSON.parse('{}');
     seatQuery[cabinClass] = JSON.parse('{}');
     seatQuery[cabinClass]["$gte"]=sum;
@@ -264,21 +288,20 @@ router.route('/searchFlights').get((req, res,next) => {
   console.log(rq);
   //may add price range later
 
-  if(rq.arrivalAirport != '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
-  if(rq.departureAirport != '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
-  if(rq.arrivalTerminal != '')  query.push({arrivalTerminal:new RegExp(rq.arrivalTerminal,'i')});
-  if(rq.departureTerminal != '')query.push({departureTerminal:new RegExp(rq.departureTerminal,'i')});
-  if(rq.arrivalDate != '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
-  if(rq.departureDate != '')    query.push(dateQuery(rq.departureDate,'departureDate'));
-  if(rq.cabin != '' && rq.adultsNo != '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
+  if(rq.arrivalAirport !== '')   query.push({arrivalAirport:new RegExp(rq.arrivalAirport,'i')});
+  if(rq.departureAirport !== '') query.push({departureAirport:new RegExp(rq.departureAirport,'i')});
+
+  //  if(rq.arrivalDate !== '')      query.push(dateQuery(rq.arrivalDate,'arrivalDate'));
+   if(rq.departureDate !== '')    query.push(dateQuery(rq.departureDate,'departureDate'));
+   if(rq.cabin !== '' && rq.adultsNo !== '') query.push(seatQuery(rq.adultsNo,rq.childrenNo,rq.cabin));
 
   //required cabin if no. of seats is mentioned
   //required adults if children are mentioned
     
-  console.log(query);
-
+  console.log("query "+query);
+  anded={$and : query};
   if(query.length>0)
-      Flights.find({$and : query}, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
+      Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats businessPrice economyPrice economyBaggage businessBaggage reservedSeats').then( data => res.send(data));
 });
 
 
@@ -309,12 +332,12 @@ router.route('/createUser').post((req,res,next)=>{
 //http://localhost:8000/user/res
 // the request body:
 // {
-//   "resID":"7",
+//   "resID":"8",
 // "adultsNo": "2",
 // "childrenNo":"2",
 // "seatClass":"Economy",
-// "deptFlight": "61a3b4fad3b416f71f8ba8ce",
-// "arrFlight":"61a3b642d3b416f71f8ba8f2",
+// "deptFlight": "61ab490249533a817ec5565e",
+// "arrFlight":"61ab49e7b8a5d445caa7e84e",
 //  "deptSeats":[1,3,4,5],
 // "arrSeats" :[3,16,19,22]
 

@@ -19,7 +19,8 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-slick": "0.28.1",
-    "reactjs-popup": "^2.0.5"
+    "reactjs-popup": "^2.0.5",
+    "react-slick": "0.28.1"
   },
   "devDependencies": {
     "@babel/cli": "7.13.16",
