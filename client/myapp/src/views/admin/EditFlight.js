@@ -18,7 +18,8 @@ import AppBar from '@mui/material/AppBar';
 import Link from '@mui/material/Link';
 import { fabClasses } from '@mui/material';
 
-
+const matchList =document.getElementById("match-List");
+const matchList2 =document.getElementById("match-List2");
 // export default function EditFlight() {
 //   const[list, setList]= useState([]); 
 //   const { id } = useParams();
@@ -128,6 +129,7 @@ export default class EditFlight extends Component {
   }
    searchAirports = async searchText=>
   {
+    // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
     const allAirports = await require("./../../jsonFiles/airports.json");
     // console.log(result);
     let matches =allAirports.filter(airport =>{
@@ -135,7 +137,61 @@ export default class EditFlight extends Component {
       return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
     });
     console.log(matches);//the search result
+    if(searchText.length===0) matches=[];
+    if(matchList!=null)
+      outputHtml(matches);
   }
+   outputHtml = matches=>{
+    if(matches.length>0){
+      const html=matches.map(match=>`
+      <div class= "card card-body mb-1">
+        <h4>${match.name}(${match.code})
+        <span class="text-primary"> ${match.country}</span> </h4>
+        
+      </div>`
+        ).join('');
+        matchList.innerHTML=html;
+        console.log(html);
+    }
+    else{
+      const htmll= `<div class= "card card-body mb-1"></div>`;
+      matchList.innerHTML=htmll;
+    }
+  }
+  
+   searchAirports2 = async searchText=>
+  {
+    // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
+    const allAirports = await require("./../../jsonFiles/airports.json");
+    // console.log(result);
+    let matches =allAirports.filter(airport =>{
+      const regex = new RegExp("^"+searchText,'gi');
+      return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
+    });
+    console.log(matches);//the search result
+    if(searchText.length===0) matches=[];
+    if(matchList2!=null)
+      outputHtml2(matches);
+  }
+   outputHtml2 = matches=>{
+    if(matches.length>0){
+      const html=matches.map(match=>`
+      <div class= "card card-body mb-1">
+        <h4>${match.name}(${match.code})
+        <span class="text-primary"> ${match.country}</span> </h4>
+        
+      </div>`
+        ).join('');
+        matchList2.innerHTML=html;
+        console.log(html);
+    }
+    else{
+      const htmll= `<div class= "card card-body mb-1"></div>`;
+      matchList2.innerHTML=htmll;
+    }
+  }
+  
+  
   onChangeFlightNo(e) {
     const { name, value } = e.target;
     if (!(value != '' && Number(value) && Number(value) >= 0)) {
@@ -507,6 +563,8 @@ function DataForm(self) {
             error={self.state.flightError.departureAirport}
             helperText={self.state.errorMessage.departureAirport}
           />
+          <div id="match-List2"> </div>
+
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -520,6 +578,8 @@ function DataForm(self) {
             error={self.state.flightError.arrivalAirport}
             helperText={self.state.errorMessage.arrivalAirport}
           />
+          <div id="match-List"> </div>
+
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
