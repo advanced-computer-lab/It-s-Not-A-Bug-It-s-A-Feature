@@ -8,6 +8,7 @@ import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js"
 import Button from "./../../components/CustomButtons/Button.js";
 import Flight from "./../../components/Flight/Flight.js";
 import SelectSeats from "./../../components/Flight/SelectSeats.js";
+import AllSeats from "./../../components/Flight/AllSeats";
 
 import GridContainer from "./../../components/Grid/GridContainer.js";
 import GridItem from "./../../components/Grid/GridItem.js";
@@ -72,23 +73,13 @@ export default function book() {
             </a>,
           ]}
         />
-        <SelectSeats
-        flightNo = "45"
-        // departureDate = "2016-05-12T21:29:00.000Z"
-        // arrivalDate = "2016-05-13T01:42:00.000Z"
-        economySeats = "12"
-        businessSeats = "12"
-        currBusinessSeats = "3"
-        currEconomySeats = "6"
-        reservedSeats = "[3,4,6]"
-        // arrivalAirport = "Monaco"
-        // departureAirport = "Tokyo"
-        // departureTerminal = "Terminal 12"
-        // arrivalTerminal = "terminal 12"
-        // businessPrice = "100"
-        // economyPrice= "20"
-        type ="Business"
-        Number ="5"/>
+        <AllSeats
+        type = "Business"
+        passengers = "3"
+        deptFlight = "75"
+        retFlight = "775"
+        />
+        
         </div>
     )
 }

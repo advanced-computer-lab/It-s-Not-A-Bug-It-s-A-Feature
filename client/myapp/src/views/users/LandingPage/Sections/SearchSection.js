@@ -235,7 +235,7 @@ var returnFlights; // variable to hold the return flights of the search query
 
 <div>
  <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       From
+       Check in
         </Typography>
       <TextField 
       id="outlined-basic" 
@@ -250,7 +250,7 @@ var returnFlights; // variable to hold the return flights of the search query
       </div>
 <div>
    <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       To
+       Check out
         </Typography>
       <TextField 
       id="outlined-basic" 

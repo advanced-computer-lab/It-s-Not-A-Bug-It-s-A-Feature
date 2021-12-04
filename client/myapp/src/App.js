@@ -11,6 +11,7 @@ import  Profile from './views/users/ProfilePage';
 import  SearchFlight from './views/users/SearchFlight.js';
 
 
+
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
 import Search from './views/admin/searchComponent.js'
@@ -34,13 +35,11 @@ function App() {
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
-
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>
            <Route path='/admin/editFlight/:id' component={EditFlight} />
            <Route path ={"/admin/search"} component={Search}/>
-           {/* <Route path ={"/testSearch"} component={testsearch}/> */}
          </Router> 
          </ThemeProvider>
 
