@@ -57,10 +57,11 @@ router.route('/').get((req, res) => {
     const currEconomySeats = economySeats;
     const businessPrice = Number(req.body.businessPrice); 
     const economyPrice = Number(req.body.economyPrice); 
+    const reservedSeats = [];
 
     const newFlight = new Flights({flightNo,departureDate,arrivalDate,economySeats
       ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal,
-          currBusinessSeats,currEconomySeats,businessPrice, economyPrice, economyBaggage, businessBaggage});
+          currBusinessSeats,currEconomySeats,businessPrice, economyPrice, economyBaggage, businessBaggage, reservedSeats});
 
     newFlight.save()
     .then(()=>res.send('Flight Added'))
