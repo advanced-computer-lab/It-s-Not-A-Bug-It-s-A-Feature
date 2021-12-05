@@ -56,7 +56,7 @@ export default function ProfilePage(props) {
       <Header
         color="transparent"
         brand="OverReact"
-        rightLinks={<HeaderLinks />}
+        rightLinks={<HeaderLinks isLogged = {true} />}
         fixed
         changeColorOnScroll={{
           height: 200,
@@ -126,13 +126,13 @@ export default function ProfilePage(props) {
                         <GridContainer justify="center">
                           <GridItem xs={20} sm={20} md={20}>
 
-                          <Reservation flight={{
+                          <Reservation departFlight={{
       flightNo:"45",
       economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
       departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
     }}
-            type ="business"
-            Number ="5"
+            cabin ="business"
+            count ="5"
             />
                           
                           </GridItem>

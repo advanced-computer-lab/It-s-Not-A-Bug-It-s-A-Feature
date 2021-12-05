@@ -36,7 +36,7 @@ const useStyles = makeStyles(styles);
 export default function HeaderLinks(props) {
   const classes = useStyles();
   let history = useHistory();
-  const [isLogged, setLogged] =useState(false);
+  const [isLogged, setLogged] =useState(props.isLogged);
 
   // const onSubmit = (e) => { 
   //   // i want to change the navbar links here
@@ -82,8 +82,7 @@ export default function HeaderLinks(props) {
     </Button>
     <Button
       onClick={(e) => {
-        // onsubmit(e);
-        // history.push('/login')
+        history.push('/profile')
    }}
       color="transparent"
       target="_blank"

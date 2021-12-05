@@ -32,6 +32,10 @@ import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
 export default function Flight(props) {
+  console.log("Flight : ",props);
+  // if(props.all!=null)
+  //  props = props.all;
+  const res=props.res;
   const flight =props.flight;
     const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
     const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
@@ -62,9 +66,8 @@ export default function Flight(props) {
     // style={{height: '20vh'}}
     return (
         <div>
-           <Card  maxWidth="sm" >
-                <form className={classes.form} >
-                  <CardBody>
+           
+          
                   <GridContainer justify="center" spacing={1}>
                     <GridItem  xs={12} sm={12}>
                       <h4> Flight : {flight.flightNo}</h4>
@@ -104,9 +107,6 @@ export default function Flight(props) {
                         </Grid>
                     </GridItem>
                       </GridContainer> 
-                    </CardBody>
-                </form>
-              </Card>
            
         </div>
     )
