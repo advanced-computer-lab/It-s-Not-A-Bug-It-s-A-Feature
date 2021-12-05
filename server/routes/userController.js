@@ -5,6 +5,7 @@ let Flights = require('../models/Flights.js');
 let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
 const { text } = require('express');
+const { Flight } = require('@material-ui/icons');
 // var loggedUserID=-1;
 var loggedIn = true;
 
@@ -114,23 +115,61 @@ async function calculatePrice(flightID, seatClass, seats) {
 }
 
 // see reservations made by the current user only.
-router.route('/myReservations').get((req,res)=>{
+// returns reservation details + departure and return flight details
+router.route('/myReservations').get(async (req,res)=>{
   if(!loggedIn){ // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
   }
   else{
     console.log(`userID: ${curUserId}`);
-    Reservation.find({userID: curUserId})
-    .then(reserv => res.send(reserv))
+    var userRes =[];
+    await Reservation.find({userID: curUserId})
+    .then(async (allUserReservations) => {
+      for(let i = 0; i < allUserReservations.length; i++){
+        reserv = allUserReservations[i];
+        var resDeptFlight;
+        await Flights.findById(ObjectID(reserv['deptFlight'])).
+        then(ans => resDeptFlight = ans)
+        .catch(err => res.status(500).send(err));
+
+        var resArrFlight;
+        await Flights.findById(ObjectID(reserv['arrFlight']))
+        .then(ans => resArrFlight = ans)
+        .catch(err => res.status(500).send(err));
+
+        oneReservation = {reservation: reserv, deptFlight: resDeptFlight, arrFlight: resArrFlight};
+        // console.log(`index ${idx}`);
+        userRes.push(oneReservation);
+        if(i === allUserReservations.length-1)
+          res.send(userRes);
+      }
+    })
     .catch(err => res.status(400).send('Error: ' + err));
   }
 })
 
 // (Req. 24) Get summary of the selected reservation
+// Given reservation ID, returns all its details + both its flights details
 router.route('/myReservations/:id').get((req, res) => {
   var resID = req.params.id;
+  var userRes;
   Reservation.find({_id: resID})
-  .then(reserv => res.send(reserv))
+  .then(async (reserv) => {
+    // console.log(reserv[0]);
+    reserv = reserv[0];
+    var resDeptFlight;
+    await Flights.findById(ObjectID(reserv['deptFlight'])).
+    then(ans => resDeptFlight = ans)
+    .catch(err => res.status(500).send(err));
+
+    var resArrFlight;
+    await Flights.findById(ObjectID(reserv['arrFlight']))
+    .then(ans => resArrFlight = ans)
+    .catch(err => res.status(500).send(err));
+
+    userRes = {reservation: reserv, deptFlight: resDeptFlight, arrFlight: resArrFlight};
+    res.send(userRes);
+  })
   .catch(err => res.status(400).send('Error: ' + err));
 });
 
