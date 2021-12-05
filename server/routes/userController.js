@@ -310,15 +310,15 @@ async function updateFlightSeats(reservation, whichFlight){
 
 // req. 28: allow user to edit the profile information
 // id = user ID
-router.route('/editProfile/:id').get((req,res) => {
-  User.findById(req.params.id)
+router.route('/editProfile').get(async (req,res) => {
+  await User.findById(curUserId)
   .then(user => res.send(user))
   .catch(err => res.status(400).send('Error: '+err));
 });
 
 // Post the updated profile information to the database
-router.route('/editProfile/:id').get((req,res)=>{
-  User.findByIdAndUpdate({ _id : req.params.id},{
+router.route('/editProfile').post(async (req,res)=>{
+  await User.findByIdAndUpdate({ _id : curUserId},{
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     passportNo: req.body.passportNo,
@@ -326,6 +326,23 @@ router.route('/editProfile/:id').get((req,res)=>{
   })
   .then(user => res.send(user))
   .catch(err => res.status(400).send('Error: ' + err));
+});
+
+router.route('/getMaxResID').get(async (req,res)=>{
+  var maxID = -1;
+  let allRes;
+  await Reservation.find()
+     .then(reservation => {
+       allRes=reservation;
+       allRes.forEach(element => {
+        if(element['reservationID'] > maxID)
+          maxID = element['reservationID'];
+        });
+        console.log(`Max ID = ${maxID}`);
+        res.status(200).send(`${maxID}`);
+      })
+     .catch(err => res.status(400).send('Error: ' + err));
+  
 });
 
 function sendEmail(owner, emailText){
