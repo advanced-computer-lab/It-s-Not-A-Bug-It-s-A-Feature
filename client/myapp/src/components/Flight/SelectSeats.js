@@ -56,14 +56,16 @@ export default function Flight(props) {
   SeatPicker.defaultProps = {
     addSeatCallback: function addSeatCallback(row, number, id) {
       console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-      if (cabin === "Business"|| cabin ==="business") {
+      if (cabin === "Business" || cabin === "business") {
         setCurrBusSeats(currBusinessSeats - 1);
       }
       else {
-        setCurrEconSeats(currEconSeats -1);
+        setCurrEconSeats(currEconSeats - 1);
       }
       // if( !isReturn){ 
-        props.callback(prevState => { return { ...prevState, ["reservedSeats"]: [...prevState.reservedSeats, number] }; });
+      // props.callback(prevState => { return { ...prevState, ["reservedSeats"]: [...prevState.reservedSeats, number] }; });
+      props.callback(prevState => [...prevState, number] );
+
       // setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
       // }
       // else{
@@ -78,25 +80,25 @@ export default function Flight(props) {
     },
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-      if (cabin === "Business" || cabin ==="business" ) {
-        setCurrBusSeats( currBusinessSeats+ 1);
+      if (cabin === "Business" || cabin === "business") {
+        setCurrBusSeats(currBusinessSeats + 1);
       }
       else {
-        setCurrEconSeats( currEconSeats + 1);
+        setCurrEconSeats(currEconSeats + 1);
       }
 
-      if(!isReturn){
-      var index = deptSeats.indexOf(number);
-      if (index > -1) {
-        setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
-        console.log("set sel hena");
+      if (!isReturn) {
+        var index = deptSeats.indexOf(number);
+        if (index > -1) {
+          setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
+          console.log("set sel hena");
+        }
       }
-    }
-      else{
+      else {
         var index = retSeats.indexOf(number);
-      if (index > -1) {
-        setRetSeats(prevRetSeats => prevRetSeats.filter(item => item !== number));
-      }
+        if (index > -1) {
+          setRetSeats(prevRetSeats => prevRetSeats.filter(item => item !== number));
+        }
       }
       console.log(currBusSeats);
       console.log(currEconSeats);
@@ -112,7 +114,7 @@ export default function Flight(props) {
     //     {
     //         resID: Number(props.resID),
     //         adultsNo: Number(props.adultsNo),
-            
+
     //         childrenNo: Number(props.childrenNo),
     //         seatClass: type,
     //         deptFlight: deptFlight,
@@ -132,7 +134,7 @@ export default function Flight(props) {
     //     retSeats: retSeats
     //   }
     // });
-};
+  };
 
   let title, submitButton;
   if (isReturn) {
@@ -155,7 +157,7 @@ export default function Flight(props) {
       </div>
       <div>
 
-      {/* <Button
+        {/* <Button
       color="warning"
       // color="transparent"
       size="lg"
