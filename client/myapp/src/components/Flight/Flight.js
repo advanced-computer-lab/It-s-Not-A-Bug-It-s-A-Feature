@@ -20,6 +20,8 @@ import GridItem from "./../Grid/GridItem.js";
 import makeStyles from "@material-ui/styles/makeStyles";
 import Typography from '@mui/material/Typography';
 import LuggageIcon from '@mui/icons-material/Luggage';
+import ManIcon from '@mui/icons-material/Man';
+import BoyIcon from '@mui/icons-material/Boy';
 
 
 
@@ -36,6 +38,9 @@ export default function Flight(props) {
   // if(props.all!=null)
   //  props = props.all;
   const res=props.res;
+  const adult=props.adult;
+  var child =props.child;
+if(child=='0')child = null;
   const flight =props.flight;
     const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
     const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
@@ -119,8 +124,21 @@ export default function Flight(props) {
                         <Typography> {bag}</Typography> 
                         </Grid></Grid>
                         <Grid item xs ><Typography> {type}</Typography> </Grid>
-                        <Grid item xs ><Typography> {trav} </Typography> </Grid>
+                        <Grid item xs  container direction="row" >
+                          <Grid  container direction="row" justifyContent="flex-start" alignItems="left">
+                            <Grid item  >
+                              <ManIcon style={styleSpac}/> </Grid>
+                            <Typography> {adult}{" "}</Typography> 
+                          </Grid>
+                        { child  &&
+                          <Grid  container direction="row" justifyContent="flex-start" alignItems="left">
+                          <Grid item  >
+                            <BoyIcon style={styleSpac}/> </Grid>
+                          <Typography> {child}{" "}</Typography> 
                         </Grid>
+                        }
+                        </Grid>
+                      </Grid>
                     </GridItem>
 
                       </GridContainer> 

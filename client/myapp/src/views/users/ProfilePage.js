@@ -25,7 +25,7 @@ import Parallax from "./../../components/Parallax/Parallax.js";
 
 
 import Reservation from "./../../components/Reservation/Reservation.js";
-import profile from "./../../assets/img/faces/christian.jpg";
+import profile from "./../../assets/img/faces/iman.jpg";
 
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -59,9 +59,21 @@ export default function ProfilePage(props) {
 
 },[]);
 
-const onCancel= (reserv)=>{
+function onCancel(reserv){
+  // confirmation alert is shown before deletion
+  const resNo =(reserv).reservationID;
+  const r = window.confirm("Do you really want to Cancel Reservation "+resNo+" ?"); 
+  if(r === true){ 
+    const id = (reserv).id;
+    axios.delete(`http://localhost:8000/user/cancelReservation/${id}`)
+    .then((response) => {
+      window.location.reload(true);
+    })
   
- }
+  }
+
+  
+}
   return (
     <div>
       <Header
@@ -98,10 +110,7 @@ const onCancel= (reserv)=>{
             </GridContainer>
             <div className={classes.description}>
               <p>
-                An artist of considerable range, Chet Faker — the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                and records all of his own music, giving it a warm, intimate
-                feel with a solid groove structure.{" "}
+              It’s hard enough to find an error in your code when you’re looking for it; its even harder when you’ve ASSUMED your code is ERROR-FREE.{" "}
               </p>
             </div>
             <GridContainer justify="center">
@@ -139,6 +148,8 @@ const onCancel= (reserv)=>{
                              arrFlight ={curr.arrFlight}
                              arrSeats={curr.reservation.arrSeats}
                              totalPrice={curr.reservation.price}
+                             child={curr.reservation.childrenNo}
+                             adult={curr.reservation.adultsNo}
                              ></Reservation>
                             
                              {/* <Reservation res={curr}/> */}

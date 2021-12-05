@@ -165,11 +165,13 @@ export default function SearchFlight(props) {
                                  else setselectedDepart(null);}}>
                                    
                               <GridItem xs={12} sm={12}> 
-                             
+                             {console.log("adult ",key.adultsNo)}
                                 <Flight
                                 flight={curr}
                                 type={key.type}
                                 Number={key.count}
+                               adult={key.adultsNo}
+                               child={key.childrenNo}
                                 
                                 />
                                  
@@ -196,6 +198,9 @@ export default function SearchFlight(props) {
                                 flight={curr}
                                 type={key.type}
                                 Number={key.count}
+                                
+                               adult={key.adultsNo}
+                               child={key.childrenNo}
                                 
                                 />
                                 </GridItem>

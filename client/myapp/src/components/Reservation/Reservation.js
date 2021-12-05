@@ -85,6 +85,8 @@ const arrDate=((date2.getMonth() > 8) ? (date2.getMonth() + 1) : ('0' + (date2.g
                   flight={deptFlight}
                   type={props.seatClass}
                   Number={props.count}
+                  adult={props.adult}
+                  child={props.child}
                   res="Departure"
                   ></Flight>
                    <GridItem  xs={12} sm={12}> 
@@ -106,6 +108,8 @@ const arrDate=((date2.getMonth() > 8) ? (date2.getMonth() + 1) : ('0' + (date2.g
                   flight={arrFlight}
                   type={props.seatClass}
                   Number={props.count}
+                  adult={props.adult}
+                  child={props.child}
                   res="Return"
                   ></Flight>
                    <GridItem  xs={12} sm={12}> 
