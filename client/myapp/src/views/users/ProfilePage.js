@@ -143,6 +143,7 @@ const onCancel= (reserv)=>{
                              deptFlight ={curr.deptFlight}
                              count ={curr.reservation.adultsNo}
                              seatClass={curr.reservation.seatClass}
+                             reservationID={curr.reservation.reservationID}
                              ></Reservation>
                             
                              {/* <Reservation res={curr}/> */}
@@ -161,9 +162,9 @@ const onCancel= (reserv)=>{
                                   // disableElevation
                                   onClick={(e) => {onCancel(curr);
                                   }}
-                                  >Cancel Reservation</Button>
-                                    
+                                  >Cancel Reservation </Button>
                                    </GridItem>
+                                   <br/><br/>
                                    </div>
                                
                             ))}

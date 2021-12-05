@@ -34,6 +34,12 @@ import { fontSize, textAlign } from "@mui/system";
 
 export default function Reservation(props) {
 console.log(props);
+const deptFlight=props.deptFlight;
+
+var date =  new Date(deptFlight.departureDate);
+
+const deptDate=((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+
 
     const classes = useStyles();
     const styleTime = {
@@ -54,17 +60,31 @@ console.log(props);
         <div>
            <Card  maxWidth="sm" >
                 <form className={classes.form} >
+                <CardHeader color="primary" className={classes.cardHeader}>
+                <Typography fontWeight="bold" fontSize="24px">
+                   Booking Number    {props.reservationID}
+                 </Typography>   
+                  </CardHeader>
                   <CardBody>
-                    {console.log("deptFlight",props.deptFlight)}
+                  <GridContainer justify="center" spacing={1}>
+                  <GridItem  xs={12} sm={6}>
+                      <h4> Departure Flight : {deptFlight.flightNo}</h4>
+                    </GridItem>
+                    <GridItem  xs={12} sm={6}>
+                      <h4> Departure Date : {deptDate}</h4>
+                    </GridItem>
+                    <GridItem  xs={12} sm={12}> 
+                    </GridItem>
                   <Flight
-                  flight={props.deptFlight}
+                  flight={deptFlight}
                   type={props.seatClass}
                   Number={props.count}
+                  res="Departure"
                   ></Flight>
                   {/* <Flight>
                     
                   </Flight> */}
-                   
+                   </GridContainer>
                     </CardBody>
                 </form>
               </Card>

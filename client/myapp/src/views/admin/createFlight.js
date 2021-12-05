@@ -536,6 +536,7 @@ const theme = createTheme();
             name="departureTerminal"
             label="Departure Terminal"
             fullWidth
+            type="number"
             variant="standard"
             value={d.departureTerminal}
             error={error.departureTerminal}
@@ -559,6 +560,7 @@ const theme = createTheme();
             name="arrivalTerminal"
             label="Arrival Terminal"
             fullWidth
+            type="number"
             variant="standard"
             value={d.arrivalTerminal}
             error={error.arrivalTerminal}

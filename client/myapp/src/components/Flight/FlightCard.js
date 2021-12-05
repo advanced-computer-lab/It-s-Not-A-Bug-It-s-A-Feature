@@ -11,6 +11,8 @@ import Card from "./../Card/Card.js";
 import CardBody from "./../Card/CardBody.js";
 import CardHeader from "./../Card/CardHeader.js";
 import CardFooter from "./../Card/CardFooter.js";
+import GridContainer from "./../Grid/GridContainer.js";
+
 import Flight from "./Flight.js";
 import React from 'react';
 import makeStyles from "@material-ui/styles/makeStyles";
@@ -27,12 +29,14 @@ export default function FlightCard(props) {
              <Card  maxWidth="sm" >
                 <form className={classes.form} >
                   <CardBody>
+                  <GridContainer justify="center" spacing={1}>
                   < Flight 
                   flight={props.flight}
                   Number={props.Number}
                   type={props.type}
                   ></Flight>  
-                  
+                                        </GridContainer> 
+
                   </CardBody>
                 </form>
               </Card>
