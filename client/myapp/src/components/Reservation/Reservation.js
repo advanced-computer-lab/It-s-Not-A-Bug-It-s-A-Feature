@@ -91,7 +91,7 @@ const arrDate=((date2.getMonth() > 8) ? (date2.getMonth() + 1) : ('0' + (date2.g
                   ></Flight>
                    <GridItem  xs={12} sm={12}> 
                    <Typography  >
-                   Seats reserved : {props.deptSeats}
+                   Seats reserved : {props.deptSeats.toString()}
                  </Typography>  
                    
                     </GridItem>
@@ -114,7 +114,7 @@ const arrDate=((date2.getMonth() > 8) ? (date2.getMonth() + 1) : ('0' + (date2.g
                   ></Flight>
                    <GridItem  xs={12} sm={12}> 
                    <Typography  >
-                   Seats reserved : {props.arrSeats}
+                   Seats reserved : {props.arrSeats.toString()}
                  </Typography>  
                    
                     </GridItem>
