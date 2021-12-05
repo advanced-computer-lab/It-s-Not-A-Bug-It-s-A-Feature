@@ -7,14 +7,14 @@ import FlightIcon from '@mui/icons-material/Flight';
 
 
 
-import Card from "./../Card/Card.js";
-import CardBody from "./../Card/CardBody.js";
-import CardHeader from "./../Card/CardHeader.js";
-import CardFooter from "./../Card/CardFooter.js";
+import Card from "../Card/Card.js";
+import CardBody from "../Card/CardBody.js";
+import CardHeader from "../Card/CardHeader.js";
+import CardFooter from "../Card/CardFooter.js";
 import Grid from "@material-ui/core/Grid";
 
-import GridContainer from "./../Grid/GridContainer.js";
-import GridItem from "./../Grid/GridItem.js";
+import GridContainer from "../Grid/GridContainer.js";
+import GridItem from "../Grid/GridItem.js";
 
 // @material-ui/core components
 import makeStyles from "@material-ui/styles/makeStyles";
@@ -23,7 +23,7 @@ import LuggageIcon from '@mui/icons-material/Luggage';
 
 
 
-import styles from "./../../assets/jss/material-kit-react/components/cardStyle.js";
+import styles from "../../assets/jss/material-kit-react/components/cardStyle.js";
 
 const useStyles = makeStyles(styles);
 
@@ -32,16 +32,17 @@ import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
 export default function Flight(props) {
+
   const flight =props.flight;
     const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
     const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
     const duration =Math.ceil((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime())/(1000*60));
     const durationHour = Math.ceil(duration /60);
     var durationMin = Math.ceil(duration %60)+"M";
-    if(durationMin==="0M")durationMin ="";
+    if(durationMin=="0M")durationMin ="";
     const type =props.type;
-    var price = (type==="Business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
-    var bag = (type==="Business")?flight.businessBaggage:flight.economyBaggage;
+    var price = (type=="business")?parseInt(flight.businessPrice):parseInt(flight.economyPrice);
+    var bag = (type=="business")?flight.businessBaggage:flight.economyBaggage;
     bag+=" KG";
      if(props.Number>1)price = price*Number(props.Number);
      const trav =(props.Number>1)?props.Number+" Travellers":props.Number+" Traveller";
@@ -59,7 +60,7 @@ export default function Flight(props) {
     paddingTop: "0px",
     paddingBottom: "0px",
 }
-    // style={{height: '20vh'}}
+    
     return (
         <div>
            <Card  maxWidth="sm" >
@@ -70,7 +71,7 @@ export default function Flight(props) {
                       <h4> Flight : {flight.flightNo}</h4>
                     </GridItem>
                    <GridItem  xs={12} sm={3}>
-                     <p><Typography style={styleTime}>{departureTime}</Typography></p>
+                     <p style={styleTime}>{departureTime}</p>
                      <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
                       </GridItem>
                       <GridItem  xs={12} sm={3} >

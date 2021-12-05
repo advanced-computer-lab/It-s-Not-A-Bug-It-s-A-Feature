@@ -235,7 +235,7 @@ var returnFlights; // variable to hold the return flights of the search query
 
 <div>
  <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       From
+       Check in
         </Typography>
       <TextField 
       id="outlined-basic" 
@@ -250,7 +250,7 @@ var returnFlights; // variable to hold the return flights of the search query
       </div>
 <div>
    <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       To
+       Check out
         </Typography>
       <TextField 
       id="outlined-basic" 
@@ -272,14 +272,14 @@ var returnFlights; // variable to hold the return flights of the search query
       < div/>
  <CustomDropdown
           noLiPadding
-          buttonText={(countPassengers>1)?countPassengers+" Travellers":countPassengers+" Traveller"} //traveller handle
+          buttonText={(countPassengers>1)?countPassengers+" Travellers":countPassengers+" Traveller"} 
           buttonProps={{
             className: classes.navLink,
             color: "transparent",
             
           }}
           dropdownList={[
-            <Link className={classes.dropdownLink}>
+            <a className={classes.dropdownLink}>
                 <h4>  Adults</h4>  
                <div className="main_div">
         <div className="center_div">
@@ -297,7 +297,7 @@ var returnFlights; // variable to hold the return flights of the search query
             </div>
         </div>
       </div>
-            </Link>,
+            </a>,
             <a
               className={classes.dropdownLink}
             >
