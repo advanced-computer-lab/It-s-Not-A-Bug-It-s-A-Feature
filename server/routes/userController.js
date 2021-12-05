@@ -5,11 +5,11 @@ let Flights = require('../models/Flights.js');
 let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
 const { text } = require('express');
-var loggedUserID=-1;
+// var loggedUserID=-1;
 var loggedIn = true;
 
 // TODO: this variable is to be filled when the user logs in
-var curUserId = null;
+var curUserId = "61abf941d37940fe2e05d678";
 
 // transporter for the refund email 
 let transporter = nodemailer.createTransport({
@@ -72,8 +72,8 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     // .catch(err => res.status(400).send('Error: ' + err));
 
     const reservationID = Number(req.body.resID); //change, should not be input
-    const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
-   // const userID = loggedUserID;  userID of logged in user which is a global var saved in back end
+    // const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
+   const userID = curUserId;  //userID of logged in user which is a global var saved in back end
     const passengers = adultsNo + childrenNo;
 
     var price = await calculatePrice(deptFlight, seatClass, passengers)
@@ -119,6 +119,7 @@ router.route('/myReservations').get((req,res)=>{
     res.status(200).send("Hello Guest User!");
   }
   else{
+    console.log(`userID: ${curUserId}`);
     Reservation.find({userID: curUserId})
     .then(reserv => res.send(reserv))
     .catch(err => res.status(400).send('Error: ' + err));
@@ -128,13 +129,13 @@ router.route('/myReservations').get((req,res)=>{
 // (Req. 24) Get summary of the selected reservation
 router.route('/myReservations/:id').get((req, res) => {
   var resID = req.params.id;
-  Reservation.find({reservationID: resID})
+  Reservation.find({_id: resID})
   .then(reserv => res.send(reserv))
   .catch(err => res.status(400).send('Error: ' + err));
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
-router.route('/cancelReservation/:id').post((req,res)=>{
+router.route('/cancelReservation/:id').post(async (req,res, next)=>{
   console.log("about to cancel reservation!!");
   if(!loggedIn) // TODO: should be directed to login page
     res.status(200).send("Hello Guest User!");
@@ -142,7 +143,18 @@ router.route('/cancelReservation/:id').post((req,res)=>{
     var id = req.params.id;
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
     // get the reservation
-    cancelRes(id);
+    // var ans = cancelRes(id);
+    cancelRes(id)
+    .then(()=>res.send('Reservation canceled'))
+    .catch(err => res.status(400).send(err));  
+    
+
+    // res.status(200).send('TODO: FIX THIS MESSAGE');
+    // if(ans=="error")
+    //   res.status(200).send(`error: can't cancel reservation`);
+    // else
+    //   res.status(200).send(`Reservation canceled successfully`);
+
   }
 }
  );
@@ -150,64 +162,102 @@ router.route('/cancelReservation/:id').post((req,res)=>{
 async function cancelRes(id){
   var reservation;
     await Reservation.findById(id).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
-    console.log(reservation);
-    console.log(reservation['deptFlight']);
+    console.log(`Reservation = ${reservation}`)
+    console.log(`dept flight = ${reservation['deptFlight']}`);
 
     // then get the departure flight by using its ID in the fetched reservation
     var depDate;
-    await Flights.findById(reservation['deptFlight'],{'departureDate':1,_id:0}).then(dd=>depDate=dd).catch(err => res.status(404).json({ error: 'No such flight!' }));
+    await Flights.findById(reservation['deptFlight'] ,{'departureDate':1,_id:0})
+    .then((dd)=>{
+      console.log(`dd = ${dd}`);
+      depDate=dd;
+    })
+    .catch(err => res.status(404).json({ error: 'No such flight!' }));
     // get departure date of the flight
-    console.log(depDate);
+    console.log(`depdate = ${depDate}`);
     depDate=depDate['departureDate'];
     var now = new Date();
     var days = (depDate.getTime() - now.getTime()) / (1000*3600*24); // calculate difference in days.
     if(days <= 2){
       console.log('Cannot cancel reservation because less than 48 hours are left.');
-      return;
+      return "error";
     }
-
+    // console.log(`Escaped Error`);
     console.log(`Deleting reservation ID ${id}`);
-    Reservation.findByIdAndRemove(id, req.body)
-    .then((result)=>{
-      res.send(`Done! Reservation ${id} is successfully deleted.`);
+    Reservation.findByIdAndRemove(id/*, req.body*/)
+    .then((req,res)=>{
+      console.log(`Done! Reservation ${id} is successfully deleted.`);
 
       // increment available seats in both dep and arr flights 
+      //  delete reserved seats in both flights
       updateFlightSeats(reservation, 'deptFlight');
       updateFlightSeats(reservation, 'arrFlight');
+    })
+    .catch((err,req,res,next) =>{ 
+      console.error(err);
+      res.status(404).json({ error: 'No such reservation!' })
+  });
 
       // email user with the canceled reservation details + the refunded amount
       // use the 'result' parameter in the then part.
-      var own = User.findById(curUserId)
+      var own;
+      await User.findById(curUserId).then(result => own=result).catch(err => console.error(err));
+      console.log(`owner = ${own}`);
       var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
         ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
       sendEmail(own,textmsg);
-    })
-    .catch(err => res.status(404).json({ error: 'No such reservation!' }));
+    return "done";
   }
 
-// this function increments the available seats in the dept and
+// this function  deletes reserved seats in both flights, increments the available seats in the dept and
 // arrival flights of a reservation.
 // `whichFlight` field indicates whether the flight is dept or arr
-function updateFlightSeats(reservation, whichFlight){
+async function updateFlightSeats(reservation, whichFlight){
   // get ID of dep flight
   var flightID = reservation[whichFlight];
   // fetch the flight from the DB
-  var reservedFlight = Flights.findById(flightID).then().catch(err => console.log(err));
+  var reservedFlight;
+  await Flights.findById(flightID).then(result => reservedFlight = result).catch(err => console.log(err));
+
+  // 1. fetch reservation seats
+  // 2. fetch flight reserved seats
+  // 3. delete common seats
+  // 4. push changes
+  var reservationSeats;
+  if(whichFlight === 'deptFlight')
+    reservationSeats = reservation['deptSeats'];
+  else
+    reservationSeats = reservation['arrSeats'];
+  console.log(`reservation seats = ${reservationSeats}`);
+
+  let flightSeats = reservedFlight['reservedSeats'];
+  console.log(`reserved flight seats = ${flightSeats}`);
+
+  reservationSeats.forEach(seat => {
+    const index = flightSeats.indexOf(seat); // get position of seat
+    if(index > -1)
+      flightSeats.splice(index,1); // delete from array
+  });
+  console.log(`reserved flight seats = ${flightSeats}`);
+  // pushing changes happens in the end of this function
+
   // create variable with the new no. of available seats
   var numSeats = reservation['adultsNo'] + reservation['childrenNo'];
   
   // post updates to database
   // if economy, add to economy, else add to business
   if(reservation['seatClass'] == 'Business')
-    Flights.findByIdAndUpdate({_id: flightID}, {
-      currBusinessSeats: reservedFlight['currBusinessSeats']+numSeats
-    }).then(flight => res.send(flight))
+    await Flights.findByIdAndUpdate({_id: flightID}, {
+      currBusinessSeats: reservedFlight['currBusinessSeats']+numSeats,
+      reservedSeats: flightSeats
+    }).then(/*flight => res.send(flight)*/)
     .catch(err => res.status(400).send('Error: ' + err));
 
   else if(reservation['seatClass'] == 'Economy')
-    Flights.findByIdAndUpdate({_id: flightID}, {
-      currEconomySeats: reservedFlight['currEconomySeats']+numSeats
-    }).then(flight => res.send(flight))
+    await Flights.findByIdAndUpdate({_id: flightID}, {
+      currEconomySeats: reservedFlight['currEconomySeats']+numSeats,
+      reservedSeats: flightSeats
+    }).then(/* flight => res.send(flight) */)
     .catch(err => res.status(400).send('Error: ' + err));
 
     //updating arr of reserved seats
@@ -251,7 +301,7 @@ function sendEmail(owner, emailText){
 
   transporter.sendMail(mailOptions, function(err, data) {
     if (err) {
-      console.log("Error " + err);
+      console.error("Error " + err);
     } else {
       console.log("Email sent successfully");
     }
