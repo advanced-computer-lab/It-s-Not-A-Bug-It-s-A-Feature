@@ -14,6 +14,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from "../../../../components/CustomButtons/Button.js";
+import SnackbarContent from "../../../../components/Snackbar/SnackbarContent.js";
+
 import Button2 from "@material-ui/core/Button";
 import { useHistory } from "react-router";
 
