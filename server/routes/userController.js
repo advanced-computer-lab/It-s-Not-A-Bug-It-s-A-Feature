@@ -328,6 +328,23 @@ router.route('/editProfile').post(async (req,res)=>{
   .catch(err => res.status(400).send('Error: ' + err));
 });
 
+router.route('/getMaxResID').get(async (req,res)=>{
+  var maxID = -1;
+  let allRes;
+  await Reservation.find()
+     .then(reservation => {
+       allRes=reservation;
+       allRes.forEach(element => {
+        if(element['reservationID'] > maxID)
+          maxID = element['reservationID'];
+        });
+        console.log(`Max ID = ${maxID}`);
+        res.status(200).send(`${maxID}`);
+      })
+     .catch(err => res.status(400).send('Error: ' + err));
+  
+});
+
 function sendEmail(owner, emailText){
   let userEmail = owner['email'];
   
