@@ -4,27 +4,22 @@ import { useState, useEffect } from 'react';
 import React from 'react'
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
 import Button from "./../../components/CustomButtons/Button.js";
+import Box from '@material-ui/core/Box';
+import GridContainer from "./../../components/Grid/GridContainer.js";
+import GridItem from "./../../components/Grid/GridItem.js";
+import Grid from '@material-ui/core/Grid'
+import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
+import { makeStyles } from "@material-ui/styles";
 
-// var flightNo = 0, flightNo2 = 0;
-// var economySeats1 = 0, economySeats2 = 0;
-// var businessSeats1 = 0, businessSeats2 = 0;
-// var currBusinessSeats1 = 0, currBusinessSeats2 = 0;
-// var currEconomySeats1 = 0, currEconomySeats2 = 0;
-// var reservedSeats1 = [], reservedSeats2 = 0;
-// let flightInfo;
+const useStyles = makeStyles(styles);
 
-// async function setDeptInfo(deptFlight){
-//     //setting dept flight parameters
-
-
-//     // await 
-// }
 
 export default function AllSeats(props) {
     const type = props.type;
     const passengers = Number(props.passengers);
     const deptFlight = Number(props.deptFlight);
     const retFlight = Number(props.retFlight);
+    const classes = useStyles();
     //these 2 used to create the reservation
     // const adultsNo = Number(props.adultsNo);
     // const childrenNo = Number(props.childrenNo);
@@ -95,7 +90,7 @@ export default function AllSeats(props) {
 
     useEffect(() => {
         console.log("all seats - dept seats" + selDeptSeats);
-    },[selDeptSeats,selRetSeats]);
+    }, [selDeptSeats, selRetSeats]);
 
     const handleChange = e => setSelDeptSeats(e.target.deptSeats);
 
@@ -107,7 +102,7 @@ export default function AllSeats(props) {
     //         {
     //             resID: Number(props.resID),
     //             adultsNo: Number(props.adultsNo),
-                
+
     //             childrenNo: Number(props.childrenNo),
     //             seatClass: type,
     //             deptFlight: deptFlight,
@@ -133,56 +128,45 @@ export default function AllSeats(props) {
     // console.log("ana hena w yarab teshta3'al");
 
     return (
-        <div padding="35px">
-            {/* <div>hii {deptData.economySeats}
-                {deptFlight}
-                {deptData.businessSeats}
-                {deptData.currBusinessSeats}
-                {deptData.currEconomySeats}
-                {deptData.reservedSeats}
-                {type}
-                {passengers}</div> */}
+        <div className={classes.container}>
+        {/* <Box padding="35px"> */}
+            
 
-            {loading2 ? <CustomLinearProgress color="info" /> :
-                <div>
-                    <SelectSeats
-                        flightNo={deptFlight}
-                        economySeats={deptData.economySeats}
-                        businessSeats={deptData.businessSeats}
-                        currBusinessSeats={deptData.currBusinessSeats}
-                        currEconomySeats={deptData.currEconomySeats}
-                        reservedSeats={deptData.reservedSeats}
-                        type={type}
-                        passengers={passengers}
-                        isReturn="false" 
-                        onChange={handleChange} />
+        <GridContainer justify="center">
+            <GridItem xs={12} sm={12}>
+            {loading2 || loading ? <CustomLinearProgress color="info" /> :
+                <Box display = "flex" flex-direction ="row">
+                    <GridItem xs={12} sm={12}>
+                        <SelectSeats
+                            flightNo={deptFlight}
+                            economySeats={deptData.economySeats}
+                            businessSeats={deptData.businessSeats}
+                            currBusinessSeats={deptData.currBusinessSeats}
+                            currEconomySeats={deptData.currEconomySeats}
+                            reservedSeats={deptData.reservedSeats}
+                            type={type}
+                            passengers={passengers}
+                            isReturn="false"
+                            onChange={handleChange} />
+                    </GridItem>
+                    <GridItem xs={12} sm={12}>
 
-                    <SelectSeats
-                        flightNo={retFlight}
-                        economySeats={retData.economySeats}
-                        businessSeats={retData.businessSeats}
-                        currBusinessSeats={retData.currBusinessSeats}
-                        currEconomySeats={retData.currEconomySeats}
-                        reservedSeats={retData.reservedSeats}
-                        type={type}
-                        passengers={passengers}
-                        isReturn="true" 
-                        onChange={handleChange} />
-                </div>
+                        <SelectSeats
+                            flightNo={retFlight}
+                            economySeats={retData.economySeats}
+                            businessSeats={retData.businessSeats}
+                            currBusinessSeats={retData.currBusinessSeats}
+                            currEconomySeats={retData.currEconomySeats}
+                            reservedSeats={retData.reservedSeats}
+                            type={type}
+                            passengers={passengers}
+                            isReturn="true"
+                            onChange={handleChange} />
+                    </GridItem>
+                </Box>
             }
-            {/* <Button
-                color="warning"
-                // color="transparent"
-                size="lg"
-                id="demo-customized-button"
-                aria-controls="demo-customized-menu"
-                aria-haspopup="true"
-                variant="contained"
-                disableElevation
-                onClick={(e) => {
-                    onSubmit(e);
-                }}
-            >Save</Button> */}
+            </GridItem>
+            </GridContainer>
         </div>
     )
 }

@@ -16,6 +16,7 @@ import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import Card from "./../../components/Card/Card.js";
 import Flight from "./../../components/Flight/FlightCard.js";
+// import AllSeats from "./../.../components/Flight/AllSeats.js";
 import Typography from '@mui/material/Typography';
 
 import CardBody from "./../../components/Card/CardBody.js";
@@ -24,7 +25,7 @@ import CardBody from "./../../components/Card/CardBody.js";
 
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 // import AirplaneTicketIcon from '@material-ui/icons/AirplaneTicket';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
@@ -45,82 +46,85 @@ const useStyles = makeStyles(styles);
 
 // Sections for this page
 import SearchBar from "./LandingPage/Sections/SearchSection";
+import AllSeats from "../../components/Flight/AllSeats.js";
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 
 
 export default function SearchFlight(props) {
-    const location = useLocation();
- const key = location.state;
- 
+  const location = useLocation();
+  const key = location.state;
+
   const classes = useStyles();
   const { ...rest } = props;
   let history = useHistory();
-  const [depart, setDepart] =useState([]);
-  const [returnn, setreturnn] =useState([]);
+  const [depart, setDepart] = useState([]);
+  const [returnn, setreturnn] = useState([]);
 
-  const [selectedDepart, setselectedDepart] =useState(null);
-  const [selectedReturn, setselectedReturn] =useState(null);
+  const [selectedDepart, setselectedDepart] = useState(null);
+  const [selectedReturn, setselectedReturn] = useState(null);
 
 
   // const location = useLocation();
   let isLogged = props.isLogged
   // const isLogged = usekeys();
-   useEffect(()=>{
-     console.log("new key is"+ key);
-    axios.get('http://localhost:8000/user/searchFlights',{ params:
-    {
-      arrivalAirport:key.arrivalAirport,
-      departureDate:key.departureDate,
-      departureAirport:key.departureAirport,
-      cabin:key.type,
-      adultsNo:key.adultsNo,
-      childrenNo:key.childrenNo
-    }     
-})
-.then(res=> {
-  // store data in a variable to be later used
-  // setdepartFlights( res.data);
-  setDepart(res.data);
-  console.log(depart)
-  console.log("di el depart flightsss")
+  useEffect(() => {
+    console.log("new key is" + key);
+    axios.get('http://localhost:8000/user/searchFlights', {
+      params:
+      {
+        arrivalAirport: key.arrivalAirport,
+        departureDate: key.departureDate,
+        departureAirport: key.departureAirport,
+        cabin: key.type,
+        adultsNo: key.adultsNo,
+        childrenNo: key.childrenNo
+      }
+    })
+      .then(res => {
+        // store data in a variable to be later used
+        // setdepartFlights( res.data);
+        setDepart(res.data);
+        console.log(depart)
+        console.log("di el depart flightsss")
 
-}).catch(err=>console.log(err))
+      }).catch(err => console.log(err))
 
- axios.get('http://localhost:8000/user/searchFlights',{ params:
-    {
-      arrivalAirport:key.departureAirport,
-      departureDate:key.arrivalDate,
-      departureAirport:key.arrivalAirport,
-      cabin:key.type,
-      adultsNo:key.adultsNo,
-      childrenNo:key.childrenNo
-    }     
-})
-.then(res=> {
-  // store data in a variable to be later used
-  // setreturnFlights ( res.data);
-  setreturnn(res.data);
-  console.log("di el set" + returnn )
-  console.log("di hia el return flight");
-}).catch(err=>console.log(err))
+    axios.get('http://localhost:8000/user/searchFlights', {
+      params:
+      {
+        arrivalAirport: key.departureAirport,
+        departureDate: key.arrivalDate,
+        departureAirport: key.arrivalAirport,
+        cabin: key.type,
+        adultsNo: key.adultsNo,
+        childrenNo: key.childrenNo
+      }
+    })
+      .then(res => {
+        // store data in a variable to be later used
+        // setreturnFlights ( res.data);
+        setreturnn(res.data);
+        console.log("di el set" + returnn)
+        console.log("di hia el return flight");
+      }).catch(err => console.log(err))
 
-   },[key]);
+  }, [key]);
 
-   const onSubmit= ()=>{
+  const onSubmit = () => {
     history.push({
-      pathname:"/reserve" ,
+      pathname: "/reserve",
       state: {
-       flight:selectedDepart,
-       ReturnFlight:selectedReturn,
-       cabin:key.type,
-       adultsNo:key.adultsNo,
-       childrenNo:key.childrenNo,
-        count:key.count
-      } 
-      
-   });
-   }
+        flight: selectedDepart,
+        ReturnFlight: selectedReturn,
+        cabin: key.type,
+        adultsNo: key.adultsNo,
+        childrenNo: key.childrenNo,
+        count: key.count
+      }
+
+    });
+  }
 
 
   return (
@@ -129,156 +133,158 @@ export default function SearchFlight(props) {
         absolute
         brand="OverReact"
         fixed={true}
-        rightLinks={<HeaderLinks isLogged = {isLogged}/>}
+        rightLinks={<HeaderLinks isLogged={isLogged} />}
         {...rest}
       />
       {/* <Parallax filter image={require("./../../assets/img/cloud.jpg").default}/> */}
-         <div
+      <div
         className={classes.pageHeader}
         style={{
-            // backgroundColor:"rgb(229, 229, 255)",
-            backgroundImage: "url(" + image + ")",
+          // backgroundColor:"rgb(229, 229, 255)",
+          backgroundImage: "url(" + image + ")",
 
           backgroundSize: "cover",
           backgroundPosition: "top center",
-         
+
         }}
       >
-          
-      <div className={classes.container}>
-          <SearchBar/>
-          <GridContainer justify="center">
-          <GridItem xs={12} sm={12}>
-                <NavPills
-                  alignCenter
-                  color="primary"
-                  tabs={[
-                    {
-                      tabButton: "Departure Flight",
-                      tabIcon: FlightTakeoffIcon,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          
-                            {depart.map((curr)=>(
-                               <Button color={(selectedDepart==curr)?'blue':'transparent'} onClick={(e) => {
-                                 if(selectedDepart!=curr)setselectedDepart(curr);
-                                 else setselectedDepart(null);}}>
-                                   
-                              <GridItem xs={12} sm={12}> 
-                             
-                                <Flight
-                                flight={curr}
-                                type={key.type}
-                                Number={key.count}
-                                
-                                />
-                                 
-                                </GridItem>
-                                </Button>
-                            ))}
-                          
-                        </GridContainer>
-                      ),
-                    },
-                    {
-                      tabButton: " Return Flight",
-                      tabIcon: FlightLandIcon,
-                      tabContent: (
-                        <GridContainer justify="center">
-                          {returnn.map((curr)=>(
-                               <Button color={(selectedReturn==curr)?'blue':'transparent'} onClick={(e) => {
-                                 if(selectedReturn!=curr)setselectedReturn(curr);
-                                 else setselectedReturn(null);}}>
-                                   
-                              <GridItem xs={12} sm={12}> 
-                               
-                                <Flight
-                                flight={curr}
-                                type={key.type}
-                                Number={key.count}
-                                
-                                />
-                                </GridItem>
-                                </Button>
-                            ))}
-                        </GridContainer>
-                      ),
-                    },
-                    
-                    {
-                      tabButton: " Confirm Reservation",
-                      tabIcon: CheckIcon,
-                      tabContent: (
-                        <GridContainer justify="center">
 
-                          {(() => {
-                            if (selectedDepart==null) {
-                              return (
-                                <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
-                              )
-                            } else if (selectedReturn==null) {
-                              return (
-                                <div><Typography> <h3> Please Select a Return Flight</h3></Typography></div>
-                              )
-                            } else {
-                              var priceD = (key.type==="Business")?parseInt(selectedDepart.businessPrice):parseInt(selectedDepart.economyPrice);
-                              var priceR = (key.type==="Business")?parseInt(selectedReturn.businessPrice):parseInt(selectedReturn.economyPrice);
-                              var totalPrice = (priceD+priceR)*key.count;
-                              return (
-                                <div>
+        <div className={classes.container}>
+          <SearchBar />
+          <GridContainer justify="center">
+            <GridItem xs={12} sm={12}>
+              <NavPills
+                alignCenter
+                color="primary"
+                tabs={[
+                  {
+                    tabButton: "Departure Flight",
+                    tabIcon: FlightTakeoffIcon,
+                    tabContent: (
+                      <GridContainer justify="center">
+
+                        {depart.map((curr) => (
+                          <Button color={(selectedDepart == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                            if (selectedDepart != curr) setselectedDepart(curr);
+                            else setselectedDepart(null);
+                          }}>
+
+                            <GridItem xs={12} sm={12}>
+
+                              <Flight
+                                flight={curr}
+                                type={key.type}
+                                Number={key.count}
+
+                              />
+
+                            </GridItem>
+                          </Button>
+                        ))}
+
+                      </GridContainer>
+                    ),
+                  },
+                  {
+                    tabButton: " Return Flight",
+                    tabIcon: FlightLandIcon,
+                    tabContent: (
+                      <GridContainer justify="center">
+                        {returnn.map((curr) => (
+                          <Button color={(selectedReturn == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                            if (selectedReturn != curr) setselectedReturn(curr);
+                            else setselectedReturn(null);
+                          }}>
+
+                            <GridItem xs={12} sm={12}>
+
+                              <Flight
+                                flight={curr}
+                                type={key.type}
+                                Number={key.count}
+
+                              />
+                            </GridItem>
+                          </Button>
+                        ))}
+                      </GridContainer>
+                    ),
+                  },
+
+                  {
+                    tabButton: " Confirm Reservation",
+                    tabIcon: CheckIcon,
+                    tabContent: (
+                      <GridContainer justify="center">
+
+                        {(() => {
+                          if (selectedDepart == null) {
+                            return (
+                              <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
+                            )
+                          } else if (selectedReturn == null) {
+                            return (
+                              <div><Typography> <h3> Please Select a Return Flight</h3></Typography></div>
+                            )
+                          } else {
+                            var priceD = (key.type === "Business") ? parseInt(selectedDepart.businessPrice) : parseInt(selectedDepart.economyPrice);
+                            var priceR = (key.type === "Business") ? parseInt(selectedReturn.businessPrice) : parseInt(selectedReturn.economyPrice);
+                            var totalPrice = (priceD + priceR) * key.count;
+                            return (
+                              <div>
                                 <GridItem xs={12} sm={12}>
-                                  <Typography> <h3>Departure Flight</h3></Typography> 
+                                  <Typography> <h3>Departure Flight</h3></Typography>
                                 </GridItem>
                                 <GridItem xs={12} sm={12}>
                                   <Flight
-                                  flight={selectedDepart}
-                                  type={key.type}
-                                  Number={key.count}
+                                    flight={selectedDepart}
+                                    type={key.type}
+                                    Number={key.count}
                                   >
-                                    </Flight> 
+                                  </Flight>
                                 </GridItem>
                                 <GridItem xs={12} sm={12}>
-                                <Typography> <h3>Return Flight</h3></Typography> 
-                              </GridItem>
-                              <GridItem xs={12} sm={12}>
-                                  <Flight
-                                  flight={selectedReturn}
-                                  type={key.type}
-                                  Number={key.count}
-                                  >
-                                    </Flight> 
-                      
+                                  <Typography> <h3>Return Flight</h3></Typography>
                                 </GridItem>
-                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}><Card>
-                                <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {totalPrice}</Typography> </Card>
-                              </GridItem>
-                              <GridItem xs={12} sm={12} style={{textAlign:"center"}}>
+                                <GridItem xs={12} sm={12}>
+                                  <Flight
+                                    flight={selectedReturn}
+                                    type={key.type}
+                                    Number={key.count}
+                                  >
+                                  </Flight>
+
+                                </GridItem>
+                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}><Card>
+                                  <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {totalPrice}</Typography> </Card>
+                                </GridItem>
+                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
                                   <Button
-                                  color="danger"
-                                  size="lg"
-                                  onClick={(e) => {onSubmit(e);}}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {/* <i className="fas fa-play" /> */}
-                                  Reserve
-                                </Button>
-                              </GridItem>                             
-                               </div>
-                              )
-                            }
-                          })()}
-                        </GridContainer>
-                      ),
-                    },
-                  ]}
-                />
-              </GridItem>
-            </GridContainer>
-        
+                                    color="danger"
+                                    size="lg"
+                                    onClick={(e) => { onSubmit(e); }}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {/* <i className="fas fa-play" /> */}
+                                    Reserve
+                                  </Button>
+                                </GridItem>
+                              </div>
+                            )
+                          }
+                        })()}
+                      </GridContainer>
+                    ),
+                  },
+                ]}
+              />
+            </GridItem>
+          </GridContainer>
+
+        </div>
       </div>
-      </div>
-      
+
       <Footer />
     </div>
   );
