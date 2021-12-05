@@ -16,6 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import GridContainer from "../Grid/GridContainer.js";
 import GridItem from "../Grid/GridItem.js";
 import Flight from "../Flight/Flight.js";
+import Divider from '@mui/material/Divider';
 
 // @material-ui/core components
 import makeStyles from "@material-ui/styles/makeStyles";
@@ -36,9 +37,15 @@ export default function Reservation(props) {
 console.log(props);
 const deptFlight=props.deptFlight;
 
-var date =  new Date(deptFlight.departureDate);
+const date =  new Date(deptFlight.departureDate);
 
 const deptDate=((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+
+const arrFlight=props.arrFlight;
+
+const date2 =  new Date(arrFlight.departureDate);
+
+const arrDate=((date2.getMonth() > 8) ? (date2.getMonth() + 1) : ('0' + (date2.getMonth() + 1))) + '/' + ((date2.getDate() > 9) ? date2.getDate() : ('0' + date2.getDate())) + '/' + date2.getFullYear();
 
 
     const classes = useStyles();
@@ -60,30 +67,57 @@ const deptDate=((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.get
         <div>
            <Card  maxWidth="sm" >
                 <form className={classes.form} >
-                <CardHeader color="primary" className={classes.cardHeader}>
+              {props.reservationID &&  <CardHeader color="primary" className={classes.cardHeader}>
                 <Typography fontWeight="bold" fontSize="24px">
                    Booking Number    {props.reservationID}
                  </Typography>   
-                  </CardHeader>
+                  </CardHeader>}
                   <CardBody>
                   <GridContainer justify="center" spacing={1}>
                   <GridItem  xs={12} sm={6}>
                       <h4> Departure Flight : {deptFlight.flightNo}</h4>
                     </GridItem>
                     <GridItem  xs={12} sm={6}>
-                      <h4> Departure Date : {deptDate}</h4>
+                      <h4> Date : {deptDate}</h4>
                     </GridItem>
-                    <GridItem  xs={12} sm={12}> 
-                    </GridItem>
+                    <br/>
                   <Flight
                   flight={deptFlight}
                   type={props.seatClass}
                   Number={props.count}
                   res="Departure"
                   ></Flight>
-                  {/* <Flight>
-                    
-                  </Flight> */}
+                   <GridItem  xs={12} sm={12}> 
+                   <Typography  >
+                   Seats reserved : {props.deptSeats}
+                 </Typography>  
+                   
+                    </GridItem>
+                    <br/><br/>
+                    <Divider/>
+                    <GridItem  xs={12} sm={6} >
+                      <h4> Return Flight : {arrFlight.flightNo}</h4>
+                    </GridItem>
+                    <GridItem  xs={12} sm={6}>
+                      <h4> Date : {arrDate}</h4>
+                    </GridItem>
+                   <br/>
+                  <Flight
+                  flight={arrFlight}
+                  type={props.seatClass}
+                  Number={props.count}
+                  res="Return"
+                  ></Flight>
+                   <GridItem  xs={12} sm={12}> 
+                   <Typography  >
+                   Seats reserved : {props.arrSeats}
+                 </Typography>  
+                   
+                    </GridItem>
+
+                    <GridItem xs={12} sm={12} style={{textAlign:"center"}}>
+                                <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {props.totalPrice}</Typography> 
+                              </GridItem>
                    </GridContainer>
                     </CardBody>
                 </form>

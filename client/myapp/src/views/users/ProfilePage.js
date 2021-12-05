@@ -90,17 +90,8 @@ const onCancel= (reserv)=>{
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Christian Louboutin</h3>
-                    <h6>DESIGNER</h6>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-twitter"} />
-                    </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-instagram"} />
-                    </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-facebook"} />
-                    </Button>
+                    <h3 className={classes.title}>Iman Osama</h3>
+                    <h6>Software Engineer</h6>
                   </div>
                 </div>
               </GridItem>
@@ -144,6 +135,10 @@ const onCancel= (reserv)=>{
                              count ={curr.reservation.adultsNo}
                              seatClass={curr.reservation.seatClass}
                              reservationID={curr.reservation.reservationID}
+                             deptSeats={curr.reservation.deptSeats}
+                             arrFlight ={curr.arrFlight}
+                             arrSeats={curr.reservation.arrSeats}
+                             totalPrice={curr.reservation.price}
                              ></Reservation>
                             
                              {/* <Reservation res={curr}/> */}

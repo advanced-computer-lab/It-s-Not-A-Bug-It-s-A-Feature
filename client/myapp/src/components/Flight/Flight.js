@@ -76,6 +76,7 @@ export default function Flight(props) {
                    <GridItem  xs={12} sm={3}>
                      <p><Typography style={styleTime}>{departureTime}</Typography></p>
                      <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
+                     {res&& <p style={{textAlign:"center"}}> Terminal {flight.departureTerminal}</p>}
                       </GridItem>
                       <GridItem  xs={12} sm={3} >
                        {res=="Return" && <Grid  container direction="row" justifyContent="space-around" alignItems="center">
@@ -102,12 +103,15 @@ export default function Flight(props) {
                       <GridItem  xs={12} sm={3}>
                       <p style={styleTime}>{arrivalTime}</p>
                       <p style={{textAlign:"center"}}>{flight.arrivalAirport}</p>
+                      {res&& <p style={{textAlign:"center"}}> Terminal {flight.arrivalTerminal}</p>}
                       </GridItem> 
-                      <GridItem  xs={12} sm={3}>
+                     {!res && <GridItem  xs={12} sm={3}>
                       <p style={styleTime} color="primary" >$ {price}</p>
-                      </GridItem>
+                      </GridItem>}
+                      
+
                       <GridItem  xs={12} sm={12} style={styleSpac}>
-                      <Grid  container direction="row" justifyContent="flex-start" alignItems="left">
+                      <Grid  container direction="row" justifyContent="flex-start" alignItems="left" style={{ paddingBottom: "10px"}}>
                         <Grid item xs >
                         <Grid  container direction="row" justifyContent="flex-start" alignItems="left">
                         <Grid item  >
@@ -118,6 +122,7 @@ export default function Flight(props) {
                         <Grid item xs ><Typography> {trav} </Typography> </Grid>
                         </Grid>
                     </GridItem>
+
                       </GridContainer> 
            
         </div>
