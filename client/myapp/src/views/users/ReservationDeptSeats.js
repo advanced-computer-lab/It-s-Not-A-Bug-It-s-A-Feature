@@ -80,9 +80,10 @@ export default function Reservation(props) {
         economySeats: 0,
         businessSeats: 0,
         currBusinessSeats: 0,
-        currEconomySeats: 0,
-        reservedSeats: []
+        currEconomySeats: 0
+        
     });
+    const [reservedSeats2,setReservedSeats2] = useState([]);
     // const [retData, setRetData] = useState({
     //     economySeats: 0,
     //     businessSeats: 0,
@@ -144,11 +145,11 @@ const onSubmit = () => {
       state: {
         flight: key.flight,
         ReturnFlight: key.ReturnFlight,
-        cabin: key.type,
+        cabin: key.cabin,
         adultsNo: key.adultsNo,
         childrenNo: key.childrenNo,
         count: key.count,
-        deptSeats : deptData.reservedSeats
+        deptSeats : reservedSeats2
       }
 
     });
@@ -223,11 +224,11 @@ const onSubmit = () => {
                             businessSeats={deptData.businessSeats}
                             currBusinessSeats={deptData.currBusinessSeats}
                             currEconomySeats={deptData.currEconomySeats}
-                            reservedSeats={deptData.reservedSeats}
+                            reservedSeats={deptData.reservedSeats2}
                             type={type}
                             passengers={passengers}
                             isReturn="false"
-                            callback = {setDeptData}
+                            callback = {setReservedSeats2}
                              />
                     </GridItem>
                 

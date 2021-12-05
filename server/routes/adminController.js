@@ -121,7 +121,7 @@ router.route('/').get((req, res) => {
     console.log(query);
 
     if(query.length>0)
-        Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats reservedSeats').then( data => res.send(data));
+        Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats').then( data => res.send(data));
       });
 
 router.route('/deleteFlight/:id').delete((req,res)=>{ 

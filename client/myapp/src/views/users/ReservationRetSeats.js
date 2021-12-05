@@ -83,9 +83,9 @@ export default function Reservation(props) {
         economySeats: 0,
         businessSeats: 0,
         currBusinessSeats: 0,
-        currEconomySeats: 0,
-        reservedSeats: []
+        currEconomySeats: 0
     });
+    const [reservedSeats3, setReservedSeats3]= useState([]);
     // state: {
     //     flight: key.flight,
     //     ReturnFlight: key.ReturnFlight,
@@ -176,20 +176,20 @@ useEffect(() => {
 
     axios.post('http://localhost:8000/user/res', {
       
-      
-        resID: resID+ 1,
+        resID: resID + 1,
         adultsNo: key.adultsNo,
         childrenNo: key.childrenNo,
-        seatClass: key.type,
+        seatClass: key.cabin,
         deptFlight: key.flight._id,
         arrFlight: key.ReturnFlight._id,
         deptSeats: key.deptSeats,
-        arrSeats: retData.reservedSeats
+        arrSeats: reservedSeats3
     }).then(res => {
       console.log(res.data);
     //   setResId(resID);
       setReserved(true);
     }).catch(err => console.log(err))
+    
   };
 
   return (
@@ -249,10 +249,10 @@ useEffect(() => {
                             businessSeats={retData.businessSeats}
                             currBusinessSeats={retData.currBusinessSeats}
                             currEconomySeats={retData.currEconomySeats}
-                            reservedSeats={retData.reservedSeats}
+                            reservedSeats={retData.reservedSeats3}
                             type={type}
                             passengers={passengers}
-                            callback = {setRetData}
+                            callback = {setReservedSeats3}
                             isReturn="true"
                              />
                     </GridItem>
