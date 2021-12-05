@@ -104,7 +104,6 @@ export default function SearchFlight(props) {
 .then(res=> {
   // store data in a variable to be later used
   // setdepartFlights( res.data);
-  console.log(res.data);
   setDepart(res.data);
   console.log(depart)
   console.log("di el depart flightsss")
@@ -119,18 +118,32 @@ export default function SearchFlight(props) {
       cabin:key.type,
       adultsNo:key.adultsNo,
       childrenNo:key.childrenNo
-      
     }     
 })
 .then(res=> {
   // store data in a variable to be later used
-  setreturnFlights ( res.data);
+  // setreturnFlights ( res.data);
   setreturnn(res.data);
   console.log("di el set" + returnn )
   console.log("di hia el return flight");
 }).catch(err=>console.log(err))
 
    },[key]);
+
+   const onSubmit= ()=>{
+    history.push({
+      pathname:"/reserve" ,
+      state: {
+       departFlight:selectedDepart,
+       ReturnFlight:selectedReturn,
+       cabin:key.type,
+       adultsNo:key.adultsNo,
+       childrenNo:key.childrenNo,
+        count:key.count
+      } 
+      
+   });
+   }
 
 
   return (
@@ -258,10 +271,22 @@ export default function SearchFlight(props) {
                                     </Flight> 
                       
                                 </GridItem>
-                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}>
-                                <Typography color="#f44336" fontWeight="bold" ><h3>$ {totalPrice}</h3></Typography> 
+                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}><Card>
+                                <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {totalPrice}</Typography> </Card>
                               </GridItem>
-                              </div>
+                              <GridItem xs={12} sm={12} style={{textAlign:"center"}}>
+                                  <Button
+                                  color="danger"
+                                  size="lg"
+                                  onClick={(e) => {onSubmit(e);}}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {/* <i className="fas fa-play" /> */}
+                                  Reserve
+                                </Button>
+                              </GridItem>                             
+                               </div>
                               )
                             }
                           })()}

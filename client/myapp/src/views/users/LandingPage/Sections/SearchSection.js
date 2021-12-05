@@ -279,7 +279,7 @@ var returnFlights; // variable to hold the return flights of the search query
             
           }}
           dropdownList={[
-            <Link className={classes.dropdownLink}>
+            <a className={classes.dropdownLink}>
                 <h4>  Adults</h4>  
                <div className="main_div">
         <div className="center_div">
@@ -297,7 +297,7 @@ var returnFlights; // variable to hold the return flights of the search query
             </div>
         </div>
       </div>
-            </Link>,
+            </a>,
             <a
               className={classes.dropdownLink}
             >
