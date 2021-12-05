@@ -12,6 +12,8 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
 // import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import Favorite from "@material-ui/icons/Favorite";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 // core components
 import Header from "./../../components/Header/Header.js";
 import Footer from "./../../components/Footer/Footer.js";
@@ -22,6 +24,16 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
+import Card from "./../../components/Card/Card.js";
+import CardBody from "./../../components/Card/CardBody.js";
+import CardHeader from "./../../components/Card/CardHeader.js";
+import CardFooter from "./../../components/Card/CardFooter.js";
+import CustomInput from "./../../components/CustomInput/CustomInput.js";
+import LockIcon from '@mui/icons-material/Lock';
+
+
+import Email from "@material-ui/icons/Email";
+import People from "@material-ui/icons/People";
 
 
 import Reservation from "./../../components/Reservation/Reservation.js";
@@ -35,9 +47,17 @@ import axios from 'axios';
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  setTimeout(function () {
+    setCardAnimation("");
+  }, 700);
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
+  const [first, setfirst] = useState('');
+  const [last, setlast] = useState('');
+  const [passport, setpassport] = useState('');
+  const [email, setemail] = useState('');
 const [edit, setedit] = useState(false);
   const { ...rest } = props;
   const imageClasses = classNames(
@@ -54,7 +74,7 @@ const [edit, setedit] = useState(false);
  },[]);
 
  useEffect(()=>{
-  axios.get('http://localhost:8000/user//editProfile/')
+  axios.get('http://localhost:8000/user/editProfile/')
 .then(res=> {setProfile(res.data);console.log(res)}).catch(err=>console.log(err))
 
 },[]);
@@ -125,9 +145,49 @@ function onCancel(reserv){
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={20} sm={20} md={20}>
-        
-                          </GridItem>
-                        </GridContainer>
+                         
+                                <Card>
+                                <CardBody>
+                                  <CustomInput
+                                    labelText="Frist Name..."
+                                    id="first"
+                                    formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <CustomInput
+                      labelText="Password"
+                      id="pass"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LockIcon className={classes.inputIconsColor}>
+                            </LockIcon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+                  </CardBody>
+                  
+               
+              </Card>
+            </GridItem>
+          </GridContainer>
+       
                       ),
                     },
                     {
