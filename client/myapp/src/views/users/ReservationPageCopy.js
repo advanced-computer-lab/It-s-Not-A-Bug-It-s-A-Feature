@@ -18,6 +18,7 @@ import AllSeats from "../../components/Flight/AllSeats.js";
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
 import Check from "@material-ui/icons/Check";
 import SeatPicker from 'react-seat-picker';
+// import SeatPicker from "./ReservationPageTany.js";
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -36,6 +37,8 @@ import image from "./../../assets/img/cloud.jpg";
 const useStyles = makeStyles(styles);
 // Sections for this page
 import SearchBar from "./LandingPage/Sections/SearchSection";
+import PropTypes from 'prop-types'
+
 
 //import SectionBasics from "./Sections/SectionBasics.js";
 function createRows(business, econ) {
@@ -155,6 +158,21 @@ export default function Reservation(props) {
     //   const [retCurrBusSeats, setRetCurrBusSeats] = useState(retData.currBusinessSeats);///////////////////////////////////////////
     //   const [retCurrEconSeats, setRetCurrEconSeats] = useState(retData.currBusinessSeats);
 
+    
+    // SeatPicker.propTypes = {
+    //     myId: PropTypes.string,
+    //     addSeatCallback: PropTypes.func,
+    //     alpha: PropTypes.bool,
+    //     visible: PropTypes.bool,
+    //     selectedByDefault: PropTypes.bool,
+    //     removeSeatCallback: PropTypes.func,
+    //     maxReservableSeats: PropTypes.number,
+    //     rows: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+    //       number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    //       isReserved: PropTypes.bool,
+    //       isSelected: PropTypes.bool
+    //     }))).isRequired
+    //   };
     SeatPicker.defaultProps = {
         addSeatCallback: function addSeatCallback(row, number, id, myId) {
             console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
@@ -209,22 +227,23 @@ export default function Reservation(props) {
                     setRetData((prevState => { return { ...prevState, ["currEconomySeats"]: prevState.currEconomySeats + 1 }; }));
                 }
             }
-            if (myId === "dept") {
-                console.log("myID = dept");
+            if (SeatPicker.props.myId === "dept") {
+                console.log("myID is dept");
                 var index = deptSeats.indexOf(number);
                 if (index > -1) {
-                    setDeptData((prevState => prevState.reservedSeats.filter(item => item !== number)));
+                    // setDeptData((prevState => prevState.reservedSeats.filter(item => item !== number)));
+                    setDeptData((prevState => { return { ...prevState, ["reservedSeats"]: prevState.reservedSeats.filter(item => item !== number)}; }));
                     // setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
                 }
                 // setDeptData(prevState => {return {...prevState, ["reservedSeats"]:[...deptData.reservedSeats, number]};});
             }
             else {
-                console.log("myID = return ");
+                console.log("myID is return ");
                 var index = deptSeats.indexOf(number);
 
                 if (index > -1) {
-                    setRetData((prevState => prevState.reservedSeats.filter(item => item !== number)));
-                    // setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
+                    // setRetData((prevState => prevState.reservedSeats.filter(item => item !== number)));
+                    setRetData((prevState => { return { ...prevState, ["reservedSeats"]: prevState.reservedSeats.filter(item => item !== number)}; }));
                 }
                 // console.log(deptData);
                 // setRetData(prevState => {return {...prevState, ["reservedSeats"]:[...retData.reservedSeats, number]};});
@@ -234,52 +253,7 @@ export default function Reservation(props) {
         maxReservableSeats: 0
     };
 
-    //   SeatPicker.defaultProps = {
-
-    //     removeSeatCallback: function removeSeatCallback(row, number, id) {
-    //       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-    //     //   if (cabin === "Business" || cabin ==="business" ) {
-    //     //       if(props.myId === "dept"){
-    //     //         // setDeptData( currBusinessSeats+ 1);
-    //     //         setDeptData((prevState => {return {...prevState,["currBusinessSeats"]: currBusinessSeats +1};}));
-    //     //       }
-    //     //       else{
-    //     //           setRetData((prevState => {return {...prevState,["currBusinessSeats"]: currBusinessSeats +1};}));
-    //     //       }
-    //     //   }
-    //     //   else {
-    //     //     if(props.myId === "dept"){
-    //     //         // setDeptData( currBusinessSeats+ 1);
-    //     //         setDeptData((prevState => {return {...prevState,["currEconomySeats"]: currEconomySeats +1};}));
-    //     //       }
-    //     //       else{
-    //     //           setRetData((prevState => {return {...prevState,["currEconomySeats"]: currEconomySeats +1};}));
-    //     //       }
-    //           //IF COND HENAAAAAA
-    //         // setCurrEconSeats( currEconSeats + 1);
-    //       }
-    // //  BRING THIS PART BACK
-    //     //   if(props.myId === "dept"){
-    //     //   var index = deptSeats.indexOf(number);
-    //     //   if (index > -1) {
-    //     //     setDeptData((prevState => prevState.reservedSeats.filter(item => item !== number)));
-    //     //     // setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
-    //     //   }
-    //     // }
-    //     //   else{
-    //     //     var index = retSeats.indexOf(number);
-    //     //   if (index > -1) {
-    //     //     setRetData((prevState => prevState.reservedSeats.filter(item => item !== number)));
-    //     //     // setRetSeats(prevRetSeats => prevRetSeats.filter(item => item !== number));
-    //     //   }
-    //     //   }
-    //     //................................................
-    //     //   console.log(currBusSeats);
-    //     //   console.log(currEconSeats);
-    //     //   console.log(deptSeats);
-    //     //   console.log(retSeats);
-    //     // },
-    //   };
+    
     //........................
 
     const onSubmitRet = (e) =>{

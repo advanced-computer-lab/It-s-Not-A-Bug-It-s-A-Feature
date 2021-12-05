@@ -81,13 +81,14 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
       + await calculatePrice(arrFlight, seatClass, passengers);
 
 
-    try {
-      if (passengers !== deptSeats.length || passengers !== arrSeats.length)
-        throw 'number of passengers does not match number of seats';
-    } catch (error) {
-      console.error(error);
+    // try {
+    //   // if (passengers !== deptSeats.length || passengers !== arrSeats.length)
+    //   //   throw 'number of passengers does not match number of seats';
+    // } 
+    // catch (error) {
+    //   console.error(error);
 
-    }
+    // }
     const newRes = new Reservation({
       reservationID, userID, adultsNo, childrenNo, seatClass,
       deptFlight, arrFlight, deptSeats, arrSeats, price

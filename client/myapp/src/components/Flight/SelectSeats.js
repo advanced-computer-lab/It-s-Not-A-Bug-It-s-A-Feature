@@ -62,12 +62,15 @@ export default function Flight(props) {
       else {
         setCurrEconSeats(currEconSeats -1);
       }
-      if( !isReturn){
-      setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
-      }
-      else{
-        setRetSeats(prevRetSeats => [...prevRetSeats, number]);
-      }
+      // if( !isReturn){ 
+        props.callback(prevState => { return { ...prevState, ["reservedSeats"]: [...prevState.reservedSeats, number] }; });
+      // setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
+      // }
+      // else{
+      //   // setRetData(prevState => { return { ...prevState, ["reservedSeats"]: [...retData.reservedSeats, number] }; });
+      //   props.callback(prevState => { return { ...prevState, ["reservedSeats"]: [...prevState.reservedSeats, number] }; });
+      //   setRetSeats(prevRetSeats => [...prevRetSeats, number]);
+      // }
       console.log(currBusSeats);
       console.log(currEconSeats);
       console.log(deptSeats);
@@ -86,6 +89,7 @@ export default function Flight(props) {
       var index = deptSeats.indexOf(number);
       if (index > -1) {
         setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
+        console.log("set sel hena");
       }
     }
       else{

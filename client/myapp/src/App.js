@@ -9,7 +9,9 @@ import  Login from './views/users/login.js';
 import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
 import  SearchFlight from './views/users/SearchFlight.js';
-import  ReserveFlight from './views/users/ReservationPageCopy.js';
+import  ReserveFlight from './views/users/ReservationPage.js';
+import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
+import  retReserveFlight from './views/users/ReservationRetSeats.js';
 
 
 
@@ -37,12 +39,14 @@ function App() {
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
-           <Route path ={"/reserve"} component={ReserveFlight}></Route>
+           {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>
            <Route path='/admin/editFlight/:id' component={EditFlight} />
            <Route path ={"/admin/search"} component={Search}/>
+           <Route path ={"/reserveDept"} component={deptReserveFlight}/>
+           <Route path ={"/reserveRet"} component={retReserveFlight}/>
          </Router> 
          </ThemeProvider>
 

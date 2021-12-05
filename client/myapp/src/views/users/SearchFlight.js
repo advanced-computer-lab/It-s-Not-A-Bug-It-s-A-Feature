@@ -113,7 +113,7 @@ export default function SearchFlight(props) {
 
   const onSubmit = () => {
     history.push({
-      pathname: "/reserve",
+      pathname: "/reserveDept",
       state: {
         flight: selectedDepart,
         ReturnFlight: selectedReturn,

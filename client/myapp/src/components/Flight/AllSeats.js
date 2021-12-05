@@ -41,8 +41,8 @@ export default function AllSeats(props) {
         reservedSeats: []
     });
     const [selDeptSeats, setSelDeptSeats] = useState([]);
-    const [selRetSeats, setSelRetSeats] = useState([]);
-
+    
+    
     useEffect(() => {
         axios.get('http://localhost:8000/admin/searchFlights', {
             params:
@@ -90,11 +90,12 @@ export default function AllSeats(props) {
 
     useEffect(() => {
         console.log("all seats - dept seats" + selDeptSeats);
-    }, [selDeptSeats, selRetSeats]);
+        console.log("selected seats" + selDeptSeats);
+    }, [selDeptSeats]);
 
-    const handleChange = e => setSelDeptSeats(e.target.deptSeats);
+    // const handleChange = e => setSelDeptSeats(e.target.deptSeats);
 
-    console.log("all seats - dept seats" + selDeptSeats);
+    // console.log("all seats - dept seats" + selDeptSeats);
     // const onSubmit = () => {
 
     //     axios.post('http://localhost:8000/user/res', {
@@ -147,7 +148,7 @@ export default function AllSeats(props) {
                             type={type}
                             passengers={passengers}
                             isReturn="false"
-                            onChange={handleChange} />
+                            callback={setSelDeptSeats} />
                     </GridItem>
                     <GridItem xs={12} sm={12}>
 
@@ -161,7 +162,7 @@ export default function AllSeats(props) {
                             type={type}
                             passengers={passengers}
                             isReturn="true"
-                            onChange={handleChange} />
+                             />
                     </GridItem>
                 </Box>
             }
