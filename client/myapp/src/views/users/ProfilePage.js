@@ -37,7 +37,7 @@ import People from "@material-ui/icons/People";
 
 
 import Reservation from "./../../components/Reservation/Reservation.js";
-import profile from "./../../assets/img/faces/iman.jpg";
+import profile from "./../../assets/img/faces/michael.jpg";
 
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -122,7 +122,7 @@ function onCancel(reserv){
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Iman Osama</h3>
+                    <h3 className={classes.title}>Michael Tito</h3>
                     <h6>Software Engineer</h6>
                   </div>
                 </div>

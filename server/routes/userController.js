@@ -10,7 +10,7 @@ const { Flight } = require('@material-ui/icons');
 var loggedIn = true;
 
 // TODO: this variable is to be filled when the user logs in
-var curUserId = "619fd0f4b6432ae913f8784a";
+var curUserId = "61abf941d37940fe2e05d678";
 
 // transporter for the refund email 
 let transporter = nodemailer.createTransport({
