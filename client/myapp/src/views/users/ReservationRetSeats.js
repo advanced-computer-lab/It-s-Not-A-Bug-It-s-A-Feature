@@ -75,7 +75,7 @@ export default function Reservation(props) {
     });
     const [reservedSeats3, setReservedSeats3] = useState([]);
 
-    const price =(type=="Business")? passengers*(key.flight.businessPrice+key.ReturnFlight.businessPrice):passengers*(key.flight.economyPrice+key.ReturnFlight.economyPrice);
+    const price =(cabin=="Business")? passengers*(key.flight.businessPrice+key.ReturnFlight.businessPrice):passengers*(key.flight.economyPrice+key.ReturnFlight.economyPrice);
 
     // state: {
     //     flight: key.flight,
