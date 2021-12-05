@@ -24,26 +24,21 @@ import Parallax from "./../../components/Parallax/Parallax.js";
 
 
 
-import Reservation from "./../../components/Flight/Flight.js";
+import Reservation from "./../../components/Reservation/Reservation.js";
 import profile from "./../../assets/img/faces/christian.jpg";
 
-import studio1 from "./../../assets/img/examples/studio-1.jpg";
-import studio2 from "./../../assets/img/examples/studio-2.jpg";
-import studio3 from "./../../assets/img/examples/studio-3.jpg";
-import studio4 from "./../../assets/img/examples/studio-4.jpg";
-import studio5 from "./../../assets/img/examples/studio-5.jpg";
-import work1 from "./../../assets/img/examples/olu-eletu.jpg";
-import work2 from "./../../assets/img/examples/clem-onojeghuo.jpg";
-import work3 from "./../../assets/img/examples/cynthia-del-rio.jpg";
-import work4 from "./../../assets/img/examples/mariya-georgieva.jpg";
-import work5 from "./../../assets/img/examples/clem-onojegaw.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
 
+import {useState, useEffect} from 'react';
+import axios from 'axios';
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
   const classes = useStyles();
+  const [MyReservation, setMyReservation] = useState([]);
+  const [Profile, setProfile] = useState([]);
+
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -51,6 +46,22 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/user/myReservations')
+  .then(res=> {setMyReservation(res.data);console.log(res)}).catch(err=>console.log(err))
+  
+ },[]);
+
+ useEffect(()=>{
+  axios.get('http://localhost:8000/user//editProfile/:id')
+.then(res=> {setProfile(res.data);console.log(res)}).catch(err=>console.log(err))
+
+},[]);
+
+const onCancel= (reserv)=>{
+  
+ }
   return (
     <div>
       <Header
@@ -124,18 +135,35 @@ export default function ProfilePage(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={20} sm={20} md={20}>
-
-                          <Reservation departFlight={{
-      flightNo:"45",
-      economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
-      departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
-    }}
-            cabin ="business"
-            count ="5"
-            />
+                          {MyReservation.map((curr)=>(
+                               
+                              <div>     
+                              <GridItem xs={12} sm={10}> 
+                             
+                             {/* <Reservation res={curr}/> */}
+                                 
+                                </GridItem>
+                                <GridItem xs={12} sm={2}> 
+                             
+                                <Button 
+                                  color = "warning"
+                                  // color="transparent"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {onCancel(curr);
+                                  }}
+                                  >Cancel Reservation</Button>
+                                    
+                                   </GridItem>
+                                   </div>
+                               
+                            ))}
+                         
                           
-                          </GridItem>
                         </GridContainer>
                       ),
                     },

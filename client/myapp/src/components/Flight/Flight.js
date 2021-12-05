@@ -39,7 +39,7 @@ export default function Flight(props) {
   const flight =props.flight;
     const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
     const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
-    const duration =Math.ceil((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime())/(1000*60));
+    const duration =Math.ceil(Math.abs((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime()))/(1000*60));
     const durationHour = Math.ceil(duration /60);
     var durationMin = Math.ceil(duration %60)+"M";
     if(durationMin==="0M")durationMin ="";
@@ -77,13 +77,24 @@ export default function Flight(props) {
                      <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
                       </GridItem>
                       <GridItem  xs={12} sm={3} >
-                        <Grid  container direction="row" justifyContent="space-around" alignItems="center">
-                        <Grid item xs={9}><Typography>---------------</Typography> </Grid>
+                       {res&& <Grid  container direction="row" justifyContent="space-around" alignItems="center">
+                       
+                         
                         <Grid item xs><Typography>
+                        <FlightIcon style={{ transform: 'rotate(270deg)', fontSize:18,lineHeight:0}}/>
+                        </Typography></Grid>
+                        <Grid item xs={9}><Typography>---------------</Typography> </Grid>
+                          
+                        
+                        </Grid>}
+                        {!res &&  <Grid  container direction="row" justifyContent="space-around" alignItems="center">
+                      <Grid item xs={9}><Typography>---------------</Typography> </Grid>
+                       <Grid item xs><Typography>
                         <FlightIcon style={{ transform: 'rotate(90deg)', fontSize:18,lineHeight:0}}/>
-                          </Typography> 
-                        </Grid>
-                        </Grid>
+                        </Typography></Grid>
+                       </Grid>
+
+                        }
                         
                         <p style ={{textAlign:"center"}}> {durationHour}H {durationMin}</p>
                                               </GridItem> 

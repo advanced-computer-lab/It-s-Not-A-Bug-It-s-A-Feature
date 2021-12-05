@@ -32,8 +32,8 @@ import React from 'react'
 import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
-export default function Flight(props) {
-
+export default function Reservation(props) {
+console.log(props);
 
     const classes = useStyles();
     const styleTime = {
@@ -56,10 +56,13 @@ export default function Flight(props) {
                 <form className={classes.form} >
                   <CardBody>
                   <Flight
-                  flight={props.departFlight.value}
+                  flight={props.departFlight}
                   type={props.cabin}
                   Number={props.count}
                   ></Flight>
+                  {/* <Flight>
+                    
+                  </Flight> */}
                    
                     </CardBody>
                 </form>
