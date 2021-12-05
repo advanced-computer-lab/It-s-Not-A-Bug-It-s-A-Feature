@@ -54,7 +54,7 @@ export default function ProfilePage(props) {
  },[]);
 
  useEffect(()=>{
-  axios.get('http://localhost:8000/user//editProfile/:id')
+  axios.get('http://localhost:8000/user//editProfile/')
 .then(res=> {setProfile(res.data);console.log(res)}).catch(err=>console.log(err))
 
 },[]);
