@@ -1,9 +1,22 @@
 var router = require('express').Router();
 const Flights = require('../models/Flights.js');
+const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
+var nodemailer = require('nodemailer');
 
-
+// transporter for sending emails 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+    clientId: process.env.OAUTH_CLIENTID,
+    clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.OAUTH_REFRESH_TOKEN
+  }
+});
 
 router.route('/').get((req, res) => {
     res.status(200).send("Hello Admin!");
@@ -16,10 +29,18 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).send('Error: '+err));
   });
 
+    //for testing to be removed
+    router.route('/allUsers').get((req, res) => {
+      User.find()
+      .then(user => res.send(user))
+      .catch(err => res.status(400).send('Error: '+err));
+    });
+
 
 
   router.route('/createFlight').post((req, res) => {
     console.log(req.body);
+    console.log("abt to create new flight");
     const flightNo = Number(req.body.flightNo);
     const departureDate = Date.parse(req.body.departureDate); 
     const arrivalDate = Date.parse(req.body.arrivalDate); 
@@ -29,14 +50,26 @@ router.route('/').get((req, res) => {
     const departureAirport = req.body.departureAirport; 
     const departureTerminal = req.body.departureTerminal; 
     const arrivalTerminal = req.body.arrivalTerminal; 
+    const economyBaggage = Number(req.body.economyBaggage);
+    const businessBaggage = Number(req.body.businessBaggage);
+
+    const currBusinessSeats = businessSeats;
+    const currEconomySeats = economySeats;
+    const businessPrice = Number(req.body.businessPrice); 
+    const economyPrice = Number(req.body.economyPrice); 
+    const reservedSeats = [];
 
     const newFlight = new Flights({flightNo,departureDate,arrivalDate,economySeats
-      ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal});
+      ,businessSeats,arrivalAirport,departureAirport,departureTerminal,arrivalTerminal,
+          currBusinessSeats,currEconomySeats,businessPrice, economyPrice, economyBaggage, businessBaggage, reservedSeats});
 
     newFlight.save()
     .then(()=>res.send('Flight Added'))
     .catch(err => res.status(400).send('Error: '+err));  
+
   });
+
+  
   function dateQuery(date,type){  
     var result=JSON.parse('{}');
     var date1=new Date(date.substring(0,10)+"T00:00:00.000Z");
@@ -81,35 +114,96 @@ router.route('/').get((req, res) => {
   if(rq.departureDate != ''){     
     if(rq.departureTime!='')  //time specified  
       query.push(timeQuery(rq.departureDate,rq.departureTime,'departureDate'));
-   else
+    else
     query.push(dateQuery(rq.departureDate,'departureDate'));
   }
     var anded = {$and : query};
     console.log(query);
 
-        if(query.length>0)
-           Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal').then( data => res.send(data));
-});
+    if(query.length>0)
+        Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats reservedSeats').then( data => res.send(data));
+      });
 
-router.route('/deleteFlight/:id').delete((req,res)=>{
+router.route('/deleteFlight/:id').delete((req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
-  Flights.findByIdAndRemove(id, req.body)
-        .then((result)=>{
-          res.send("Done!");
-        })
-        .catch(err => res.status(404).json({ error: 'No such flight' }));
+  deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
+  
+  // send emails using returned array from function above
+  Flights.findByIdAndRemove(id, req.body) 
+       .then((result)=>{
+         res.send("Flight Deleted!");
+       })
+       .catch(err => res.status(404).json({ error: 'No such flight' }));
+  
+  var emailText = 'Hi!\n The flight with the following ID ' + id + 
+  ' has been canceled. Your reservation on this flight has been canceled, and the reservation price has been refunded to your account.';
+  console.log("emails");
+  var userEmails=emails(id);
+    userEmails.forEach(element => {
+      sendEmail(element, emailText);
+    });
 });
+
+async function deleteResForFlight(FlightID){
+  var query =[];
+  query.push({'deptFlight':FlightID});
+  query.push({'arrFlight':FlightID});
+  console.log(query);
+
+  console.log({$or : query});
+  var ResID;
+
+  await Reservation.find({$or : query},'_id').then(ResIDs=>
+  ResID=ResIDs);
+  console.log("ID of reservations to be deleted:");
+  console.log(ResID);
+  console.log({$or:ResID});
+  if(ResID.length>0)
+    await Reservation.deleteMany({$or:ResID}).then(console.log("deleted corresponding to flight reservations")); 
+  }
+
+  async function emails(FlightID){
+    var query =[];
+    query.push({'deptFlight':FlightID});
+    query.push({'arrFlight':FlightID});
+    console.log(query);
+    console.log({$or : query});
+    var userID;
+    await Reservation.find({$or : query},{'userID':1,_id:0}).then(userIDs=>
+      userID=userIDs);
+      console.log("userIDs that need to be informed");
+      //console.log(userID);
+      var UID=[];
+      for(var i = 0; i < userID.length; i++) {    
+        UID.push({});
+        UID[i]['_id']=userID[i]['userID'];
+    }
+    console.log(UID);
+    var res;
+      if(userID.length>0)
+        await User.find({$or:UID},{'email':1,_id:0}).then(result =>  
+      res=result);
+      console.log(res);
+      var emails=[];
+      for(var i = 0; i < res.length; i++) {    
+        emails.push(res[i]['email']);
+      
+      console.log(emails);
+      return emails;
+      }
+    }
+
 
 router.route('/editFlight/:id').get((req, res) => {
   Flights.findById(req.params.id)
   .then(flight => res.send(flight))
   .catch(err => res.status(400).send('Error: '+err));
- 
 });
 
 router.route('/editFlight/:id').post(async (req, res) => {
-  Flights.findByIdAndUpdate({ _id: (req.params.id) },
+  var id=req.params.id;
+  Flights.findByIdAndUpdate({ _id: (id) },
     {
       departureDate: Date.parse(req.body.departureDate),
       flightNo: Number(req.body.flightNo),
@@ -119,10 +213,40 @@ router.route('/editFlight/:id').post(async (req, res) => {
       arrivalAirport: req.body.arrivalAirport,
       departureAirport: req.body.departureAirport,
       departureTerminal: req.body.departureTerminal,
-      arrivalTerminal: req.body.arrivalTerminal
+      arrivalTerminal: req.body.arrivalTerminal,
+      economyBaggage: Number(req.body.economyBaggage),
+      businessBaggage: Number(req.body.businessBaggage)
     })
     .then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: ' + err));
+
+    //TODO notify passengers via email
+    var userEmails=emails(id);
+    var emailText = 'Hi!\n The flight with the following ID ' + id + ' has been updated. Please re-check the details of your reservation.';
+
+    userEmails.forEach(element => {
+      sendEmail(element, emailText);
+    });
+
 });
 
+
+function sendEmail(email, emailText){
+  let userEmail = email;
+  
+  let mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: userEmail,
+    subject: 'Reservation Canceled',
+    text: emailText
+  };
+
+  transporter.sendMail(mailOptions, function(err, data) {
+    if (err) {
+      console.log("Error " + err);
+    } else {
+      console.log("Email sent successfully");
+    }
+  });
+}
   module.exports = router;

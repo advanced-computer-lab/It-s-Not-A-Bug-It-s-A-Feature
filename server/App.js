@@ -26,6 +26,9 @@ app.use(express.urlencoded({extended: false}));
 const usersRouter = require('./routes/adminController.js');
 app.use('/Admin', usersRouter);
 
+const usersRouter2 = require('./routes/userController.js');
+app.use('/user', usersRouter2);
+
 const User = require('./models/User.js');
 // #Importing the userController
 
@@ -72,6 +75,34 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     })
   });
 
+  
+  app.get('/addUser', (req, res) => { //just for now
+    const newUser = new User({
+      firstName: 'Eman',
+      lastName: 'Osama',
+      address: 'Cairo',
+      countryCode:11587 ,
+      phoneNo: 01005257777,
+      age: 21,
+      username:'eman123',
+      password:'123',
+      nationality:'Egyptian',
+      email:'eman.osama',
+      creditCardNo:1234,
+      passportNo: 5678,
+      isAdmin:false
+      
+    })
+    newUser.save(function(err,user){
+      if(err){
+        console.log(err);
+      }
+      else{
+        res.status(200).send(user)
+        console.log('Done!')
+      }
+    })
+  });
  
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
