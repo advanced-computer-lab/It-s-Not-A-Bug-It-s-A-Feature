@@ -24,6 +24,10 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
+
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+
 import Card from "./../../components/Card/Card.js";
 import CardBody from "./../../components/Card/CardBody.js";
 import CardHeader from "./../../components/Card/CardHeader.js";
@@ -54,11 +58,10 @@ export default function ProfilePage(props) {
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
-  const [first, setfirst] = useState('');
-  const [last, setlast] = useState('');
-  const [passport, setpassport] = useState('');
-  const [email, setemail] = useState('');
-const [edit, setedit] = useState(false);
+  const [ProfileEdit, setProfileEdit] = useState([]);
+
+
+const [edit, setedit] = useState(null);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -69,13 +72,15 @@ const [edit, setedit] = useState(false);
 
   useEffect(()=>{
     axios.get('http://localhost:8000/user/myReservations')
-  .then(res=> {setMyReservation(res.data);console.log(res)}).catch(err=>console.log(err))
+  .then(res=> {setMyReservation(res.data);console.log(res)}).catch(err=>console.log(err));
   
  },[]);
 
  useEffect(()=>{
   axios.get('http://localhost:8000/user/editProfile/')
-.then(res=> {setProfile(res.data);console.log(res)}).catch(err=>console.log(err))
+.then(res=> {setProfile(res.data);console.log(res);
+setProfileEdit(res.data);}
+).catch(err=>console.log(err));
 
 },[]);
 
@@ -91,8 +96,14 @@ function onCancel(reserv){
     })
   
   }
-
   
+  
+}
+
+const onEdit= ()=>{
+  axios.post('http://localhost:8000/user/editProfile/',ProfileEdit)
+.then(res=> {setProfile(ProfileEdit);setedit(null);}
+).catch(err=>console.log(err));
 }
   return (
     <div>
@@ -122,7 +133,7 @@ function onCancel(reserv){
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Michael Tito</h3>
+                    <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
                     <h6>Software Engineer</h6>
                   </div>
                 </div>
@@ -143,50 +154,166 @@ function onCancel(reserv){
                       tabButton: "About",
                       tabIcon: Info,
                       tabContent: (
-                        <GridContainer justify="center">
-                          <GridItem xs={20} sm={20} md={20}>
+                       <div>
+                          
+                         {!edit &&
                          
-                                <Card>
-                                <CardBody>
-                                  <CustomInput
-                                    labelText="Frist Name..."
-                                    id="first"
-                                    formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "text",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <People className={classes.inputIconsColor} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    
-                    <CustomInput
-                      labelText="Password"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true,
-                      }}
-                      inputProps={{
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <LockIcon className={classes.inputIconsColor}>
-                            </LockIcon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
-                      }}
-                    />
-                  </CardBody>
-                  
-               
-              </Card>
-            </GridItem>
-          </GridContainer>
+                         
+                          <GridContainer justify="flex-start" justifyContent="flex-start" alignItems="left">
+                             <GridItem xs={12} sm={12}  justifyContent="flex-start" alignItems="left">
+                            <b>UserName : </b> {Profile.username}
+                            </GridItem>
+                          <GridItem xs={12} sm={12}  >
+                            <b>First Name :</b> {Profile.firstName}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Last Name : </b> {Profile.lastName}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Email : </b> {Profile.email}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Phone Number : </b> {Profile.phoneNo}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>CreditCard Number : </b> {Profile.creditCardNo}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Passport Number : </b> {Profile.passportNo}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Age : </b> {Profile.age}
+                            </GridItem>
+                            <GridItem xs={12} sm={12}  >
+                            <b>Address : </b> {Profile.address}
+                            </GridItem>
+
+                            <GridItem xs={12} sm={12}  >
+                              <br/>
+                              <Button 
+                                  color = "warning"
+                                  // color="transparent"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {setedit(true);
+                                  }}
+                                  >Edit </Button>
+                            </GridItem>
+                          </GridContainer>
+
+                        
+                         }
+                         {edit &&
+                        <GridContainer justify="center" >
+                          
+                          <GridItem xs={12} sm={12}>
+                          
+                <form className={classes.form}>
+                          <CardBody>
+                          <TextField
+                          
+                            label="First Name..."
+                            id="firstName"
+                            name="firstName"
+                            variant="standard"
+                            value={ProfileEdit.firstName}
+                            fullWidth
+                            onChange=
+                            {(event) =>  {
+                              const {name, value} = event.target;
+                            setProfileEdit((prevState => {return {...prevState,[name]: value};}));
+                          }}
+                          />
+                          <br/><br/>
+                          <TextField
+                          
+                              label="Last Name"
+                              id="lastName"
+                              name="lastName"
+                              variant="standard"
+                              value={ProfileEdit.lastName}
+                              fullWidth
+                              onChange=
+                              {(event) =>  {
+                                const {name, value} = event.target;
+                              setProfileEdit((prevState => {return {...prevState,[name]: value};}));
+                            }}
+                            />
+<br/><br/>
+                          
+                          <TextField
+                          
+                              label="Email"
+                              id="email"
+                              name="email"
+                              variant="standard"
+                              value={ProfileEdit.email}
+                              fullWidth
+                              onChange=
+                              {(event) =>  {
+                                const {name, value} = event.target;
+                              setProfileEdit((prevState => {return {...prevState,[name]: value};}));
+                            }}
+                            />
+                            <br/><br/>
+                         
+                          <TextField
+                          
+                              label="Passport Number"
+                              id="passportNo"
+                              name="passportNo"
+                              variant="standard"
+                              value={ProfileEdit.passportNo}
+                              fullWidth
+                              onChange=
+                              {(event) =>  {
+                                const {name, value} = event.target;
+                              setProfileEdit((prevState => {return {...prevState,[name]: value};}));
+                            }}
+                            />
+                            <br/><br/>
+                            <Button alignItems="right"
+                                  color = "transparent"
+                                  // color="transparent"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => { setedit(null);
+                                  }}
+                                  >Cancel </Button>
+                            
+                            <Button 
+                                  color = "warning"
+                                  // color="transparent"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {onEdit(e);
+                                  }}
+                                  >Save </Button>
+                                  
+
+                                  
+                                 
+                            </CardBody>
+                            </form>
+                            
+                            
+                          </GridItem>
+                          </GridContainer>
+                         }
+                           </div>
+                           
        
                       ),
                     },
@@ -238,27 +365,6 @@ function onCancel(reserv){
                         </GridContainer>
                       ),
                     },
-                    // {
-    //                   tabButton: "Past Reservations",
-    //                   tabIcon: FlightLandIcon,
-    //                   tabContent: (
-    //                     <GridContainer justify="center">
-    //                       <GridItem xs={20} sm={20} md={20}>
-
-    //                       <Reservation flight={{
-    //   flightNo:"45",
-    //   economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
-    //   departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
-    // }}
-    //         type ="business"
-    //         Number ="5"
-    //         />
-                           
-                           
-    //                       </GridItem>
-    //                     </GridContainer>
-    //                   ),
-    //                 }
                     ,
                   ]}
                 />

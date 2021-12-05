@@ -143,6 +143,8 @@ router.route('/myReservations').get(async (req,res)=>{
         if(i === allUserReservations.length-1)
           res.send(userRes);
       }
+      if(allUserReservations.length == 0)
+        res.send([]);
     })
     .catch(err => res.status(400).send('Error: ' + err));
   }
