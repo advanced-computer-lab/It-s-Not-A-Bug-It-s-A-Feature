@@ -38,7 +38,7 @@ export default function ProfilePage(props) {
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
-
+const [edit, setedit] = useState(false);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -125,7 +125,7 @@ function onCancel(reserv){
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={20} sm={20} md={20}>
-        ////     details of our current user 
+        
                           </GridItem>
                         </GridContainer>
                       ),
@@ -152,7 +152,6 @@ function onCancel(reserv){
                              adult={curr.reservation.adultsNo}
                              ></Reservation>
                             
-                             {/* <Reservation res={curr}/> */}
                                  
                                 </GridItem>
                                 <GridItem xs={12} sm={12} style={{textAlign:"center"}}> 
