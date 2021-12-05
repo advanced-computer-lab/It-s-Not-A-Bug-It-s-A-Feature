@@ -35,6 +35,9 @@ import FlightLandIcon from '@material-ui/icons/FlightLand';
 import CheckIcon from '@mui/icons-material/Check';
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
 
+import ReservationCard from "./../../components/Reservation/Reservation.js";
+
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -56,7 +59,7 @@ import SearchBar from "./LandingPage/Sections/SearchSection";
 export default function Reservation(props) {
   const location = useLocation();
   const key = location.state;
-
+  
 
   const classes = useStyles();
   const { ...rest } = props;
@@ -67,6 +70,10 @@ export default function Reservation(props) {
     const adultsNo = key.adultsNo;
     const [reserved, setReserved] = useState(false);
     const [resID, setResId] = useState(15);
+
+    const price =(type=="Business")? passengers*(key.flight.businessPrice+key.ReturnFlight.businessPrice):passengers*(key.flight.economyPrice+key.ReturnFlight.economyPrice);
+
+
     // const deptFlight = Number(props.deptFlight);
     // const retFlight = Number(props.retFlight);
     // const [loading, setLoading] = useState(true);
@@ -281,6 +288,21 @@ useEffect(() => {
                           icon={Check}
                         /> : null}
                       <GridContainer justify="center">
+                        <GridItem >
+                          
+                          <ReservationCard
+                          adult= {key.adultsNo}
+                          child={ key.childrenNo}
+                          seatClass={ key.cabin}
+                          deptFlight={ key.flight}
+                          arrFlight={key.ReturnFlight}
+                          deptSeats={ key.deptSeats}
+                          arrSeats={reservedSeats3}
+                          totalPrice={price}
+                          >
+
+                          </ReservationCard>
+                        </GridItem>
                         
                         {/* check chosenseats == passengers */}
                         <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
