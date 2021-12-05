@@ -76,9 +76,13 @@ export default function book() {
         <AllSeats
         type = "Business"
         passengers = "3"
-        deptFlight = "75"
-        retFlight = "775"
+        deptFlight = "215"
+        retFlight = "363"
+        adultsNo = "2"
+        childrenNo="1"
+        resID="199"
         />
+        
         
         </div>
     )

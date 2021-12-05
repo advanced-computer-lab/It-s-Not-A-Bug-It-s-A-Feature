@@ -15,11 +15,14 @@ import { useHistory } from 'react-router-dom';
 
 import SeatPicker from 'react-seat-picker';
 
-//TODO - RESERVED seat should be disabled
+//TODO - RESERVED seats should be disabled
 //TODO - make sure they're reserving in the right cabin/class
+//handle currbusiness and econ seats - maybe in parent component
+//get the dept and arr selected seats to ust in post request
 
 
 function createRows(business, econ) {
+  // console.log("creating rows");
   const allSeats = business + econ;
   var res = [...Array(Math.ceil(allSeats / 6))].map(x => Array(6).fill(0));
   for (let k = 1, i = 0; i < res.length; i++) {
@@ -37,85 +40,102 @@ function createRows(business, econ) {
 
 
 export default function Flight(props) {
-  const [loading, setLoading] = useState(false);
-  const [currBusSeats, setCurrBusSeats] = useState((Number)(props.currBusinessSeats));
-  const [currEconSeats, setCurrEconSeats] = useState((Number)(props.currEconomySeats));
+  // const [loading, setLoading] = useState(false);
+  const [currBusSeats, setCurrBusSeats] = useState(Number(props.currBusinessSeats));
+  const [currEconSeats, setCurrEconSeats] = useState(Number(props.currEconomySeats));
   const [deptSeats, setDeptSeats] = useState([]);
-  // const [retSeats, setRetSeats] = useState([]);
+  const [retSeats, setRetSeats] = useState([]);
   // let chosenSeats = [];
   const cabin = props.type;
-  const passengers = props.Number;
+  const passengers = props.passengers;
   const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats));
-  const isReturn = props.isReturn ==="true";
+  const isReturn = props.isReturn === "true";
+
+  // console.log("hello from select seats class");
 
   SeatPicker.defaultProps = {
     addSeatCallback: function addSeatCallback(row, number, id) {
       console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-      if (cabin === "Business") {
+      if (cabin === "Business"|| cabin ==="business") {
         setCurrBusSeats(prevCurrBusSeats => prevCurrBusSeats + 1);
       }
       else {
         setCurrEconSeats(prevCurrEconSeats => prevCurrEconSeats + 1);
       }
-      // if( === "dept"){
+      if( !isReturn){
       setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
-      // }
-      // else{
-      //   setRetSeats(prevRetSeats => [...prevRetSeats, number]);
-      // }
-      console.log(currBusSeats);
+      }
+      else{
+        setRetSeats(prevRetSeats => [...prevRetSeats, number]);
+      }
+      // console.log(currBusSeats);
+      // console.log(currEconSeats);
       console.log(deptSeats);
-      // console.log(retSeats);
+      console.log(retSeats);
     },
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-      if (cabin === "Business") {
+      if (cabin === "Business" || cabin ==="business" ) {
         setCurrBusSeats(prevCurrBusSeats => prevCurrBusSeats - 1);
       }
       else {
         setCurrEconSeats(prevCurrEconSeats => prevCurrEconSeats - 1);
       }
+
+      if(!isReturn){
       var index = deptSeats.indexOf(number);
       if (index > -1) {
         setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
-
+      }
+    }
+      else{
+        var index = retSeats.indexOf(number);
+      if (index > -1) {
+        setRetSeats(prevRetSeats => prevRetSeats.filter(item => item !== number));
+      }
       }
       console.log(currBusSeats);
+      console.log(currEconSeats);
       console.log(deptSeats);
-      // console.log(retSeats);
+      console.log(retSeats);
     },
   };
   let history = useHistory();
   const onSubmit = () => {
-    history.push({
-      pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
-      state: {
-        deptSeats: deptSeats
-        // retSeats: retSeats
-      }
-    });
-  };
+
+    // axios.post('http://localhost:8000/user/res', {
+    //     body:
+    //     {
+    //         resID: Number(props.resID),
+    //         adultsNo: Number(props.adultsNo),
+            
+    //         childrenNo: Number(props.childrenNo),
+    //         seatClass: type,
+    //         deptFlight: deptFlight,
+    //         arrFlight: retFlight,
+    //         deptSeats: deptSeats, //???????
+    //         arrSeats: arrSeats, //??????
+
+
+    //     }
+    // }).then(res => {
+    //     console.log(res.data);
+    // }).catch(err => console.log(err))
+    // history.push({
+    //   pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
+    //   state: {
+    //     deptSeats: ,
+    //     retSeats: retSeats
+    //   }
+    // });
+};
 
   let title, submitButton;
-  if(isReturn){
+  if (isReturn) {
     title = <h4>Choose your seats - return flight</h4>
-    submitButton = <Button
-          color="warning"
-          // color="transparent"
-          size="lg"
-          id="demo-customized-button"
-          aria-controls="demo-customized-menu"
-          aria-haspopup="true"
-          variant="contained"
-          disableElevation
-          onClick={(e) => {
-            onSubmit(e);
-          }}
-        >Next</Button>
   }
-  else{
+  else {
     title = <h4>Choose your seats - departure flight</h4>
-    submitButton = <div></div>
   }
   return (
     <div className="App">
@@ -130,8 +150,21 @@ export default function Flight(props) {
         </div>
       </div>
       <div>
-        
-        {submitButton}
+
+      {/* <Button
+      color="warning"
+      // color="transparent"
+      size="lg"
+      id="demo-customized-button"
+      aria-controls="demo-customized-menu"
+      aria-haspopup="true"
+      variant="contained"
+      disableElevation
+      onClick={(e) => {
+        onSubmit(e);
+      }}
+    >Save</Button> */}
+        {/* {submitButton} */}
       </div>
     </div>
   );

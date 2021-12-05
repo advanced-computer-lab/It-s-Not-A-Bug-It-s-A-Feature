@@ -1,110 +1,188 @@
 import SelectSeats from "./SelectSeats.js";
-// let Flights = require('./../../../server/models/Flights.js');
-
 import axios from 'axios';
-
-
+import { useState, useEffect } from 'react';
 import React from 'react'
+import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
+import Button from "./../../components/CustomButtons/Button.js";
 
-var flightNo = 0, flightNo2 = 0;
-    var economySeats1 = 0, economySeats2 = 0;
-    var businessSeats1 = 0, businessSeats2 = 0;
-    var currBusinessSeats1 = 0, currBusinessSeats2 = 0;
-    var currEconomySeats1 = 0, currEconomySeats2 = 0;
-    var reservedSeats1 = [], reservedSeats2 = 0;
-    let flightInfo;
+// var flightNo = 0, flightNo2 = 0;
+// var economySeats1 = 0, economySeats2 = 0;
+// var businessSeats1 = 0, businessSeats2 = 0;
+// var currBusinessSeats1 = 0, currBusinessSeats2 = 0;
+// var currEconomySeats1 = 0, currEconomySeats2 = 0;
+// var reservedSeats1 = [], reservedSeats2 = 0;
+// let flightInfo;
 
-async function setDeptInfo(deptFlight){
-    //setting dept flight parameters
-    await axios.get('http://localhost:8000/admin/searchFlights', {
-        params:
-        {
-            flightNo: deptFlight,
-            arrivalDate: '',
-            arrivalAirport: '',
-            arrivalTerminal: '',
-            arrivalTime: '',
-            departureDate: '',
-            departureAirport: '',
-            departureTerminal: '',
-            departureTime: ''
+// async function setDeptInfo(deptFlight){
+//     //setting dept flight parameters
 
-        }
-    }).then(res => {
-            // store data in a variable to be later used
-            flightInfo = res.data[0];
-            // flightNo = res.data.flightNo, 
-            economySeats1 = res.data[0].economySeats,
-                businessSeats1 = res.data[0].businessSeats,
-                currBusinessSeats1 = res.data[0].businessSeats,
-                currEconomySeats1 = res.data[0].currEconomySeats,
-                reservedSeats1 = res.data[0].reservedSeats,
-                // console.log(economySeats1),
-                // console.log(businessSeats1),
-                console.log("ana gowwa"),
-            console.log(res.data[0])
-        }).catch(err => console.log(err))
-}
+
+//     // await 
+// }
 
 export default function AllSeats(props) {
     const type = props.type;
     const passengers = Number(props.passengers);
     const deptFlight = Number(props.deptFlight);
     const retFlight = Number(props.retFlight);
+    //these 2 used to create the reservation
+    // const adultsNo = Number(props.adultsNo);
+    // const childrenNo = Number(props.childrenNo);
 
-    
+    const [loading, setLoading] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+    const [deptData, setDeptData] = useState({
+        economySeats: 0,
+        businessSeats: 0,
+        currBusinessSeats: 0,
+        currEconomySeats: 0,
+        reservedSeats: []
+    });
+    const [retData, setRetData] = useState({
+        economySeats: 0,
+        businessSeats: 0,
+        currBusinessSeats: 0,
+        currEconomySeats: 0,
+        reservedSeats: []
+    });
+    const [selDeptSeats, setSelDeptSeats] = useState([]);
+    const [selRetSeats, setSelRetSeats] = useState([]);
 
-    setDeptInfo(deptFlight);
+    useEffect(() => {
+        axios.get('http://localhost:8000/admin/searchFlights', {
+            params:
+            {
+                flightNo: deptFlight,
+                arrivalDate: '',
+                arrivalAirport: '',
+                arrivalTerminal: '',
+                arrivalTime: '',
+                departureDate: '',
+                departureAirport: '',
+                departureTerminal: '',
+                departureTime: ''
 
-    console.log(economySeats1);
-    console.log("ana hena w yarab teshta3'al");
-    // economySeats=flightInfo.economySeats,
-    //     businessSeats=flightInfo.businessSeats,
-    //     currBusinessSeats = flightInfo.businessSeats,
-    //     currEconomySeats = flightInfo.currEconomySeats,
-    //     reservedSeats = flightInfo.reservedSeats
-    // await Flights.findById(deptFligthtId)
-    //   .then(f => flightNo = f.flighNo, 
-    //     economySeats=f.economySeats,
-    //     businessSeats=f.businessSeats,
-    //     currBusinessSeats = f.businessSeats,
-    //     currEconomySeats = f.currEconomySeats,
-    //     reservedSeats = f.reservedSeats)
-    //   .catch();
+            }
+        }).then(res => {
+            setDeptData(res.data[0]);
+            setLoading(false);
+            console.log("ana gowwa depttt");
+            console.log(res.data[0]);
+            console.log(deptData);
+        }).catch(err => console.log(err))
 
-    // //setting return flight parameters
-    //   await Flights.findById(retFlightId)
-    //   .then(f => flightNo2  = f.flighNo, 
-    //     economySeats2 =f.economySeats,
-    //     businessSeats2 =f.businessSeats,
-    //     currBusinessSeats2  = f.businessSeats,
-    //     currEconomySeats2  = f.currEconomySeats,
-    //     reservedSeats2  = f.reservedSeats)
-    //   .catch();
+        axios.get('http://localhost:8000/admin/searchFlights', {
+            params:
+            {
+                flightNo: retFlight,
+                arrivalDate: '',
+                arrivalAirport: '',
+                arrivalTerminal: '',
+                arrivalTime: '',
+                departureDate: '',
+                departureAirport: '',
+                departureTerminal: '',
+                departureTime: ''
+
+            }
+        }).then(res => {
+            setRetData(res.data[0]);
+            setLoading2(false);
+            console.log("ana gowwa returnnnn");
+            console.log(res.data[0]);
+        }).catch(err => console.log(err))
+    }, []);
+
+    useEffect(() => {
+        console.log("all seats - dept seats" + selDeptSeats);
+    },[selDeptSeats,selRetSeats]);
+
+    const handleChange = e => setSelDeptSeats(e.target.deptSeats);
+
+    console.log("all seats - dept seats" + selDeptSeats);
+    // const onSubmit = () => {
+
+    //     axios.post('http://localhost:8000/user/res', {
+    //         body:
+    //         {
+    //             resID: Number(props.resID),
+    //             adultsNo: Number(props.adultsNo),
+                
+    //             childrenNo: Number(props.childrenNo),
+    //             seatClass: type,
+    //             deptFlight: deptFlight,
+    //             arrFlight: retFlight,
+    //             deptSeats: deptSeats, //???????
+    //             arrSeats: arrSeats, //??????
+
+
+    //         }
+    //     }).then(res => {
+    //         console.log(res.data);
+    //     }).catch(err => console.log(err))
+    //     // history.push({
+    //     //   pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
+    //     //   state: {
+    //     //     deptSeats: ,
+    //     //     retSeats: retSeats
+    //     //   }
+    //     // });
+    // };
+    // console.log(deptData);
+    // // console.log(retData);
+    // console.log("ana hena w yarab teshta3'al");
 
     return (
-        <div>
-            <SelectSeats
-                flightNo={deptFlight}
-                economySeats={economySeats1}
-                businessSeats={businessSeats1}
-                currBusinessSeats={currBusinessSeats1}
-                currEconomySeats={currEconomySeats1}
-                reservedSeats={reservedSeats1}
-                type={type}
-                passengers={passengers}
-                isReturn="false" />
+        <div padding="35px">
+            {/* <div>hii {deptData.economySeats}
+                {deptFlight}
+                {deptData.businessSeats}
+                {deptData.currBusinessSeats}
+                {deptData.currEconomySeats}
+                {deptData.reservedSeats}
+                {type}
+                {passengers}</div> */}
 
-            {/* <SelectSeats
-            flightNo = {flightNo2}
-            economySeats = {economySeats2}
-            businessSeats = {businessSeats2}
-            currBusinessSeats = {currBusinessSeats2}
-            currEconomySeats = {currEconomySeats2}
-            reservedSeats = {reservedSeats2}
-            type = {type}
-            Number ={Number}
-            isReturn = "true"/> */}
+            {loading2 ? <CustomLinearProgress color="info" /> :
+                <div>
+                    <SelectSeats
+                        flightNo={deptFlight}
+                        economySeats={deptData.economySeats}
+                        businessSeats={deptData.businessSeats}
+                        currBusinessSeats={deptData.currBusinessSeats}
+                        currEconomySeats={deptData.currEconomySeats}
+                        reservedSeats={deptData.reservedSeats}
+                        type={type}
+                        passengers={passengers}
+                        isReturn="false" 
+                        onChange={handleChange} />
+
+                    <SelectSeats
+                        flightNo={retFlight}
+                        economySeats={retData.economySeats}
+                        businessSeats={retData.businessSeats}
+                        currBusinessSeats={retData.currBusinessSeats}
+                        currEconomySeats={retData.currEconomySeats}
+                        reservedSeats={retData.reservedSeats}
+                        type={type}
+                        passengers={passengers}
+                        isReturn="true" 
+                        onChange={handleChange} />
+                </div>
+            }
+            {/* <Button
+                color="warning"
+                // color="transparent"
+                size="lg"
+                id="demo-customized-button"
+                aria-controls="demo-customized-menu"
+                aria-haspopup="true"
+                variant="contained"
+                disableElevation
+                onClick={(e) => {
+                    onSubmit(e);
+                }}
+            >Save</Button> */}
         </div>
     )
 }
