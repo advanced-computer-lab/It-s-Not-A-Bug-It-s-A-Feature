@@ -17,7 +17,7 @@ import SeatPicker from 'react-seat-picker';
 
 //TODO - RESERVED seats should be disabled
 //TODO - make sure they're reserving in the right cabin/class
-//handle currbusiness and econ seats - maybe in parent component
+//handle currbusiness and econ seats - maybe in parent component - update flight w new values
 //get the dept and arr selected seats to ust in post request
 
 
@@ -57,10 +57,10 @@ export default function Flight(props) {
     addSeatCallback: function addSeatCallback(row, number, id) {
       console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
       if (cabin === "Business"|| cabin ==="business") {
-        setCurrBusSeats(prevCurrBusSeats => prevCurrBusSeats + 1);
+        setCurrBusSeats(currBusinessSeats - 1);
       }
       else {
-        setCurrEconSeats(prevCurrEconSeats => prevCurrEconSeats + 1);
+        setCurrEconSeats(currEconSeats -1);
       }
       if( !isReturn){
       setDeptSeats(prevDeptSeats => [...prevDeptSeats, number]);
@@ -68,18 +68,18 @@ export default function Flight(props) {
       else{
         setRetSeats(prevRetSeats => [...prevRetSeats, number]);
       }
-      // console.log(currBusSeats);
-      // console.log(currEconSeats);
+      console.log(currBusSeats);
+      console.log(currEconSeats);
       console.log(deptSeats);
       console.log(retSeats);
     },
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
       if (cabin === "Business" || cabin ==="business" ) {
-        setCurrBusSeats(prevCurrBusSeats => prevCurrBusSeats - 1);
+        setCurrBusSeats( currBusinessSeats+ 1);
       }
       else {
-        setCurrEconSeats(prevCurrEconSeats => prevCurrEconSeats - 1);
+        setCurrEconSeats( currEconSeats + 1);
       }
 
       if(!isReturn){
@@ -132,10 +132,10 @@ export default function Flight(props) {
 
   let title, submitButton;
   if (isReturn) {
-    title = <h4>Choose your seats - return flight</h4>
+    title = <h4>Return flight</h4>
   }
   else {
-    title = <h4>Choose your seats - departure flight</h4>
+    title = <h4>Departure flight</h4>
   }
   return (
     <div className="App">
