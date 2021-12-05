@@ -55,9 +55,10 @@ console.log(props);
            <Card  maxWidth="sm" >
                 <form className={classes.form} >
                   <CardBody>
+                    {console.log("deptFlight",props.deptFlight)}
                   <Flight
-                  flight={props.departFlight}
-                  type={props.cabin}
+                  flight={props.deptFlight}
+                  type={props.seatClass}
                   Number={props.count}
                   ></Flight>
                   {/* <Flight>

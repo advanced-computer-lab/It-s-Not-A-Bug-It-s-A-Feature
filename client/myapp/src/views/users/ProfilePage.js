@@ -138,12 +138,17 @@ const onCancel= (reserv)=>{
                           {MyReservation.map((curr)=>(
                                
                               <div>     
-                              <GridItem xs={12} sm={10}> 
-                             
+                              <GridItem xs={12} sm={12}> 
+                             <Reservation
+                             deptFlight ={curr.deptFlight}
+                             count ={curr.reservation.adultsNo}
+                             seatClass={curr.reservation.seatClass}
+                             ></Reservation>
+                            
                              {/* <Reservation res={curr}/> */}
                                  
                                 </GridItem>
-                                <GridItem xs={12} sm={2}> 
+                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}> 
                              
                                 <Button 
                                   color = "warning"
