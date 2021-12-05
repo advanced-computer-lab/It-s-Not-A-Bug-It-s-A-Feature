@@ -64,8 +64,8 @@ function onCancel(reserv){
   const resNo =(reserv).reservationID;
   const r = window.confirm("Do you really want to Cancel Reservation "+resNo+" ?"); 
   if(r === true){ 
-    const id = (reserv).id;
-    axios.delete(`http://localhost:8000/user/cancelReservation/${id}`)
+    const id = (reserv)._id;
+    axios.post(`http://localhost:8000/user/cancelReservation/${id}`)
     .then((response) => {
       window.location.reload(true);
     })
@@ -166,7 +166,7 @@ function onCancel(reserv){
                                   aria-haspopup="true"
                                   variant="contained"
                                   // disableElevation
-                                  onClick={(e) => {onCancel(curr);
+                                  onClick={(e) => {onCancel(curr.reservation);
                                   }}
                                   >Cancel Reservation </Button>
                                    </GridItem>
