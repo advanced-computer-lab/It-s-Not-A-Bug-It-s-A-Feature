@@ -42,8 +42,17 @@ export default function Flight(props) {
   var child =props.child;
 if(child=='0')child = null;
   const flight =props.flight;
-    const departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
-    const arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
+    var departureTime= new Date(flight.departureDate).getHours()+" : "+new Date(flight.departureDate).getMinutes();
+    var arrivalTime= new Date(flight.arrivalDate).getHours()+" : "+new Date(flight.arrivalDate).getMinutes();
+    const firstAirport= (res=='Return')?flight.arrivalAirport:flight.departureAirport;
+    const secondAirport=(res=='Return')?flight.departureAirport:flight.arrivalAirport;
+    const secondTerminal=(res=='Return')?flight.departureTerminal:flight.arrivalTerminal;
+    const firstTerminal=(res=='Return')?flight.arrivalTerminal:flight.departureTerminal;
+    if(res=="Return"){
+      var temp= departureTime;
+      departureTime=arrivalTime;
+      arrivalTime=temp;
+    }
     const duration =Math.ceil(Math.abs((new Date(flight.arrivalDate).getTime()-new Date(flight.departureDate).getTime()))/(1000*60));
     const durationHour = Math.ceil(duration /60);
     var durationMin = Math.ceil(duration %60)+"M";
@@ -80,8 +89,8 @@ if(child=='0')child = null;
                     </GridItem>}
                    <GridItem  xs={12} sm={3}>
                      <p><Typography style={styleTime}>{departureTime}</Typography></p>
-                     <p style={{textAlign:"center"}}>{flight.departureAirport}</p>
-                     {res&& <p style={{textAlign:"center"}}> Terminal {flight.departureTerminal}</p>}
+                     <p style={{textAlign:"center"}}>{firstAirport}</p>
+                     {res&& <p style={{textAlign:"center"}}> Terminal {firstTerminal}</p>}
                       </GridItem>
                       <GridItem  xs={12} sm={3} >
                        {res=="Return" && <Grid  container direction="row" justifyContent="space-around" alignItems="center">
@@ -107,8 +116,8 @@ if(child=='0')child = null;
                                               </GridItem> 
                       <GridItem  xs={12} sm={3}>
                       <p style={styleTime}>{arrivalTime}</p>
-                      <p style={{textAlign:"center"}}>{flight.arrivalAirport}</p>
-                      {res&& <p style={{textAlign:"center"}}> Terminal {flight.arrivalTerminal}</p>}
+                      <p style={{textAlign:"center"}}>{secondAirport}</p>
+                      {res&& <p style={{textAlign:"center"}}> Terminal {secondTerminal}</p>}
                       </GridItem> 
                      {!res && <GridItem  xs={12} sm={3}>
                       <p style={styleTime} color="primary" >$ {price}</p>

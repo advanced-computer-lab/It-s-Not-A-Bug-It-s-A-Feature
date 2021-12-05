@@ -37,13 +37,13 @@ export default function Login(props) {
   const { ...rest } = props;
   let history = useHistory();
 
-  const [isLogged, setLogged] =useState(true);
+  const [isLogged, setLogged] =useState(false);
 
   const onSubmit = (e) => { 
     // i want to change the navbar links here
     e.preventDefault();
     setLogged(true);
-    history.push('/home'); 
+    history.push('/profile'); 
   }
   return (
     <div>

@@ -52,7 +52,8 @@ export default function HeaderLinks(props) {
     loginButton = <Button
       id="login"
       onClick={(e) => {
-        setLogged(true);
+       // setLogged(true);
+        history.push('/login')
         //onSubmit(e);
         // history.push('/login')
    }}
@@ -70,8 +71,9 @@ export default function HeaderLinks(props) {
      id="logout"
       onClick={(e) => {
         setLogged(false);
+        
         //onSubmit(e);
-        // history.push('/home')
+        history.push('/home')
    }}
       color="transparent"
       target="_blank"
