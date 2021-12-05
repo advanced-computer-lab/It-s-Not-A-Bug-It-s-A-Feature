@@ -12,6 +12,8 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
 // import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import Favorite from "@material-ui/icons/Favorite";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 // core components
 import Header from "./../../components/Header/Header.js";
 import Footer from "./../../components/Footer/Footer.js";
@@ -22,28 +24,41 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
+import Card from "./../../components/Card/Card.js";
+import CardBody from "./../../components/Card/CardBody.js";
+import CardHeader from "./../../components/Card/CardHeader.js";
+import CardFooter from "./../../components/Card/CardFooter.js";
+import CustomInput from "./../../components/CustomInput/CustomInput.js";
+import LockIcon from '@mui/icons-material/Lock';
 
 
-import Reservation from "./../../components/Flight/Flight.js";
-import profile from "./../../assets/img/faces/christian.jpg";
+import Email from "@material-ui/icons/Email";
+import People from "@material-ui/icons/People";
 
-import studio1 from "./../../assets/img/examples/studio-1.jpg";
-import studio2 from "./../../assets/img/examples/studio-2.jpg";
-import studio3 from "./../../assets/img/examples/studio-3.jpg";
-import studio4 from "./../../assets/img/examples/studio-4.jpg";
-import studio5 from "./../../assets/img/examples/studio-5.jpg";
-import work1 from "./../../assets/img/examples/olu-eletu.jpg";
-import work2 from "./../../assets/img/examples/clem-onojeghuo.jpg";
-import work3 from "./../../assets/img/examples/cynthia-del-rio.jpg";
-import work4 from "./../../assets/img/examples/mariya-georgieva.jpg";
-import work5 from "./../../assets/img/examples/clem-onojegaw.jpg";
+
+import Reservation from "./../../components/Reservation/Reservation.js";
+import profile from "./../../assets/img/faces/michael.jpg";
+
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
 
+import {useState, useEffect} from 'react';
+import axios from 'axios';
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
+  const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  setTimeout(function () {
+    setCardAnimation("");
+  }, 700);
   const classes = useStyles();
+  const [MyReservation, setMyReservation] = useState([]);
+  const [Profile, setProfile] = useState([]);
+  const [first, setfirst] = useState('');
+  const [last, setlast] = useState('');
+  const [passport, setpassport] = useState('');
+  const [email, setemail] = useState('');
+const [edit, setedit] = useState(false);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -51,6 +66,34 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/user/myReservations')
+  .then(res=> {setMyReservation(res.data);console.log(res)}).catch(err=>console.log(err))
+  
+ },[]);
+
+ useEffect(()=>{
+  axios.get('http://localhost:8000/user/editProfile/')
+.then(res=> {setProfile(res.data);console.log(res)}).catch(err=>console.log(err))
+
+},[]);
+
+function onCancel(reserv){
+  // confirmation alert is shown before deletion
+  const resNo =(reserv).reservationID;
+  const r = window.confirm("Do you really want to Cancel Reservation "+resNo+" ?"); 
+  if(r === true){ 
+    const id = (reserv)._id;
+    axios.post(`http://localhost:8000/user/cancelReservation/${id}`)
+    .then((response) => {
+      window.location.reload(true);
+    })
+  
+  }
+
+  
+}
   return (
     <div>
       <Header
@@ -79,27 +122,15 @@ export default function ProfilePage(props) {
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Christian Louboutin</h3>
-                    <h6>DESIGNER</h6>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-twitter"} />
-                    </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-instagram"} />
-                    </Button>
-                    <Button justIcon link className={classes.margin5}>
-                      <i className={"fab fa-facebook"} />
-                    </Button>
+                    <h3 className={classes.title}>Michael Tito</h3>
+                    <h6>Software Engineer</h6>
                   </div>
                 </div>
               </GridItem>
             </GridContainer>
             <div className={classes.description}>
               <p>
-                An artist of considerable range, Chet Faker — the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                and records all of his own music, giving it a warm, intimate
-                feel with a solid groove structure.{" "}
+              It’s hard enough to find an error in your code when you’re looking for it; its even harder when you’ve ASSUMED your code is ERROR-FREE.{" "}
               </p>
             </div>
             <GridContainer justify="center">
@@ -114,9 +145,49 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={20} sm={20} md={20}>
-        ////     details of our current user 
-                          </GridItem>
-                        </GridContainer>
+                         
+                                <Card>
+                                <CardBody>
+                                  <CustomInput
+                                    labelText="Frist Name..."
+                                    id="first"
+                                    formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    
+                    <CustomInput
+                      labelText="Password"
+                      id="pass"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: "password",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LockIcon className={classes.inputIconsColor}>
+                            </LockIcon>
+                          </InputAdornment>
+                        ),
+                        autoComplete: "off",
+                      }}
+                    />
+                  </CardBody>
+                  
+               
+              </Card>
+            </GridItem>
+          </GridContainer>
+       
                       ),
                     },
                     {
@@ -124,18 +195,46 @@ export default function ProfilePage(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          <GridItem xs={20} sm={20} md={20}>
-
-                          <Reservation departFlight={{
-      flightNo:"45",
-      economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
-      departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
-    }}
-            cabin ="business"
-            count ="5"
-            />
+                          {MyReservation.map((curr)=>(
+                               
+                              <div>     
+                              <GridItem xs={12} sm={12}> 
+                             <Reservation
+                             deptFlight ={curr.deptFlight}
+                             count ={curr.reservation.adultsNo}
+                             seatClass={curr.reservation.seatClass}
+                             reservationID={curr.reservation.reservationID}
+                             deptSeats={curr.reservation.deptSeats}
+                             arrFlight ={curr.arrFlight}
+                             arrSeats={curr.reservation.arrSeats}
+                             totalPrice={curr.reservation.price}
+                             child={curr.reservation.childrenNo}
+                             adult={curr.reservation.adultsNo}
+                             ></Reservation>
+                            
+                                 
+                                </GridItem>
+                                <GridItem xs={12} sm={12} style={{textAlign:"center"}}> 
+                             
+                                <Button 
+                                  color = "warning"
+                                  // color="transparent"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {onCancel(curr.reservation);
+                                  }}
+                                  >Cancel Reservation </Button>
+                                   </GridItem>
+                                   <br/><br/>
+                                   </div>
+                               
+                            ))}
+                         
                           
-                          </GridItem>
                         </GridContainer>
                       ),
                     },

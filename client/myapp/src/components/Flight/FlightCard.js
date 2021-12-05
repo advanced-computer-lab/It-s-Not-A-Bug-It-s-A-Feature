@@ -31,6 +31,8 @@ export default function FlightCard(props) {
                   flight={props.flight}
                   Number={props.Number}
                   type={props.type}
+                  adult={props.adult}
+                  child={props.child}
                   ></Flight>  
                   
                   </CardBody>

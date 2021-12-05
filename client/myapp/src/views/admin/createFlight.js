@@ -100,6 +100,11 @@ export default function CreateFlight(props) {
           setFlightError((prevState => {return {...prevState,["arrivalDate"]: true};}));
           setFlight((prevState => { return {...prevState,["arrivalDate"]: null};}));
         }
+        if(flightData.arrivalDate!='' && flightData.departureDate!='' && (flightData.arrivalDate.getTime()- flightData.departureDate.getTime())>1000*60*60*48){
+          setErrorMessage((prevState => {return {...prevState,["arrivalDate"]: 'Enter an Arrival Date within 2 days  of the Departure Date'};}));res= false;
+          setFlightError((prevState => {return {...prevState,["arrivalDate"]: true};}));
+          setFlight((prevState => { return {...prevState,["arrivalDate"]: null};}));
+        }
         
         return res;
     }
@@ -428,7 +433,7 @@ const theme = createTheme();
             required
             id="economyBaggage"
             name="economyBaggage"
-            label="Price of Economy Baggage"
+            label="Economy Baggage Capacity"
             fullWidth
             variant="standard"
             type="number"
@@ -455,7 +460,7 @@ const theme = createTheme();
             required
             id="businessBaggage"
             name="businessBaggage"
-            label="Price of Business Baggage"
+            label="Business Baggage Capacity"
             fullWidth
             variant="standard"
             type="number"
@@ -536,6 +541,7 @@ const theme = createTheme();
             name="departureTerminal"
             label="Departure Terminal"
             fullWidth
+            type="number"
             variant="standard"
             value={d.departureTerminal}
             error={error.departureTerminal}
@@ -559,6 +565,7 @@ const theme = createTheme();
             name="arrivalTerminal"
             label="Arrival Terminal"
             fullWidth
+            type="number"
             variant="standard"
             value={d.arrivalTerminal}
             error={error.arrivalTerminal}

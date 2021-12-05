@@ -151,8 +151,12 @@ var returnFlights; // variable to hold the return flights of the search query
     else
     if(arrival==""){alert('please enter an arrival destination');}
     else
-    if(departureDate==""&& arrivalDate==""){alert('please enter a Date');}
-    else{
+    if(departureDate==""|| arrivalDate==""){alert('please enter a Date');}
+    else
+    if(departureDate>= arrivalDate || ((new Date(arrivalDate).getTime()- new Date(departureDate).getTime())<1000*60*60*48))
+    {alert('please choose an arrival date after at least 2 days from departure');}
+    else
+    {
     history.push({
       pathname:"/search" ,
       state: {

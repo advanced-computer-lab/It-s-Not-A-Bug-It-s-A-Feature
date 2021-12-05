@@ -152,86 +152,89 @@ export default function SearchFlight(props) {
         <div className={classes.container}>
           <SearchBar />
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12}>
-              <NavPills
-                alignCenter
-                color="primary"
-                tabs={[
-                  {
-                    tabButton: "Departure Flight",
-                    tabIcon: FlightTakeoffIcon,
-                    tabContent: (
-                      <GridContainer justify="center">
-
-                        {depart.map((curr) => (
-                          <Button color={(selectedDepart == curr) ? 'blue' : 'transparent'} onClick={(e) => {
-                            if (selectedDepart != curr) setselectedDepart(curr);
-                            else setselectedDepart(null);
-                          }}>
-
-                            <GridItem xs={12} sm={12}>
-
-                              <Flight
+          <GridItem xs={12} sm={12}>
+                <NavPills
+                  alignCenter
+                  color="primary"
+                  tabs={[
+                    {
+                      tabButton: "Departure Flight",
+                      tabIcon: FlightTakeoffIcon,
+                      tabContent: (
+                        <GridContainer justify="center">
+                          
+                            {depart.map((curr)=>(
+                               <Button color={(selectedDepart==curr)?'blue':'transparent'} onClick={(e) => {
+                                 if(selectedDepart!=curr)setselectedDepart(curr);
+                                 else setselectedDepart(null);}}>
+                                   
+                              <GridItem xs={12} sm={12}> 
+                             {console.log("adult ",key.adultsNo)}
+                                <Flight
                                 flight={curr}
                                 type={key.type}
                                 Number={key.count}
-
-                              />
-
-                            </GridItem>
-                          </Button>
-                        ))}
-
-                      </GridContainer>
-                    ),
-                  },
-                  {
-                    tabButton: " Return Flight",
-                    tabIcon: FlightLandIcon,
-                    tabContent: (
-                      <GridContainer justify="center">
-                        {returnn.map((curr) => (
-                          <Button color={(selectedReturn == curr) ? 'blue' : 'transparent'} onClick={(e) => {
-                            if (selectedReturn != curr) setselectedReturn(curr);
-                            else setselectedReturn(null);
-                          }}>
-
-                            <GridItem xs={12} sm={12}>
-
-                              <Flight
+                               adult={key.adultsNo}
+                               child={key.childrenNo}
+                                
+                                />
+                                 
+                                </GridItem>
+                                </Button>
+                            ))}
+                          
+                        </GridContainer>
+                      ),
+                    },
+                    {
+                      tabButton: " Return Flight",
+                      tabIcon: FlightLandIcon,
+                      tabContent: (
+                        <GridContainer justify="center">
+                          {returnn.map((curr)=>(
+                               <Button color={(selectedReturn==curr)?'blue':'transparent'} onClick={(e) => {
+                                 if(selectedReturn!=curr)setselectedReturn(curr);
+                                 else setselectedReturn(null);}}>
+                                   
+                              <GridItem xs={12} sm={12}> 
+                               
+                                <Flight
                                 flight={curr}
                                 type={key.type}
                                 Number={key.count}
+                                
+                               adult={key.adultsNo}
+                               child={key.childrenNo}
+                                
+                                />
+                                </GridItem>
+                                </Button>
+                            ))}
+                        </GridContainer>
+                      ),
+                    },
+                    
+                    {
+                      tabButton: " Confirm Reservation",
+                      tabIcon: CheckIcon,
+                      tabContent: (
+                        <GridContainer justify="center">
 
-                              />
-                            </GridItem>
-                          </Button>
-                        ))}
-                      </GridContainer>
-                    ),
-                  },
-
-                  {
-                    tabButton: " Confirm Reservation",
-                    tabIcon: CheckIcon,
-                    tabContent: (
-                      <GridContainer justify="center">
-
-                        {(() => {
-                          if (selectedDepart == null) {
-                            return (
-                              <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
-                            )
-                          } else if (selectedReturn == null) {
-                            return (
-                              <div><Typography> <h3> Please Select a Return Flight</h3></Typography></div>
-                            )
-                          } else {
-                            var priceD = (key.type === "Business") ? parseInt(selectedDepart.businessPrice) : parseInt(selectedDepart.economyPrice);
-                            var priceR = (key.type === "Business") ? parseInt(selectedReturn.businessPrice) : parseInt(selectedReturn.economyPrice);
-                            var totalPrice = (priceD + priceR) * key.count;
-                            return (
-                              <div>
+                          {(() => {
+                            if (selectedDepart==null) {
+                              return (
+                                <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
+                              )
+                            } else if (selectedReturn==null) {
+                              return (
+                                <div><Typography> <h3> Please Select a Return Flight</h3></Typography></div>
+                              )
+                            } else {
+                              var priceD = (key.type==="Business")?parseInt(selectedDepart.businessPrice):parseInt(selectedDepart.economyPrice);
+                              var priceR = (key.type==="Business")?parseInt(selectedReturn.businessPrice):parseInt(selectedReturn.economyPrice);
+                              var totalPrice = (priceD+priceR)*key.count;
+                              return (
+                                <div>
                                 <GridItem xs={12} sm={12}>
                                   <Typography> <h3>Departure Flight</h3></Typography>
                                 </GridItem>
