@@ -7,6 +7,9 @@ import TextField from '@material-ui/core/TextField';
 import Location from '@material-ui/icons/LocationOnSharp';
 import CssBaseline from '@mui/material/CssBaseline';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
+
+
+import GridItem from "./../../../../components/Grid/GridItem.js";
 import Stack from '@mui/material/Stack';
 // import Button from '@material-ui/core/Button';
 import Color from 'color';
@@ -14,6 +17,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from "../../../../components/CustomButtons/Button.js";
+import SnackbarContent from "../../../../components/Snackbar/SnackbarContent.js";
+
 import Button2 from "@material-ui/core/Button";
 import { useHistory } from "react-router";
 
@@ -35,6 +40,7 @@ import { makeStyles } from "@material-ui/styles";
 
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
+import GridContainer from '../../../../components/Grid/GridContainer.js';
 
 
 const StyledMenu = styled((props) => (
@@ -106,6 +112,8 @@ var returnFlights; // variable to hold the return flights of the search query
   const [arrivalDate, setarrivalDate] = useState("");
   const [departureDate, setdepartureDate] = useState("");
 
+  const [message, setmessage] = useState(null);
+
   //_______ADULT__________
   const [countAdults, setCountAdults] = useState(1);
   const IncNumAdults = () => {
@@ -122,13 +130,14 @@ var returnFlights; // variable to hold the return flights of the search query
     else {
         setCountAdults(1);
       // rather than alert we just need to make the button fadeout 
-      alert("min limit reached");
+      setmessage("min limit reached");
     }
   };
 
    //_______CHILDREN_________
 
    const [countChild, setCountChild ]= useState(0);
+   
    const IncNumChild = () => {
     setCountChild(countChild + 1);
     setCountPassengers(countPassengers+1);
@@ -147,14 +156,14 @@ var returnFlights; // variable to hold the return flights of the search query
 
    const onSubmit= ()=>{
      
-    if(departure==""){alert('please enter a departuring destination');}
+    if(departure==""){setmessage('please enter a departuring destination');}
     else
-    if(arrival==""){alert('please enter an arrival destination');}
+    if(arrival==""){setmessage('please enter an arrival destination');}
     else
-    if(departureDate==""|| arrivalDate==""){alert('please enter a Date');}
+    if(departureDate==""|| arrivalDate==""){setmessage('please enter a Date');}
     else
     if(departureDate>= arrivalDate || ((new Date(arrivalDate).getTime()- new Date(departureDate).getTime())<1000*60*60*48))
-    {alert('please choose an arrival date after at least 2 days from departure');}
+    {setmessage('please choose an arrival date after at least 2 days from departure');}
     else
     {
     history.push({
@@ -186,6 +195,19 @@ var returnFlights; // variable to hold the return flights of the search query
   
  
     return (
+      <GridContainer>
+         {message ? 
+         <GridItem xs={12} xm={12}>
+        <SnackbarContent
+                          message={
+                            <span>
+                              {message}
+                            </span>
+                          }
+                          close
+                          color="danger"
+                         
+                        /> </GridItem>: null}
   <Card margin="none"
    >
       <CardContent 
@@ -205,6 +227,9 @@ var returnFlights; // variable to hold the return flights of the search query
      
     >
         <div>
+         
+           
+       
         <Typography sx={{ fontSize: 17 }}  gutterBottom  >
         Leaving from
         </Typography>
@@ -452,7 +477,7 @@ onClick={(e) => {onSubmit(e);
       </CardContent>
     </Card>
 
-
+    </GridContainer>
   
     );
         };

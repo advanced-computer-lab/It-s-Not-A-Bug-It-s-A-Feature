@@ -127,7 +127,7 @@ export default function Reservation(props) {
                     tabContent: (
                       <GridContainer justify="center">
                         <GridItem xs={12} sm={12}>
-                          <Typography> <h3>Choosing your seats</h3></Typography>
+                          <Typography> <h3>Choose your seats</h3></Typography>
                           <AllSeats
                             type={key.cabin}
                             passengers={key.count}

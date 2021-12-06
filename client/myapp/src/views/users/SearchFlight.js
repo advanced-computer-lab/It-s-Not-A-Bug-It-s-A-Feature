@@ -243,6 +243,10 @@ export default function SearchFlight(props) {
                                     flight={selectedDepart}
                                     type={key.type}
                                     Number={key.count}
+                                    adult={key.adultsNo}
+
+                                    child={key.childrenNo}
+
                                   >
                                   </Flight>
                                 </GridItem>
@@ -254,6 +258,8 @@ export default function SearchFlight(props) {
                                     flight={selectedReturn}
                                     type={key.type}
                                     Number={key.count}
+                                    adult={key.adultsNo}
+                               child={key.childrenNo}
                                   >
                                   </Flight>
 
