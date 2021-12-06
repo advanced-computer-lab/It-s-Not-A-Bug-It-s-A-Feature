@@ -13,7 +13,6 @@ import FlightLandIcon from '@material-ui/icons/FlightLand';
 // import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import Favorite from "@material-ui/icons/Favorite";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Box from '@material-ui/core/Box';
 
 // core components
 import Header from "./../../components/Header/Header.js";
@@ -330,7 +329,7 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           {loading ? <CustomLinearProgress color="info" /> :
-                          <Box display="flex" flex-direction="row">
+                          <GridContainer justify="center">
                             {
                               MyReservation.map((curr) => (
 
@@ -372,7 +371,7 @@ export default function ProfilePage(props) {
 
                               ))
                             }
-                            </Box>}
+                            </GridContainer>}
                         </GridContainer>
 
                       ),
