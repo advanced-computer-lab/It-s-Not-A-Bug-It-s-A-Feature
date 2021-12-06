@@ -112,6 +112,8 @@ var returnFlights; // variable to hold the return flights of the search query
   const [arrivalDate, setarrivalDate] = useState("");
   const [departureDate, setdepartureDate] = useState("");
 
+  const [message, setmessage] = useState(null);
+
   //_______ADULT__________
   const [countAdults, setCountAdults] = useState(1);
   const IncNumAdults = () => {
@@ -128,14 +130,14 @@ var returnFlights; // variable to hold the return flights of the search query
     else {
         setCountAdults(1);
       // rather than alert we just need to make the button fadeout 
-      alert("min limit reached");
+      setmessage("min limit reached");
     }
   };
 
    //_______CHILDREN_________
 
    const [countChild, setCountChild ]= useState(0);
-   const [message, setmessage] = useState(null);
+   
    const IncNumChild = () => {
     setCountChild(countChild + 1);
     setCountPassengers(countPassengers+1);
