@@ -59,16 +59,38 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
     //update reservedSeats in dept and retuern fligthts
-    await Flights.findByIdAndUpdate({ _id: (deptFlight) },
-    {
-      reservedSeats: deptSeats
-    })
+    if(seatClass === 'Business'){
+      await Flights.findByIdAndUpdate({ _id: (deptFlight) },
+      {
+        $inc : {currBusinessSeats: -deptSeats.length},
+        reservedSeats: deptSeats
+      })
+    }
+    else{
+      await Flights.findByIdAndUpdate({ _id: (deptFlight) },
+      {
+        $inc : {currEconomySeats: -deptSeats.length},
+        reservedSeats: deptSeats
+      })
+    }
+
+
     // .then(flight => res.send(flight))
     // .catch(err => res.status(400).send('Error: ' + err));
-    await Flights.findByIdAndUpdate({ _id: (arrFlight) },
-    {
-      reservedSeats: arrSeats
-    })
+    if(seatClass === 'Business'){
+      await Flights.findByIdAndUpdate({ _id: (arrFlight) },
+      {
+        $inc : {currBusinessSeats: -arrSeats.length},
+        reservedSeats: deptSeats
+      })
+    }
+    else{
+      await Flights.findByIdAndUpdate({ _id: (arrFlight) },
+      {
+        $inc : {currEconomySeats: -arrSeats.length},
+        reservedSeats: deptSeats
+      })
+    }
     // .then(flight => res.send(flight))
     // .catch(err => res.status(400).send('Error: ' + err));
 
