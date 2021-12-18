@@ -126,7 +126,7 @@ async function calculatePrice(flightID, seatClass, seats) {
   var oneSeat;
   if (seatClass == 'Business') {
     await Flights.findById(flightID)
-      .then(flight => oneSeat = flight.businessPrice) //syntax?
+      .then(flight => oneSeat = flight.businessPrice) 
       .catch();
   }
   else {
@@ -134,6 +134,7 @@ async function calculatePrice(flightID, seatClass, seats) {
       .then(flight => oneSeat = flight.economyPrice)
       .catch();
   }
+  console.log("calc price="+(oneSeat * seats));
   return oneSeat * seats;
 }
 
@@ -458,6 +459,41 @@ router.route('/createUser').post((req,res,next)=>{
   .then(()=>res.send('User Added'))
   .catch(err => res.status(400).send('Error: '+err));  
 });
+
+router.route('/changeReservation').get((req,res,next)=>{
+  var rq=req.query; //searches for flights other than the reserved one.. 
+  //criteria user enters are cabin & date .. the user does not need to enter the other criteria(currFlight, adultsNo, childrenNo), because we get them from the reservation already made 
+  res.status(400).send(findOtherFights(rq.currFlight, rq.cabin, rq.date, rq.adultsNo, rq.childrenNo));
+});
+
+async function findOtherFights(currFlight, cabin, date,adultsNo,childrenNo){
+  var query=[];
+  query.push({'_id': {$ne:new  ObjectID(currFlight) }});
+  if(cabin !== '' && adultsNo !== '') query.push(seatQuery(adultsNo,childrenNo,cabin));
+  if(date !== '') query.push(dateQuery(date,'departureDate'));
+  sum = Number(adultsNo);
+  if(childrenNo!='') sum+=Number(childrenNo);
+   
+ anded={$and : query};
+
+ if(query.length>0)
+     Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats businessPrice economyPrice economyBaggage businessBaggage reservedSeats').then( data=>{console.log(data); return priceDiff(currFlight,data,sum,cabin)});
+}
+async function priceDiff(currFlight,flights,sum,cabin){
+   price=await calculatePrice(currFlight,cabin,sum);
+  for(let i = 0; i < flights.length; i++){
+      currFlight=flights[i];
+      currPrice=await calculatePrice(currFlight['_id'],cabin,sum);
+      //console.log(Number(price)-Number(currPrice));
+      diff=Number(currPrice)-Number(price)
+     temp={'priceDifference':diff};
+     flights[i] = { ...currFlight._doc, ...temp};  
+    //  console.log(flights[i]);
+
+  }
+  // console.log(flights+'!!');
+  return flights;
+}
 //  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
 
 //http://localhost:8000/user/res
