@@ -611,24 +611,41 @@ async function hashIt(password){
 }
 
 router.route("/getUsername").get( verifyJWT, (req,res)=>{
+  if (!curUserId)
+    res.json({message: "Access not allowed. Please login to proceed."});
+  
   res.json({isLoggedIn: true, username: req.user.username})
 })
 
 router.route('/changePassword').post((req,res)=>{
+  if (!curUserId)
+    return res.json({message: "Access not allowed. Please login to proceed."});
+  
   const passwords = req.body;
   User.findOne({_id: curUserId})
   .then(async (dbUser)=>{
     if(!dbUser){
       return res.json({message: "User not Found."});
     }
-    
-    if(hashIt(passwords.old) != dbUser.password){
-      return res.json({message: "Current password doesn't match the existing one."});
-    }
+    let oldPass = passwords.old;
+    console.log(oldPass);
+    console.log(dbUser.password);
+    bcrypt.compare(oldPass, dbUser.password)
+    .then(async (isCorrect) => {
+      if(!isCorrect){
+        return res.json({message: "Old password does not match the current one."});
+      }
+      let newPass = passwords.new;
+      if(newPass === oldPass){
+        return res.json({message: "The new password must be different from the current one."});
+      }
+      newPass = await hashIt(newPass);
+      await User.findOneAndUpdate({_id: curUserId}, {password : newPass});
+      return res.json({message:"Password updated successfully."});
+      
+    });
 
-    let newPass = hashIt(passwords.new);
-    await User.findOneAndUpdate({_id: curUserId}, {password : newPass});
-    return res.json({message:"Password updated successfully."});
+    
   })
 });
 
