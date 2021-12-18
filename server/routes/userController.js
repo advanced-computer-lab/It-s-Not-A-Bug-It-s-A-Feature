@@ -9,8 +9,15 @@ const { Flight } = require('@material-ui/icons');
 // var loggedUserID=-1;
 var loggedIn = true;
 
-// TODO: this variable is to be filled when the user logs in
-var curUserId = "61abf941d37940fe2e05d678";
+// authentication
+const dotenv = require('dotenv')
+const path = require('path');
+dotenv.config({path:path.join(__dirname, '..', '.env')});
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+
+// this variable is to be filled when the user logs in
+var curUserId;
 
 // transporter for the refund email 
 let transporter = nodemailer.createTransport({
@@ -26,7 +33,7 @@ let transporter = nodemailer.createTransport({
 });
 
 router.route('/').get((req, res) => {
-  if (!loggedIn)
+  if (!curUserId)
     res.status(200).send("Hello Guest User!");
   else
     res.status(200).send("Hello Logged in User!");
@@ -324,14 +331,6 @@ async function updateFlightSeats(reservation, whichFlight){
       reservedSeats: flightSeats
     }).then(/* flight => res.send(flight) */)
     .catch(err => res.status(400).send('Error: ' + err));
-
-    //updating arr of reserved seats
-    // const seatsToRemove = reservation['deptSeats']
-    // // const seatsToRemove = reservation['arrSeats'] //todo - return flight
-    // Flights.findByIdAndUpdate({_id: flightID}, {
-    //   reservedSeats: reservedFlight['reservedSeats'].filter.(item => !(seatsToRemove.includes(item)))
-    // }).then(flight => res.send(flight))
-    // .catch(err => res.status(400).send('Error: ' + err));
 }
 
 // req. 28: allow user to edit the profile information
@@ -509,6 +508,134 @@ function msToTime(duration) {
   return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 //  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
+
+router.route("/register").post( async (req,res)=>{
+  const user = req.body;
+  const takenUsername = await User.findOne({username: user.username});
+  const takenEmail = await User.findOne({email: user.email});
+
+  if(takenUsername || takenEmail){
+    res.json({message: "Username or email has already been taken"});
+  }else{
+    user.password = await hashIt(req.body.password);
+    const dbUser = new User({
+      username: user.username.toLowerCase(),
+      email: user.email.toLowerCase(),
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      address: user.address,
+      countryCode:user.countryCode ,
+      phoneNo: user.phoneNo,
+      age: user.age,
+      nationality:user.nationality.toLowerCase(),
+      creditCardNo:user.creditCardNo,
+      passportNo: user.passportNo,
+      isAdmin:false
+    })
+
+    dbUser.save();
+    res.json({message: "success"});
+  }
+});
+
+router.route("/login").post( (req,res)=>{
+  const userLoggingIn = req.body;
+  User.findOne({username: userLoggingIn.username})
+  .then(async (dbUser)=>{
+    // console.log(dbUser);
+    if(!dbUser){
+      return res.json({message: "Invalid username or password"});
+    }
+    // userLoggingIn.password = await hashIt(userLoggingIn.password);
+    // console.log(userLoggingIn.password)
+    console.log(dbUser.password)
+    bcrypt.compare(userLoggingIn.password, dbUser.password)
+    .then(isCorrect => {
+      if(isCorrect){
+        const payload = {
+          id: dbUser._id,
+          username: dbUser.username
+        }
+        console.log('it is correct');
+        curUserId = dbUser._id;
+        jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          {expiresIn: 86400},
+          (err, token) => {
+            console.log("inside callback")
+            if(err){
+              console.log(err);
+              return res.json({message: err})
+            } 
+            console.log('Success');
+            return res.json({
+              message: "success",
+              token: "Bearer " + token
+            })
+          }
+        )
+      }else{
+        console.log('not correct');
+        return res.json({message: "Invalid Username or password"});
+      }
+      
+    })
+  })
+})
+
+function verifyJWT(req,res,next){
+  const token = req.headers["x-access-token"]?.split(' ')[1]
+
+  if(token){
+    jwt.verify(token, process.env.JWT_SECRET, (err,decoded)=>{
+      if(err) return res.json({
+        isLoggedIn: false,
+        message: "Failed to authenticate"
+      })
+      req.user = {}
+      req.user.id = decoded.id
+      req.user.username = decoded.username
+      next()
+    })
+  }else{
+    res.json({message: "Incorrect token given", isLoggedIn:false})
+  }
+}
+
+async function hashIt(password){
+  const salt = await bcrypt.genSalt(6);
+  const hashed = await bcrypt.hash(password, salt);
+  return hashed;
+}
+
+router.route("/getUsername").get( verifyJWT, (req,res)=>{
+  res.json({isLoggedIn: true, username: req.user.username})
+})
+
+router.route('/changePassword').post((req,res)=>{
+  const passwords = req.body;
+  User.findOne({_id: curUserId})
+  .then(async (dbUser)=>{
+    if(!dbUser){
+      return res.json({message: "User not Found."});
+    }
+    
+    if(hashIt(passwords.old) != dbUser.password){
+      return res.json({message: "Current password doesn't match the existing one."});
+    }
+
+    let newPass = hashIt(passwords.new);
+    await User.findOneAndUpdate({_id: curUserId}, {password : newPass});
+    return res.json({message:"Password updated successfully."});
+  })
+});
+
+router.route('/logout').get((req,res)=>{
+  curUserId=null;
+  return res.redirect('/user/');
+})
 
 //http://localhost:8000/user/res
 // the request body:
