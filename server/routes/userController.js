@@ -134,7 +134,7 @@ async function calculatePrice(flightID, seatClass, seats) {
       .then(flight => oneSeat = flight.economyPrice)
       .catch();
   }
-  console.log("calc price="+(oneSeat * seats));
+  //console.log("calc price="+(oneSeat * seats));
   return oneSeat * seats;
 }
 
@@ -477,7 +477,7 @@ async function findOtherFights(currFlight, cabin, date,adultsNo,childrenNo){
  anded={$and : query};
 
  if(query.length>0)
-     Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats businessPrice economyPrice economyBaggage businessBaggage reservedSeats').then( data=>{console.log(data); return priceDiff(currFlight,data,sum,cabin)});
+     Flights.find(anded, 'flightNo departureDate arrivalDate arrivalAirport departureAirport').then( data=>{console.log(data); return priceDiff(currFlight,data,sum,cabin)});
 }
 async function priceDiff(currFlight,flights,sum,cabin){
    price=await calculatePrice(currFlight,cabin,sum);
@@ -487,12 +487,26 @@ async function priceDiff(currFlight,flights,sum,cabin){
       //console.log(Number(price)-Number(currPrice));
       diff=Number(currPrice)-Number(price)
      temp={'priceDifference':diff};
-     flights[i] = { ...currFlight._doc, ...temp};  
-    //  console.log(flights[i]);
+     duration=msToTime(currFlight['arrivalDate']-currFlight['departureDate']);
+     temp1={'duration':duration};
+     flights[i] = { ...currFlight._doc, ...temp, ...temp1};  
+     // console.log(flights[i]);
 
   }
   // console.log(flights+'!!');
   return flights;
+}
+function msToTime(duration) {
+  var milliseconds = Math.floor((duration % 1000) / 100),
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 //  SEARCH: number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class. 
 
