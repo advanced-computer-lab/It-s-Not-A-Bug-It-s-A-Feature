@@ -18,6 +18,8 @@ const bcrypt = require("bcrypt")
 // this variable is to be filled when the user logs in
 var curUserId;
 
+var editmsg;
+
 // transporter for the refund email 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -62,6 +64,7 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
 });
 
 async function addRes(req){
+  console.log('\nAdding new reservation...');
   const adultsNo = Number(req.body.adultsNo);
     const childrenNo = Number(req.body.childrenNo);
     const seatClass = req.body.seatClass;
@@ -116,7 +119,7 @@ async function addRes(req){
     });
 
     newRes.save()
-      .then(() => res.send(newRes))
+      .then()
       .catch(err => console.error(err));
   }
 
@@ -209,7 +212,7 @@ router.route('/cancelReservation/:id').post(async (req,res, next)=>{
     // get the reservation
     // var ans = cancelRes(id);
     cancelRes(id)
-    .then(()=>res.send('Reservation canceled'))
+    .then((msg)=>res.send(msg))
     .catch(err => res.status(400).send(err));  
     
 
@@ -226,6 +229,10 @@ router.route('/cancelReservation/:id').post(async (req,res, next)=>{
 async function cancelRes(id){
   var reservation;
     await Reservation.findById(id).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
+    if(!reservation){
+      editmsg = "Reservation not found."; 
+      return "Reservation not found.";
+    }
     console.log(`Reservation = ${reservation}`)
     console.log(`dept flight = ${reservation['deptFlight']}`);
 
@@ -243,8 +250,9 @@ async function cancelRes(id){
     var now = new Date();
     var days = (depDate.getTime() - now.getTime()) / (1000*3600*24); // calculate difference in days.
     if(days <= 2){
+      editmsg = 'Cannot cancel reservation because less than 48 hours are left.'; // this is relevant only to edit reservation
       console.log('Cannot cancel reservation because less than 48 hours are left.');
-      return "error";
+      return 'Cannot cancel reservation because less than 48 hours are left.';
     }
     // console.log(`Escaped Error`);
     console.log(`Deleting reservation ID ${id}`);
@@ -648,22 +656,17 @@ router.route('/logout').get((req,res)=>{
   return res.redirect('/user/');
 })
 
-router.route('/editReservation/:id').post((req,res)=>{
+router.route('/editReservation/:id').post(async (req,res)=>{
   var id = req.params.id;
   sendEmail = false;
-  // delete then make reservation
-  cancelRes(id)
-  .then(async(request,result)=>{
-    addRes(req)
-    .then()
-    .catch(err =>{
-      return result.json({message: err});
-    });
-  })
-  .catch(err => res.status(400).send(err));
+  editmsg = "Reservation edited successfully.";
+
+  await cancelRes(id);
+  if(editmsg === "Reservation edited successfully.")
+    await addRes(req);
 
   sendEmail = true;
-  return res.json({message: 'Reservation edited successfully.'});
+  return res.json({message: editmsg});
 })
 
 //http://localhost:8000/user/res
