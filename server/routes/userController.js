@@ -46,7 +46,6 @@ router.route('/allUsers').get((req, res) => {
     .catch(err => res.status(400).send('Error: ' + err));
 });
 router.route('/allRes').get((req, res) => {
-  Reservation.deleteMany({});
    Reservation.find()
      .then(reservation => res.send(reservation))
      .catch(err => res.status(400).send('Error: ' + err));
@@ -461,25 +460,41 @@ router.route('/createUser').post((req,res,next)=>{
   .catch(err => res.status(400).send('Error: '+err));  
 });
 
-router.route('/changeReservation').get((req,res,next)=>{
+router.route('/changeReservation').get((req,res,next)=>{ //takes parameters reservationID  & flightID & user's intended date & cabin
   var rq=req.query; //searches for flights other than the reserved one.. 
-  //criteria user enters are cabin & date .. the user does not need to enter the other criteria(currFlight, adultsNo, childrenNo), because we get them from the reservation already made 
-  res.status(400).send(findOtherFights(rq.currFlight, rq.cabin, rq.date, rq.adultsNo, rq.childrenNo));
+ 
+  res.status(400).send(findOtherFlights(rq.flightID, rq.reservationID,rq.date,rq.cabin));
 });
 
-async function findOtherFights(currFlight, cabin, date,adultsNo,childrenNo){
-  var query=[];
-  query.push({'_id': {$ne:new  ObjectID(currFlight) }});
-  if(cabin !== '' && adultsNo !== '') query.push(seatQuery(adultsNo,childrenNo,cabin));
-  if(date !== '') query.push(dateQuery(date,'departureDate'));
-  sum = Number(adultsNo);
-  if(childrenNo!='') sum+=Number(childrenNo);
-   
- anded={$and : query};
+async function findOtherFlights(flightID, reservationID, date, cabin){
+  var r; var f;
+
+  await Reservation.findById(reservationID).then(reserv=> r=reserv);
+  await Flights.findById(flightID).then(flight=>f=flight);
+
+  // console.log(flightID+" "+f);
+  // console.log(reservationID+" "+r);
+
+  query=[];
+  console.log(date);
+  adultsNo=r.adultsNo;
+  childrenNo=r.childrenNo;
+  from=f.departureAirport;
+  to=f.arrivalAirport;
+
+  query.push({'_id': {$ne:new  ObjectID(flightID) }});
+  query.push(seatQuery(adultsNo,childrenNo,cabin));
+  query.push(dateQuery(date,'departureDate'));
+  query.push({'departureAirport':from});
+  query.push({'arrivalAirport':to});
+
+  anded={$and : query};
+  sum = Number(adultsNo)+Number(childrenNo);
 
  if(query.length>0)
-     Flights.find(anded, 'flightNo departureDate arrivalDate arrivalAirport departureAirport').then( data=>{console.log(data); return priceDiff(currFlight,data,sum,cabin)});
+     Flights.find(anded, 'flightNo departureDate arrivalDate arrivalAirport departureAirport').then( data=>{console.log(data); return priceDiff(flightID,data,sum,cabin)});
 }
+
 async function priceDiff(currFlight,flights,sum,cabin){
    price=await calculatePrice(currFlight,cabin,sum);
   for(let i = 0; i < flights.length; i++){
@@ -491,7 +506,7 @@ async function priceDiff(currFlight,flights,sum,cabin){
      duration=msToTime(currFlight['arrivalDate']-currFlight['departureDate']);
      temp1={'duration':duration};
      flights[i] = { ...currFlight._doc, ...temp, ...temp1};  
-     // console.log(flights[i]);
+    console.log(flights[i]);
 
   }
   // console.log(flights+'!!');
