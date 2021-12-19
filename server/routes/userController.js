@@ -6,8 +6,7 @@ let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
 const { text } = require('express');
 const { Flight } = require('@material-ui/icons');
-// var loggedUserID=-1;
-var loggedIn = true;
+var sendEmail = true;
 
 // authentication
 const dotenv = require('dotenv')
@@ -52,11 +51,18 @@ router.route('/allRes').get((req, res) => {
 });
 
 router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
-  if (!loggedIn)
+  if (!curUserId)
     res.status(200).send("Log in first"); //todo - redirect to login 
   else {
     console.log(req.body);
-    const adultsNo = Number(req.body.adultsNo);
+    addRes(req)
+    .then(()=>res.send('Reservation added successfully.'))
+    .catch(err => res.status(400).send(err));  
+  }
+});
+
+async function addRes(req){
+  const adultsNo = Number(req.body.adultsNo);
     const childrenNo = Number(req.body.childrenNo);
     const seatClass = req.body.seatClass;
     const deptFlight = req.body.deptFlight;//selected flight from frontend
@@ -81,9 +87,6 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
       })
     }
 
-
-    // .then(flight => res.send(flight))
-    // .catch(err => res.status(400).send('Error: ' + err));
     if(seatClass === 'Business'){
       await Flights.findByIdAndUpdate({ _id: (arrFlight) },
       {
@@ -98,8 +101,6 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
         reservedSeats: deptSeats
       })
     }
-    // .then(flight => res.send(flight))
-    // .catch(err => res.status(400).send('Error: ' + err));
 
     const reservationID = Number(req.body.resID); //change, should not be input
     // const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
@@ -109,15 +110,6 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
     var price = await calculatePrice(deptFlight, seatClass, passengers)
       + await calculatePrice(arrFlight, seatClass, passengers);
 
-
-    // try {
-    //   // if (passengers !== deptSeats.length || passengers !== arrSeats.length)
-    //   //   throw 'number of passengers does not match number of seats';
-    // } 
-    // catch (error) {
-    //   console.error(error);
-
-    // }
     const newRes = new Reservation({
       reservationID, userID, adultsNo, childrenNo, seatClass,
       deptFlight, arrFlight, deptSeats, arrSeats, price
@@ -125,9 +117,9 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
 
     newRes.save()
       .then(() => res.send(newRes))
-      .catch(err => res.status(400).send('Error: ' + err));
+      .catch(err => console.error(err));
   }
-});
+
 
 async function calculatePrice(flightID, seatClass, seats) {
   var oneSeat;
@@ -148,8 +140,8 @@ async function calculatePrice(flightID, seatClass, seats) {
 // see reservations made by the current user only.
 // returns reservation details + departure and return flight details
 router.route('/myReservations').get(async (req,res)=>{
-  if(!loggedIn){ // TODO: should be directed to login page
-    res.status(200).send("Hello Guest User!");
+  if(!curUserId){ // TODO: should be directed to login page
+    res.status(200).send("Access not allowed. Please login to proceed.");
   }
   else{
     console.log(`userID: ${curUserId}`);
@@ -209,8 +201,8 @@ router.route('/myReservations/:id').get((req, res) => {
 // cancel reservation made by user. The reservation is deleted from the database
 router.route('/cancelReservation/:id').post(async (req,res, next)=>{
   console.log("about to cancel reservation!!");
-  if(!loggedIn) // TODO: should be directed to login page
-    res.status(200).send("Hello Guest User!");
+  if(!curUserId) // TODO: should be directed to login page
+    res.status(200).send("Access not allowed. Please login to proceed.");
   else{
     var id = req.params.id;
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
@@ -272,12 +264,14 @@ async function cancelRes(id){
 
       // email user with the canceled reservation details + the refunded amount
       // use the 'result' parameter in the then part.
-      var own;
-      await User.findById(curUserId).then(result => own=result).catch(err => console.error(err));
-      console.log(`owner = ${own}`);
-      var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
-        ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
-      sendEmail(own,textmsg);
+      if(sendEmail){
+        var own;
+        await User.findById(curUserId).then(result => own=result).catch(err => console.error(err));
+        console.log(`owner = ${own}`);
+        var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
+          ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
+        sendEmail(own,textmsg);
+      }
     return "done";
   }
 
@@ -652,6 +646,24 @@ router.route('/changePassword').post((req,res)=>{
 router.route('/logout').get((req,res)=>{
   curUserId=null;
   return res.redirect('/user/');
+})
+
+router.route('/editReservation/:id').post((req,res)=>{
+  var id = req.params.id;
+  sendEmail = false;
+  // delete then make reservation
+  cancelRes(id)
+  .then(async(request,result)=>{
+    addRes(req)
+    .then()
+    .catch(err =>{
+      return result.json({message: err});
+    });
+  })
+  .catch(err => res.status(400).send(err));
+
+  sendEmail = true;
+  return res.json({message: 'Reservation edited successfully.'});
 })
 
 //http://localhost:8000/user/res
