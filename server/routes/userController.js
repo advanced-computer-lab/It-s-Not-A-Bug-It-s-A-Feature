@@ -55,7 +55,6 @@ router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 fli
   if (!curUserId)
     res.status(200).send("Log in first"); //todo - redirect to login 
   else {
-    console.log(req.body);
     addRes(req)
     .then(()=>res.send('Reservation added successfully.'))
     .catch(err => res.status(400).send(err));  
@@ -135,7 +134,6 @@ async function calculatePrice(flightID, seatClass, seats) {
       .then(flight => oneSeat = flight.economyPrice)
       .catch();
   }
-  //console.log("calc price="+(oneSeat * seats));
   return oneSeat * seats;
 }
 
@@ -285,7 +283,7 @@ async function cancelRes(id){
 // this function  deletes reserved seats in both flights, increments the available seats in the dept and
 // arrival flights of a reservation.
 // `whichFlight` field indicates whether the flight is dept or arr
-async function updateFlightSeats(reservation, whichFlight){
+async function updateFlightSeats(reservation, whichFlight){ //called in canceling res to delete seats & increment available seats
   // get ID of dep flight
   var flightID = reservation[whichFlight];
   // fetch the flight from the DB
@@ -460,20 +458,59 @@ router.route('/createUser').post((req,res,next)=>{
   .catch(err => res.status(400).send('Error: '+err));  
 });
 
-router.route('/changeReservation').get((req,res,next)=>{ //takes parameters reservationID  & flightID & user's intended date & cabin
-  var rq=req.query; //searches for flights other than the reserved one.. 
+router.route('/findAlternativeFlights').get((req,res,next)=>{ //takes parameters reservationID  & flightID & user's intended date & cabin
+  var rq=req.query; //searches for flights other than the reserved one to replace it with
  
   res.status(400).send(findOtherFlights(rq.flightID, rq.reservationID,rq.date,rq.cabin));
 });
+
+router.route('/changeSeats').post((req,res,next)=>{
+  var rq=req.query;
+  res.status(400).send(changeSeats(rq.newSeats,rq.reservationID,rq.whichFlight));
+});
+
+async function changeSeats(newSeats, reservationID, whichFlight){
+  //if newSeats is already input as a Number array, we won't need the next line
+  newSeats = newSeats.split(',').map(function(item) {return parseInt(item, 10);});
+
+  await Reservation.findById(reservationID).then(reserv=> r=reserv);
+  var flightID=r[whichFlight];
+  await Flights.findById(flightID).then(flight=>f=flight);
+
+  var oldSeats;
+
+  if(whichFlight==='deptFlight'){
+    oldSeats=r['deptSeats'];
+    var myquery = { _id: reservationID };
+    var newvalues = { $set: { 'deptSeats': newSeats } };
+
+    await Reservation.updateOne(myquery, newvalues);
+  }
+  else if(whichFlight==='arrFlight'){
+    oldSeats=r['arrSeats'];
+    var myquery = { _id: reservationID };
+    var newvalues = { $set: { 'arrSeats': newSeats } };
+    await Reservation.updateOne(myquery, newvalues);
+  }
+  var reservedSeats=f['reservedSeats'];
+  reservedSeats = reservedSeats.filter(x => !oldSeats.includes(x));
+  reservedSeats = reservedSeats.concat(newSeats);
+  reservedSeats=reservedSeats.filter(function(elem, pos) {
+    return reservedSeats.indexOf(elem) == pos;
+})
+
+  var myquery = { _id: flightID };
+  var newvalues = { $set: { 'reservedSeats': reservedSeats } };
+  await Flights.updateOne(myquery, newvalues);
+
+} 
+
 
 async function findOtherFlights(flightID, reservationID, date, cabin){
   var r; var f;
 
   await Reservation.findById(reservationID).then(reserv=> r=reserv);
   await Flights.findById(flightID).then(flight=>f=flight);
-
-  // console.log(flightID+" "+f);
-  // console.log(reservationID+" "+r);
 
   query=[];
   console.log(date);
@@ -498,14 +535,14 @@ async function findOtherFlights(flightID, reservationID, date, cabin){
 async function priceDiff(currFlight,flights,sum,cabin){
    price=await calculatePrice(currFlight,cabin,sum);
   for(let i = 0; i < flights.length; i++){
-      currFlight=flights[i];
-      currPrice=await calculatePrice(currFlight['_id'],cabin,sum);
-      //console.log(Number(price)-Number(currPrice));
-      diff=Number(currPrice)-Number(price)
-     temp={'priceDifference':diff};
-     duration=msToTime(currFlight['arrivalDate']-currFlight['departureDate']);
-     temp1={'duration':duration};
-     flights[i] = { ...currFlight._doc, ...temp, ...temp1};  
+    currFlight=flights[i];
+    currPrice=await calculatePrice(currFlight['_id'],cabin,sum);
+
+    diff=Number(currPrice)-Number(price)
+    temp={'priceDifference':diff};
+    duration=msToTime(currFlight['arrivalDate']-currFlight['departureDate']);
+    temp1={'duration':duration};
+    flights[i] = { ...currFlight._doc, ...temp, ...temp1};  
     console.log(flights[i]);
 
   }
