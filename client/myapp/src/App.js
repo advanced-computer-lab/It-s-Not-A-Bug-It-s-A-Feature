@@ -12,7 +12,7 @@ import  SearchFlight from './views/users/SearchFlight.js';
 import  ReserveFlight from './views/users/ReservationPage.js';
 import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
 import  retReserveFlight from './views/users/ReservationRetSeats.js';
-
+import  Payment from './views/users/PaymentPageRes.js';
 
 
 
@@ -47,6 +47,7 @@ function App() {
            <Route path ={"/admin/search"} component={Search}/>
            <Route path ={"/reserveDept"} component={deptReserveFlight}/>
            <Route path ={"/reserveRet"} component={retReserveFlight}/>
+           <Route path ={"/pay"} component={Payment}/>
          </Router> 
          </ThemeProvider>
 
