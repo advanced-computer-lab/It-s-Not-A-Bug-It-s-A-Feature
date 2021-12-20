@@ -52,7 +52,6 @@ import styles from "../../assets/jss/material-kit-react/views/profilePage.js";
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Success from "../../components/Payment/Success.js";
 import { Cancel } from "@material-ui/icons";
 const useStyles = makeStyles(styles);
 
