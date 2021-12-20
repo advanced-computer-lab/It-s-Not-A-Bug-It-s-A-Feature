@@ -11,10 +11,10 @@ import Test from './views/users/test.js';
 import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
 import  SearchFlight from './views/users/SearchFlight.js';
-import  ReserveFlight from './views/users/ReservationPage.js';
+import  Error from './views/users/error.js';
 import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
 import  retReserveFlight from './views/users/ReservationRetSeats.js';
-
+import  Payment from './views/users/PaymentPageRes.js';
 
 
 
@@ -43,6 +43,8 @@ function App() {
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
+           <Route path ={"/Error"} component={Error}></Route>
+
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
@@ -51,6 +53,7 @@ function App() {
            <Route path ={"/admin/search"} component={Search}/>
            <Route path ={"/reserveDept"} component={deptReserveFlight}/>
            <Route path ={"/reserveRet"} component={retReserveFlight}/>
+           <Route path ={"/pay"} component={Payment}/>
          </Router> 
          </ThemeProvider>
 
