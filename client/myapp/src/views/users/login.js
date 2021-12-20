@@ -29,6 +29,9 @@ import image from "./../../assets/img/bg7.jpg";
 const useStyles = makeStyles(styles);
 
 export default function Login(props) {
+  const [userName, setuserName] = useState("");
+  const [password, setpassword] = useState("");
+
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -69,11 +72,11 @@ export default function Login(props) {
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h2>Welcome!</h2>
-                    
                   </CardHeader>
                   <CardBody>
                     <CustomInput
-                      labelText="Username..."
+                   
+                      labelText="UserName"
                       id="first"
                       formControlProps={{
                         fullWidth: true,
@@ -85,7 +88,15 @@ export default function Login(props) {
                             <People className={classes.inputIconsColor} />
                           </InputAdornment>
                         ),
+                        readOnly:false,
+                        onChange :(event) => {
+                          setuserName(event.target.value);
+                          setlabelName("");
+                          console.log(userName);
+   
+                         },
                       }}
+                      
                     />
                     
                     <CustomInput
@@ -103,6 +114,9 @@ export default function Login(props) {
                           </InputAdornment>
                         ),
                         autoComplete: "off",
+                        readOnly:false,
+                         onChange :(event) => {
+                           setpassword(event.target.value);},
                       }}
                     />
                   </CardBody>
