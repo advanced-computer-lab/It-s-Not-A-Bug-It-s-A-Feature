@@ -14,19 +14,21 @@
     "nouislider": "15.1.0",
     "prop-types": "15.7.2",
     "react": "^17.0.2",
+    "react-country-region-selector": "^3.4.0",
     "react-datetime": "3.0.4",
     "react-dom": "17.0.2",
+    "react-phone-number-input": "^3.1.44",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-slick": "0.28.1",
-    "reactjs-popup": "^2.0.5",
-    "react-slick": "0.28.1"
+    "reactjs-popup": "^2.0.5"
   },
   "devDependencies": {
     "@babel/cli": "7.13.16",
     "@babel/plugin-proposal-class-properties": "7.13.0",
     "@babel/preset-env": "7.14.1",
     "@babel/preset-react": "7.13.13",
+    "@iconify/react": "^3.1.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.23.2",
