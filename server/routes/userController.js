@@ -72,7 +72,7 @@ async function addRes(req){
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
-    //update reservedSeats in dept and retuern fligthts
+    //update reservedSeats in dept and return fligthts
     if(seatClass === 'Business'){
       await Flights.findByIdAndUpdate({ _id: (deptFlight) },
       {
@@ -502,7 +502,7 @@ async function changeSeats(newSeats, reservationID, whichFlight){
   var myquery = { _id: flightID };
   var newvalues = { $set: { 'reservedSeats': reservedSeats } };
   await Flights.updateOne(myquery, newvalues);
-
+  //DO WE NEED TO EMAIL THE USER WITH CHANGED SEATS??
 } 
 
 
