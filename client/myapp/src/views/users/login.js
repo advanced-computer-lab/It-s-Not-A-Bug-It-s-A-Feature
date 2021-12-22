@@ -18,9 +18,11 @@ import CardBody from "./../../components/Card/CardBody.js";
 import CardHeader from "./../../components/Card/CardHeader.js";
 import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
+import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
 import LockIcon from '@mui/icons-material/Lock';
 import { useHistory } from 'react-router-dom';
 import {useState, useEffect} from 'react';
+import axios from 'axios';
 
 
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
@@ -31,6 +33,8 @@ const useStyles = makeStyles(styles);
 export default function Login(props) {
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
+  const [message, setmessage] = useState(null);
+
 
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
@@ -44,9 +48,25 @@ export default function Login(props) {
 
   const onSubmit = (e) => { 
     // i want to change the navbar links here
-    e.preventDefault();
-    setLogged(true);
-    history.push('/profile'); 
+    console.log(userName);
+    console.log(password);
+    setmessage(null);
+    axios.post('http://localhost:8000/user/login', {
+        username:userName,
+        password:password
+    }).then(res => {
+      console.log(res);
+      if(res.data.message!="success")
+      setmessage(res.data.message);
+      else{
+        setmessage(res.data.message);
+      }
+      
+    }).catch(err => console.log(err))
+  
+    // e.preventDefault();
+    // setLogged(true);
+    // history.push('/profile'); 
   }
   return (
     <div>
@@ -67,6 +87,18 @@ export default function Login(props) {
       >
         <div className={classes.container}>
           <GridContainer justify="center">
+          {message ? 
+         <GridItem xs={12} xm={12}>
+        <SnackbarContent
+                          message={
+                            <span>
+                              {message}
+                            </span>
+                          }
+                          close
+                          color="danger"
+                         
+                        /> </GridItem>: null}
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
@@ -91,8 +123,6 @@ export default function Login(props) {
                         readOnly:false,
                         onChange :(event) => {
                           setuserName(event.target.value);
-                          setlabelName("");
-                          console.log(userName);
    
                          },
                       }}
