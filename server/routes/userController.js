@@ -6,7 +6,7 @@ let User = require('../models/User.js');
 var ObjectID = require('mongodb').ObjectID;
 const { text } = require('express');
 const { Flight } = require('@material-ui/icons');
-var sendEmail = true;
+var send = true;
 
 // authentication
 const dotenv = require('dotenv')
@@ -269,7 +269,7 @@ async function cancelRes(id){
 
       // email user with the canceled reservation details + the refunded amount
       // use the 'result' parameter in the then part.
-      if(sendEmail){
+      if(send){
         var own;
         await User.findById(curUserId).then(result => own=result).catch(err => console.error(err));
         console.log(`owner = ${own}`);
@@ -388,7 +388,6 @@ function sendEmail(owner, emailText){
   });
 }
 
-module.exports = router;
 
 function dateQuery(date,type){  
   var result=JSON.parse('{}');
@@ -710,16 +709,68 @@ router.route('/logout').get((req,res)=>{
 
 router.route('/editReservation/:id').post(async (req,res)=>{
   var id = req.params.id;
-  sendEmail = false;
+  send = false;
   editmsg = "Reservation edited successfully.";
 
   await cancelRes(id);
   if(editmsg === "Reservation edited successfully.")
     await addRes(req);
 
-  sendEmail = true;
+  send = true;
   return res.json({message: editmsg});
 })
+
+router.route('/sendItenrary').post(async (req,res)=>{
+  var resId = req.query.resId;
+  var userId = req.query.userId;
+
+  reservationDetails(resId,userId);
+
+});
+  
+async function flightDetails(flightID){
+  var flight;
+  await Flights.findById(flightID).then(res=>flight=res).catch(err => console.log('error: No such flight!'));
+
+  var text= "Flight Details: "+flight['flightNo']+'\n'
+   + "Departure Date: " +flight['departureDate']+'\n'
+   + "Arrival Date: " +flight['arrivalDate']+'\n'
+   + "Economy Seats "+ flight['economySeats']+'\n'
+   + "Business Seats: "+flight['businessSeats']+'\n'
+   +"Arrival Airport: "+flight['arrivalAirport']+'\n'
+   +"Departure Airport: "+ flight['departureAirport']+'\n'
+   +"Departure Terminal: "+flight['departureTerminal']+'\n'
+   +"Arrival Terminal: "+flight['arrivalTerminal']+'\n';
+   //console.log(text);
+   return text;
+
+}
+  
+async function reservationDetails(resId,userId){
+  var reservation;
+  var owner;
+
+  await User.findById(userId).then(result => owner=result).catch(err => console.error(err));
+  await Reservation.findById(resId).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
+ 
+  var emailText= "Hi, " + owner['firstName'] + '!\n' + 
+  '\t Your Flight Itenerary Details are as follows!'+'\n' + 
+  "Reservation ID: " +reservation['reservationID'] +'\n' +
+  "Number of Adults: " + reservation['adultsNo']+'\n' +
+  "Number of Children: " + reservation['childrenNo']+'\n' +
+  "Class:" + reservation['seatClass']+'\n' +
+  "Departure Flight: " + await flightDetails(reservation['arrFlight'])+'\n' +
+  "Arrival Flight: "  +  await flightDetails(reservation['deptFlight'])+'\n' +
+  "Departure Seats: " +reservation['deptSeats']+'\n' +
+  "Arrival Seats: " + reservation['arrSeats']+'\n' +
+  "Price: " + reservation['price']+'\n' ;
+
+  console.log(emailText);
+  sendEmail(owner, emailText);
+}
+  
+  
+ module.exports = router;
 
 //http://localhost:8000/user/res
 // the request body:
