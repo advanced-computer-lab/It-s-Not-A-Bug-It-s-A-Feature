@@ -598,7 +598,7 @@ router.route("/login").post( (req,res)=>{
   .then(async (dbUser)=>{
     // console.log(dbUser);
     if(!dbUser){
-      return res.json({message: "Invalid username or password"});
+      return res.json({message: "Invalid username"});
     }
     // userLoggingIn.password = await hashIt(userLoggingIn.password);
     // console.log(userLoggingIn.password)
@@ -631,7 +631,7 @@ router.route("/login").post( (req,res)=>{
         )
       }else{
         console.log('not correct');
-        return res.json({message: "Invalid Username or password"});
+        return res.json({message: "Invalid password"});
       }
       
     })
