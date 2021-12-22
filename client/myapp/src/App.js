@@ -16,7 +16,7 @@ import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
 import  retReserveFlight from './views/users/ReservationRetSeats.js';
 import  Payment from './views/users/PaymentPageRes.js';
 import bothSeats from './views/users/ResTwoWaySeats.js';
-
+import editRes from './views/users/editRes.js';
 
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
@@ -44,7 +44,6 @@ function App() {
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
            <Route path ={"/Error"} component={Error}></Route>
-
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
@@ -55,6 +54,8 @@ function App() {
            <Route path ={"/reserveRet"} component={retReserveFlight}/> */}
            <Route path ={"/pay"} component={Payment}/>
            <Route path ={"/reserveSeats"} component={bothSeats}/>
+           <Route path ={"/editResFront"} component={editRes}/>
+           
          </Router> 
          </ThemeProvider>
 

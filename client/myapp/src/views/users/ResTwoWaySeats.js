@@ -271,7 +271,7 @@ export default function Reservation(props) {
                                                                             isReturn="true"
                                                                         />
                                                                     </GridItem>
-                                                                    {/* <ColorCode/> */}
+                                                                    <ColorCode />
                                                                 </Box>
 
                                                             }
