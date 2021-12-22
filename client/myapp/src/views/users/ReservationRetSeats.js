@@ -63,36 +63,23 @@ export default function Reservation(props) {
     const passengers = key.count;
     const childrenNo = key.childrenNo;
     const adultsNo = key.adultsNo;
-    const [reserved, setReserved] = useState(false);
-    const [resID, setResId] = useState(15);
+
     const [loading2, setLoading2] = useState(true);
     const [retData, setRetData] = useState({
         economySeats: 0,
         businessSeats: 0,
         currBusinessSeats: 0,
         currEconomySeats: 0,
-        reservedSeats:[]
+        reservedSeats: []
     });
     const [reservedSeats3, setReservedSeats3] = useState([]);
 
-    const price =(cabin=="Business")? passengers*(key.flight.businessPrice+key.ReturnFlight.businessPrice):passengers*(key.flight.economyPrice+key.ReturnFlight.economyPrice);
+    let price = (cabin == "Business") ? passengers * (key.flight.businessPrice + key.ReturnFlight.businessPrice) : passengers * (key.flight.economyPrice + key.ReturnFlight.economyPrice);
 
-    // state: {
-    //     flight: key.flight,
-    //     ReturnFlight: key.ReturnFlight,
-    //     cabin: key.type,
-    //     adultsNo: key.adultsNo,
-    //     childrenNo: key.childrenNo,
-    //     count: key.count,
-    //     deptSeats : deptData.reservedSeats
-    //   }
+
 
     useEffect(() => {
-        axios.get('http://localhost:8000/user/getMaxResID')
-            .then(res => {
-                setResId(res.data);
-                console.log("max res id aho" + res.data);
-            }).catch(err => console.log(err))
+
 
         axios.get('http://localhost:8000/admin/searchFlights', {
             params:
@@ -117,23 +104,36 @@ export default function Reservation(props) {
     }, []);
 
     const onSubmit = () => {
+        history.push({
+            pathname: "/pay",
+            state: {
+                adultsNo: key.adultsNo,
+                childrenNo: key.childrenNo,
+                seatClass: key.cabin,
+                deptFlight: key.flight._id,
+                arrFlight: key.ReturnFlight._id,
+                deptSeats: key.deptSeats,
+                arrSeats: reservedSeats3,
+                totalPrice: price
+            }
 
+        });
 
-        axios.post('http://localhost:8000/user/res', {
+        // axios.post('http://localhost:8000/user/res', {
 
-            resID: resID + 1,
-            adultsNo: key.adultsNo,
-            childrenNo: key.childrenNo,
-            seatClass: key.cabin,
-            deptFlight: key.flight._id,
-            arrFlight: key.ReturnFlight._id,
-            deptSeats: key.deptSeats,
-            arrSeats: reservedSeats3
-        }).then(res => {
-            console.log(res.data);
-            //   setResId(resID);
-            setReserved(true);
-        }).catch(err => console.log(err))
+        //     resID: resID + 1,
+        //     adultsNo: key.adultsNo,
+        //     childrenNo: key.childrenNo,
+        //     seatClass: key.cabin,
+        //     deptFlight: key.flight._id,
+        //     arrFlight: key.ReturnFlight._id,
+        //     deptSeats: key.deptSeats,
+        //     arrSeats: reservedSeats3
+        // }).then(res => {
+        //     console.log(res.data);
+        //     //   setResId(resID);
+        //     setReserved(true);
+        // }).catch(err => console.log(err))
 
     };
 
@@ -187,11 +187,25 @@ export default function Reservation(props) {
                                                                     isReturn="true"
                                                                 />
                                                             </GridItem>
+                                                            
 
                                                         </Box>
+                                                        
                                                     }
 
                                                 </GridItem>
+                                                {reservedSeats3.length=== passengers?
+                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                            <Button
+                                                                color="danger"
+                                                                size="lg"
+                                                                onClick={(e) => { onSubmit(e); }}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                Reserve
+                                                            </Button>
+                                                        </GridItem>: null}
                                             </GridContainer>
                                         ),
                                     },
@@ -201,7 +215,7 @@ export default function Reservation(props) {
                                         tabIcon: CheckIcon,
                                         tabContent: (
                                             <div>
-                                                {reserved ? <SnackbarContent
+                                                {/* {reserved ? <SnackbarContent
                                                     message={
                                                         <span>
                                                             <b>Reservation Confirmed!</b> reservation # {resID - 1}   Have a nice flight
@@ -210,22 +224,22 @@ export default function Reservation(props) {
                                                     close
                                                     color="success"
                                                     icon={Check}
-                                                /> : null}
+                                                /> : null} */}
                                                 <GridContainer justify="center">
-                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                          
-                                                    <ReservationCard
-                                                    adult= {key.adultsNo}
-                                                    child={ key.childrenNo}
-                                                    seatClass={ key.cabin}
-                                                    deptFlight={ key.flight}
-                                                    arrFlight={key.ReturnFlight}
-                                                    deptSeats={ key.deptSeats}
-                                                    arrSeats={reservedSeats3}
-                                                    totalPrice={price}
-                                                    >
-                                                    </ReservationCard>
-                                                  </GridItem>
+                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+
+                                                        <ReservationCard
+                                                            adult={key.adultsNo}
+                                                            child={key.childrenNo}
+                                                            seatClass={key.cabin}
+                                                            deptFlight={key.flight}
+                                                            arrFlight={key.ReturnFlight}
+                                                            deptSeats={key.deptSeats}
+                                                            arrSeats={reservedSeats3}
+                                                            totalPrice={price}
+                                                        >
+                                                        </ReservationCard>
+                                                    </GridItem>
                                                     {/* check chosenseats == passengers */}
                                                     <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
                                                         <Button
@@ -254,3 +268,10 @@ export default function Reservation(props) {
         </div>
     );
 }
+
+//in searchFlights.js
+// useEffect(() => {
+//     var priceD = (key.type === "Business") ? parseInt(selectedDepart.businessPrice) : parseInt(selectedDepart.economyPrice);
+//     var priceR = (key.type === "Business") ? parseInt(selectedReturn.businessPrice) : parseInt(selectedReturn.economyPrice);
+//     setTotalPrice((priceD + priceR) * key.count);
+//   }, [selectedDepart, selectedReturn]);

@@ -55,6 +55,8 @@ export default function SearchFlight(props) {
   const location = useLocation();
   const key = location.state;
 
+  var totalPrice;
+
   const classes = useStyles();
   const { ...rest } = props;
   let history = useHistory();
@@ -63,7 +65,6 @@ export default function SearchFlight(props) {
 
   const [selectedDepart, setselectedDepart] = useState(null);
   const [selectedReturn, setselectedReturn] = useState(null);
-
 
   // const location = useLocation();
   let isLogged = props.isLogged
@@ -113,7 +114,7 @@ export default function SearchFlight(props) {
 
   const onSubmit = () => {
     history.push({
-      pathname: "/reserveDept",
+      pathname: "/reserveSeats",
       state: {
         flight: selectedDepart,
         ReturnFlight: selectedReturn,
@@ -232,7 +233,8 @@ export default function SearchFlight(props) {
                             } else {
                               var priceD = (key.type==="Business")?parseInt(selectedDepart.businessPrice):parseInt(selectedDepart.economyPrice);
                               var priceR = (key.type==="Business")?parseInt(selectedReturn.businessPrice):parseInt(selectedReturn.economyPrice);
-                              var totalPrice = (priceD+priceR)*key.count;
+                              totalPrice = (priceD+priceR)*key.count;
+                              
                               return (
                                 <div>
                                 <GridItem xs={12} sm={12}>
