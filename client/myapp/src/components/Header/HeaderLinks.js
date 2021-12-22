@@ -72,16 +72,22 @@ export default function HeaderLinks(props) {
      id="logout"
       onClick={(e) => {
         setLogged(false);
-    //     const token = localStorage.getItem("token");
-    // axios.get('http://localhost:8000/user/logout/',{
-    //   headers: {
-    //     'authorization': token
-    //   }
-    // })
-    //   .catch(err => {
-    //     console.log(err);
-    //     history.push("/error");
-    //   });
+        const token = localStorage.getItem("token");
+    axios.delete('http://localhost:8000/user/logout/', {
+      headers: {
+        'authorization': token
+      },
+      data: {
+        token:token
+      }
+    }).then((response) => {
+      console.log('response',response.data)
+
+    })
+      .catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
         //onSubmit(e);
         history.push('/home')
    }}
