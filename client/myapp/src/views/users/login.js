@@ -125,7 +125,7 @@ export default function Login(props) {
                     simple color="primary" 
                     size="lg"
                     onClick={() => {
-                      history.push('/home') //add sign up page
+                      history.push('/signUp') //add sign up page
                  }}>
                       Don't have an account?
                     </Button>
