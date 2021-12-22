@@ -64,6 +64,7 @@ export default function Login(props) {
       
     }
       else{
+        setLogged(true);//bar loggedIn
         setmessagecolor("success");
         setmessage(res.data.message);
         localStorage.setItem("token",res.data.token);
