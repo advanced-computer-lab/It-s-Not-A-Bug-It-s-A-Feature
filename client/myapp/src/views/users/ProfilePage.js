@@ -41,7 +41,6 @@ import People from "@material-ui/icons/People";
 import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
-import buzz from "./../../assets/img/faces/buzz.jpg";
 import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -73,7 +72,12 @@ export default function ProfilePage(props) {
   let history = useHistory();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/user/myReservations')
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/myReservations',{
+      headers: {
+        'authorization': token
+      }
+    })
       .then(res => {
         if (res.data === "Access not allowed. Please login to proceed.") {
           history.push("/error");
@@ -91,7 +95,12 @@ export default function ProfilePage(props) {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/user/editProfile/')
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/editProfile/',{
+      headers: {
+        'authorization': token
+      }
+    })
       .then(res => {
         if (res.data === "Access not allowed. Please login to proceed.") {
           history.push("/error");
@@ -111,10 +120,14 @@ export default function ProfilePage(props) {
   function onCancel(reserv) {
     // confirmation alert is shown before deletion
     const resNo = (reserv).reservationID;
-    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");
+    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`)
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`,{
+        headers: {
+          'authorization': token
+        }
+      })
         .then((response) => {
           window.location.reload(true);
         })
@@ -145,7 +158,12 @@ export default function ProfilePage(props) {
   }
 
   const onEdit = () => {
-    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit)
+    const token = localStorage.getItem("token");
+    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit,{
+      headers: {
+        'authorization': token
+      }
+    })
       .then(res => { setProfile(ProfileEdit); setedit(null); }
       ).catch(err => console.log(err));
   }
@@ -176,7 +194,7 @@ export default function ProfilePage(props) {
                   <div>
                     {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
                       :
-                      <img src={buzz} alt="..." className={imageClasses} />}
+                      <img src={cloud} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -233,6 +251,7 @@ export default function ProfilePage(props) {
                               <GridItem xs={12} sm={12}  >
                                 <b>Address : </b> {Profile.address}
                               </GridItem>
+
                               <GridItem xs={12} sm={12}  >
                                 <br />
                                 <Button
@@ -250,6 +269,8 @@ export default function ProfilePage(props) {
                                 >Edit </Button>
                               </GridItem>
                             </GridContainer>
+
+
                           }
                           {edit &&
                             <GridContainer justify="center" >
@@ -274,6 +295,7 @@ export default function ProfilePage(props) {
                                     />
                                     <br /><br />
                                     <TextField
+
                                       label="Last Name"
                                       id="lastName"
                                       name="lastName"
@@ -287,7 +309,9 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
+
                                     <TextField
+
                                       label="Email"
                                       id="email"
                                       name="email"
@@ -301,7 +325,9 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
+
                                     <TextField
+
                                       label="Passport Number"
                                       id="passportNo"
                                       name="passportNo"
@@ -328,6 +354,7 @@ export default function ProfilePage(props) {
                                         setedit(null);
                                       }}
                                     >Cancel </Button>
+
                                     <Button
                                       color="warning"
                                       // color="transparent"
@@ -341,6 +368,10 @@ export default function ProfilePage(props) {
                                         onEdit(e);
                                       }}
                                     >Save </Button>
+
+
+
+
                                   </CardBody>
                                 </form>
 
@@ -406,31 +437,18 @@ export default function ProfilePage(props) {
                                           }}
                                           dropdownList={[
                                             <Link className={classes.dropdownLink}
-                                              onClick={(e) => { 
-                                                history.push({
-                                                  pathname: "/changeDept",
-                                                  state: {
-                                                    //changeeeeeeeeeeeeeeee
-                                                    flight: selectedDepart,
-                                                    ReturnFlight: selectedReturn,
-                                                    cabin: key.type,
-                                                    adultsNo: key.adultsNo,
-                                                    childrenNo: key.childrenNo,
-                                                    count: key.count
-                                                  }
-                                                });
-                                               }}>
-                                              <h4>  change departure flight   </h4>
+                                              onClick={(e) => { history.push("/"); }}>
+                                              <h4>    change departure flight   </h4>
                                             </Link>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/changeRet"); }}>
-                                              <h4>   change return flight   </h4>
+                                              onClick={(e) => { history.push("/"); }}>
+                                              <h4>     change return flight   </h4>
                                             </a>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/changeSeats"); }}>
-                                              <h4>  switch seats    </h4>
+                                              onClick={(e) => { history.push("/"); }}>
+                                              <h4>     switch seats    </h4>
                                             </a>,
                                           ]}
                                         />

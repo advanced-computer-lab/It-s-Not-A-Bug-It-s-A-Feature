@@ -50,21 +50,22 @@ export default function Login(props) {
 
   const onSubmit = (e) => { 
     // i want to change the navbar links here
-    console.log(userName);
-    console.log(password);
+    
     setmessage(null);
+    setmessagecolor("");
     axios.post('http://localhost:8000/user/login', {
         username:userName,
         password:password
     }).then(res => {
       console.log(res);
       if(res.data.message!="success"){
+        setmessagecolor("danger");
       setmessage(res.data.message);
-      setmessagecolor("danger");
+      
     }
       else{
-        setmessage(res.data.message);
         setmessagecolor("success");
+        setmessage(res.data.message);
         localStorage.setItem("token",res.data.token);
       }
       
