@@ -41,6 +41,7 @@ import People from "@material-ui/icons/People";
 import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
+import buzz from "./../../assets/img/faces/buzz.jpg";
 import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -175,7 +176,7 @@ export default function ProfilePage(props) {
                   <div>
                     {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
                       :
-                      <img src={cloud} alt="..." className={imageClasses} />}
+                      <img src={buzz} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -232,7 +233,6 @@ export default function ProfilePage(props) {
                               <GridItem xs={12} sm={12}  >
                                 <b>Address : </b> {Profile.address}
                               </GridItem>
-
                               <GridItem xs={12} sm={12}  >
                                 <br />
                                 <Button
@@ -250,8 +250,6 @@ export default function ProfilePage(props) {
                                 >Edit </Button>
                               </GridItem>
                             </GridContainer>
-
-
                           }
                           {edit &&
                             <GridContainer justify="center" >
@@ -276,7 +274,6 @@ export default function ProfilePage(props) {
                                     />
                                     <br /><br />
                                     <TextField
-
                                       label="Last Name"
                                       id="lastName"
                                       name="lastName"
@@ -290,9 +287,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Email"
                                       id="email"
                                       name="email"
@@ -306,9 +301,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Passport Number"
                                       id="passportNo"
                                       name="passportNo"
@@ -335,7 +328,6 @@ export default function ProfilePage(props) {
                                         setedit(null);
                                       }}
                                     >Cancel </Button>
-
                                     <Button
                                       color="warning"
                                       // color="transparent"
@@ -349,10 +341,6 @@ export default function ProfilePage(props) {
                                         onEdit(e);
                                       }}
                                     >Save </Button>
-
-
-
-
                                   </CardBody>
                                 </form>
 
@@ -418,18 +406,31 @@ export default function ProfilePage(props) {
                                           }}
                                           dropdownList={[
                                             <Link className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
-                                              <h4>    change departure flight   </h4>
+                                              onClick={(e) => { 
+                                                history.push({
+                                                  pathname: "/changeDept",
+                                                  state: {
+                                                    //changeeeeeeeeeeeeeeee
+                                                    flight: selectedDepart,
+                                                    ReturnFlight: selectedReturn,
+                                                    cabin: key.type,
+                                                    adultsNo: key.adultsNo,
+                                                    childrenNo: key.childrenNo,
+                                                    count: key.count
+                                                  }
+                                                });
+                                               }}>
+                                              <h4>  change departure flight   </h4>
                                             </Link>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
-                                              <h4>     change return flight   </h4>
+                                              onClick={(e) => { history.push("/changeRet"); }}>
+                                              <h4>   change return flight   </h4>
                                             </a>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
-                                              <h4>     switch seats    </h4>
+                                              onClick={(e) => { history.push("/changeSeats"); }}>
+                                              <h4>  switch seats    </h4>
                                             </a>,
                                           ]}
                                         />

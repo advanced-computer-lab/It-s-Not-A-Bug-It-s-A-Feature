@@ -17,6 +17,9 @@ import  retReserveFlight from './views/users/ReservationRetSeats.js';
 import  Payment from './views/users/PaymentPageRes.js';
 import bothSeats from './views/users/ResTwoWaySeats.js';
 import editRes from './views/users/editRes.js';
+import changeDept from './views/users/changeDept.js';
+import changeRet from './views/users/changeRet.js';
+import  changeSeats from './views/users/changeSeats.js';
 
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
@@ -36,7 +39,6 @@ function App() {
   return(
     <ThemeProvider theme={theme}>
          <Router> 
-           
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/signUp"} component={SignUp}></Route>
            <Route path ={"/test"} component={Test}></Route>
@@ -55,6 +57,9 @@ function App() {
            <Route path ={"/pay"} component={Payment}/>
            <Route path ={"/reserveSeats"} component={bothSeats}/>
            <Route path ={"/editResFront"} component={editRes}/>
+           <Route path ={"/changeDept"} component={changeDept}/>
+           <Route path ={"/changeRet"} component={changeRet}/>
+           <Route path ={"/changeSeats"} component={changeSeats}/>
            
          </Router> 
          </ThemeProvider>
