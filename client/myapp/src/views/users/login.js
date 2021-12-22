@@ -34,6 +34,8 @@ export default function Login(props) {
   const [userName, setuserName] = useState("");
   const [password, setpassword] = useState("");
   const [message, setmessage] = useState(null);
+  const [messagecolor, setmessagecolor] = useState("danger");
+
 
 
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
@@ -56,10 +58,14 @@ export default function Login(props) {
         password:password
     }).then(res => {
       console.log(res);
-      if(res.data.message!="success")
+      if(res.data.message!="success"){
       setmessage(res.data.message);
+      setmessagecolor("danger");
+    }
       else{
         setmessage(res.data.message);
+        setmessagecolor("success");
+        localStorage.setItem("token",res.data.token);
       }
       
     }).catch(err => console.log(err))
@@ -96,7 +102,8 @@ export default function Login(props) {
                             </span>
                           }
                           close
-                          color="danger"
+                          color={messagecolor}
+                          
                          
                         /> </GridItem>: null}
             <GridItem xs={12} sm={12} md={4}>
