@@ -647,6 +647,7 @@ function verifyJWT(req,res,next){
         if(!tokens.includes(token))
           return res.json({message: "Please log in to continue."});
         req.user = user
+        req.token = token
         next()
     })
 }
@@ -695,7 +696,7 @@ router.route('/changePassword').post(verifyJWT, (req,res)=>{
 router.route('/logout').delete(verifyJWT, (req,res)=>{
   console.log(tokens);
   // discuss with frontend if they can pass token in req.body
-  let idx = tokens.indexOf(req.body.token);
+  let idx = tokens.indexOf(req.token);
   console.log(idx);
   if(idx > -1)
     tokens.splice(idx, 1);
@@ -790,7 +791,7 @@ async function reservationDetails(resId,userId){
     res.status(500).json({error:e.message});
   }
  }
- router.route('/payment').post(verifyJWT, async (req,res)=>{
+router.route('/payment').post(verifyJWT, async (req,res)=>{
   try{
     const session = await stripe.checkout.sessions.create({
       payment_method_types : ["card"],
@@ -798,16 +799,32 @@ async function reservationDetails(resId,userId){
       line_items: [{
         price_data:{
           currency: "usd",
+          product_data: {
+            name: "airplane ticket",
+          },
           unit_amount: req.body.price*100 // discuss with frontend
-        }
+        },
+        quantity: 1
       }],
-      success_url: `${process.env.CLIENT_URL}/paySuccess`, // discuss client url with frontend
-      cancel_url: `${process.env.CLIENT_URL}/payFail`
+      success_url: `${process.env.CLIENT_URL}paySuccess`, // discuss client url with frontend
+      cancel_url: `${process.env.CLIENT_URL}payFail`
     })
-  
-  res.json({url: session.url})
+    res.json({url: session.url})
   }
   catch(e){
     res.status(500).json({error:e.message});
   }
 })
+//http://localhost:8000/user/res
+// the request body:
+// {
+//   "resID":"8",
+// "adultsNo": "2",
+// "childrenNo":"2",
+// "seatClass":"Economy",
+// "deptFlight": "61ab490249533a817ec5565e",
+// "arrFlight":"61ab49e7b8a5d445caa7e84e",
+//  "deptSeats":[1,3,4,5],
+// "arrSeats" :[3,16,19,22]
+
+// }
