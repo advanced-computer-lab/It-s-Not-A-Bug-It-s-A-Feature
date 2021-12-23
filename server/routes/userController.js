@@ -57,10 +57,10 @@ router.route('/allRes').get((req, res) => {
 });
 
 router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
-  await payment(req)
+  await payment(req, res)
   addRes(req)
-    .then((msg)=>res.send(msg))
-    .catch(err => res.status(400).send(err));  
+    .then((msg)=>res.json({ message:msg}))
+    .catch(err => res.json({ message:err}));  
   
 });
 
@@ -770,7 +770,7 @@ async function reservationDetails(resId,userId){
   
  module.exports = router;
 
- async function payment(req){
+ async function payment(req, res){
   try{
     const session = await stripe.checkout.session.create({
       payment_method_types : ["card"],
@@ -790,36 +790,24 @@ async function reservationDetails(resId,userId){
     res.status(500).json({error:e.message});
   }
  }
-// router.route('/payment').post(verifyJWT, async (req,res)=>{
-//   try{
-//     const session = await stripe.checkout.session.create({
-//       payment_method_types : ["card"],
-//       mode: "payment",
-//       line_items: [{
-//         price_data:{
-//           currency: "usd",
-//           unit_amount: req.body.price*100 // discuss with frontend
-//         }
-//       }],
-//       success_url: `${process.env.CLIENT_URL}/success`,
-//       cancel_url: `${process.env.CLIENT_URL}/fail`
-//     })
-//     res.json({url: session.url})
-//   }
-//   catch(e){
-//     res.status(500).json({error:e.message});
-//   }
-// })
-//http://localhost:8000/user/res
-// the request body:
-// {
-//   "resID":"8",
-// "adultsNo": "2",
-// "childrenNo":"2",
-// "seatClass":"Economy",
-// "deptFlight": "61ab490249533a817ec5565e",
-// "arrFlight":"61ab49e7b8a5d445caa7e84e",
-//  "deptSeats":[1,3,4,5],
-// "arrSeats" :[3,16,19,22]
-
-// }
+ router.route('/payment').post(verifyJWT, async (req,res)=>{
+  try{
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types : ["card"],
+      mode: "payment",
+      line_items: [{
+        price_data:{
+          currency: "usd",
+          unit_amount: req.body.price*100 // discuss with frontend
+        }
+      }],
+      success_url: `${process.env.CLIENT_URL}/paySuccess`, // discuss client url with frontend
+      cancel_url: `${process.env.CLIENT_URL}/payFail`
+    })
+  
+  res.json({url: session.url})
+  }
+  catch(e){
+    res.status(500).json({error:e.message});
+  }
+})
