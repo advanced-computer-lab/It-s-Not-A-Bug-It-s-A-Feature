@@ -57,6 +57,7 @@ router.route('/allRes').get((req, res) => {
 });
 
 router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
+  await payment(req)
   addRes(req)
     .then((msg)=>res.send(msg))
     .catch(err => res.status(400).send(err));  
@@ -769,44 +770,46 @@ async function reservationDetails(resId,userId){
   
  module.exports = router;
 
-async function payment(price){
-  // const idempontencyKey = uuid();
-
-  // return stripe.customers.create({
-  //   email: ,
-  //   source: ,
-  // }).then(customer => {
-  //   stripe.charges.create({
-  //     amount: price,
-  //     currency: 'usd',
-  //     customer: curUserId,
-  //     receipt_email: ,
-  //   }, {idempontencyKey});
-  // })
-  // .then()
-  // .catch(err=> console.error(err));
-
-  // const session = await stripe.checkout.sessions.create({
-  //   payment_method_types: ["card"],
-  //   line_items: [
-  //     {
-  //       price_data:{
-  //         currency: "usd",
-  //         unit_amount: price // reservation price here
-  //       }
-  //     }
-  //   ],
-  //   mode: "payment",
-  //   success_url:`localhost:3000/user/success.html`,
-  //   cancel_url: `localhost:8000/user/cancel.html`
-  // });
-
-  // if(!session)
-  //   return 'fail';
-  
-  // return 'success';
-  // // res.json({id: session.id});
-}
+ async function payment(req){
+  try{
+    const session = await stripe.checkout.session.create({
+      payment_method_types : ["card"],
+      mode: "payment",
+      line_items: [{
+        price_data:{
+          currency: "usd",
+          unit_amount: req.body.price*100 // discuss with frontend
+        }
+      }],
+      success_url: `${process.env.CLIENT_URL}/paySuccess`, // discuss client url with frontend
+      cancel_url: `${process.env.CLIENT_URL}/payFail`
+    })
+    res.json({url: session.url})
+  }
+  catch(e){
+    res.status(500).json({error:e.message});
+  }
+ }
+// router.route('/payment').post(verifyJWT, async (req,res)=>{
+//   try{
+//     const session = await stripe.checkout.session.create({
+//       payment_method_types : ["card"],
+//       mode: "payment",
+//       line_items: [{
+//         price_data:{
+//           currency: "usd",
+//           unit_amount: req.body.price*100 // discuss with frontend
+//         }
+//       }],
+//       success_url: `${process.env.CLIENT_URL}/success`,
+//       cancel_url: `${process.env.CLIENT_URL}/fail`
+//     })
+//     res.json({url: session.url})
+//   }
+//   catch(e){
+//     res.status(500).json({error:e.message});
+//   }
+// })
 //http://localhost:8000/user/res
 // the request body:
 // {
