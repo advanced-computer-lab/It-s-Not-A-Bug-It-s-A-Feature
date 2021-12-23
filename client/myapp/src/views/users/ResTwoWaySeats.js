@@ -87,7 +87,7 @@ export default function Reservation(props) {
 
 
     useEffect(() => {
-       
+
 
         axios.get('http://localhost:8000/admin/searchFlights', {
             params:
@@ -134,11 +134,13 @@ export default function Reservation(props) {
         }).catch(err => console.log(err))
     }, []);
 
-    useEffect(()=>  {axios.get('http://localhost:8000/user/getMaxResID')
-    .then(res => {
-        setResId(res.data);
-        console.log("max res id aho" + res.data);
-    }).catch(err => console.log(err))}, []);
+    useEffect(() => {
+            axios.get('http://localhost:8000/user/getMaxResID')
+        .then(res => {
+            setResId(res.data);
+            console.log("max res id aho" + res.data);
+        }).catch(err => console.log(err))
+    }, []);
 
     const onSubmit = () => {
         // history.push({
@@ -176,27 +178,24 @@ export default function Reservation(props) {
         // }).catch(err => console.log(err))
         const token = localStorage.getItem("token");
         axios.post('http://localhost:8000/user/payment', {
-
-            // resID: resID + 1,
-            // adultsNo: key.adultsNo,
-            // childrenNo: key.childrenNo,
-            // seatClass: key.cabin,
-            // deptFlight: key.flight._id,
-            // arrFlight: key.ReturnFlight._id,
-            // deptSeats: reservedSeats2,
-            // arrSeats: reservedSeats3,
             price: price
         }, {
             headers: {
-              'authorization': token
+                'authorization': token
             }
-          }).then(res => {
+        }).then(res => {
             console.log(res.data);
-            // setReserved(true);
-        }).then(({ url }) => {
-            history.push(url);
-          })
-        .catch(err => console.log(err))
+            window.location = res.data.url;
+            localStorage.setItem("resID",resID + 1 );
+            localStorage.setItem("adultsNo",key.adultsNo );
+            localStorage.setItem("childrenNo",key.childrenNo );
+            localStorage.setItem("seatClass", key.cabin);
+            localStorage.setItem("deptFlight", key.flight._id);
+            localStorage.setItem("arrFlight", key.ReturnFlight._id);
+            localStorage.setItem("deptSeats",reservedSeats2 );
+            localStorage.setItem("arrSeats", reservedSeats3);
+        })
+            .catch(err => console.log(err))
 
     };
 
@@ -214,7 +213,6 @@ export default function Reservation(props) {
                 className={classes.pageHeader}
                 style={{
                     backgroundImage: "url(" + image + ")",
-
                     backgroundSize: "cover",
                     backgroundPosition: "top center",
 

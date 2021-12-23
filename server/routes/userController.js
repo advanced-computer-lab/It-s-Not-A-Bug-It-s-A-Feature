@@ -59,8 +59,13 @@ router.route('/allRes').get((req, res) => {
 router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
   await payment(req, res)
   addRes(req)
-    .then((msg)=>res.json({ message:msg}))
-    .catch(err => res.json({ message:err}));  
+    .then(
+      // (msg)=>res.json({ message:msg})
+      )
+    .catch(
+      err =>console.log(err)
+      // err => res.json({ message:err})
+      );  
   
 });
 
