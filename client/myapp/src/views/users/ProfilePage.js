@@ -73,7 +73,7 @@ export default function ProfilePage(props) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get('http://localhost:8000/user/myReservations',{
+    axios.get('http://localhost:8000/user/myReservations', {
       headers: {
         'authorization': token
       }
@@ -96,7 +96,7 @@ export default function ProfilePage(props) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get('http://localhost:8000/user/editProfile/',{
+    axios.get('http://localhost:8000/user/editProfile/', {
       headers: {
         'authorization': token
       }
@@ -123,7 +123,7 @@ export default function ProfilePage(props) {
     const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`,{
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
         headers: {
           'authorization': token
         }
@@ -159,7 +159,7 @@ export default function ProfilePage(props) {
 
   const onEdit = () => {
     const token = localStorage.getItem("token");
-    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit,{
+    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit, {
       headers: {
         'authorization': token
       }
