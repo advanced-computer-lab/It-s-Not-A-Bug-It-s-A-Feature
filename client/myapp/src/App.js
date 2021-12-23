@@ -20,6 +20,8 @@ import editRes from './views/users/editRes.js';
 import changeDept from './views/users/changeDept.js';
 import changeRet from './views/users/changeRet.js';
 import  changeSeats from './views/users/changeSeats.js';
+import payFail from './views/users/payFail.js';
+import paySuccess from './views/users/paySuccess.js';
 
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
@@ -54,7 +56,8 @@ function App() {
            <Route path ={"/admin/search"} component={Search}/>
            {/* <Route path ={"/reserveDept"} component={deptReserveFlight}/>
            <Route path ={"/reserveRet"} component={retReserveFlight}/> */}
-           <Route path ={"/pay"} component={Payment}/>
+           <Route path ={"/paySuccess"} component={paySuccess}/>
+           <Route path ={"/payFail"} component={payFail}/>
            <Route path ={"/reserveSeats"} component={bothSeats}/>
            <Route path ={"/editResFront"} component={editRes}/>
            <Route path ={"/changeDept"} component={changeDept}/>

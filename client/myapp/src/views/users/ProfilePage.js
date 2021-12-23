@@ -447,7 +447,14 @@ export default function ProfilePage(props) {
                                             </a>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
+                                              onClick={(e) => { 
+                                              history.push({
+                                                pathname: "/changeSeats",
+                                                state: {
+                                                  resID : curr.reservation.resID
+                                                }
+                                  
+                                              }); }}>
                                               <h4>     switch seats    </h4>
                                             </a>,
                                           ]}
