@@ -799,11 +799,15 @@ router.route('/payment').post(verifyJWT, async (req,res)=>{
       line_items: [{
         price_data:{
           currency: "usd",
+          product_data: {
+            name: "airplane ticket",
+          },
           unit_amount: req.body.price*100 // discuss with frontend
-        }
+        },
+        quantity: 1
       }],
-      success_url: `${process.env.CLIENT_URL}/paySuccess`, // discuss client url with frontend
-      cancel_url: `${process.env.CLIENT_URL}/payFail`
+      success_url: `${process.env.CLIENT_URL}paySuccess`, // discuss client url with frontend
+      cancel_url: `${process.env.CLIENT_URL}payFail`
     })
     res.json({url: session.url})
   }
