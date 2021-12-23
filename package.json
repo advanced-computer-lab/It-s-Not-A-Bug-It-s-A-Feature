@@ -9,6 +9,8 @@
     "@material-ui/icons": "4.11.2",
     "@mui/system": "^5.2.2",
     "classnames": "2.3.1",
+    "lodash.reduce": "^4.6.0",
+    "lodash.startswith": "^4.2.1",
     "moment": "2.29.1",
     "node-sass": "6.0.0",
     "nouislider": "15.1.0",
