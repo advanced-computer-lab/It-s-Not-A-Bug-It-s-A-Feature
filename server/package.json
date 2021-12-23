@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "find-config": "^1.0.0",
+    "jest": "^26.6.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "2.29.1",
     "mongoose": "^6.0.14",
@@ -45,7 +46,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts eject",
     "lint:check": "eslint . --ext=js,jsx;  exit 0",
     "lint:fix": "eslint . --ext=js,jsx --fix;  exit 0",
