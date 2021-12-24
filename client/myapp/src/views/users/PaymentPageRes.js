@@ -29,6 +29,7 @@ import error from "./../../assets/img/error.jpg";
 import styles from "../../assets/jss/material-kit-react/views/profilePage.js";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true
 import { Cancel } from "@material-ui/icons";
 
 import { useHistory } from 'react-router-dom';

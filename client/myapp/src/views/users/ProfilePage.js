@@ -146,6 +146,7 @@ export default function ProfilePage(props) {
     const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
+      const token = localStorage.getItem("token");
       axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
         headers: {
           'authorization': token
@@ -159,9 +160,7 @@ export default function ProfilePage(props) {
 
 
   }
-  function sendItinerary(email, resID) {
-    //TODO
-  }
+
   function editRes(resID) {
     history.push({
       pathname: "/editResFront",
@@ -434,8 +433,11 @@ export default function ProfilePage(props) {
                                           variant="contained"
                                           // disableElevation
                                           onClick={(e) => {
-                                            //check el input bta3 el method dy
-                                            sendItinerary(Profile._id, curr.reservation.resID);
+                                            axios.post('http://localhost:8000/user/sendItenrary', {
+                                              resId: curr.reservation._id
+                                                }).then(res => {
+                                                    console.log(res.data);
+                                                }).catch(err => console.log(err))
                                           }}
                                         >Send me my itinerary</Button>
                                        </GridItem>
