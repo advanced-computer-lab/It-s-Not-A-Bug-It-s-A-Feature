@@ -37,9 +37,15 @@ As I have mentioned before, you never know who is going to read your readme. So 
 **Contribute**
 This is where you let them know that they can contribute and help you out. A guideline on how to contribute is also helpful
 
-#Credits
+**Credits**
+https://blog.logrocket.com/mern-stack-tutorial/
+https://www.youtube.com/watch?v=leNCfU5SYR8
 https://www.freecodecamp.org/news/use-nodemailer-to-send-emails-from-your-node-js-server/
 https://www.youtube.com/watch?v=mI_-1tbIXQI
+https://www.youtube.com/watch?v=71wSzpLyW9k
+https://www.youtube.com/watch?v=lbEFSP1WAv0
+https://www.youtube.com/watch?v=7CqJlxBYj-M
+https://ant.design/components/auto-complete/
 
-License
+**License**
 [MIT License](LICENSE)
