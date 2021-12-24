@@ -14,7 +14,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
-
+axios.defaults.withCredentials = true
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
 

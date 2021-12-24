@@ -1,5 +1,6 @@
 import SelectSeats from "./SelectSeats.js";
 import axios from 'axios';
+axios.defaults.withCredentials = true
 import { useState, useEffect } from 'react';
 import React from 'react'
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
@@ -93,46 +94,9 @@ export default function AllSeats(props) {
         console.log("selected seats" + selDeptSeats);
     }, [selDeptSeats]);
 
-    // const handleChange = e => setSelDeptSeats(e.target.deptSeats);
-
-    // console.log("all seats - dept seats" + selDeptSeats);
-    // const onSubmit = () => {
-
-    //     axios.post('http://localhost:8000/user/res', {
-    //         body:
-    //         {
-    //             resID: Number(props.resID),
-    //             adultsNo: Number(props.adultsNo),
-
-    //             childrenNo: Number(props.childrenNo),
-    //             seatClass: type,
-    //             deptFlight: deptFlight,
-    //             arrFlight: retFlight,
-    //             deptSeats: deptSeats, //???????
-    //             arrSeats: arrSeats, //??????
-
-
-    //         }
-    //     }).then(res => {
-    //         console.log(res.data);
-    //     }).catch(err => console.log(err))
-    //     // history.push({
-    //     //   pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
-    //     //   state: {
-    //     //     deptSeats: ,
-    //     //     retSeats: retSeats
-    //     //   }
-    //     // });
-    // };
-    // console.log(deptData);
-    // // console.log(retData);
-    // console.log("ana hena w yarab teshta3'al");
-
+ 
     return (
         <div className={classes.container}>
-        {/* <Box padding="35px"> */}
-            
-
         <GridContainer justify="center">
             <GridItem xs={12} sm={12}>
             {loading2 || loading ? <CustomLinearProgress color="info" /> :

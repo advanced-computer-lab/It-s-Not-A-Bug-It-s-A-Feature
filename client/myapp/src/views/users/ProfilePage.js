@@ -41,6 +41,7 @@ import People from "@material-ui/icons/People";
 import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
+import buzz from "./../../assets/img/faces/buzz.jpg";
 import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -145,8 +146,7 @@ export default function ProfilePage(props) {
     const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
-     const token= localStorage.getItem("token");
-     console.log("token ",token);
+      const token = localStorage.getItem("token");
       axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
         headers: {
           'authorization': token
@@ -160,9 +160,7 @@ export default function ProfilePage(props) {
 
 
   }
-  function sendItinerary(email, resID) {
-    //TODO
-  }
+
   function editRes(resID) {
     history.push({
       pathname: "/editResFront",
@@ -218,7 +216,7 @@ export default function ProfilePage(props) {
                   <div>
                     {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
                       :
-                      <img src={cloud} alt="..." className={imageClasses} />}
+                      <img src={buzz} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -284,7 +282,6 @@ export default function ProfilePage(props) {
                                 <br />
                                 <Button
                                   color="warning"
-                                  // color="transparent"
                                   size="lg"
                                   id="demo-customized-button"
                                   aria-controls="demo-customized-menu"
@@ -308,7 +305,6 @@ export default function ProfilePage(props) {
                                 <form className={classes.form}>
                                   <CardBody>
                                     <TextField
-
                                       label="First Name..."
                                       id="firstName"
                                       name="firstName"
@@ -323,7 +319,6 @@ export default function ProfilePage(props) {
                                     />
                                     <br /><br />
                                     <TextField
-
                                       label="Last Name"
                                       id="lastName"
                                       name="lastName"
@@ -337,9 +332,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Email"
                                       id="email"
                                       name="email"
@@ -353,9 +346,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Passport Number"
                                       id="passportNo"
                                       name="passportNo"
@@ -382,7 +373,6 @@ export default function ProfilePage(props) {
                                         setedit(null);
                                       }}
                                     >Cancel </Button>
-
                                     <Button
                                       color="warning"
                                       // color="transparent"
@@ -396,14 +386,8 @@ export default function ProfilePage(props) {
                                         onEdit(e);
                                       }}
                                     >Save </Button>
-
-
-
-
                                   </CardBody>
                                 </form>
-
-
                               </GridItem>
                             </GridContainer>
                           }
@@ -421,7 +405,6 @@ export default function ProfilePage(props) {
                             <GridContainer justify="center">
                               {
                                 MyReservation.map((curr) => (
-
                                   <div>
                                     <GridContainer justify="center"></GridContainer>
                                     <GridItem xs={12} sm={12}>
@@ -450,8 +433,11 @@ export default function ProfilePage(props) {
                                           variant="contained"
                                           // disableElevation
                                           onClick={(e) => {
-                                            //check el input bta3 el method dy
-                                            sendItinerary(Profile._id, curr.reservation.resID);
+                                            axios.post('http://localhost:8000/user/sendItenrary', {
+                                              resId: curr.reservation._id
+                                                }).then(res => {
+                                                    console.log(res.data);
+                                                }).catch(err => console.log(err))
                                           }}
                                         >Send me my itinerary</Button>
                                        </GridItem>
@@ -473,7 +459,7 @@ export default function ProfilePage(props) {
                                                 history.push({
                                                   pathname: "/changeDept",
                                                   state: { 
-                                                  
+                                              
                                                    res:curr,
                                                    type:"Dept"
                                                   }

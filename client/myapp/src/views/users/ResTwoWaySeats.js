@@ -27,6 +27,7 @@ import Box from '@material-ui/core/Box';
 import ReservationCard from "./../../components/Reservation/Reservation.js";
 
 import axios from 'axios';
+axios.defaults.withCredentials = true
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -143,39 +144,6 @@ export default function Reservation(props) {
     }, []);
 
     const onSubmit = () => {
-        // history.push({
-        //     pathname: "/pay",
-        //     state: {
-        //         adultsNo: key.adultsNo,
-        //         childrenNo: key.childrenNo,
-        //         seatClass: key.cabin,
-        //         deptFlight: key.flight,
-        //         arrFlight: key.ReturnFlight,
-        //         deptSeats: reservedSeats2,
-        //         arrSeats: reservedSeats3,
-        //         totalPrice: price
-        //     }
-
-        // });
-        // const onSubmit = () => {
-
-        // });
-
-        // axios.post('http://localhost:8000/user/res', {
-
-        //     resID: resID + 1,
-        //     adultsNo: key.adultsNo,
-        //     childrenNo: key.childrenNo,
-        //     seatClass: key.cabin,
-        //     deptFlight: key.flight._id,
-        //     arrFlight: key.ReturnFlight._id,
-        //     deptSeats: reservedSeats2,
-        //     arrSeats: reservedSeats3
-        // }).then(res => {
-        //     console.log(res.data);
-        //     //   setResId(resID);
-        //     setReserved(true);
-        // }).catch(err => console.log(err))
         const token = localStorage.getItem("token");
         axios.post('http://localhost:8000/user/payment', {
             price: price
@@ -185,7 +153,7 @@ export default function Reservation(props) {
             }
         }).then(res => {
             console.log(res.data);
-            window.location = res.data.url;
+            
             localStorage.setItem("resID",resID + 1 );
             localStorage.setItem("adultsNo",key.adultsNo );
             localStorage.setItem("childrenNo",key.childrenNo );
@@ -194,6 +162,11 @@ export default function Reservation(props) {
             localStorage.setItem("arrFlight", key.ReturnFlight._id);
             localStorage.setItem("deptSeats",reservedSeats2 );
             localStorage.setItem("arrSeats", reservedSeats3);
+
+            // console.log("HEREE");
+            // console.log(reservedSeats2);
+            // console.log(localStorage.getItem("deptSeats" ));
+            window.location = res.data.url;
         })
             .catch(err => console.log(err))
 
