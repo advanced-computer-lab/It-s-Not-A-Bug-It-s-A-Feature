@@ -17,7 +17,7 @@ import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import Card from "./../../components/Card/Card.js";
 import CardContent from '@mui/material/CardContent';
-import Flight from "./../../components/Flight/Flight.js";
+import Flight from "./../../components/Flight/FlightCard.js";
 import Typography from '@mui/material/Typography';
 import AllSeats from "../../components/Flight/AllSeats.js";
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
@@ -70,24 +70,23 @@ export default function Reservation(props) {
     const key = location.state;
     const classes = useStyles();
     const { ...rest } = props;
-    console.log(location);
     const type =key.type;
-    var traveller = key.res.reservation.adultsNo+key.res.reservation.childrenNo;
-    traveller= traveller==1? " "+1+" Traveller":" "+traveller+" Traveller";
+    const count = key.res.reservation.adultsNo+key.res.reservation.childrenNo;
+    const traveller= count==1? " "+1+" Traveller":" "+count+" Traveller";
   // const reservation =key.res;
   const deptFlight = key.res.deptFlight;
     const tabName = type=="Dept"?"Departure Flight":"Return Flight";
     const myIcon=type==="Dept"?FlightTakeoffIcon:FlightLandIcon;
     const [reservedSeats, setReservedSeats] = useState([]);
     const [Flight, setFlight] = useState(null);
+    const [allFlights, setAllFlights] = useState([]);
+    const [empty, setempty] = useState(null);
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
    // const [deptDate, setdeptDate] = useState(null);
-   const arrDate = new Date(key.res.deptFlight.departureDate);
+   const arrDate = new Date(key.res.arrFlight.departureDate);
     const [value, setValue] = React.useState( [null,arrDate]);
-     
-     console.log(arrDate);
     const [cabin, setCabin] = useState("Economy");
     const today = new Date();
 
@@ -96,43 +95,34 @@ export default function Reservation(props) {
         return this;
       }
     const onSubmit = () => {
+        setempty(null);
+        setLoading(true);
+        console.log(deptFlight.departureAirport,
+           (new Date(value[0]).addHours(4)).toISOString(),
+            deptFlight.arrivalAirport,
+           cabin,
+            key.res.reservation.adultsNo,
+            key.res.reservation.childrenNo);
         axios.get('http://localhost:8000/user/searchFlights', {
-      params:
-      {
-        arrivalAirport: key.arrivalAirport,
-        arrivalDate: (new Date(value[1]).addHours(4)).toISOString(),
-        departureAirport: key.departureAirport,
-        cabin: key.type,
-        adultsNo: key.adultsNo,
-        childrenNo: key.childrenNo
-      }
-    })
-      .then(res => {
-        // store data in a variable to be later used
-        // setdepartFlights( res.data);
-        setDepart(res.data);
-        console.log(depart)
-        console.log("di el depart flightsss")
-
-      }).catch(err => console.log(err))
-
- 
-                history.push({
-                  pathname: "/search",
-                  state: {
-                    arrivalAirport: arrival,
-                    departureDate: departureDate,
-                    departureAirport: (new Date(value[0]).addHours(4)).toISOString(),
-                    arrivalDate: (new Date(value[1]).addHours(4)).toISOString(),
-                    adultsNo: countAdults,
-                    childrenNo: countChild,
-                    type: cabin,
-                    count: countPassengers
-                  }
-    
-                });
-                //  else
-                //  alert("Sever is not working");
+            params:
+            {
+                departureAirport: deptFlight.departureAirport,
+              departureDate:(new Date(value[0]).addHours(4)).toISOString(),
+              arrivalAirport: deptFlight.arrivalAirport,
+              cabin: cabin,
+              adultsNo: key.res.reservation.adultsNo,
+              childrenNo: key.res.reservation.childrenNo
+            }
+          })
+            .then(res => {
+              // store data in a variable to be later used
+              // setdepartFlights( res.data);
+              setAllFlights(res.data);
+              console.log(res);
+              setLoading(false);
+              if(res.data==[])setempty(true);
+            }).catch(err => console.log(err))
+      
               
       };
     return (
@@ -186,8 +176,6 @@ export default function Reservation(props) {
                                             value={value}
                                             onChange={(newValue) => {
                                                 setValue([newValue[0],arrDate]);
-                                                console.log(value);
-                                                console.log((new Date(value[0]).addHours(4)).toISOString());
                                             }}
                                             renderInput={(startProps, endProps) => (
                                                 <React.Fragment>
@@ -271,22 +259,30 @@ export default function Reservation(props) {
                                         tabIcon: myIcon,
                                         tabContent: (
                                             <GridContainer justify="center">
-                                                <GridItem xs={12} sm={12}>
-                                                    {loading ? <CustomLinearProgress color="info" /> :
-                                                        <Box display="flex" flex-direction="row">
-                                                            <GridItem xs={12} sm={12}>
-                                                               
-                                                            </GridItem>
-                                                        </Box>
-                                                    }
+                                                {loading ? <CustomLinearProgress color="info" /> :null    }
+                                                {empty? null:
+                                                    allFlights.map((curr)=>(
+                                                        <Button color={(Flight==curr)?'blue':'transparent'} onClick={(e) => {
+                                                          if(selectedDepart!=curr)setFlight(curr);
+                                                          else setFlight(null);}}>
+                                                            
+                                                       <GridItem xs={12} sm={12}> 
+                                                         <Flight
+                                                         flight={curr}
+                                                         type={cabin}
+                                                         Number={count}
+                                                        adult={key.res.reservation.adultsNo}
+                                                        child={key.res.reservation.childrenNo}
+                                                         
+                                                         />
+                                                          
+                                                         </GridItem>
+                                                         </Button>
+                                                     ))
 
-                                                </GridItem>
-                                                
-                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                   
-                                                </GridItem>
-                                               
+                                                }
                                             </GridContainer>
+                                                
                                         ),
                                     },
                                     {
