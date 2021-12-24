@@ -21,7 +21,7 @@ import changeRet from './views/users/changeRet.js';
 import  changeSeats from './views/users/changeSeats.js';
 import payFail from './views/users/payFail.js';
 import paySuccess from './views/users/paySuccess.js';
-
+import BasicTextFields from './views/users/test.js';
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
 import Search from './views/admin/searchComponent.js'
@@ -61,7 +61,7 @@ function App() {
            <Route path ={"/changeDept"} component={changeDept}/>
            <Route path ={"/changeRet"} component={changeRet}/>
            <Route path ={"/changeSeats"} component={changeSeats}/>
-           
+           <Route path ={"/test"} component={BasicTextFields}/>
          </Router> 
          </ThemeProvider>
 

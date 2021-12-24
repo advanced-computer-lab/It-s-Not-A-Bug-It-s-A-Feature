@@ -6,6 +6,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
 // core components
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Header from "./../../components/Header/Header.js";
 import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import Footer from "./../../components/Footer/Footer.js";
@@ -21,10 +24,6 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import LockIcon from '@mui/icons-material/Lock';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Check from "@material-ui/icons/Check";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
 import PhoneIphoneRoundedIcon from '@mui/icons-material/PhoneIphoneRounded';
 import { Icon } from '@iconify/react';
 import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js";
@@ -36,11 +35,130 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-// import countries from  "client/myapp/src/views/users/Country.json";
+
+
+
+
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+var worldMapData = require('city-state-country');
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+
+//     margin: theme.spacing(1),
+//     height: "71px",
+//     flex: 1,
+//     // position: 'absolute',
+//     direction: "flex",
+//   },
+//   text: {
+//     display: "flex",
+//     flexDirection: "row",
+//     color: "black",
+
+//   },
+
+
+//   a: {
+//     '&:hover': {
+//       color: "grey",
+//     },
+//     textdecoration: "none!important",
+//     color: "black"
+//   },
+
+//   testssss: {
+//     height: "100px",
+//     width: "100px",
+//     backgroundcolor: "green"
+//   }
+
+
+// }
+// ));
+
+
+
+function searchCountry({ placeholder, data }) {
+
+
+  const handleFilter = (event) => {
+    const searchWord = event.target.value;
+    setWordEntered(searchWord);
+    const newFilter = data.filter((value) => {
+      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+    });
+
+    if (searchWord === "") {
+      setFilteredData([]);
+    } else {
+      setFilteredData(newFilter);
+    }
+  };
+
+  const clearInput = () => {
+    setFilteredData([]);
+    setWordEntered("");
+  };
+
+}
+
 
 const useStyles = makeStyles(styles);
 
 export default function SignUp(props) {
+
+  // search componenet
+  const styles = useStyles({
+
+  });
+
+
+
+  const [pass, setpass] = useState("");
+
+  const [placeholder, setplaceholder] = useState("Country");
+  const [filteredData, setFilteredData] = useState([]);
+  const [destination, setdestination] = useState("");
+  const [wordEntered, setWordEntered] = useState("");
+  const handleFilter = (event) => {
+    const searchWord = event.target.value;
+    console.log("value", searchWord)
+    setWordEntered(searchWord);
+    const newFilter = worldMapData.searchCountry(searchWord)
+    console.log("new filter", newFilter)
+    if (searchWord === "") {
+      setFilteredData([]);
+    } else {
+      setFilteredData(newFilter);
+    }
+    console.log("filteredData", filteredData)
+
+  };
+
+  const final = null;
+  const clicked = (value, e) => {
+    setWordEntered(value.name);
+    setcountry(value.name);
+    setcountrycode(value.phoneCode);
+    console.log({ wordEntered });
+    console.log({ value });
+    setFilteredData([]);
+    console.log("destination", destination);
+    console.log("lets see");
+    console.log(value.name);
+    console.log(value.phoneCode);
+
+  };
+
+  //// done
+  
+
 
   //________________________ variables send to backend__________________________
 
@@ -61,12 +179,32 @@ export default function SignUp(props) {
   const [expirydate, setexpirydate] = useState(null);
   const [creditfirstname, setcreditfirstname] = useState("");
   const [creditlastname, setcreditlastname] = useState("");
-  const [countrycode, setcountrycode] = useState("");
+  const [countrycode, setcountrycode] = useState("20");
 
 
   const currentdate = new Date(); // the date of today minm of the expirydate in credit card 
 
+  // __________________________________________________ for password visibility _______________________________
+  const [values, setValues] = React.useState({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+  });
 
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  //_______________________________________________________________________________
   // signup
   const onSubmit = (e) => {
     // country code 
@@ -86,9 +224,12 @@ export default function SignUp(props) {
       birthDate: birthdate,
 
     }).then(res => {
+
       console.log(res);
+      console.log("signed up succesfully");
+      history.push('/login');
     }).catch(err => console.log(err))
-    history.push('/login');
+
   }
 
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
@@ -104,6 +245,10 @@ export default function SignUp(props) {
 
   // errors handeling
   const onNext1 = (e) => {
+
+
+
+
     e.preventDefault();
   }
   // errors handeling
@@ -120,7 +265,7 @@ export default function SignUp(props) {
         rightLinks={<HeaderLinks isLogged={isLogged} />}
         {...rest}
       />
-      
+
       <div
         className={classes.pageHeader}
         style={{
@@ -223,6 +368,29 @@ export default function SignUp(props) {
                                     />
                                   </GridItem>
                                   <GridItem xs={12} sm={12} >
+                                    {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                                      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                      <Input
+                                        id="outlined-adornment-password"
+                                        type={values.showPassword ? 'text' : 'password'}
+                                        value={values.password}
+                                        onChange={handleChange('password')}
+                                        endAdornment={
+                                          <InputAdornment position="end">
+                                            <IconButton
+                                              aria-label="toggle password visibility"
+                                              onClick={handleClickShowPassword}
+                                              onMouseDown={handleMouseDownPassword}
+                                              edge="end"
+                                            >
+                                              {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                          </InputAdornment>
+                                        }
+                                        label="Password"
+                                      />
+                                    </FormControl> */}
+
                                     <TextField
                                       required
                                       label="Confirm Password"
@@ -230,8 +398,27 @@ export default function SignUp(props) {
                                       type="password"
                                       value={password2}
                                       variant="standard"
+                                      helperText={pass}
+                                      // endAdornment={
+                                      //   <InputAdornment position="end">
+                                      //     <IconButton
+                                      //       aria-label="toggle password visibility"
+                                      //       onClick={handleClickShowPassword}
+                                      //       onMouseDown={handleMouseDownPassword}
+                                      //       edge="end"
+                                      //     >
+                                      //       {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                      //     </IconButton>
+                                      //   </InputAdornment>
+                                      // }
                                       onChange={(event) => {
+                                        if(event.target.value!==password1){
+                                              setpass("passwords do not match ")
+                                        }else{
+                                          setpass("")
+                                        }
                                         setpassword2(event.target.value);
+
                                       }}
 
                                     />
@@ -297,19 +484,46 @@ export default function SignUp(props) {
                                     />
                                   </GridItem>
                                   <GridItem xs={12} sm={6} >
-                                    <TextField
-                                      required
-                                      label="Country"
-                                      fullWidth
-                                      value={country}
-                                      variant="standard"
-                                      onChange={(event) => {
-                                        setcountry(event.target.value);
-                                      }}
+                                    <form className={styles.root} noValidate autoComplete="off">
+                                      <div className={styles.text}>
 
-                                    />
+                                        <div className="resultsTo">
+                                          <div className="searchInputTo">
+
+                                            <TextField
+                                              fullWidth
+                                              required
+                                              type="search"
+                                              label="Country"
+                                              variant="standard"
+                                              value={wordEntered}
+                                              onChange={(event) => {
+                                                handleFilter(event)
+                                              }}
+                                            />
+                                          </div>
+                                          {filteredData.length != 0 && (
+                                            <div className="dataResultTo" >
+
+                                              {filteredData.slice(0, 15).map((value, key) => {
+                                                return (
+                                                  <a className="aTo" onClick={(e) => clicked(value, e)} target="_blank">
+                                                    <p>{value.name} </p>
+                                                  </a>
+
+                                                );
+                                              })}
+                                            </div>
+                                          )}
+                                        </div>
+
+
+                                      </div>
+
+                                    </form>
+
                                   </GridItem>
-                                 
+
                                   <GridItem xs={12} sm={6} >
 
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -338,8 +552,12 @@ export default function SignUp(props) {
                                       value={phone1}
                                       type="number"
                                       variant="standard"
+                                      InputProps={{
+                                        startAdornment: <InputAdornment position="start">{"+" + countrycode}</InputAdornment>,
+                                      }}
                                       onChange={(event) => {
                                         setphone1(event.target.value);
+
                                       }}
 
                                     />
@@ -351,6 +569,9 @@ export default function SignUp(props) {
                                       value={phone2}
                                       type="number"
                                       variant="standard"
+                                      InputProps={{
+                                        startAdornment: <InputAdornment position="start">{"+" + countrycode}</InputAdornment>,
+                                      }}
                                       onChange={(event) => {
                                         setphone2(event.target.value);
                                       }}
