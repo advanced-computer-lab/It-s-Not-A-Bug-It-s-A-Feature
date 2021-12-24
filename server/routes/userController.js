@@ -72,6 +72,9 @@ router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtr
   
 });
 
+// 1. add reserved seats to already existing flight seats
+// 2. add reserved seats only to new reservation
+
 async function addRes(req){
   console.log('\nAdding new reservation...');
   const adultsNo = Number(req.body.adultsNo);
@@ -79,8 +82,23 @@ async function addRes(req){
     const seatClass = req.body.seatClass;
     const deptFlight = req.body.deptFlight;//selected flight from frontend
     const arrFlight = req.body.arrFlight;//selected flight from frontend
-    var deptSeats = [];
-    var arrSeats = [];
+    var deptSeats;
+    var arrSeats;
+    // deptSeats.push(...req.body.deptSeats);
+    // arrSeats.push(...req.body.arrSeats);
+
+    // TODO: get dept and arr flights' reserved seats
+    await Flights.findById(deptFlight)
+    .then( (flight) => {
+      console.log(flight.reservedSeats);
+      deptSeats = flight.reservedSeats
+    })
+    .catch(err => console.log(err));
+
+    await Flights.findById(arrFlight)
+    .then(async (flight) => arrSeats = flight.reservedSeats)
+    .catch(err => console.log(err));
+    
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
 
@@ -89,11 +107,6 @@ async function addRes(req){
     const passengers = adultsNo + childrenNo;
     var price = await calculatePrice(deptFlight, seatClass, passengers)
       + await calculatePrice(arrFlight, seatClass, passengers);
-    
-    // let paymsg = await payment(price);
-    // if(paymsg === fail){
-    //   return 'Payment failed. Reservation was not made.';
-    // }
 
     //update reservedSeats in dept and return fligthts
     if(seatClass === 'Business'){
@@ -130,16 +143,18 @@ async function addRes(req){
     // const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
     const userID = req.user.id;  //userID of logged in user which is a global var saved in back end
 
+    let resDeptSeats = req.body.deptSeats;
+    let resArrSeats = req.body.arrSeats;
     const newRes = new Reservation({
       reservationID, userID, adultsNo, childrenNo, seatClass,
-      deptFlight, arrFlight, deptSeats, arrSeats, price
+      deptFlight, arrFlight, resDeptSeats, resArrSeats, price
     });
 
-    payment
+    // payment
     newRes.save()
       .then()
       .catch(err => console.error(err));
-
+    
     return 'Reservation added successfully.';
   }
 
