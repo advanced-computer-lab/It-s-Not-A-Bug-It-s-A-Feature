@@ -7,7 +7,6 @@ import  Home from './views/users/LandingPage/LandingPage.js';
 // import  userHome from './views/users/LandingPage/userLandingPage.js';
 import  Login from './views/users/login.js';
 import SignUp from './views/users/SignUpPage.js';
-import Test from './views/users/test.js';
 import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
 import  SearchFlight from './views/users/SearchFlight.js';
@@ -43,7 +42,6 @@ function App() {
          <Router> 
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/signUp"} component={SignUp}></Route>
-           <Route path ={"/test"} component={Test}></Route>
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
