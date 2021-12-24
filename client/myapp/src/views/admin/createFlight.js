@@ -26,10 +26,6 @@ import image from "./../../assets/img/bg7.jpg";
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 const useStyles = makeStyles(styles);
-const matchList =document.getElementById("match-List");
-const matchList2 =document.getElementById("match-List2");
-
-
 
 export default function CreateFlight(props) {
   const classes = useStyles();

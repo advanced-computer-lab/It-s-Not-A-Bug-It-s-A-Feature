@@ -18,8 +18,6 @@ import AppBar from '@mui/material/AppBar';
 import Link from '@mui/material/Link';
 import { fabClasses } from '@mui/material';
 
-const matchList =document.getElementById("match-List");
-const matchList2 =document.getElementById("match-List2");
 // export default function EditFlight() {
 //   const[list, setList]= useState([]); 
 //   const { id } = useParams();
@@ -121,10 +119,6 @@ export default class EditFlight extends Component {
       .catch(function (error) {
         console.log(error);
       });
-
-
-
-
 
   }
 
