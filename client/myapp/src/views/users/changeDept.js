@@ -90,7 +90,7 @@ export default function Reservation(props) {
    // const [deptDate, setdeptDate] = useState(null);
    const arrDate = new Date(key.res.arrFlight.departureDate);
     const [value, setValue] = React.useState(key.res.deptFlight.departureDate);
-    const [cabin, setCabin] = useState("Economy");
+    const [cabin, setCabin] = useState(key.res.reservation.seatClass);
     const today = new Date();
 
     Date.prototype.addHours = function(h) {
@@ -100,12 +100,7 @@ export default function Reservation(props) {
     const onSubmit = () => {
         setempty(null);
         setLoading(true);
-        console.log(deptFlight.departureAirport,
-           (new Date(value).addHours(4)).toISOString(),
-            deptFlight.arrivalAirport,
-           cabin,
-            key.res.reservation.adultsNo,
-            key.res.reservation.childrenNo);
+       if(cabin===key.res.reservation.seatClass)
         axios.get('http://localhost:8000/user/searchFlights', {
             params:
             {
@@ -118,6 +113,7 @@ export default function Reservation(props) {
             }
           })
             .then(res => {
+                setFlight(null);
               // store data in a variable to be later used
               // setdepartFlights( res.data);
               setAllFlights(res.data);
@@ -125,7 +121,12 @@ export default function Reservation(props) {
               if(res.data.length==0){setempty(true);
             }
             }).catch(err => console.log(err))
-      
+      else{
+        setFlight(null);
+        setAllFlights([]);
+        setLoading(false);
+        setempty(true);
+      }
               
       };
     return (
@@ -211,11 +212,11 @@ export default function Reservation(props) {
 
                                 }}
                                             dropdownList={[
-                                    <Link className={classes.dropdownLink}
+                                    <a className={classes.dropdownLink}
                                     onClick={(e) => { setCabin("Economy"); }}
                                     >
                                     <h4>  Economy </h4>
-                                    </Link>,
+                                    </a>,
                                     <a
                                     className={classes.dropdownLink}
                                     onClick={(e) => { setCabin("Business"); }}

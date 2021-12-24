@@ -34,7 +34,6 @@ import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
 export default function Reservation(props) {
-console.log(props);
 const deptFlight=props.deptFlight;
 
 const date =  new Date(deptFlight.departureDate);

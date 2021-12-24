@@ -145,6 +145,8 @@ export default function ProfilePage(props) {
     const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
+     const token= localStorage.getItem("token");
+     console.log("token ",token);
       axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
         headers: {
           'authorization': token
@@ -483,7 +485,15 @@ export default function ProfilePage(props) {
                                             </a>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
+                                              onClick={(e) => { history.push({
+                                                pathname: "/changeRet",
+                                                state: { 
+                                                
+                                                 res:curr,
+                                                 type:"Ret"
+                                                }
+                                          
+                                              });}}>
                                               <h4>     change return flight   </h4>
                                             </a>,
                                             <a
