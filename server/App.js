@@ -113,7 +113,8 @@ app.post("/login",async (req,res)=>{
             res.cookie('jwt', token, {httpOnly: true, maxAge:86400});
             return res.json({
               message: "success",
-              token: "Bearer " + token
+              token: "Bearer " + token,
+              isAdmin: payload.isAdmin
             })
           }
         )
