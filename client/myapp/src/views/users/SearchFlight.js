@@ -16,6 +16,7 @@ import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import Card from "./../../components/Card/Card.js";
 import Flight from "./../../components/Flight/FlightCard.js";
+import SearchAirports from "./../../components/AutoComplete/autocomplete.js";
 // import AllSeats from "./../.../components/Flight/AllSeats.js";
 import Typography from '@mui/material/Typography';
 
