@@ -86,8 +86,11 @@ Open http://localhost:3000/home to view the homepage in your browser.
     After choosing a departure flight, click 'return flight' to view the list of return flights that match your
     search criteria, from which you can choose your preferred return flight.
 
-  ### D) Reserve a flight: 
+  ### D) Reserve The Trip: 
     Next, you can reserve a flight by clicking 'Confirm Reservation'.
+    
+  ### D) Choose Seats: 
+    Next, you can choose the seats you prefer both the departure plane and the return plane.
 
     If you are not logged in, you will be prompted your username and password first.
 
@@ -113,6 +116,8 @@ Open http://localhost:3000/home to view the homepage in your browser.
          3) Change Return Flight
 
        c) Email Yourself Your Trip Itenrary
+       
+  ## In My Profile Page, you can:
 
 
 
