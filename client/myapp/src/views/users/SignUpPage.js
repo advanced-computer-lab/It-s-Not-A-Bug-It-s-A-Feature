@@ -33,6 +33,9 @@ import axios from 'axios';
 import image from "./../../assets/img/reg.jpeg";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
 // import countries from  "client/myapp/src/views/users/Country.json";
 
 const useStyles = makeStyles(styles);
@@ -49,15 +52,44 @@ export default function SignUp(props) {
   const [password2, setpassword2] = useState("");
   const [address, setaddress] = useState("");
   const [country, setcountry] = useState("");
-  const [phone, setphone] = useState([]);
-  const [birthdate, setbirthdate] = useState("");
+  const [phone1, setphone1] = useState("");
+  const [phone2, setphone2] = useState("");
+  const [birthdate, setbirthdate] = useState(null);
   const [passport, setpassport] = useState("");
   const [credit, setcredit] = useState("");
-  const [cvv, setcvv] = useState([]);
-  const [expirydate, setexpirydate] = useState("");
+  const [cvv, setcvv] = useState("");
+  const [expirydate, setexpirydate] = useState(null);
   const [creditfirstname, setcreditfirstname] = useState("");
   const [creditlastname, setcreditlastname] = useState("");
+  const [countrycode, setcountrycode] = useState("");
 
+
+  const currentdate = new Date(); // the date of today minm of the expirydate in credit card 
+
+
+  // signup
+  const onSubmit = (e) => {
+    // country code 
+    axios.post('http://localhost:8000/user/register', {
+      username: username,
+      password: password1,
+      email: email,
+      firstName: firstname,
+      lastName: lastname,
+      address: address,
+      countryCode: countrycode,
+      phoneNo: phone1,
+      nationality: country,
+      creditCardNo: credit,
+      passportNo: passport,
+      phoneNoOptional: phone2,
+      birthDate: birthdate,
+
+    }).then(res => {
+      console.log(res);
+    }).catch(err => console.log(err))
+    history.push('/login');
+  }
 
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
@@ -79,19 +111,6 @@ export default function SignUp(props) {
     e.preventDefault();
   };
 
-  // signup
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    // if (validateData()) {
-
-    // axios.post('http://localhost:8000/admin/createFlight/' , flightData)
-    // .then(res => alert('Flight Added Successfuly'), )
-    // .catch((error) => {});
-    history.push('/profile');
-    // }
-  };
-
   return (
     <div>
       <Header
@@ -101,6 +120,7 @@ export default function SignUp(props) {
         rightLinks={<HeaderLinks isLogged={isLogged} />}
         {...rest}
       />
+      
       <div
         className={classes.pageHeader}
         style={{
@@ -148,36 +168,8 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="First name"
-                                      id="FirstName"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        readOnly: false,
-                                        onChange: (event) => {
-                                          setfirstname(event.target.value);
-                                        },
-                                      }}
-                                    /> */}
                                   </GridItem>
                                   <GridItem xs={12} sm={6} >
-                                    {/* <CustomInput
-                                      labelText="Last name"
-                                      id="Last name"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        readOnly: false,
-                                        onChange: (event) => {
-                                          setlastname(event.target.value);
-                                        },
-                                      }}
-                                    /> */}
                                     <TextField
                                       required
                                       label="Last Name"
@@ -202,25 +194,6 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Username"
-                                      id="Username"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        readOnly: false,
-                                        onChange: (event) => {
-                                          setusername(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <People className={classes.inputIconsColor} />
-                                          </InputAdornment>
-                                        ),
-                                      }}
-                                    /> */}
                                   </GridItem>
                                   <GridItem xs={12} sm={12} >
                                     <TextField
@@ -234,27 +207,6 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Email"
-                                      id="email"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        readOnly: false,
-                                        onChange: (event) => {
-                                          setemail(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <Email className={classes.inputIconsColor}>
-                                            </Email>
-                                          </InputAdornment>
-                                        ),
-
-                                      }}
-                                    /> */}
                                   </GridItem>
                                   <GridItem xs={12} sm={12} >
                                     <TextField
@@ -269,28 +221,6 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Password"
-                                      id="pass"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "password",
-                                        readOnly: false,
-                                        onChange: (event) => {
-                                          setpassword1(event.target.value);
-
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <LockIcon className={classes.inputIconsColor}>
-                                            </LockIcon>
-                                          </InputAdornment>
-                                        ),
-                                        autoComplete: "off",
-                                      }}
-                                    /> */}
                                   </GridItem>
                                   <GridItem xs={12} sm={12} >
                                     <TextField
@@ -305,26 +235,6 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Confirm password"
-                                      id="confirm pass"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "password",
-                                        onChange: (event) => {
-                                          setpassword2(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <LockIcon className={classes.inputIconsColor}>
-                                            </LockIcon>
-                                          </InputAdornment>
-                                        ),
-                                        autoComplete: "off",
-                                      }}
-                                    /> */}
                                   </GridItem>
                                 </GridContainer>
                               </CardBody>
@@ -352,7 +262,7 @@ export default function SignUp(props) {
                             flex-flexdirection="row">
 
                             <form className={classes.form}>
-                              <CardHeader color="warning" className={classes.cardHeader}>
+                              <CardHeader color="primary" className={classes.cardHeader}>
                                 <h3> Sign up </h3>
                               </CardHeader>
 
@@ -371,122 +281,8 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Address"
-                                      id="address"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        onChange: (event) => {
-                                          setaddress(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <HomeRoundedIcon className={classes.inputIconsColor}>
-                                            </HomeRoundedIcon>
-                                          </InputAdornment>
-                                        ),
-
-                                      }}
-                                    /> */}
                                   </GridItem>
-                                  <GridItem xs={12} sm={6} >
-                                    <TextField
-                                      required
-                                      label="Select Country"
-                                      fullWidth
-                                      value={country}
-                                      variant="standard"
-                                      onChange={(event) => {
-                                        setcountry(event.target.value);
-                                      }}
-
-                                    />
-                                    {/* <CustomInput
-                                      labelText="Select country"
-                                      id="country"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        onChange: (event) => {
-                                          setcountry(event.target.value);
-                                        },
-                                      }}
-                                    /> */}
-                                  </GridItem>
-                                  <GridItem xs={12} sm={6}>
-                                    <TextField
-                                      required
-                                      label="Phone Number"
-                                      fullWidth
-                                      value={phone}
-                                      variant="standard"
-                                      onChange={(event) => {
-                                        setphone(event.target.value);
-                                      }}
-
-                                    />
-                                    {/* <CustomInput
-                                      labelText="Phone number"
-                                      id="phone"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        onChange: (event) => {
-                                          setphone(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <PhoneIphoneRoundedIcon className={classes.inputIconsColor}>
-                                            </PhoneIphoneRoundedIcon>
-                                          </InputAdornment>
-                                        ),
-
-                                      }}
-                                    /> */}
-                                  </GridItem>
-                                  <GridItem xs={12} sm={6} >
-                                    <TextField
-                                      id="departureDate"
-                                      label="Departure Date"
-                                      type="date"
-                                      value={birthdate}
-                                      name="departureDate"
-                                      defaultValue="2017-05-24"
-                                      // sx={{ width: 220 }}
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                      onChange={(event) => {
-                                        const { name, value } = event.target;
-                                        setbirthdate((prevState => {
-                                          return {
-                                            ...prevState,
-                                            [name]: value
-                                          };
-                                        }));
-                                      }
-                                      }
-                                    />
-                                    {/* <CustomInput
-                                      labelText=" "
-                                      id="date"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "date",
-                                      }}
-                                    /> */}
-                                  </GridItem>
-
-                                  <GridItem xs={12} sm={6} >
+                                  <GridItem xs={12} sm={12} >
 
                                     <TextField
                                       required
@@ -499,27 +295,68 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Passport number"
-                                      id="pssport"
-                                      formControlProps={{
-                                        fullWidth: true,
+                                  </GridItem>
+                                  <GridItem xs={12} sm={6} >
+                                    <TextField
+                                      required
+                                      label="Country"
+                                      fullWidth
+                                      value={country}
+                                      variant="standard"
+                                      onChange={(event) => {
+                                        setcountry(event.target.value);
                                       }}
-                                      inputProps={{
-                                        type: "text",
-                                        onChange: (event) => {
-                                          setpassport(event.target.value);
-                                        },
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <Icon icon="mdi:passport" width="26" height="27" className={classes.inputIconsColor} />
-                                          </InputAdornment>
-                                        ),
 
-                                      }}
-                                    /> */}
+                                    />
+                                  </GridItem>
+                                 
+                                  <GridItem xs={12} sm={6} >
+
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                      <DatePicker
+
+                                        renderInput={(props) => <TextField {...props} required
+                                          label="Birthdate"
+                                          fullWidth
+                                          variant="standard"
+                                        />
+                                        }
+                                        value={birthdate}
+                                        onChange={(newValue) => {
+                                          setbirthdate(newValue);
+                                        }}
+                                      />
+                                    </LocalizationProvider>
                                   </GridItem>
 
+
+                                  <GridItem xs={12} sm={6}>
+                                    <TextField
+                                      required
+                                      label="Phone Number"
+                                      fullWidth
+                                      value={phone1}
+                                      type="number"
+                                      variant="standard"
+                                      onChange={(event) => {
+                                        setphone1(event.target.value);
+                                      }}
+
+                                    />
+                                  </GridItem>
+                                  <GridItem xs={12} sm={6}>
+                                    <TextField
+                                      label="Phone Number (optional)"
+                                      fullWidth
+                                      value={phone2}
+                                      type="number"
+                                      variant="standard"
+                                      onChange={(event) => {
+                                        setphone2(event.target.value);
+                                      }}
+
+                                    />
+                                  </GridItem>
 
 
                                 </GridContainer>
@@ -546,7 +383,7 @@ export default function SignUp(props) {
                   {
                     tabButton: "Step 3",
                     tabContent: (
-                      <GridContainer justify="center">
+                      <GridContainer justify="center" >
                         <GridItem xs={12} sm={12} md={7}>
 
                           <Card className={classes[cardAnimaton]}
@@ -554,39 +391,27 @@ export default function SignUp(props) {
                             flex-flexdirection="row">
 
                             <form className={classes.form}>
-                              <CardHeader color="info" className={classes.cardHeader}>
+                              <CardHeader color="primary" className={classes.cardHeader}>
                                 <h3> Sign up </h3>
                               </CardHeader>
 
                               <CardBody  >
                                 <h5> Credit card details</h5>
-                                <GridContainer>
+                                <GridContainer  >
                                   <GridItem xs={12} sm={6} >
                                     <TextField
                                       required
                                       label="Card Number"
                                       fullWidth
                                       value={credit}
+
+                                      type="number"
                                       variant="standard"
                                       onChange={(event) => {
                                         setcredit(event.target.value);
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="Credit card number "
-                                      id="email"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                        onChange: (event) => {
-                                          setcredit(event.target.value);
-                                        },
-
-                                      }}
-                                    /> */}
                                   </GridItem>
 
                                   <GridItem xs={12} sm={6} >
@@ -601,16 +426,6 @@ export default function SignUp(props) {
                                       }}
 
                                     />
-                                    {/* <CustomInput
-                                      labelText="CVV "
-                                      id="cvv"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                      }}
-                                    /> */}
                                   </GridItem>
 
                                   <GridItem xs={12} sm={6}>
@@ -624,16 +439,6 @@ export default function SignUp(props) {
                                         setcreditfirstname(event.target.value);
                                       }}
                                     />
-                                    {/* <CustomInput
-                                      labelText="First name"
-                                      id="First name"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                      }}
-                                    /> */}
                                   </GridItem>
                                   <GridItem xs={12} sm={6} >
                                     <TextField
@@ -646,51 +451,25 @@ export default function SignUp(props) {
                                         setcreditlastname(event.target.value);
                                       }}
                                     />
-                                    {/* <CustomInput
-                                      labelText="Last name"
-                                      id="Last name"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "text",
-                                      }}
-                                    /> */}
                                   </GridItem>
-                                  <GridItem xs={12} sm={6} >
-                                    <TextField
-                                      label="Expiry Date"
-                                      type="date"
-                                      value={expirydate}
-                                      defaultValue="2017-05-24"
-                                      sx={{ width: 220 }}
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                      onChange={(event) => {
-                                        const { name, value } = event.target;
-                                        setexpirydate((prevState => {
-                                          return {
-                                            ...prevState,
-                                            [name]: value
-                                          };
-                                        }));
-                                      }
-                                      }
-                                    />
-                                    {/* <CustomInput
-                                      labelText=""
-                                      id="date"
-                                      formControlProps={{
-                                        fullWidth: true,
-                                      }}
-                                      inputProps={{
-                                        type: "date",
-                                      }}
-                                    /> */}
+                                  <GridItem xs={12} sm={6}  >
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                      <DatePicker
+
+                                        renderInput={(props) => <TextField {...props} required
+                                          label="Expiry Date"
+                                          fullWidth
+                                          variant="standard"
+                                        />
+                                        }
+                                        value={expirydate}
+                                        minDate={currentdate}
+                                        onChange={(newValue) => {
+                                          setexpirydate(newValue);
+                                        }}
+                                      />
+                                    </LocalizationProvider>
                                   </GridItem>
-
-
                                 </GridContainer>
                               </CardBody>
 
