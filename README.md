@@ -42,9 +42,9 @@ This is the section where you mention all the different tests that can be perfor
 
 A) Clone the Repository
 
-B) Open Terminal
+B) Open 2 TerminalS
 
-C) To run the front end, run the following commands in the given order:
+C) In the first terminal, we will run the front end. Run the following commands in the given order:
 
 ```
 cd client/myapp 
@@ -58,7 +58,7 @@ npm install
 npm start
 ```
 
-D) To run the back end, run:
+D) In the second terminal, we will run the back end. Run the following commands in the given order:
 
 ```
 cd server 
@@ -74,18 +74,42 @@ Open http://localhost:3000/home to view the homepage in your browser.
 
 ## In the Home Page, you can:
 
-### A) Search for Departure Flights: 
-In the home page you can specify some search criteria (Date, Cabin Class, Number of Travellers), and then click "Search" in order to find departure flights that match your preferences.
+### A) Specify your Round Trip Details: 
+In the home page you can specify the dates of your departure and return, cabin class, number of travellers, and then click "Search" in order to find departure flights that match your preferences.
 
-### B) Search for Return Flights: 
-Next, you can search for a return flight after specifying the search criteria of your return flight.
+### B) Choose Departure Flight: 
+After clicking search, a list of all departure flights matching your search criteria will be displayed, from which you can choose your preferred departure flight. 
 
-### C) Reserve a flight: 
-Next you can reserve a flight by clicking "Reserve".
+### C) Choose Return Flight: 
+After choosing a departure flight, click 'return flight' to view the list of return flights that match your search criteria, from which you can choose your preferred return flight.
+
+### D) Reserve a flight: 
+Next, you can reserve a flight by clicking 'Confirm Reservation'.
 
 If you are not logged in, you will be prompted your username and password first.
 
 If you do not have an account click "I Don't Have an Account" so you can sign up.
+
+## In the Profile Page, you can:
+
+### A)Change Your Personal Details
+
+### B) View Your Upcoming Flights:
+
+#### a) Cancel Reservation
+
+#### b) Edit Reservation 
+
+##### 1) Change Seats
+
+##### 2) Change Departure Flight
+
+##### 3) Change Return Flight
+
+#### c) Email Yourself Your Trip Itenrary
+
+
+
 
 ### Find News About Our Top Destinations:
 If you scroll down, you will find some interesting news about OverReact's top 3 destinations.
