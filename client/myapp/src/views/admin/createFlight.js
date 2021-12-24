@@ -184,69 +184,9 @@ export default function CreateFlight(props) {
   
 }
 
-const searchAirports = async searchText=>
-{
-  // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
-  const allAirports = await require("./../../jsonFiles/airports.json");
-  // console.log(result);
-  let matches =allAirports.filter(airport =>{
-    const regex = new RegExp("^"+searchText,'gi');
-    return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
-  });
-  console.log(matches);//the search result
-  if(searchText.length===0) matches=[];
-  if(matchList!=null)
-    outputHtml(matches);
-}
-const outputHtml = matches=>{
-  if(matches.length>0){
-    const html=matches.map(match=>`
-    <div class= "card card-body mb-1">
-      <h4>${match.name}(${match.code})
-      <span class="text-primary"> ${match.country}</span> </h4>
-      
-    </div>`
-      ).join('');
-      matchList.innerHTML=html;
-      // console.log(html);
-  }
-  else{
-    const htmll=` <div class= "card card-body mb-1">  </div>`;
-    matchList.innerHTML=htmll;
-  }
-}
 
-const searchAirports2 = async searchText=>
-{
-  // const allAirports = await require("..\\..\\jsonFiles\\airports.json");
-  const allAirports = await require("./../../jsonFiles/airports.json");
-  // console.log(result);
-  let matches =allAirports.filter(airport =>{
-    const regex = new RegExp("^"+searchText,'gi');
-    return airport.code.match(regex)||airport.name.match(regex)||airport.country.match(regex);
-  });
-  console.log(matches);//the search result
-  if(searchText.length===0) matches=[];
-  if(matchList2!=null)
-    outputHtml2(matches);
-}
-const outputHtml2 = matches=>{
-  if(matches.length>0){
-    const html=matches.map(match=>`
-    <div class= "card card-body mb-1">
-      <h4>${match.name}(${match.code})
-      <span class="text-primary"> ${match.country}</span> </h4>
-      
-    </div>`
-      ).join('');
-      matchList2.innerHTML=html;
-      // console.log(html);
-  }
-  else{
-    const htmll= `<div class= "card card-body mb-1"></div>`;
-    matchList2.innerHTML=htmll;
-  }
-}
+
+
 
 
 function Copyright() {
@@ -500,7 +440,6 @@ const theme = createTheme();
               else{setError((prevState => {return {...prevState,[name]: false};}));
               setHelperText((prevState => {return {...prevState,[name]: ''};}));}
               setData((prevState => {return {...prevState,[name]: value};}));             
-              searchAirports(value);
 
           }}
             
@@ -527,7 +466,7 @@ const theme = createTheme();
               else{setError((prevState => {return {...prevState,[name]: false};}));
               setHelperText((prevState => {return {...prevState,[name]: ''};}));}
               setData((prevState => {return {...prevState,[name]: value};}));
-              searchAirports2(value);
+              
           }}
             
           />             <div id="match-List2"> </div>
