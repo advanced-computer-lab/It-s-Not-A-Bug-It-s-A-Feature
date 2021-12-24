@@ -92,21 +92,21 @@ If you do not have an account click "I Don't Have an Account" so you can sign up
 
 ## In the Profile Page, you can:
 
-### A)Change Your Personal Details
+  ### A)Change Your Personal Details
 
-### B) View Your Upcoming Flights:
+  ### B) View Your Upcoming Flights:
 
-#### a) Cancel Reservation
+    #### a) Cancel Reservation
 
-#### b) Edit Reservation 
+    #### b) Edit Reservation 
 
-##### 1) Change Seats
+      ##### 1) Change Seats
 
-##### 2) Change Departure Flight
+      ##### 2) Change Departure Flight
 
-##### 3) Change Return Flight
+      ##### 3) Change Return Flight
 
-#### c) Email Yourself Your Trip Itenrary
+    #### c) Email Yourself Your Trip Itenrary
 
 
 
