@@ -69,7 +69,7 @@ const useStyles = makeStyles(styles);
 export default function Reservation(props) {
     const location = useLocation();
     let history = useHistory();
-
+    console.log(location.state);
     const key = location.state;
     const classes = useStyles();
     const { ...rest } = props;
@@ -89,7 +89,7 @@ export default function Reservation(props) {
 
    // const [deptDate, setdeptDate] = useState(null);
    const arrDate = new Date(key.res.arrFlight.departureDate);
-    const [value, setValue] = React.useState( [null,arrDate]);
+    const [value, setValue] = React.useState(key.res.deptFlight.departureDate);
     const [cabin, setCabin] = useState("Economy");
     const today = new Date();
 
@@ -121,7 +121,6 @@ export default function Reservation(props) {
               // store data in a variable to be later used
               // setdepartFlights( res.data);
               setAllFlights(res.data);
-              console.log(res);
               setLoading(false);
               if(res.data.length==0){setempty(true);
             }
