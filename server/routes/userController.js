@@ -650,6 +650,7 @@ function verifyJWT(req,res,next){
 
   if (token ===null) 
     return res.sendStatus(401);
+  console.log("Request",req);  
   jwt.verify(token,process.env.JWT_SECRET,(err,user)=>{
         if (err)
          return res.sendStatus(403);

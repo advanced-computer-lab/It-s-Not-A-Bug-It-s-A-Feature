@@ -147,7 +147,7 @@ export default function ProfilePage(props) {
     if (r === true) {
       const id = (reserv)._id;
       const token = localStorage.getItem("token");
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, [],{
         headers: {
           'authorization': token
         }
