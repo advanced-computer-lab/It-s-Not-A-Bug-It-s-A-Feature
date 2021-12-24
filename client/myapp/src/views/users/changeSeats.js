@@ -52,6 +52,7 @@ const useStyles = makeStyles(styles);
 export default function Reservation(props) {
     const location = useLocation();
     const key = location.state;
+    console.log(location);
     const classes = useStyles();
     const { ...rest } = props;
     let history = useHistory();

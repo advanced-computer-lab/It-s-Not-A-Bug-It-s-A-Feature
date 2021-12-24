@@ -71,6 +71,18 @@ export default function ProfilePage(props) {
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
   let history = useHistory();
 
+  function getAge(dateString) 
+{
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
+}
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get('http://localhost:8000/user/myReservations', {
@@ -438,10 +450,21 @@ console.log(MyReservation);
                                             color: "warning",
                                           }}
                                           dropdownList={[
-                                            <Link className={classes.dropdownLink}
-                                              onClick={(e) => { history.push("/"); }}>
+                                            <a className={classes.dropdownLink}
+                                              onClick={() => {
+                                                history.push({
+                                                  pathname: "/changeDept",
+                                                  state: { 
+                                                  
+                                                   res:curr,
+                                                   type:"Dept"
+                                                  }
+                                            
+                                                });
+                                              }
+                                                 }>
                                               <h4>    change departure flight   </h4>
-                                            </Link>,
+                                            </a>,
                                             <a
                                               className={classes.dropdownLink}
                                               onClick={(e) => { history.push("/"); }}>

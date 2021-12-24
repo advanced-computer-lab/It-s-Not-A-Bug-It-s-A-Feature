@@ -54,7 +54,6 @@ import AllSeats from "../../components/Flight/AllSeats.js";
 export default function SearchFlight(props) {
   const location = useLocation();
   const key = location.state;
-
   var totalPrice;
 
   const classes = useStyles();
@@ -69,6 +68,7 @@ export default function SearchFlight(props) {
   // const location = useLocation();
   let isLogged = props.isLogged
   // const isLogged = usekeys();
+  if(key)
   useEffect(() => {
     console.log("new key is" + key);
     axios.get('http://localhost:8000/user/searchFlights', {
