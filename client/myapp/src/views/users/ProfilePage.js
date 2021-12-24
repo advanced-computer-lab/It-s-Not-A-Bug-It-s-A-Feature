@@ -58,6 +58,7 @@ export default function ProfilePage(props) {
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
+  const [age, setage] = useState([]);
   const [ProfileEdit, setProfileEdit] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,6 +72,12 @@ export default function ProfilePage(props) {
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
   let history = useHistory();
 
+  function agee(){
+    if(Profile.birthDate){
+     return getAge(Profile.birthDate);
+    }
+    return Profile.age;
+  }
   function getAge(dateString) 
 {
     var today = new Date();
@@ -120,7 +127,7 @@ console.log(MyReservation);
           history.push("/error");
         }
         else {
-          setProfile(res.data); console.log(res);
+          setProfile(res.data);setage(agee()); console.log(res);
           setProfileEdit(res.data);
         }
       }
@@ -251,8 +258,12 @@ console.log(MyReservation);
                                 <b>Email : </b> {Profile.email}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Phone Number : </b> {Profile.phoneNo}
+                                <b>Phone Number : </b> 0{Profile.phoneNo}
                               </GridItem>
+                              {Profile.phoneNoOptional &&
+                              <GridItem xs={12} sm={12}  >
+                                <b>2nd Phone Number : </b> 0{Profile.phoneNoOptional}
+                              </GridItem>}
                               <GridItem xs={12} sm={12}  >
                                 <b>CreditCard Number : </b> {Profile.creditCardNo}
                               </GridItem>
@@ -260,7 +271,7 @@ console.log(MyReservation);
                                 <b>Passport Number : </b> {Profile.passportNo}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Age : </b> {Profile.age}
+                                <b>Age : </b> {age}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
                                 <b>Address : </b> {Profile.address}
