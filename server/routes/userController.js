@@ -281,7 +281,7 @@ async function cancelRes(id){
         console.log(`owner = ${own}`);
         var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
           ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
-        sendEmail(own,textmsg,'Reservation Canceled');
+        sendEmail(own,textmsg,'Reservation Cancelled Successfully');
       }
     return "done";
   }
@@ -725,14 +725,13 @@ router.route('/editReservation/:id').post(verifyJWT, async (req,res)=>{
     await addRes(req);
 
   send = true;
+  sendItenrary(id,'Reservation Edited Successfully');
   return res.json({message: editmsg});
 })
 
-router.route('/sendItenrary').post(async (req,res)=>{
+router.route('/sendItenrary').post(async (req,res)=>{ 
   var resId = req.query.resId;
-  var userId = req.query.userId;
-
-  reservationDetails(resId,userId);
+  sendItenrary(resId,'Reservation Details');
 
 });
   
@@ -755,12 +754,12 @@ async function flightDetails(flightID){
 
 }
   
-async function reservationDetails(resId,userId){
+async function sendItenrary(resId,subject){
   var reservation;
   var owner;
-
-  await User.findById(userId).then(result => owner=result).catch(err => console.error(err));
   await Reservation.findById(resId).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
+  var userId=res['userID'];
+  await User.findById(userId).then(result => owner=result).catch(err => console.error(err));
  
   var emailText= "Hi, " + owner['firstName'] + '!\n' + 
   '\t Your Flight Itenerary Details are as follows!'+'\n' + 
@@ -778,7 +777,7 @@ async function reservationDetails(resId,userId){
   "OverReact Team :)";
 
   console.log(emailText);
-  sendEmail(owner, emailText,'Reservation Itenerary');
+  sendEmail(owner, emailText,subject);
 }
   
   
