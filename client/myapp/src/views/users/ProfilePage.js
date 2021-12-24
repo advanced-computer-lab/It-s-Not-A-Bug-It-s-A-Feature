@@ -79,11 +79,12 @@ export default function ProfilePage(props) {
       }
     })
       .then(res => {
-        if (res.data === "Access not allowed. Please login to proceed.") {
+        if (res.data.message === "Please log in to continue.") {
           history.push("/error");
         }
         else {
           setMyReservation(res.data);
+          console.log("Reservation");
           console.log(res); setLoading(false);
         }
       })
@@ -91,7 +92,8 @@ export default function ProfilePage(props) {
         console.log(err);
         history.push("/error");
       });
-
+      console.log("MyReservation");
+console.log(MyReservation);
   }, []);
 
   useEffect(() => {
