@@ -739,7 +739,7 @@ async function flightDetails(flightID){
   var flight;
   await Flights.findById(flightID).then(res=>flight=res).catch(err => console.log('error: No such flight!'));
 
-  var text= "Flight Details: "+'\n'
+  var text= "\n \n Flight Details: \n"
   + "Flight Number: "+flight['flightNo']+'\n'
    + "Departure Date: " +flight['departureDate']+'\n'
    + "Arrival Date: " +flight['arrivalDate']+'\n'
@@ -761,15 +761,15 @@ async function sendItenrary(resId,subject){
  
   var emailText= "Hi, " + owner['firstName'] + '!\n' + 
   '\t Your Flight Itenerary Details are as follows!'+'\n' + 
-  "Reservation ID: " +reservation['reservationID'] +'\n' +
+  "Reservation ID: " + reservation['reservationID'] +'\n' +
   "Number of Adults: " + reservation['adultsNo']+'\n' +
   "Number of Children: " + reservation['childrenNo']+'\n' +
   "Class:" + reservation['seatClass']+'\n' +
   "Departure Flight: " + await flightDetails(reservation['arrFlight'])+'\n' + 
-  "Departure Seats: " +reservation['deptSeats']+'\n' +
+  "Departure Seat(s): " +reservation['deptSeats']+'\n' +
 
   "Arrival Flight: "  +  await flightDetails(reservation['deptFlight'])+'\n' +
-  "Arrival Seats: " + reservation['arrSeats']+'\n' +
+  "Arrival Seat(s): " + reservation['arrSeats']+'\n' +
   "Price: " + reservation['price']+'\n'+'\n'+'\n'+
   "Wishing you a safe flight!"+'\n'+
   "OverReact Team :)";
