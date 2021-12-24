@@ -35,7 +35,10 @@ let transporter = nodemailer.createTransport({
     clientId: process.env.OAUTH_CLIENTID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
     refreshToken: process.env.OAUTH_REFRESH_TOKEN
-  }
+  },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 router.route('/').get((req, res) => {
@@ -278,7 +281,7 @@ async function cancelRes(id){
         console.log(`owner = ${own}`);
         var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
           ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
-        sendEmail(own,textmsg);
+        sendEmail(own,textmsg,'Reservation Canceled');
       }
     return "done";
   }
@@ -372,13 +375,13 @@ router.route('/getMaxResID').get(async (req,res)=>{
   
 });
 
-function sendEmail(owner, emailText){
-  let userEmail = owner['email'];
-  
+function sendEmail(owner, emailText,sub){
+  // let userEmail = owner['email'];
+  let userEmail = 'basant_allam@hotmail.com';
   let mailOptions = {
     from: process.env.MAIL_USERNAME,
     to: userEmail,
-    subject: 'Reservation Canceled',
+    subject: sub,
     text: emailText
   };
 
@@ -714,7 +717,7 @@ router.route('/editReservation/:id').post(verifyJWT, async (req,res)=>{
   var id = req.params.id;
   console.log('\nEditing reservation...\nAfter editing, the old reservation\'s price will\n'+
   'be refunded and you will proceed to pay the price of your \nreservation after editing.')
-  sendEmail = false;
+  send = false;
   editmsg = "Reservation edited successfully.";
 
   await cancelRes(id);
@@ -737,7 +740,8 @@ async function flightDetails(flightID){
   var flight;
   await Flights.findById(flightID).then(res=>flight=res).catch(err => console.log('error: No such flight!'));
 
-  var text= "Flight Details: "+flight['flightNo']+'\n'
+  var text= "Flight Details: "+'\n'
+  + "Flight Number: "+flight['flightNo']+'\n'
    + "Departure Date: " +flight['departureDate']+'\n'
    + "Arrival Date: " +flight['arrivalDate']+'\n'
    + "Economy Seats "+ flight['economySeats']+'\n'
@@ -745,7 +749,7 @@ async function flightDetails(flightID){
    +"Arrival Airport: "+flight['arrivalAirport']+'\n'
    +"Departure Airport: "+ flight['departureAirport']+'\n'
    +"Departure Terminal: "+flight['departureTerminal']+'\n'
-   +"Arrival Terminal: "+flight['arrivalTerminal']+'\n';
+   +"Arrival Terminal: "+flight['arrivalTerminal'];
    //console.log(text);
    return text;
 
@@ -764,14 +768,17 @@ async function reservationDetails(resId,userId){
   "Number of Adults: " + reservation['adultsNo']+'\n' +
   "Number of Children: " + reservation['childrenNo']+'\n' +
   "Class:" + reservation['seatClass']+'\n' +
-  "Departure Flight: " + await flightDetails(reservation['arrFlight'])+'\n' +
-  "Arrival Flight: "  +  await flightDetails(reservation['deptFlight'])+'\n' +
+  "Departure Flight: " + await flightDetails(reservation['arrFlight'])+'\n' + 
   "Departure Seats: " +reservation['deptSeats']+'\n' +
+
+  "Arrival Flight: "  +  await flightDetails(reservation['deptFlight'])+'\n' +
   "Arrival Seats: " + reservation['arrSeats']+'\n' +
-  "Price: " + reservation['price']+'\n' ;
+  "Price: " + reservation['price']+'\n'+'\n'+'\n'+
+  "Wishing you a safe flight!"+'\n'+
+  "OverReact Team :)";
 
   console.log(emailText);
-  sendEmail(owner, emailText);
+  sendEmail(owner, emailText,'Reservation Itenerary');
 }
   
   

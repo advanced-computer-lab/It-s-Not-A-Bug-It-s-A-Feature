@@ -87,11 +87,7 @@ export default function BasicTextFields() {
         console.log("destination", destination)
     };
 
-
-
-    function SearchBar({ placeholder, data }) {
-
-
+    function SearchBar({ data }) {
         const handleFilter = (event) => {
             const searchWord = event.target.value;
             setWordEntered(searchWord);
@@ -99,11 +95,11 @@ export default function BasicTextFields() {
                 return value.title.toLowerCase().includes(searchWord.toLowerCase());
             });
 
-            if (searchWord === "") {
+            if (searchWord === "") 
                 setFilteredData([]);
-            } else {
+             else 
                 setFilteredData(newFilter);
-            }
+            
         };
 
         const clearInput = () => {
@@ -119,9 +115,7 @@ export default function BasicTextFields() {
 
                 <div className="resultsTo">
                     <div className="searchInputTo">
-
                         <TextField
-
                             id="filled-basic" value={wordEntered} onChange={(event) => { handleFilter(event) }} type="search" label={placeholder} variant="filled"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
@@ -141,10 +135,7 @@ export default function BasicTextFields() {
                         </div>
                     )}
                 </div>
-
-
             </div>
-
         </form>
     );
 }
