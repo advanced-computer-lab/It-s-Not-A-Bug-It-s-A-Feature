@@ -88,6 +88,7 @@ export default function HeaderLinks(props) {
         console.log(err);
         history.push("/error");
       });
+      localStorage.removeItem("token");
         //onSubmit(e);
         history.push('/home')
    }}
