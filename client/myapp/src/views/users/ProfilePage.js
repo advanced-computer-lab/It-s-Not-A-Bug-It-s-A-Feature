@@ -41,6 +41,7 @@ import People from "@material-ui/icons/People";
 import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
+import buzz from "./../../assets/img/faces/buzz.jpg";
 import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
@@ -208,7 +209,7 @@ console.log(MyReservation);
                   <div>
                     {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
                       :
-                      <img src={cloud} alt="..." className={imageClasses} />}
+                      <img src={buzz} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -270,7 +271,6 @@ console.log(MyReservation);
                                 <br />
                                 <Button
                                   color="warning"
-                                  // color="transparent"
                                   size="lg"
                                   id="demo-customized-button"
                                   aria-controls="demo-customized-menu"
@@ -294,7 +294,6 @@ console.log(MyReservation);
                                 <form className={classes.form}>
                                   <CardBody>
                                     <TextField
-
                                       label="First Name..."
                                       id="firstName"
                                       name="firstName"
@@ -309,7 +308,6 @@ console.log(MyReservation);
                                     />
                                     <br /><br />
                                     <TextField
-
                                       label="Last Name"
                                       id="lastName"
                                       name="lastName"
@@ -323,9 +321,7 @@ console.log(MyReservation);
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Email"
                                       id="email"
                                       name="email"
@@ -339,9 +335,7 @@ console.log(MyReservation);
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Passport Number"
                                       id="passportNo"
                                       name="passportNo"
@@ -368,7 +362,6 @@ console.log(MyReservation);
                                         setedit(null);
                                       }}
                                     >Cancel </Button>
-
                                     <Button
                                       color="warning"
                                       // color="transparent"
@@ -382,14 +375,8 @@ console.log(MyReservation);
                                         onEdit(e);
                                       }}
                                     >Save </Button>
-
-
-
-
                                   </CardBody>
                                 </form>
-
-
                               </GridItem>
                             </GridContainer>
                           }
@@ -407,7 +394,6 @@ console.log(MyReservation);
                             <GridContainer justify="center">
                               {
                                 MyReservation.map((curr) => (
-
                                   <div>
                                     <GridContainer justify="center"></GridContainer>
                                     <GridItem xs={12} sm={12}>
@@ -455,7 +441,7 @@ console.log(MyReservation);
                                                 history.push({
                                                   pathname: "/changeDept",
                                                   state: { 
-                                                  
+                                              
                                                    res:curr,
                                                    type:"Dept"
                                                   }
