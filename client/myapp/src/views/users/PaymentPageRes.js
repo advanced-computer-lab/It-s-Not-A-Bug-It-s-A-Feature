@@ -54,7 +54,7 @@ export default function ProfilePageRes(props) {
     const [loading, setLoading] = useState(true);
     const [paid, setPaid] = useState(false);
     const [success, setSuccess] = useState(true);
-    const [resID, setResId] = useState(15);
+    
     const [reserved, setReserved] = useState(false);
     // const [retData, setRetData] = useState({
     //     economySeats: 0,
@@ -79,13 +79,7 @@ export default function ProfilePageRes(props) {
     );
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-    useEffect(() => {
-        axios.get('http://localhost:8000/user/getMaxResID')
-            .then(res => {
-                setResId(res.data);
-                console.log("max res id aho" + res.data);
-            }).catch(err => console.log(err))
-    }, []);
+    
 
     const onSubmit = () => {
         axios.post('http://localhost:8000/user/res', {

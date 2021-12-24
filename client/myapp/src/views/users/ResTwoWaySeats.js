@@ -79,7 +79,7 @@ export default function Reservation(props) {
     });
     const [reservedSeats2, setReservedSeats2] = useState([]);
     const [reservedSeats3, setReservedSeats3] = useState([]);
-
+    const [resID, setResId] = useState(15);
     const [tab2, setTab2] = useState(0);
 
     let price = (cabin == "Business") ? passengers * (key.flight.businessPrice + key.ReturnFlight.businessPrice) : passengers * (key.flight.economyPrice + key.ReturnFlight.economyPrice);
@@ -87,7 +87,6 @@ export default function Reservation(props) {
 
 
     useEffect(() => {
-
 
 
         axios.get('http://localhost:8000/admin/searchFlights', {
@@ -135,21 +134,29 @@ export default function Reservation(props) {
         }).catch(err => console.log(err))
     }, []);
 
-    const onSubmit = () => {
-        history.push({
-            pathname: "/pay",
-            state: {
-                adultsNo: key.adultsNo,
-                childrenNo: key.childrenNo,
-                seatClass: key.cabin,
-                deptFlight: key.flight,
-                arrFlight: key.ReturnFlight,
-                deptSeats: reservedSeats2,
-                arrSeats: reservedSeats3,
-                totalPrice: price
-            }
+    useEffect(() => {
+            axios.get('http://localhost:8000/user/getMaxResID')
+        .then(res => {
+            setResId(res.data);
+            console.log("max res id aho" + res.data);
+        }).catch(err => console.log(err))
+    }, []);
 
-        });
+    const onSubmit = () => {
+        // history.push({
+        //     pathname: "/pay",
+        //     state: {
+        //         adultsNo: key.adultsNo,
+        //         childrenNo: key.childrenNo,
+        //         seatClass: key.cabin,
+        //         deptFlight: key.flight,
+        //         arrFlight: key.ReturnFlight,
+        //         deptSeats: reservedSeats2,
+        //         arrSeats: reservedSeats3,
+        //         totalPrice: price
+        //     }
+
+        // });
         // const onSubmit = () => {
 
         // });
@@ -162,13 +169,33 @@ export default function Reservation(props) {
         //     seatClass: key.cabin,
         //     deptFlight: key.flight._id,
         //     arrFlight: key.ReturnFlight._id,
-        //     deptSeats: key.deptSeats,
+        //     deptSeats: reservedSeats2,
         //     arrSeats: reservedSeats3
         // }).then(res => {
         //     console.log(res.data);
         //     //   setResId(resID);
         //     setReserved(true);
         // }).catch(err => console.log(err))
+        const token = localStorage.getItem("token");
+        axios.post('http://localhost:8000/user/payment', {
+            price: price
+        }, {
+            headers: {
+                'authorization': token
+            }
+        }).then(res => {
+            console.log(res.data);
+            window.location = res.data.url;
+            localStorage.setItem("resID",resID + 1 );
+            localStorage.setItem("adultsNo",key.adultsNo );
+            localStorage.setItem("childrenNo",key.childrenNo );
+            localStorage.setItem("seatClass", key.cabin);
+            localStorage.setItem("deptFlight", key.flight._id);
+            localStorage.setItem("arrFlight", key.ReturnFlight._id);
+            localStorage.setItem("deptSeats",reservedSeats2 );
+            localStorage.setItem("arrSeats", reservedSeats3);
+        })
+            .catch(err => console.log(err))
 
     };
 
@@ -186,7 +213,6 @@ export default function Reservation(props) {
                 className={classes.pageHeader}
                 style={{
                     backgroundImage: "url(" + image + ")",
-
                     backgroundSize: "cover",
                     backgroundPosition: "top center",
 

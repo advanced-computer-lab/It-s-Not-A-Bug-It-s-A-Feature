@@ -11,17 +11,8 @@ import Button from "../../components/CustomButtons/Button.js";
 import GridContainer from "../../components/Grid/GridContainer.js";
 import GridItem from "../../components/Grid/GridItem.js";
 import HeaderLinks from "../../components/Header/HeaderLinks.js";
-
-import NavPills from "../../components/NavPills/NavPills.js";
 import Parallax from "../../components/Parallax/Parallax.js";
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Card from "../../components/Card/Card.js";
-import CardBody from "../../components/Card/CardBody.js";
-import CardHeader from "../../components/Card/CardHeader.js";
-import CardFooter from "../../components/Card/CardFooter.js";
-import CustomInput from "../../components/CustomInput/CustomInput.js";
-import LockIcon from '@mui/icons-material/Lock';
 import CustomLinearProgress from "../../components/CustomLinearProgress/CustomLinearProgress.js";
 
 import successPic from "./../../assets/img/success.jpg";
@@ -50,27 +41,7 @@ export default function ProfilePageRes(props) {
     const location = useLocation();
     const key = location.state;
     const classes = useStyles();
-    //   const [MyReservation, setMyReservation] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [paid, setPaid] = useState(false);
-    const [success, setSuccess] = useState(true);
-    const [resID, setResId] = useState(15);
-    const [reserved, setReserved] = useState(false);
-    // const [retData, setRetData] = useState({
-    //     economySeats: 0,
-    //     businessSeats: 0,
-    //     currBusinessSeats: 0,
-    //     currEconomySeats: 0,
-    //     reservedSeats: []
-    // });
-    // const [deptData, setDeptData] = useState({
-    //     economySeats: 0,
-    //     businessSeats: 0,
-    //     currBusinessSeats: 0,
-    //     currEconomySeats: 0,
-    //     reservedSeats:[]        
-    // });
-
+    // const [resID, setResId] = useState(15);
     const { ...rest } = props;
     const imageClasses = classNames(
         classes.imgRaised,
@@ -78,32 +49,59 @@ export default function ProfilePageRes(props) {
         classes.imgFluid
     );
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+    let data = {
+        resID: localStorage.getItem("resID"),
+        adultsNo: localStorage.getItem("adultsNo"),
+        childrenNo: localStorage.getItem("childrenNo"),
+        seatClass: localStorage.getItem("seatClass"),
+        deptFlight: localStorage.getItem("deptFlight"),
+        arrFlight: localStorage.getItem("arrFlight"),
+        deptSeats: localStorage.getItem("deptSeats"),
+        arrSeats: localStorage.getItem("arrSeats")
+    };
 
+    const token = localStorage.getItem("token");
     useEffect(() => {
-        axios.get('http://localhost:8000/user/getMaxResID')
-            .then(res => {
-                setResId(res.data);
-                console.log("max res id aho" + res.data);
-            }).catch(err => console.log(err))
-    }, []);
+        // axios.get('http://localhost:8000/user/getMaxResID')
+        //     .then(res => {
+        //         setResId(res.data);
+        //         console.log("max res id aho" + res.data);
+        //     }).catch(err => console.log(err))
 
-    const onSubmit = () => {
-        axios.post('http://localhost:8000/user/res', {
-
-            resID: resID + 1,
-            adultsNo: key.adultsNo,
-            childrenNo: key.childrenNo,
-            seatClass: key.seatClass,
-            deptFlight: key.deptFlight._id,
-            arrFlight: key.arrFlight._id,
-            deptSeats: key.deptSeats,
-            arrSeats: key.arrSeats
+        axios.post('http://localhost:8000/user/res', data, {
+            headers: {
+                'authorization': token
+            }
         }).then(res => {
             console.log(res.data);
-            //   setResId(resID);
+            localStorage.removeItem('resID');
+            localStorage.removeItem('adultsNo');
+            localStorage.removeItem('childrenNo');
+            localStorage.removeItem('seatClass');
+            localStorage.removeItem('deptFlight');
+            localStorage.removeItem('arrFlight');
+            localStorage.removeItem('deptSeats');
+            localStorage.removeItem('arrSeats');
             setReserved(true);
-        }).catch(err => console.log(err))
-    };
+        }).catch(err => console.log(err)) 
+    }, []);
+
+    // const onSubmit = () => {
+    //     axios.post('http://localhost:8000/user/res', {
+
+    //         resID: resID + 1,
+    //         adultsNo: key.adultsNo,
+    //         childrenNo: key.childrenNo,
+    //         seatClass: key.seatClass,
+    //         deptFlight: key.deptFlight._id,
+    //         arrFlight: key.arrFlight._id,
+    //         deptSeats: key.deptSeats,
+    //         arrSeats: key.arrSeats
+    //     }).then(res => {
+    //         console.log(res.data);
+    //         setReserved(true);
+    //     }).catch(err => console.log(err))
+    // };
 
 
     return (
@@ -130,19 +128,14 @@ export default function ProfilePageRes(props) {
                         <GridContainer justify="center">
                             <GridItem xs={12} sm={12} md={6}>
                                 <div className={classes.profile}>
-
                                     <div>
                                         <img src={successPic} alt="..." className={imageClasses} />
                                         <div className={classes.name}>
                                             <h3 className={classes.title}>Transaction Successful!</h3>
                                             <p>Thanks for choosing overReact Airlines</p>
                                             <h4>Have a safe flight</h4>
-
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </GridItem>
                         </GridContainer>

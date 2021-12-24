@@ -52,123 +52,82 @@ const useStyles = makeStyles(styles);
 export default function Reservation(props) {
     const location = useLocation();
     const key = location.state;
-
-
     const classes = useStyles();
     const { ...rest } = props;
     let history = useHistory();
-    const cabin = key.cabin;
-    const passengers = key.count;
-    const childrenNo = key.childrenNo;
-    const adultsNo = key.adultsNo;
+    // const childrenNo = key.childrenNo;
+    // const adultsNo = key.adultsNo;
     const [loading, setLoading] = useState(true);
-    const [loading2, setLoading2] = useState(true);
-    const [retData, setRetData] = useState({
-        economySeats: 0,
-        businessSeats: 0,
-        currBusinessSeats: 0,
-        currEconomySeats: 0,
-        reservedSeats: []
-    });
-    const [deptData, setDeptData] = useState({
-        economySeats: 0,
-        businessSeats: 0,
-        currBusinessSeats: 0,
-        currEconomySeats: 0,
-        reservedSeats: []
-    });
+    // const [loading2, setLoading2] = useState(true);
+    // const [retData, setRetData] = useState({
+    //     economySeats: 0,
+    //     businessSeats: 0,
+    //     currBusinessSeats: 0,
+    //     currEconomySeats: 0,
+    //     reservedSeats: []
+    // });
+    // const [deptData, setDeptData] = useState({
+    //     economySeats: 0,
+    //     businessSeats: 0,
+    //     currBusinessSeats: 0,
+    //     currEconomySeats: 0,
+    //     reservedSeats: []
+    // });
+    // const cabin = key.cabin;
+    // const passengers = key.passengers;
     const [reservedSeats2, setReservedSeats2] = useState([]);
     const [reservedSeats3, setReservedSeats3] = useState([]);
+    const [cabin, setCabin] = useState([]);
+    const [passengers, setPassengers] = useState([]);
+    const [resInfo, setResInfo] = useState({
+        reservation: null,
+        deptFlight: null,
+        retFlight: null
+    });
 
-    const [tab2, setTab2] = useState(0);
-
-    let price = (cabin == "Business") ? passengers * (key.flight.businessPrice + key.ReturnFlight.businessPrice) : passengers * (key.flight.economyPrice + key.ReturnFlight.economyPrice);
-
-
-
+    //TOKENNNNNNNNNN
     useEffect(() => {
-
-
-
-        axios.get('http://localhost:8000/admin/searchFlights', {
+        axios.get('http://localhost:8000/user/myReservations/', {
             params:
             {
-                flightNo: key.flight.flightNo,
-                arrivalDate: '',
-                arrivalAirport: '',
-                arrivalTerminal: '',
-                arrivalTime: '',
-                departureDate: '',
-                departureAirport: '',
-                departureTerminal: '',
-                departureTime: ''
-
+                id: key.id
             }
         }).then(res => {
-            setDeptData(res.data[0]);
+            console.log("ana f myresss" + res.data);
+            setResInfo({
+                reservation: res.data.reservation,
+                deptFlight: res.data.deptFlight,
+                arrFlight: res.data.arrFlight
+            });
+            setReservedSeats2(res.data.reservation.deptSeats);
+            setReservedSeats3(res.data.reservation.arrSeats);
+            setCabin(resInfo.reservation.seatClass);
+            setPassengers(resInfo.reservation.adultsNo + resInfo.reservation.childrenNo);
             setLoading(false);
-            console.log("ana gowwa depttt");
-            console.log(res.data[0]);
-            console.log(deptData);
         }).catch(err => console.log(err))
 
+        //    userRes = {reservation: reserv, deptFlight: resDeptFlight, arrFlight: resArrFlight};
 
-        axios.get('http://localhost:8000/admin/searchFlights', {
-            params:
-            {
-                flightNo: key.ReturnFlight.flightNo,
-                arrivalDate: '',
-                arrivalAirport: '',
-                arrivalTerminal: '',
-                arrivalTime: '',
-                departureDate: '',
-                departureAirport: '',
-                departureTerminal: '',
-                departureTime: ''
 
-            }
-        }).then(res => {
-            setRetData(res.data[0]);
-            setLoading2(false);
-            console.log("ana gowwa returnnnn");
-            console.log(res.data[0]);
-        }).catch(err => console.log(err))
     }, []);
 
     const onSubmit = () => {
         history.push({
-            pathname: "/pay",
-            state: {
-                adultsNo: key.adultsNo,
-                childrenNo: key.childrenNo,
-                seatClass: key.cabin,
-                deptFlight: key.flight,
-                arrFlight: key.ReturnFlight,
-                deptSeats: reservedSeats2,
-                arrSeats: reservedSeats3,
-                totalPrice: price
-            }
+            //TODO - fl return method
+            //display old seat numbers
+            //TODO
+            //axios post req hena to edit seats
+            // "/changeSeats"
+            // give it resID,  key.resID
+            // whichFligh (string), //h3ml nboth wla eh??????
+            //give option to stay w old seats
+            //display old seats
+            // new arr of seats, resSeat 2 w 3
 
+            //deptFlight
+            // arrFlight
         });
-        // const onSubmit = () => {
 
-        // });
-
-        // axios.post('http://localhost:8000/user/res', {
-
-        //     resID: resID + 1,
-        //     adultsNo: key.adultsNo,
-        //     childrenNo: key.childrenNo,
-        //     seatClass: key.cabin,
-        //     deptFlight: key.flight._id,
-        //     arrFlight: key.ReturnFlight._id,
-        //     deptSeats: key.deptSeats,
-        //     arrSeats: reservedSeats3
-        // }).then(res => {
-        //     console.log(res.data);
-        //     //   setResId(resID);
-        //     setReserved(true);
-        // }).catch(err => console.log(err))
 
     };
 
@@ -199,166 +158,83 @@ export default function Reservation(props) {
                             <NavPills
                                 alignCenter
                                 color="primary"
-                                active={tab2}
-                                // if(tab2) active = {1} : active = {0}
                                 tabs={[
                                     {
-                                        tabButton: " Choose Seats - Dept",
+                                        tabButton: " Switch Seats - Dept",
                                         tabIcon: AirlineSeatReclineExtraIcon,
                                         tabContent: (
                                             <GridContainer justify="center">
                                                 <GridItem xs={12} sm={12}>
                                                     <Typography> <h3>Choose your seats</h3></Typography>
                                                     {loading ? <CustomLinearProgress color="info" /> :
-                                                        <Box display="flex" flex-direction="row">
-                                                            <GridItem xs={12} sm={12}>
-                                                                <SelectSeats
-                                                                    flightNo={key.flight.flightNo}
-                                                                    economySeats={deptData.economySeats}
-                                                                    businessSeats={deptData.businessSeats}
-                                                                    currBusinessSeats={deptData.currBusinessSeats}
-                                                                    currEconomySeats={deptData.currEconomySeats}
-                                                                    reservedSeats={deptData.reservedSeats}
-                                                                    type={cabin}
-                                                                    passengers={passengers}
-                                                                    isReturn="false"
-                                                                    callback={setReservedSeats2}
-                                                                />
+                                                        <div>
+                                                            <Box display="flex" flex-direction="row">
+                                                                <GridItem xs={12} sm={12}>
+                                                                    <SelectSeats
+                                                                        flightNo={resInfo.deptFlight.flightNo}
+                                                                        economySeats={resInfo.deptFlight.economySeats}
+                                                                        businessSeats={resInfo.deptFlight.businessSeats}
+                                                                        currBusinessSeats={resInfo.deptFlight.currBusinessSeats}
+                                                                        currEconomySeats={resInfo.deptFlight.currEconomySeats}
+                                                                        reservedSeats={resInfo.deptFlight.reservedSeats}
+                                                                        type={cabin}
+                                                                        passengers={passengers}
+                                                                        isReturn="false"
+                                                                        callback={setReservedSeats2}
+                                                                    />
+                                                                </GridItem>
+                                                                <ColorCode />
+                                                            </Box>
+                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                <h3>{reservedSeats2.length} {"/"} {passengers} Seats chosen</h3>
                                                             </GridItem>
-                                                            <ColorCode />
-                                                        </Box>
+                                                        </div>
                                                     }
 
                                                 </GridItem>
-                                                {/* {reservedSeats2.length=== passengers? */}
-                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                    <h3>{reservedSeats2.length} {"/"} {passengers} Seats chosen</h3>
-                                                    {/* <Button
-                                              color="danger"
-                                              size="lg"
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              Reserve
-                                            </Button> */}
-                                                </GridItem>
-                                                {/* :null} */}
+
                                             </GridContainer>
                                         ),
                                     },
                                     {
-                                        tabButton: " Choose Seats - Return",
+                                        tabButton: " Switch Seats - Return",
                                         tabIcon: AirlineSeatReclineExtraIcon,
                                         tabContent: (
                                             <GridContainer justify="center">
-                                                <GridItem xs={12} sm={12}>
-                                                    {reservedSeats2.length === passengers ?
-                                                        <div>
-                                                            <Typography> <h3>Choose your seats</h3></Typography>
-                                                            {loading2 ? <CustomLinearProgress color="info" /> :
-                                                                <Box display="flex" flex-direction="row">
-                                                                    <GridItem xs={12} sm={12}>
-                                                                        <SelectSeats
-                                                                            flightNo={key.ReturnFlight.flightNo}
-                                                                            economySeats={retData.economySeats}
-                                                                            businessSeats={retData.businessSeats}
-                                                                            currBusinessSeats={retData.currBusinessSeats}
-                                                                            currEconomySeats={retData.currEconomySeats}
-                                                                            reservedSeats={retData.reservedSeats}
-                                                                            type={cabin}
-                                                                            passengers={passengers}
-                                                                            callback={setReservedSeats3}
-                                                                            isReturn="true"
-                                                                        />
-                                                                    </GridItem>
-                                                                    <ColorCode />
-                                                                </Box>
-
-                                                            }
-                                                        </div>
-
-                                                        :
-                                                        <div>
-                                                            {/* <GridContainer justify="center" >
-                                                    <GridItem xs={12} sm={12}><div class = "center"><Typography> <h3> .</h3></Typography> </div></GridItem>
-                                                    <GridItem xs={12} sm={12}><div class = "center"><Typography> <h3> .</h3></Typography> </div></GridItem>
-
-                                                    <GridItem xs={12} sm={12}> */}
-                                                            <div class="center"><Typography> <h3> Please Select the Departure Flight Seats First</h3></Typography> </div>
-                                                            {/* </GridItem >
-                                                    </GridContainer> */}
-                                                        </div>}
-
-                                                </GridItem>
-                                                {/* {reservedSeats3.length=== passengers? */}
-                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                    <h3>{reservedSeats3.length} {"/"} {passengers} Seats chosen</h3>
-                                                    {/* <Button
-                                                                color="danger"
-                                                                size="lg"
-                                                                onClick={(e) => { onSubmit(e); }}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                Reserve
-                                                            </Button>*/}
-
-                                                </GridItem>
-                                                {/* : null}  */}
+                                                {loading ? <CustomLinearProgress color="info" /> :
+                                                    <div>
+                                                        <GridItem xs={12} sm={12}>
+                                                            {reservedSeats2.length === passengers ?
+                                                                <div>
+                                                                    <Typography> <h3>Choose your seats</h3></Typography>
+                                                                    <Box display="flex" flex-direction="row">
+                                                                        <GridItem xs={12} sm={12}>
+                                                                            <SelectSeats
+                                                                                flightNo={resInfo.arrFlight.flightNo}
+                                                                                economySeats={resInfo.arrFlight.economySeats}
+                                                                                businessSeats={resInfo.arrFlight.businessSeats}
+                                                                                currBusinessSeats={resInfo.arrFlight.currBusinessSeats}
+                                                                                currEconomySeats={resInfo.arrFlight.currEconomySeats}
+                                                                                reservedSeats={resInfo.arrFlight.reservedSeats}
+                                                                                type={cabin}
+                                                                                passengers={passengers}
+                                                                                callback={setReservedSeats3}
+                                                                                isReturn="true"
+                                                                            />
+                                                                        </GridItem>
+                                                                        <ColorCode />
+                                                                    </Box>
+                                                                </div>
+                                                                :
+                                                                <div>
+                                                                    <div class="center"><Typography> <h3> Please Select the Departure Flight Seats First</h3></Typography> </div>
+                                                                </div>}
+                                                        </GridItem>
+                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                            <h3>{reservedSeats3.length} {"/"} {passengers} Seats chosen</h3>
+                                                        </GridItem>
+                                                    </div>}
                                             </GridContainer>
-                                        ),
-                                    },
-
-                                    {
-                                        tabButton: " Confirm Seats",
-                                        tabIcon: CheckIcon,
-                                        tabContent: (
-                                            <div>
-                                                {/* {reserved ? <SnackbarContent
-                                                    message={
-                                                        <span>
-                                                            <b>Reservation Confirmed!</b> reservation # {resID - 1}   Have a nice flight
-                                                        </span>
-                                                    }
-                                                    close
-                                                    color="success"
-                                                    icon={Check}
-                                                /> : null} */}
-                                                <GridContainer justify="center">
-                                                    {reservedSeats3.length === passengers ?
-                                                        <div>
-                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-
-
-
-                                                                <ReservationCard
-                                                                    adult={key.adultsNo}
-                                                                    child={key.childrenNo}
-                                                                    seatClass={key.cabin}
-                                                                    deptFlight={key.flight}
-                                                                    arrFlight={key.ReturnFlight}
-                                                                    deptSeats={reservedSeats2}
-                                                                    arrSeats={reservedSeats3}
-                                                                    totalPrice={price}
-                                                                >
-                                                                </ReservationCard>
-                                                            </GridItem>
-                                                            {/* check chosenseats == passengers */}
-                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                <Button
-                                                                    color="danger"
-                                                                    size="lg"
-                                                                    onClick={(e) => { onSubmit(e); }}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                >
-                                                                    Pay
-                                                                </Button>
-                                                            </GridItem>
-                                                        </div>
-                                                        : <div><Typography> <h3> Please Select your Seats First</h3></Typography> </div>}
-                                                </GridContainer>
-                                            </div>
                                         ),
                                     },
                                 ]}
