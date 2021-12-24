@@ -1,7 +1,7 @@
 # **OverReact**
 
 A little brief about what the project is about. It should be like a small summary format informing about the main purpose of the project.
-## Motivation
+# Motivation
 This section is for letting the reader know why you created this project, the reason behind pursuing such a project, and why you have decided to do it.
 
 # **Build Status**
@@ -67,13 +67,13 @@ Open http://localhost:3000/home to view the homepage in your browser.
 
 ## In the Home Page, you can:
 
-### Search for Departure Flights: 
+### A) Search for Departure Flights: 
 In the home page you can specify some search criteria (Date, Cabin Class, Number of Travellers), and then click "Search" in order to find departure flights that match your preferences.
 
-### Search for Return Flights: 
+### B) Search for Return Flights: 
 Next, you can search for a return flight after specifying the search criteria of your return flight.
 
-### Reserve a flight: 
+### C) Reserve a flight: 
 Next you can reserve a flight by clicking "Reserve".
 
 If you are not logged in, you will be prompted your username and password first.
