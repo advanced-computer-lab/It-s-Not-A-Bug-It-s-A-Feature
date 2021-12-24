@@ -743,8 +743,6 @@ async function flightDetails(flightID){
   + "Flight Number: "+flight['flightNo']+'\n'
    + "Departure Date: " +flight['departureDate']+'\n'
    + "Arrival Date: " +flight['arrivalDate']+'\n'
-   + "Economy Seats "+ flight['economySeats']+'\n'
-   + "Business Seats: "+flight['businessSeats']+'\n'
    +"Arrival Airport: "+flight['arrivalAirport']+'\n'
    +"Departure Airport: "+ flight['departureAirport']+'\n'
    +"Departure Terminal: "+flight['departureTerminal']+'\n'
@@ -758,7 +756,7 @@ async function sendItenrary(resId,subject){
   var reservation;
   var owner;
   await Reservation.findById(resId).then(res=>reservation=res).catch(err => console.log('error: No such reservation!'));
-  var userId=res['userID'];
+  var userId=reservation['userID'];
   await User.findById(userId).then(result => owner=result).catch(err => console.error(err));
  
   var emailText= "Hi, " + owner['firstName'] + '!\n' + 
