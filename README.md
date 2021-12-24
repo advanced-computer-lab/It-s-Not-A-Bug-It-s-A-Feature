@@ -32,6 +32,36 @@ If your project is small, then we can add the reference docs in the readme. For 
 This is the section where you mention all the different tests that can be performed with code examples
 
 **How to Use?**
+A) Clone the Repository
+B) Open Terminal
+C) To run the front end, run:
+
+```
+cd client/myapp 
+```
+
+amd then:
+
+```
+npm start
+```
+
+D) To run the back end, run:
+
+```
+cd server 
+```
+
+and then:
+
+```
+node App.js
+```
+
+Open http://localhost:3000/home to view the homepage in your browser.
+
+
+
 As I have mentioned before, you never know who is going to read your readme. So it is better to provide information on how to use your project. A step-by-step guide is best suited for this purpose. It is better to explain steps as detailed as possible because it might be a beginner who is reading it.
 
 **Contribute**
