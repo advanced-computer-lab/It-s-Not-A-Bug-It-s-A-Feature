@@ -75,20 +75,20 @@ Open http://localhost:3000/home to view the homepage in your browser.
 ## In the Home Page, you can:
 
 ### A) Specify your Round Trip Details: 
-In the home page you can specify the dates of your departure and return, cabin class, number of travellers, and then click "Search" in order to find departure flights that match your preferences.
+  In the home page you can specify the dates of your departure and return, cabin class, number of travellers, and then click "Search" in order to find departure flights that match your preferences.
 
 ### B) Choose Departure Flight: 
-After clicking search, a list of all departure flights matching your search criteria will be displayed, from which you can choose your preferred departure flight. 
+  After clicking search, a list of all departure flights matching your search criteria will be displayed, from which you can choose your preferred departure flight. 
 
 ### C) Choose Return Flight: 
-After choosing a departure flight, click 'return flight' to view the list of return flights that match your search criteria, from which you can choose your preferred return flight.
+  After choosing a departure flight, click 'return flight' to view the list of return flights that match your search criteria, from which you can choose your preferred return flight.
 
 ### D) Reserve a flight: 
-Next, you can reserve a flight by clicking 'Confirm Reservation'.
+  Next, you can reserve a flight by clicking 'Confirm Reservation'.
 
-If you are not logged in, you will be prompted your username and password first.
+  If you are not logged in, you will be prompted your username and password first.
 
-If you do not have an account click "I Don't Have an Account" so you can sign up.
+  If you do not have an account click "I Don't Have an Account" so you can sign up.
 
 ## In the Profile Page, you can:
 
@@ -96,17 +96,17 @@ If you do not have an account click "I Don't Have an Account" so you can sign up
 
   ### B) View Your Upcoming Flights:
 
-    #### a) Cancel Reservation
+     a) Cancel Reservation
 
-    #### b) Edit Reservation 
+     b) Edit Reservation 
 
-      ##### 1) Change Seats
+       1) Change Seats
 
-      ##### 2) Change Departure Flight
+       2) Change Departure Flight
 
-      ##### 3) Change Return Flight
+       3) Change Return Flight
 
-    #### c) Email Yourself Your Trip Itenrary
+     c) Email Yourself Your Trip Itenrary
 
 
 
@@ -123,21 +123,21 @@ This is where you let them know that they can contribute and help you out. A gui
 
 The main resources we used in creating this project:
 
-https://blog.logrocket.com/mern-stack-tutorial/
+  https://blog.logrocket.com/mern-stack-tutorial/
 
-https://www.youtube.com/watch?v=leNCfU5SYR8
+  https://www.youtube.com/watch?v=leNCfU5SYR8
 
-https://www.freecodecamp.org/news/use-nodemailer-to-send-emails-from-your-node-js-server/
+  https://www.freecodecamp.org/news/use-nodemailer-to-send-emails-from-your-node-js-server/
 
-https://www.youtube.com/watch?v=mI_-1tbIXQI
+  https://www.youtube.com/watch?v=mI_-1tbIXQI
 
-https://www.youtube.com/watch?v=71wSzpLyW9k
+  https://www.youtube.com/watch?v=71wSzpLyW9k
 
-https://www.youtube.com/watch?v=lbEFSP1WAv0
+  https://www.youtube.com/watch?v=lbEFSP1WAv0
 
-https://www.youtube.com/watch?v=7CqJlxBYj-M
+  https://www.youtube.com/watch?v=7CqJlxBYj-M
 
-https://ant.design/components/auto-complete/
+  https://ant.design/components/auto-complete/
 
 # **License**
-[MIT License](LICENSE)
+  [MIT License](LICENSE)
