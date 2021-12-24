@@ -68,6 +68,7 @@ export default function Login(props) {
         setmessagecolor("success");
         setmessage(res.data.message);
         localStorage.setItem("token",res.data.token);
+        history.push("/profile");
       }
       
     }).catch(err => console.log(err))

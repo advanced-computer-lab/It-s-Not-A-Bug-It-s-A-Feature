@@ -90,7 +90,7 @@ export default function HeaderLinks(props) {
       });
       localStorage.removeItem("token");
         //onSubmit(e);
-        history.push('/home')
+        history.push('/login')
    }}
       color="transparent"
       target="_blank"
