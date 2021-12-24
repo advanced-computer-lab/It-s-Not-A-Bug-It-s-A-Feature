@@ -17,4 +17,4 @@ Requirement ID - Team Member: Functional Requirement
 9-Michael Tito:The system should promt the Administrator if they are sure they want to delete the flight and all its details (to confirm the deletion).	Michael
 
 10-Eman Osama:The system should update the flight schedule should any changes be made by the Administrator to any of the flights.
-[MIT License] (LICENSE)
+[MIT License](LICENSE)
