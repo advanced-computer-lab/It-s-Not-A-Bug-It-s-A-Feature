@@ -4,6 +4,7 @@ const Reservation = require('../models/Reservation.js');
 //let adminController = require('./routes/adminController.js');
 let User = require('../models/User.js');
 var nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken")
 
 // transporter for sending emails 
 let transporter = nodemailer.createTransport({
@@ -18,19 +19,19 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-router.route('/').get((req, res) => {
+router.route('/').get(verifyJWT, (req, res) => {
     res.status(200).send("Hello Admin!");
   });
 
   //for testing to be removed
-  router.route('/allFlights').get((req, res) => {
+  router.route('/allFlights').get(verifyJWT, (req, res) => {
     Flights.find()
     .then(flight => res.send(flight))
     .catch(err => res.status(400).send('Error: '+err));
   });
 
     //for testing to be removed
-    router.route('/allUsers').get((req, res) => {
+    router.route('/allUsers').get(verifyJWT, (req, res) => {
       User.find()
       .then(user => res.send(user))
       .catch(err => res.status(400).send('Error: '+err));
@@ -38,7 +39,7 @@ router.route('/').get((req, res) => {
 
 
 
-  router.route('/createFlight').post((req, res) => {
+  router.route('/createFlight').post(verifyJWT, (req, res) => {
     console.log(req.body);
     console.log("abt to create new flight");
     const flightNo = Number(req.body.flightNo);
@@ -124,7 +125,7 @@ router.route('/').get((req, res) => {
         Flights.find(anded, 'flightNo departureDate arrivalDate economySeats businessSeats arrivalAirport departureAirport departureTerminal arrivalTerminal currBusinessSeats currEconomySeats reservedSeats').then( data => res.send(data));
       });
 
-router.route('/deleteFlight/:id').delete((req,res)=>{ 
+router.route('/deleteFlight/:id').delete(verifyJWT, (req,res)=>{ 
   var id = req.params.id;
   console.log(`Deleting flight ID ${id}`);
   deleteResForFlight(id); //deletes all corresponding reservations in reservation table & email clients
@@ -195,13 +196,13 @@ async function deleteResForFlight(FlightID){
     }
 
 
-router.route('/editFlight/:id').get((req, res) => {
+router.route('/editFlight/:id').get(verifyJWT, (req, res) => {
   Flights.findById(req.params.id)
   .then(flight => res.send(flight))
   .catch(err => res.status(400).send('Error: '+err));
 });
 
-router.route('/editFlight/:id').post(async (req, res) => {
+router.route('/editFlight/:id').post(verifyJWT, async (req, res) => {
   var id=req.params.id;
   Flights.findByIdAndUpdate({ _id: (id) },
     {
@@ -248,5 +249,24 @@ function sendEmail(email, emailText){
       console.log("Email sent successfully");
     }
   });
+}
+
+function verifyJWT(req,res,next){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (token ==null) 
+    return res.sendStatus(401);
+  jwt.verify(token,process.env.JWT_SECRET,(err,user)=>{
+        if (err)
+         return res.sendStatus(403);
+        if(!user.isAdmin)
+          return res.json({message: 'Access denied. Admins only are allowed.'});
+        if(req.cookies.jwt !== token)
+          return res.json({message: "Please log in to continue."});
+        req.user = user
+        req.token = token
+        next()
+    })
 }
   module.exports = router;

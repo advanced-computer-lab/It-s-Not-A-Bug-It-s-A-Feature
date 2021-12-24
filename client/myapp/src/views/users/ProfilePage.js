@@ -47,6 +47,9 @@ import cloud from "./../../assets/img/cloud.jpg";
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true
+
+
 import { useHistory } from 'react-router-dom';
 import { ContactsOutlined, SentimentDissatisfiedRounded } from "@material-ui/icons";
 const useStyles = makeStyles(styles);
@@ -59,6 +62,7 @@ export default function ProfilePage(props) {
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
+  const [age, setage] = useState([]);
   const [ProfileEdit, setProfileEdit] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -72,6 +76,12 @@ export default function ProfilePage(props) {
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
   let history = useHistory();
 
+  function agee(){
+    if(Profile.birthDate){
+     return getAge(Profile.birthDate);
+    }
+    return Profile.age;
+  }
   function getAge(dateString) 
 {
     var today = new Date();
@@ -88,7 +98,7 @@ export default function ProfilePage(props) {
     const token = localStorage.getItem("token");
     axios.get('http://localhost:8000/user/myReservations', {
       headers: {
-        'authorization': token
+        'authorization': token,
       }
     })
       .then(res => {
@@ -105,8 +115,6 @@ export default function ProfilePage(props) {
         console.log(err);
         history.push("/error");
       });
-      console.log("MyReservation");
-console.log(MyReservation);
   }, []);
 
   useEffect(() => {
@@ -121,7 +129,7 @@ console.log(MyReservation);
           history.push("/error");
         }
         else {
-          setProfile(res.data); console.log(res);
+          setProfile(res.data);setage(agee()); console.log(res);
           setProfileEdit(res.data);
         }
       }
@@ -252,8 +260,12 @@ console.log(MyReservation);
                                 <b>Email : </b> {Profile.email}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Phone Number : </b> {Profile.phoneNo}
+                                <b>Phone Number : </b> 0{Profile.phoneNo}
                               </GridItem>
+                              {Profile.phoneNoOptional &&
+                              <GridItem xs={12} sm={12}  >
+                                <b>2nd Phone Number : </b> 0{Profile.phoneNoOptional}
+                              </GridItem>}
                               <GridItem xs={12} sm={12}  >
                                 <b>CreditCard Number : </b> {Profile.creditCardNo}
                               </GridItem>
@@ -261,7 +273,7 @@ console.log(MyReservation);
                                 <b>Passport Number : </b> {Profile.passportNo}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Age : </b> {Profile.age}
+                                <b>Age : </b> {age}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
                                 <b>Address : </b> {Profile.address}
@@ -411,10 +423,10 @@ console.log(MyReservation);
                                       ></Reservation>
                                     </GridItem>
                                     <GridContainer justify="center">
-                                      <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                        {/* <Button
-                                          color="warning"
-                                          // color="transparent"
+                                      
+                                       <GridItem xs={12} sm={3}>
+                                       <Button
+                                          color="primary"
                                           size="lg"
                                           id="demo-customized-button"
                                           aria-controls="demo-customized-menu"
@@ -422,10 +434,14 @@ console.log(MyReservation);
                                           variant="contained"
                                           // disableElevation
                                           onClick={(e) => {
-                                            editRes(curr.reservation.resID);
+                                            //check el input bta3 el method dy
+                                            sendItinerary(Profile._id, curr.reservation.resID);
                                           }}
-                                        > Edit Reservation </Button> */}
-                                        <CustomDropdown
+                                        >Send me my itinerary</Button>
+                                       </GridItem>
+                                       <GridItem  xs={12} sm={1} ></GridItem>
+                                       <GridItem  xs={12} sm={3}  justify="center">
+                                       <CustomDropdown
                                           noLiPadding
                                           buttonText={"Edit"}
                                           buttonProps={{
@@ -472,30 +488,10 @@ console.log(MyReservation);
                                             </a>,
                                           ]}
                                         />
-                                        <Button
-                                          color="primary"
-                                          size="lg"
-                                          id="demo-customized-button"
-                                          aria-controls="demo-customized-menu"
-                                          aria-haspopup="true"
-                                          variant="contained"
-                                          // disableElevation
-                                          onClick={(e) => {
-                                            //check el input bta3 el method dy
-                                            sendItinerary(Profile._id, curr.reservation.resID);
-                                          }}
-                                        >Send me my itinerary</Button>
-                                        {/* TRANSPARENT BUTTON */}
-                                        <Button alignItems="right"
-                                          color="transparent"
-                                          // color="transparent"
-                                          size="lg"
-                                          id="demo-customized-button"
-                                          aria-controls="demo-customized-menu"
-                                          aria-haspopup="true"
-                                          variant="contained"
-                                        > </Button>
-                                        <Button
+                                       </GridItem>
+                                       <GridItem  xs={12} sm={3}>
+
+                                       <Button
                                           color="danger"
                                           // color="transparent"
                                           size="lg"
@@ -508,7 +504,19 @@ console.log(MyReservation);
                                             onCancel(curr.reservation);
                                           }}
                                         >Cancel Reservation </Button>
-                                      </GridItem>
+                                       </GridItem>
+                                       
+                                        {/* TRANSPARENT BUTTON */}
+                                        {/* <Button alignItems="right"
+                                          color="transparent"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                        > </Button> */}
+                                        
                                     </GridContainer>
                                     <br /><br />
 

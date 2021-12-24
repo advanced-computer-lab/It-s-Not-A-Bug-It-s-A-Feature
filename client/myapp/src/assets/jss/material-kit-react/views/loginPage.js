@@ -93,6 +93,13 @@ const signupPageStyle = {
     marginTop: "30px",
     minHeight: "32px",
     textDecoration: "none",
+  dropdownLink: {
+    "&,&:hover,&:focus": {
+      color: "inherit",
+      textDecoration: "none",
+      display: "block",
+      padding: "10px 20px",
+    },
   },
 };
 
