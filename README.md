@@ -32,15 +32,20 @@ If your project is small, then we can add the reference docs in the readme. For 
 This is the section where you mention all the different tests that can be performed with code examples
 
 **How to Use?**
+
 A) Clone the Repository
+
 B) Open Terminal
-C) To run the front end, run:
+
+C) To run the front end, run the following commands in the given order:
 
 ```
 cd client/myapp 
 ```
 
-amd then:
+```
+npm install
+```
 
 ```
 npm start
@@ -52,7 +57,6 @@ D) To run the back end, run:
 cd server 
 ```
 
-and then:
 
 ```
 node App.js
@@ -60,9 +64,15 @@ node App.js
 
 Open http://localhost:3000/home to view the homepage in your browser.
 
+## In the Home Page, you can:
 
+# Search for Flights: 
+in the home page you can specify some search criteria and click "Search" in order to find flights that match your preferences.
 
-As I have mentioned before, you never know who is going to read your readme. So it is better to provide information on how to use your project. A step-by-step guide is best suited for this purpose. It is better to explain steps as detailed as possible because it might be a beginner who is reading it.
+# Reserve a flight: 
+If you are not logged in, you will be prompted your username and password first.
+If you do not have an account click "I Don't Have an Account" so you can sign up.
+
 
 **Contribute**
 This is where you let them know that they can contribute and help you out. A guideline on how to contribute is also helpful
