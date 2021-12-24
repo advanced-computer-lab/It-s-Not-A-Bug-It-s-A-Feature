@@ -583,6 +583,7 @@ router.route("/register").post( async (req,res)=>{
       address: user.address,
       countryCode:user.countryCode ,
       phoneNo: user.phoneNo,
+      phoneNoOptional:user.phoneNoOptional,
       age: user.age,
       nationality:user.nationality.toLowerCase(),
       creditCardNo:user.creditCardNo,
