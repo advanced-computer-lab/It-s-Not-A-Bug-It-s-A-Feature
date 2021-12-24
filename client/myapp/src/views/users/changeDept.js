@@ -101,7 +101,7 @@ export default function Reservation(props) {
         setempty(null);
         setLoading(true);
         console.log(deptFlight.departureAirport,
-           (new Date(value[0]).addHours(4)).toISOString(),
+           (new Date(value).addHours(4)).toISOString(),
             deptFlight.arrivalAirport,
            cabin,
             key.res.reservation.adultsNo,
@@ -110,7 +110,7 @@ export default function Reservation(props) {
             params:
             {
                 departureAirport: deptFlight.departureAirport,
-              departureDate:(new Date(value[0]).addHours(4)).toISOString(),
+              departureDate:(new Date(value).addHours(4)).toISOString(),
               arrivalAirport: deptFlight.arrivalAirport,
               cabin: cabin,
               adultsNo: key.res.reservation.adultsNo,
@@ -171,30 +171,24 @@ export default function Reservation(props) {
                                     {deptFlight.arrivalAirport}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs>
                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DesktopDateRangePicker
+                                        <DatePicker
                                         disabledEnd
                                         minDate={today}
                                         maxDate={arrDate}
                                             value={value}
                                             onChange={(newValue) => {
-                                                setValue([newValue[0],arrDate]);
+                                                setValue(newValue);
                                             }}
-                                            renderInput={(startProps, endProps) => (
+                                            renderInput={(props) => (
                                                 <React.Fragment>
-                                                <TextField {...startProps} required
-                                                    label="Check In"
+                                                <TextField {...props} required
+                                                    label="Date"
                                                     fullWidth
                                                     variant="standard"
                                                     />
-                                                <Box sx={{ mx: 2 }}> to </Box>
-                                                <TextField {...endProps} 
-                                                disabled
-                                                    label="Check Out"
-                                                    fullWidth
-                                                    variant="standard"
-                                                    />
+                                                
                                                 </React.Fragment>
                                             )}
                                             />
