@@ -650,7 +650,7 @@ function verifyJWT(req,res,next){
   jwt.verify(token,process.env.JWT_SECRET,(err,user)=>{
         if (err)
          return res.sendStatus(403);
-        if(!tokens.includes(token))
+        if(req.cookies.jwt !== token)
           return res.json({message: "Please log in to continue."});
         req.user = user
         req.token = token
