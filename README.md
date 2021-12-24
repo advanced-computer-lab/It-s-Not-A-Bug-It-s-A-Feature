@@ -15,7 +15,7 @@ This lets the users know that you have used a particular code style and helps th
 As the saying goes, a picture is equal to a thousand words. Most people will be interested if there is a visual representation of what the project is about. It helps them understand better. A visual representation can be snapshots of the project or a video of the functioning of the project.
 
 # **Tech/Frameworks used**
-## MERN Stack was used to creat this project.
+## MERN Stack was used to create this project.
 MERN stands for MongoDB, Express, React, Node, after the four key technologies that make up the stack.
 
     MongoDB - document database
