@@ -86,6 +86,14 @@ const signupPageStyle = {
   inputIconsColor: {
     color: "#495057",
   },
+  dropdownLink: {
+    "&,&:hover,&:focus": {
+      color: "inherit",
+      textDecoration: "none",
+      display: "block",
+      padding: "10px 20px",
+    },
+  },
 };
 
 export default signupPageStyle;
