@@ -53,7 +53,7 @@ export default function Login(props) {
     
     setmessage(null);
     setmessagecolor("");
-    axios.post('http://localhost:8000/user/login', {
+    axios.post('http://localhost:8000/login', {
         username:userName,
         password:password
     }).then(res => {
@@ -66,9 +66,15 @@ export default function Login(props) {
       else{
         setLogged(true);//bar loggedIn
         setmessagecolor("success");
+        console.log(res);
         setmessage(res.data.message);
         localStorage.setItem("token",res.data.token);
-        history.push("/profile");
+        const tokenWithout= res.data.token.split(' ')[1] 
+        document.cookie="jwt="+tokenWithout;
+        if(res.data.isAdmin===false)
+         history.push("/profile");
+        else 
+        history.push("/admin/createFlight");
       }
       
     }).catch(err => console.log(err))

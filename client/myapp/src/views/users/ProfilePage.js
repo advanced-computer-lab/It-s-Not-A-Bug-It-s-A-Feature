@@ -46,6 +46,9 @@ import cloud from "./../../assets/img/cloud.jpg";
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true
+
+
 import { useHistory } from 'react-router-dom';
 import { ContactsOutlined, SentimentDissatisfiedRounded } from "@material-ui/icons";
 const useStyles = makeStyles(styles);
@@ -94,7 +97,7 @@ export default function ProfilePage(props) {
     const token = localStorage.getItem("token");
     axios.get('http://localhost:8000/user/myReservations', {
       headers: {
-        'authorization': token
+        'authorization': token,
       }
     })
       .then(res => {
@@ -111,8 +114,6 @@ export default function ProfilePage(props) {
         console.log(err);
         history.push("/error");
       });
-      console.log("MyReservation");
-console.log(MyReservation);
   }, []);
 
   useEffect(() => {

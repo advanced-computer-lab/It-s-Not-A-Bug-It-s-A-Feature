@@ -15,9 +15,10 @@ import GridContainer from "./../../components/Grid/GridContainer.js";
 import GridItem from "./../../components/Grid/GridItem.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
+import ButtonMUI from '@mui/material/Button';
 import Card from "./../../components/Card/Card.js";
 import CardContent from '@mui/material/CardContent';
-import Flight from "./../../components/Flight/FlightCard.js";
+import FlightCard from "./../../components/Flight/FlightCard.js";
 import Typography from '@mui/material/Typography';
 import AllSeats from "../../components/Flight/AllSeats.js";
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
@@ -40,6 +41,8 @@ import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
 import ReservationCard from "./../../components/Reservation/Reservation.js";
 
 import axios from 'axios';
+axios.defaults.withCredentials = true
+
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -120,7 +123,8 @@ export default function Reservation(props) {
               setAllFlights(res.data);
               console.log(res);
               setLoading(false);
-              if(res.data==[])setempty(true);
+              if(res.data.length==0){setempty(true);
+            }
             }).catch(err => console.log(err))
       
               
@@ -260,14 +264,16 @@ export default function Reservation(props) {
                                         tabContent: (
                                             <GridContainer justify="center">
                                                 {loading ? <CustomLinearProgress color="info" /> :null    }
-                                                {empty? null:
+                                                {empty? <Typography>
+                                                    Sorry There is No Flights Available
+                                                </Typography>:
                                                     allFlights.map((curr)=>(
                                                         <Button color={(Flight==curr)?'blue':'transparent'} onClick={(e) => {
-                                                          if(selectedDepart!=curr)setFlight(curr);
+                                                          if(Flight!=curr)setFlight(curr);
                                                           else setFlight(null);}}>
                                                             
                                                        <GridItem xs={12} sm={12}> 
-                                                         <Flight
+                                                         <FlightCard
                                                          flight={curr}
                                                          type={cabin}
                                                          Number={count}

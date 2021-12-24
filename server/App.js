@@ -19,7 +19,8 @@ const MongoURI = process.env.ATLAS_URI;
 var cors= require('cors');
 var ReactDOM = require('react-dom')
 
-app.use(cors())
+//app.use(cors())
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -110,12 +111,20 @@ app.post("/login",async (req,res)=>{
             } 
             console.log('Success');
             // tokens.push(token);
-            res.cookie('jwt', token, {httpOnly: true, maxAge:86400});
-            return res.json({
+            return res
+            .cookie('jwt', token, {httpOnly: false, maxAge:86400})
+            .json({
               message: "success",
               token: "Bearer " + token,
               isAdmin: payload.isAdmin
             })
+            // res.cookie('jwt', token, { maxAge:86400});
+            // console.log(res.cookie);
+            // return res.json({
+            //   message: "success",
+            //   token: "Bearer " + token,
+            //   isAdmin: payload.isAdmin
+            // })
           }
         )
       }else{
