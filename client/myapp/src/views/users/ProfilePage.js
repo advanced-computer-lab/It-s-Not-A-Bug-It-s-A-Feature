@@ -436,10 +436,10 @@ console.log(MyReservation);
                                       ></Reservation>
                                     </GridItem>
                                     <GridContainer justify="center">
-                                      <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                        {/* <Button
-                                          color="warning"
-                                          // color="transparent"
+                                      
+                                       <GridItem xs={12} sm={3}>
+                                       <Button
+                                          color="primary"
                                           size="lg"
                                           id="demo-customized-button"
                                           aria-controls="demo-customized-menu"
@@ -447,10 +447,14 @@ console.log(MyReservation);
                                           variant="contained"
                                           // disableElevation
                                           onClick={(e) => {
-                                            editRes(curr.reservation.resID);
+                                            //check el input bta3 el method dy
+                                            sendItinerary(Profile._id, curr.reservation.resID);
                                           }}
-                                        > Edit Reservation </Button> */}
-                                        <CustomDropdown
+                                        >Send me my itinerary</Button>
+                                       </GridItem>
+                                       <GridItem  xs={12} sm={1} ></GridItem>
+                                       <GridItem  xs={12} sm={3}  justify="center">
+                                       <CustomDropdown
                                           noLiPadding
                                           buttonText={"Edit"}
                                           buttonProps={{
@@ -497,30 +501,10 @@ console.log(MyReservation);
                                             </a>,
                                           ]}
                                         />
-                                        <Button
-                                          color="primary"
-                                          size="lg"
-                                          id="demo-customized-button"
-                                          aria-controls="demo-customized-menu"
-                                          aria-haspopup="true"
-                                          variant="contained"
-                                          // disableElevation
-                                          onClick={(e) => {
-                                            //check el input bta3 el method dy
-                                            sendItinerary(Profile._id, curr.reservation.resID);
-                                          }}
-                                        >Send me my itinerary</Button>
-                                        {/* TRANSPARENT BUTTON */}
-                                        <Button alignItems="right"
-                                          color="transparent"
-                                          // color="transparent"
-                                          size="lg"
-                                          id="demo-customized-button"
-                                          aria-controls="demo-customized-menu"
-                                          aria-haspopup="true"
-                                          variant="contained"
-                                        > </Button>
-                                        <Button
+                                       </GridItem>
+                                       <GridItem  xs={12} sm={3}>
+
+                                       <Button
                                           color="danger"
                                           // color="transparent"
                                           size="lg"
@@ -533,7 +517,19 @@ console.log(MyReservation);
                                             onCancel(curr.reservation);
                                           }}
                                         >Cancel Reservation </Button>
-                                      </GridItem>
+                                       </GridItem>
+                                       
+                                        {/* TRANSPARENT BUTTON */}
+                                        {/* <Button alignItems="right"
+                                          color="transparent"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                        > </Button> */}
+                                        
                                     </GridContainer>
                                     <br /><br />
 
