@@ -15,7 +15,12 @@ import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
 import  retReserveFlight from './views/users/ReservationRetSeats.js';
 import  Payment from './views/users/PaymentPageRes.js';
 import bothSeats from './views/users/ResTwoWaySeats.js';
-
+import editRes from './views/users/editRes.js';
+import changeDept from './views/users/changeDept.js';
+import changeRet from './views/users/changeRet.js';
+import  changeSeats from './views/users/changeSeats.js';
+import payFail from './views/users/payFail.js';
+import paySuccess from './views/users/paySuccess.js';
 
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
@@ -35,14 +40,12 @@ function App() {
   return(
     <ThemeProvider theme={theme}>
          <Router> 
-           
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/signUp"} component={SignUp}></Route>
            <Route path ={"/profile"} component={Profile}></Route>
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
            <Route path ={"/Error"} component={Error}></Route>
-
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
@@ -51,8 +54,14 @@ function App() {
            <Route path ={"/admin/search"} component={Search}/>
            {/* <Route path ={"/reserveDept"} component={deptReserveFlight}/>
            <Route path ={"/reserveRet"} component={retReserveFlight}/> */}
-           <Route path ={"/pay"} component={Payment}/>
+           <Route path ={"/paySuccess"} component={paySuccess}/>
+           <Route path ={"/payFail"} component={payFail}/>
            <Route path ={"/reserveSeats"} component={bothSeats}/>
+           <Route path ={"/editResFront"} component={editRes}/>
+           <Route path ={"/changeDept"} component={changeDept}/>
+           <Route path ={"/changeRet"} component={changeRet}/>
+           <Route path ={"/changeSeats"} component={changeSeats}/>
+           
          </Router> 
          </ThemeProvider>
 

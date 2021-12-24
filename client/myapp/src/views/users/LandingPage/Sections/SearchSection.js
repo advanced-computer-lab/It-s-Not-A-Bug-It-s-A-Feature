@@ -85,7 +85,7 @@ const StyledMenu = styled((props) => (
 }));
 
 const useStyles = makeStyles(styles);
-export default function Main() { 
+export default function Main() {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -96,15 +96,15 @@ export default function Main() {
   const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
 
-  
-var departFlights; // variable to hold the departure flights of the search query
-var returnFlights; // variable to hold the return flights of the search query
-// const [departFlights, setdepartFlights] = useState([]);
-// const [returnFlights, setreturnFlights] = useState([]);
+
+  var departFlights; // variable to hold the departure flights of the search query
+  var returnFlights; // variable to hold the return flights of the search query
+  // const [departFlights, setdepartFlights] = useState([]);
+  // const [returnFlights, setreturnFlights] = useState([]);
 
   // we will use this to to fade the buttons 
-  const [buttonFade1 , setButtonFade1]= useState(false);
-  const [buttonFade2 , setButtonFade2]= useState(false);
+  const [buttonFade1, setButtonFade1] = useState(false);
+  const [buttonFade2, setButtonFade2] = useState(false);
 
   //
   const [arrival, setarrival] = useState("");
@@ -118,71 +118,69 @@ var returnFlights; // variable to hold the return flights of the search query
   const [countAdults, setCountAdults] = useState(1);
   const IncNumAdults = () => {
     setCountAdults(countAdults + 1);
-    setCountPassengers(countPassengers+1);
-    
+    setCountPassengers(countPassengers + 1);
+
   };
- 
+
   const DecNumAdults = () => {
     if (countAdults > 1) {
-        setCountPassengers(countPassengers-1);
-        setCountAdults(countAdults - 1);
+      setCountPassengers(countPassengers - 1);
+      setCountAdults(countAdults - 1);
     }
     else {
-        setCountAdults(1);
+      setCountAdults(1);
       // rather than alert we just need to make the button fadeout 
       setmessage("min limit reached");
     }
   };
 
-   //_______CHILDREN_________
+  //_______CHILDREN_________
 
-   const [countChild, setCountChild ]= useState(0);
-   
-   const IncNumChild = () => {
+  const [countChild, setCountChild] = useState(0);
+
+  const IncNumChild = () => {
     setCountChild(countChild + 1);
-    setCountPassengers(countPassengers+1);
-   };
-   const DecNumChild = () => {
-     if (countChild > 0) {
-        setCountPassengers(countPassengers-1);
-        setCountChild(countChild - 1);
-     }
-     else {
+    setCountPassengers(countPassengers + 1);
+  };
+  const DecNumChild = () => {
+    if (countChild > 0) {
+      setCountPassengers(countPassengers - 1);
+      setCountChild(countChild - 1);
+    }
+    else {
 
-        setCountChild(0);
-       // rather than alert we just need to make the button fadeout 
-     }
-   };
+      setCountChild(0);
+      // rather than alert we just need to make the button fadeout 
+    }
+  };
 
-   const onSubmit= ()=>{
-     
-    if(departure==""){setmessage('please enter a departuring destination');}
+  const onSubmit = () => {
+
+    if (departure == "") { setmessage('please enter a departuring destination'); }
     else
-    if(arrival==""){setmessage('please enter an arrival destination');}
-    else
-    if(departureDate==""|| arrivalDate==""){setmessage('please enter a Date');}
-    else
-    if(departureDate>= arrivalDate || ((new Date(arrivalDate).getTime()- new Date(departureDate).getTime())<1000*60*60*48))
-    {setmessage('please choose an arrival date after at least 2 days from departure');}
-    else
-    {
-    history.push({
-      pathname:"/search" ,
-      state: {
-        arrivalAirport:arrival,
-      departureDate:departureDate,
-      departureAirport:departure,
-      arrivalDate:arrivalDate,
-      adultsNo:countAdults,
-      childrenNo:countChild,
-        type:cabin,
-        count:countPassengers
-      } 
-      
-   });
-  //  else
-  //  alert("Sever is not working");
-}
+      if (arrival == "") { setmessage('please enter an arrival destination'); }
+      else
+        if (departureDate == "" || arrivalDate == "") { setmessage('please enter a Date'); }
+        else
+          if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
+          else {
+            history.push({
+              pathname: "/search",
+              state: {
+                arrivalAirport: arrival,
+                departureDate: departureDate,
+                departureAirport: departure,
+                arrivalDate: arrivalDate,
+                adultsNo: countAdults,
+                childrenNo: countChild,
+                type: cabin,
+                count: countPassengers
+              }
+
+            });
+            //  else
+            //  alert("Sever is not working");
+          }
   };
 
 
@@ -192,200 +190,200 @@ var returnFlights; // variable to hold the return flights of the search query
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
-  
- 
-    return (
-      <GridContainer>
-         {message ? 
-         <GridItem xs={12} xm={12}>
-        <SnackbarContent
-                          message={
-                            <span>
-                              {message}
-                            </span>
-                          }
-                          close
-                          color="danger"
-                         
-                        /> </GridItem>: null}
-  <Card margin="none"
-   >
-      <CardContent 
-       >
-           <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 0.5, width: '24ch'},
-       
-      }}
-      noValidate
-      autoComplete="on"
-      textAlign="on"
-      alignSelf="on"
-      display="flex"
-      flex-flexDirection="row"
-     
-    >
-        <div>
-         
-           
-       
-        <Typography sx={{ fontSize: 17 }}  gutterBottom  >
-        Leaving from
-        </Typography>
-      <TextField 
-      id="departure" 
-      variant="outlined" 
-      placeholder="Select origin"
-      value={departure}
-      color="warning"
-      onChange={(e) => {
-        setdeparture(e.target.value);
-      }}
-      focused/>
-      </div>
-    
-    {/* <SwapHorizIcon sx={{mt:28}}color="primary"/> */}
-    <div>
-    <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       Going to
-        </Typography>
-      <TextField 
-      
-      id="outlined-basic" 
-      variant="outlined" 
-      placeholder="Select destination"
-      value={arrival}
-      onChange={(e) => {
-        setarrival(e.target.value);
-      }}
-      focused/>
-      </div>
 
-<div>
- <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       Check in
-        </Typography>
-      <TextField 
-      id="outlined-basic" 
-      type="date"
-      variant="outlined" 
-      placeholder="Select destination"
-      value={departureDate}
-      onChange={(e) => {
-        setdepartureDate(e.target.value);  
-      }}
-      focused/>
-      </div>
-<div>
-   <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       Check out
-        </Typography>
-      <TextField 
-      id="outlined-basic" 
-      type="date"
-      variant="outlined" 
-      Container=""
-      placeholder="Select destination"
-      value={arrivalDate}
-      onChange={(e) => {
-        setarrivalDate(e.target.value);
-      }}
-      focused/>
- </div>
-   
-        <div>
-  <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       <br/>
-        </Typography>
-      < div/>
- <CustomDropdown
-          noLiPadding
-          buttonText={(countPassengers>1)?countPassengers+" Travellers":countPassengers+" Traveller"} 
-          buttonProps={{
-            className: classes.navLink,
-            color: "transparent",
-            
-          }}
-          dropdownList={[
-            <a className={classes.dropdownLink}>
-                <h4>  Adults</h4>  
-               <div className="main_div">
-        <div className="center_div">
-      
-          <div className="btn_div">
-            <Tooltip title="Delete">
-            <Button2 onClick={DecNumAdults}>
-              <RemoveCircleOutlineSharpIcon />
-            </Button2>
-            </Tooltip>
-            {countAdults}
-            <Button2 onClick={IncNumAdults}>
-                < AddCircleOutlineSharpIcon />
-              </Button2>
+
+  return (
+    <GridContainer>
+      {message ?
+        <GridItem xs={12} xm={12}>
+          <SnackbarContent
+            message={
+              <span>
+                {message}
+              </span>
+            }
+            close
+            color="danger"
+
+          /> </GridItem> : null}
+      <Card margin="none"
+      >
+        <CardContent
+        >
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { m: 0.5, width: '24ch' },
+
+            }}
+            noValidate
+            autoComplete="on"
+            textAlign="on"
+            alignSelf="on"
+            display="flex"
+            flex-flexDirection="row"
+
+          >
+            <div>
+
+
+
+              <Typography sx={{ fontSize: 17 }} gutterBottom  >
+                Leaving from
+              </Typography>
+              <TextField
+                id="departure"
+                variant="outlined"
+                placeholder="Select origin"
+                value={departure}
+                color="warning"
+                onChange={(e) => {
+                  setdeparture(e.target.value);
+                }}
+                focused />
             </div>
-        </div>
-      </div>
-            </a>,
-            <a
-              className={classes.dropdownLink}
-            >
-     <h4>   Children</h4>     
-     <br/>    
-    <div className="main_div">
-    <div className="center_div">
-   
-      <div className="btn_div">
-        <Tooltip title="Delete">
-        <Button2 onClick={DecNumChild}>
-          <RemoveCircleOutlineSharpIcon />
-        </Button2>
-        </Tooltip>
-        {countChild}
-        <Button2
-           onClick={IncNumChild}>
-            < AddCircleOutlineSharpIcon />
-          </Button2>
-        </div>
-    </div>
-  </div>
-            </a>,
-          ]}
-        />
-     
- </div>
-<div> 
-   <div>
-  <Typography sx={{ fontSize: 17 }}  gutterBottom >
-       <br/>
-        </Typography>
-      < div/>
-        <CustomDropdown
-          noLiPadding
-          buttonText={cabin}
-          buttonProps={{
-            className: classes.navLink,
-            color: "transparent",
-            
-          }}
-          dropdownList={[
-            <Link className={classes.dropdownLink}
-            onClick={(e) => {setCabin("Economy");}}
-            >
-               <h4>  Economy </h4>  
-         </Link>,
-            <a 
-              className={classes.dropdownLink}
-              onClick={(e) => {setCabin("Business");}}
-            >
-     <h4>   Business</h4>     
-        
-            </a>,
-          ]}
-        />
-  <div/>
-  </div>
-      {/* <Button
+
+            {/* <SwapHorizIcon sx={{mt:28}}color="primary"/> */}
+            <div>
+              <Typography sx={{ fontSize: 17 }} gutterBottom >
+                Going to
+              </Typography>
+              <TextField
+
+                id="outlined-basic"
+                variant="outlined"
+                placeholder="Select destination"
+                value={arrival}
+                onChange={(e) => {
+                  setarrival(e.target.value);
+                }}
+                focused />
+            </div>
+
+            <div>
+              <Typography sx={{ fontSize: 17 }} gutterBottom >
+                Check in
+              </Typography>
+              <TextField
+                id="outlined-basic"
+                type="date"
+                variant="outlined"
+                placeholder="Select destination"
+                value={departureDate}
+                onChange={(e) => {
+                  setdepartureDate(e.target.value);
+                }}
+                focused />
+            </div>
+            <div>
+              <Typography sx={{ fontSize: 17 }} gutterBottom >
+                Check out
+              </Typography>
+              <TextField
+                id="outlined-basic"
+                type="date"
+                variant="outlined"
+                Container=""
+                placeholder="Select destination"
+                value={arrivalDate}
+                onChange={(e) => {
+                  setarrivalDate(e.target.value);
+                }}
+                focused />
+            </div>
+
+            <div>
+              <Typography sx={{ fontSize: 17 }} gutterBottom >
+                <br />
+              </Typography>
+              < div />
+              <CustomDropdown
+                noLiPadding
+                buttonText={(countPassengers > 1) ? countPassengers + " Travellers" : countPassengers + " Traveller"}
+                buttonProps={{
+                  className: classes.navLink,
+                  color: "transparent",
+
+                }}
+                dropdownList={[
+                  <a className={classes.dropdownLink}>
+                    <h4>  Adults</h4>
+                    <div className="main_div">
+                      <div className="center_div">
+
+                        <div className="btn_div">
+                          <Tooltip title="Delete">
+                            <Button2 onClick={DecNumAdults}>
+                              <RemoveCircleOutlineSharpIcon />
+                            </Button2>
+                          </Tooltip>
+                          {countAdults}
+                          <Button2 onClick={IncNumAdults}>
+                            < AddCircleOutlineSharpIcon />
+                          </Button2>
+                        </div>
+                      </div>
+                    </div>
+                  </a>,
+                  <a
+                    className={classes.dropdownLink}
+                  >
+                    <h4>   Children</h4>
+                    <br />
+                    <div className="main_div">
+                      <div className="center_div">
+
+                        <div className="btn_div">
+                          <Tooltip title="Delete">
+                            <Button2 onClick={DecNumChild}>
+                              <RemoveCircleOutlineSharpIcon />
+                            </Button2>
+                          </Tooltip>
+                          {countChild}
+                          <Button2
+                            onClick={IncNumChild}>
+                            < AddCircleOutlineSharpIcon />
+                          </Button2>
+                        </div>
+                      </div>
+                    </div>
+                  </a>,
+                ]}
+              />
+
+            </div>
+            <div>
+              <div>
+                <Typography sx={{ fontSize: 17 }} gutterBottom >
+                  <br />
+                </Typography>
+                < div />
+                <CustomDropdown
+                  noLiPadding
+                  buttonText={cabin}
+                  buttonProps={{
+                    className: classes.navLink,
+                    color: "transparent",
+
+                  }}
+                  dropdownList={[
+                    <Link className={classes.dropdownLink}
+                      onClick={(e) => { setCabin("Economy"); }}
+                    >
+                      <h4>  Economy </h4>
+                    </Link>,
+                    <a
+                      className={classes.dropdownLink}
+                      onClick={(e) => { setCabin("Business"); }}
+                    >
+                      <h4>   Business</h4>
+
+                    </a>,
+                  ]}
+                />
+                <div />
+              </div>
+              {/* <Button
        
         id="demo-customized-button"
         aria-controls="demo-customized-menu"
@@ -399,7 +397,7 @@ var returnFlights; // variable to hold the return flights of the search query
       >
        {countPassengers}_Traveller(s)
       </Button> */}
-      {/* <StyledMenu
+              {/* <StyledMenu
         id="demo-customized-menu"
         MenuListProps={{
           'aria-labelledby': 'demo-customized-button',
@@ -408,7 +406,7 @@ var returnFlights; // variable to hold the return flights of the search query
         open={open}
         onClose={handleClose}
       > */}
-            {/* Adults         
+              {/* Adults         
         <div className="main_div">
         <div className="center_div">
       
@@ -425,22 +423,22 @@ var returnFlights; // variable to hold the return flights of the search query
             </div>
         </div>
       </div> */}
- 
-        {/* <br/> */}
-        
-            {/* Children         
+
+              {/* <br/> */}
+
+              {/* Children         
         <div className="main_div">
         <div className="center_div"> */}
-        {/* <Typography sx={{ fontSize: 18 ,align :"right"}}  gutterBottom >
+              {/* <Typography sx={{ fontSize: 18 ,align :"right"}}  gutterBottom >
        Helloo
         </Typography> */}
-          {/* <div className="btn_div">
+              {/* <div className="btn_div">
             <Tooltip title="Delete">
             <Button2 onClick={DecNumChild}>
               <RemoveCircleOutlineSharpIcon />
             </Button2>
             </Tooltip> */}
-            {/* {countChild}
+              {/* {countChild}
             <Button2
                onClick={IncNumChild}>
                 < AddCircleOutlineSharpIcon />
@@ -450,35 +448,35 @@ var returnFlights; // variable to hold the return flights of the search query
       </div>
       <br/>
       </StyledMenu> */}
-</div>
+            </div>
 
-<div>
+            <div>
 
-<Typography sx={{ fontSize: 17 }}  gutterBottom >
-       <br/>
-        </Typography>
-<Button 
+              <Typography sx={{ fontSize: 17 }} gutterBottom >
+                <br />
+              </Typography>
+              <Button
 
-color = "warning"
-// color="transparent"
-size="lg"
-id="demo-customized-button"
-aria-controls="demo-customized-menu"
-aria-haspopup="true"
-variant="contained"
-disableElevation
-onClick={(e) => {onSubmit(e);
-}}
->Search</Button>
-</div>
+                color="warning"
+                // color="transparent"
+                size="lg"
+                id="demo-customized-button"
+                aria-controls="demo-customized-menu"
+                aria-haspopup="true"
+                variant="contained"
+                disableElevation
+                onClick={(e) => {
+                  onSubmit(e);
+                }}
+              >Search</Button>
+            </div>
 
-</Box>
+          </Box>
 
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
 
     </GridContainer>
-  
-    );
-        };
-  
+
+  );
+};

@@ -24,7 +24,7 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
-
+import { Link } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
@@ -35,20 +35,19 @@ import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
 import LockIcon from '@mui/icons-material/Lock';
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
-
-
+import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
-
-
 import Reservation from "./../../components/Reservation/Reservation.js";
-import profile from "./../../assets/img/faces/michael.jpg";
-
+import michael from "./../../assets/img/faces/michael.jpg";
+import gego from "./../../assets/img/faces/khadija.jpg";
+import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { ContactsOutlined, SentimentDissatisfiedRounded } from "@material-ui/icons";
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
@@ -70,30 +69,65 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+  let history = useHistory();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/user/myReservations')
-      .then(res => { setMyReservation(res.data); console.log(res); setLoading(false); }).catch(err => console.log(err));
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/myReservations', {
+      headers: {
+        'authorization': token
+      }
+    })
+      .then(res => {
+        if (res.data === "Access not allowed. Please login to proceed.") {
+          history.push("/error");
+        }
+        else {
+          setMyReservation(res.data);
+          console.log(res); setLoading(false);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
 
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/user/editProfile/')
-      .then(res => {
-        setProfile(res.data); console.log(res);
-        setProfileEdit(res.data);
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/editProfile/', {
+      headers: {
+        'authorization': token
       }
-      ).catch(err => console.log(err));
+    })
+      .then(res => {
+        if (res.data === "Access not allowed. Please login to proceed.") {
+          history.push("/error");
+        }
+        else {
+          setProfile(res.data); console.log(res);
+          setProfileEdit(res.data);
+        }
+      }
+      ).catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
 
   }, []);
 
   function onCancel(reserv) {
     // confirmation alert is shown before deletion
     const resNo = (reserv).reservationID;
-    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");
+    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`)
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, {
+        headers: {
+          'authorization': token
+        }
+      })
         .then((response) => {
           window.location.reload(true);
         })
@@ -102,9 +136,34 @@ export default function ProfilePage(props) {
 
 
   }
+  function sendItinerary(email, resID) {
+    //TODO
+  }
+  function editRes(resID) {
+    history.push({
+      pathname: "/editResFront",
+      state: {
+
+        // adultsNo: key.adultsNo,
+        // childrenNo: key.childrenNo,
+        // seatClass: key.cabin,
+        // deptFlight: key.flight,
+        // arrFlight: key.ReturnFlight,
+        // deptSeats: reservedSeats2,
+        // arrSeats: reservedSeats3,
+        // totalPrice: price
+      }
+
+    });
+  }
 
   const onEdit = () => {
-    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit)
+    const token = localStorage.getItem("token");
+    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit, {
+      headers: {
+        'authorization': token
+      }
+    })
       .then(res => { setProfile(ProfileEdit); setedit(null); }
       ).catch(err => console.log(err));
   }
@@ -124,7 +183,7 @@ export default function ProfilePage(props) {
       <Parallax
         small
         filter
-        image={require("./../../assets/img/profile-bg.jpg").default}
+        image={require("./../../assets/img/cloud.jpg").default}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
@@ -133,7 +192,9 @@ export default function ProfilePage(props) {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img src={profile} alt="..." className={imageClasses} />
+                    {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
+                      :
+                      <img src={cloud} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -329,48 +390,119 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           {loading ? <CustomLinearProgress color="info" /> :
-                          <GridContainer justify="center">
-                            {
-                              MyReservation.map((curr) => (
+                            <GridContainer justify="center">
+                              {
+                                MyReservation.map((curr) => (
 
-                                <div>
-                                  <GridItem xs={12} sm={12}>
-                                    <Reservation
-                                      deptFlight={curr.deptFlight}
-                                      count={curr.reservation.adultsNo}
-                                      seatClass={curr.reservation.seatClass}
-                                      reservationID={curr.reservation.reservationID}
-                                      deptSeats={curr.reservation.deptSeats}
-                                      arrFlight={curr.arrFlight}
-                                      arrSeats={curr.reservation.arrSeats}
-                                      totalPrice={curr.reservation.price}
-                                      child={curr.reservation.childrenNo}
-                                      adult={curr.reservation.adultsNo}
-                                    ></Reservation>
+                                  <div>
+                                    <GridContainer justify="center"></GridContainer>
+                                    <GridItem xs={12} sm={12}>
+                                      <Reservation
+                                        deptFlight={curr.deptFlight}
+                                        count={curr.reservation.adultsNo}
+                                        seatClass={curr.reservation.seatClass}
+                                        reservationID={curr.reservation.reservationID}
+                                        deptSeats={curr.reservation.deptSeats}
+                                        arrFlight={curr.arrFlight}
+                                        arrSeats={curr.reservation.arrSeats}
+                                        totalPrice={curr.reservation.price}
+                                        child={curr.reservation.childrenNo}
+                                        adult={curr.reservation.adultsNo}
+                                      ></Reservation>
+                                    </GridItem>
+                                    <GridContainer justify="center">
+                                      <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                        {/* <Button
+                                          color="warning"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                          // disableElevation
+                                          onClick={(e) => {
+                                            editRes(curr.reservation.resID);
+                                          }}
+                                        > Edit Reservation </Button> */}
+                                        <CustomDropdown
+                                          noLiPadding
+                                          buttonText={"Edit"}
+                                          buttonProps={{
+                                            size: "lg",
+                                            id: "demo-customized-button",
+                                            variant: "contained",
+                                            className: classes.navLink,
+                                            color: "warning",
+                                          }}
+                                          dropdownList={[
+                                            <Link className={classes.dropdownLink}
+                                              onClick={(e) => { history.push("/"); }}>
+                                              <h4>    change departure flight   </h4>
+                                            </Link>,
+                                            <a
+                                              className={classes.dropdownLink}
+                                              onClick={(e) => { history.push("/"); }}>
+                                              <h4>     change return flight   </h4>
+                                            </a>,
+                                            <a
+                                              className={classes.dropdownLink}
+                                              onClick={(e) => { 
+                                              history.push({
+                                                pathname: "/changeSeats",
+                                                state: {
+                                                  resID : curr.reservation.resID
+                                                }
+                                  
+                                              }); }}>
+                                              <h4>     switch seats    </h4>
+                                            </a>,
+                                          ]}
+                                        />
+                                        <Button
+                                          color="primary"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                          // disableElevation
+                                          onClick={(e) => {
+                                            //check el input bta3 el method dy
+                                            sendItinerary(Profile._id, curr.reservation.resID);
+                                          }}
+                                        >Send me my itinerary</Button>
+                                        {/* TRANSPARENT BUTTON */}
+                                        <Button alignItems="right"
+                                          color="transparent"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                        > </Button>
+                                        <Button
+                                          color="danger"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                          // disableElevation
+                                          onClick={(e) => {
+                                            onCancel(curr.reservation);
+                                          }}
+                                        >Cancel Reservation </Button>
+                                      </GridItem>
+                                    </GridContainer>
+                                    <br /><br />
 
+                                  </div>
 
-                                  </GridItem>
-                                  <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-
-                                    <Button
-                                      color="warning"
-                                      // color="transparent"
-                                      size="lg"
-                                      id="demo-customized-button"
-                                      aria-controls="demo-customized-menu"
-                                      aria-haspopup="true"
-                                      variant="contained"
-                                      // disableElevation
-                                      onClick={(e) => {
-                                        onCancel(curr.reservation);
-                                      }}
-                                    >Cancel Reservation </Button>
-                                  </GridItem>
-                                  <br /><br />
-                                </div>
-
-                              ))
-                            }
+                                ))
+                              }
                             </GridContainer>}
                         </GridContainer>
 

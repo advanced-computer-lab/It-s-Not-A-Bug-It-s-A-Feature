@@ -15,8 +15,13 @@ dotenv.config({path:path.join(__dirname, '..', '.env')});
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 
+//payment
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+// const uuid = require('uuid/v4');
+
 // this variable is to be filled when the user logs in
-var curUserId;
+// var curUserId;
+let tokens = [];
 
 var editmsg;
 
@@ -34,10 +39,10 @@ let transporter = nodemailer.createTransport({
 });
 
 router.route('/').get((req, res) => {
-  if (!curUserId)
-    res.status(200).send("Hello Guest User!");
-  else
-    res.status(200).send("Hello Logged in User!");
+  // if (!curUserId)
+  //   res.status(200).send("Hello Guest User!");
+  // else
+  //   res.status(200).send("Hello Logged in User!");
 });
 
 router.route('/allUsers').get((req, res) => {
@@ -51,14 +56,12 @@ router.route('/allRes').get((req, res) => {
      .catch(err => res.status(400).send('Error: ' + err));
 });
 
-router.route('/res').post(async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
-  if (!curUserId)
-    res.status(200).send("Log in first"); //todo - redirect to login 
-  else {
-    addRes(req)
-    .then(()=>res.send('Reservation added successfully.'))
+router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
+  await payment(req)
+  addRes(req)
+    .then((msg)=>res.send(msg))
     .catch(err => res.status(400).send(err));  
-  }
+  
 });
 
 async function addRes(req){
@@ -72,6 +75,18 @@ async function addRes(req){
     var arrSeats = [];
     deptSeats.push(...req.body.deptSeats);
     arrSeats.push(...req.body.arrSeats);
+
+    // calculate price, then proceed to payment before changing any
+    // entries in the database.
+    const passengers = adultsNo + childrenNo;
+    var price = await calculatePrice(deptFlight, seatClass, passengers)
+      + await calculatePrice(arrFlight, seatClass, passengers);
+    
+    // let paymsg = await payment(price);
+    // if(paymsg === fail){
+    //   return 'Payment failed. Reservation was not made.';
+    // }
+
     //update reservedSeats in dept and return fligthts
     if(seatClass === 'Business'){
       await Flights.findByIdAndUpdate({ _id: (deptFlight) },
@@ -105,20 +120,19 @@ async function addRes(req){
 
     const reservationID = Number(req.body.resID); //change, should not be input
     // const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
-   const userID = curUserId;  //userID of logged in user which is a global var saved in back end
-    const passengers = adultsNo + childrenNo;
-
-    var price = await calculatePrice(deptFlight, seatClass, passengers)
-      + await calculatePrice(arrFlight, seatClass, passengers);
+    const userID = req.user.id;  //userID of logged in user which is a global var saved in back end
 
     const newRes = new Reservation({
       reservationID, userID, adultsNo, childrenNo, seatClass,
       deptFlight, arrFlight, deptSeats, arrSeats, price
     });
 
+    payment
     newRes.save()
       .then()
       .catch(err => console.error(err));
+
+    return 'Reservation added successfully.';
   }
 
 
@@ -139,14 +153,10 @@ async function calculatePrice(flightID, seatClass, seats) {
 
 // see reservations made by the current user only.
 // returns reservation details + departure and return flight details
-router.route('/myReservations').get(async (req,res)=>{
-  if(!curUserId){ // TODO: should be directed to login page
-    res.status(200).send("Access not allowed. Please login to proceed.");
-  }
-  else{
-    console.log(`userID: ${curUserId}`);
+router.route('/myReservations').get(verifyJWT, async (req,res)=>{
+  console.log(`userID: ${req.user.id}`);
     var userRes =[];
-    await Reservation.find({userID: curUserId})
+    await Reservation.find({userID: req.user.id})
     .then(async (allUserReservations) => {
       for(let i = 0; i < allUserReservations.length; i++){
         reserv = allUserReservations[i];
@@ -170,12 +180,12 @@ router.route('/myReservations').get(async (req,res)=>{
         res.send([]);
     })
     .catch(err => res.status(400).send('Error: ' + err));
-  }
+  
 })
 
 // (Req. 24) Get summary of the selected reservation
 // Given reservation ID, returns all its details + both its flights details
-router.route('/myReservations/:id').get((req, res) => {
+router.route('/myReservations/:id').get(verifyJWT, (req, res) => {
   var resID = req.params.id;
   var userRes;
   Reservation.find({_id: resID})
@@ -199,29 +209,17 @@ router.route('/myReservations/:id').get((req, res) => {
 });
 
 // cancel reservation made by user. The reservation is deleted from the database
-router.route('/cancelReservation/:id').post(async (req,res, next)=>{
+router.route('/cancelReservation/:id').post(verifyJWT, async (req,res, next)=>{
   console.log("about to cancel reservation!!");
-  if(!curUserId) // TODO: should be directed to login page
-    res.status(200).send("Access not allowed. Please login to proceed.");
-  else{
+  
     var id = req.params.id;
     // check first if the reservation date is within 48 hours or less. If yes, don't cancel.
     // get the reservation
-    // var ans = cancelRes(id);
     cancelRes(id)
     .then((msg)=>res.send(msg))
     .catch(err => res.status(400).send(err));  
     
-
-    // res.status(200).send('TODO: FIX THIS MESSAGE');
-    // if(ans=="error")
-    //   res.status(200).send(`error: can't cancel reservation`);
-    // else
-    //   res.status(200).send(`Reservation canceled successfully`);
-
-  }
-}
- );
+});
 
 async function cancelRes(id){
   var reservation;
@@ -271,7 +269,7 @@ async function cancelRes(id){
       // use the 'result' parameter in the then part.
       if(send){
         var own;
-        await User.findById(curUserId).then(result => own=result).catch(err => console.error(err));
+        await User.findById(req.user.id).then(result => own=result).catch(err => console.error(err));
         console.log(`owner = ${own}`);
         var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
           ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
@@ -334,15 +332,15 @@ async function updateFlightSeats(reservation, whichFlight){ //called in cancelin
 
 // req. 28: allow user to edit the profile information
 // id = user ID
-router.route('/editProfile').get(async (req,res) => {
-  await User.findById(curUserId)
+router.route('/editProfile').get(verifyJWT, async (req,res) => {
+  await User.findById(req.user.id)
   .then(user => res.send(user))
   .catch(err => res.status(400).send('Error: '+err));
 });
 
 // Post the updated profile information to the database
-router.route('/editProfile').post(async (req,res)=>{
-  await User.findByIdAndUpdate({ _id : curUserId},{
+router.route('/editProfile').post(verifyJWT, async (req,res)=>{
+  await User.findByIdAndUpdate({ _id : req.user.id},{
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     passportNo: req.body.passportNo,
@@ -600,18 +598,16 @@ router.route("/login").post( (req,res)=>{
     if(!dbUser){
       return res.json({message: "Invalid username"});
     }
-    // userLoggingIn.password = await hashIt(userLoggingIn.password);
-    // console.log(userLoggingIn.password)
-    console.log(dbUser.password)
+    
     bcrypt.compare(userLoggingIn.password, dbUser.password)
     .then(isCorrect => {
       if(isCorrect){
         const payload = {
           id: dbUser._id,
-          username: dbUser.username
+          email: dbUser.email
         }
         console.log('it is correct');
-        curUserId = dbUser._id;
+        // curUserId = dbUser._id;
         jwt.sign(
           payload,
           process.env.JWT_SECRET,
@@ -623,6 +619,7 @@ router.route("/login").post( (req,res)=>{
               return res.json({message: err})
             } 
             console.log('Success');
+            tokens.push(token);
             return res.json({
               message: "success",
               token: "Bearer " + token
@@ -639,22 +636,19 @@ router.route("/login").post( (req,res)=>{
 })
 
 function verifyJWT(req,res,next){
-  const token = req.headers["x-access-token"]?.split(' ')[1]
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
 
-  if(token){
-    jwt.verify(token, process.env.JWT_SECRET, (err,decoded)=>{
-      if(err) return res.json({
-        isLoggedIn: false,
-        message: "Failed to authenticate"
-      })
-      req.user = {}
-      req.user.id = decoded.id
-      req.user.username = decoded.username
-      next()
+  if (token ==null) 
+    return res.sendStatus(401);
+  jwt.verify(token,process.env.JWT_SECRET,(err,user)=>{
+        if (err)
+         return res.sendStatus(403);
+        if(!tokens.includes(token))
+          return res.json({message: "Please log in to continue."});
+        req.user = user
+        next()
     })
-  }else{
-    res.json({message: "Incorrect token given", isLoggedIn:false})
-  }
 }
 
 async function hashIt(password){
@@ -664,18 +658,14 @@ async function hashIt(password){
 }
 
 router.route("/getUsername").get( verifyJWT, (req,res)=>{
-  if (!curUserId)
-    res.json({message: "Access not allowed. Please login to proceed."});
-  
-  res.json({isLoggedIn: true, username: req.user.username})
+  console.log(req.user.id);
+  res.json({isLoggedIn: true, username: req.user._id})
 })
 
-router.route('/changePassword').post((req,res)=>{
-  if (!curUserId)
-    return res.json({message: "Access not allowed. Please login to proceed."});
+router.route('/changePassword').post(verifyJWT, (req,res)=>{
   
   const passwords = req.body;
-  User.findOne({_id: curUserId})
+  User.findOne({_id: req.user.id})
   .then(async (dbUser)=>{
     if(!dbUser){
       return res.json({message: "User not Found."});
@@ -693,7 +683,7 @@ router.route('/changePassword').post((req,res)=>{
         return res.json({message: "The new password must be different from the current one."});
       }
       newPass = await hashIt(newPass);
-      await User.findOneAndUpdate({_id: curUserId}, {password : newPass});
+      await User.findOneAndUpdate({_id: req.user.id}, {password : newPass});
       return res.json({message:"Password updated successfully."});
       
     });
@@ -702,14 +692,22 @@ router.route('/changePassword').post((req,res)=>{
   })
 });
 
-router.route('/logout').get((req,res)=>{
-  curUserId=null;
-  return res.redirect('/user/');
+router.route('/logout').delete(verifyJWT, (req,res)=>{
+  console.log(tokens);
+  // discuss with frontend if they can pass token in req.body
+  let idx = tokens.indexOf(req.body.token);
+  console.log(idx);
+  if(idx > -1)
+    tokens.splice(idx, 1);
+  console.log(tokens);
+  return res.json({message: "log out successful"});
 })
 
-router.route('/editReservation/:id').post(async (req,res)=>{
+router.route('/editReservation/:id').post(verifyJWT, async (req,res)=>{
   var id = req.params.id;
-  send = false;
+  console.log('\nEditing reservation...\nAfter editing, the old reservation\'s price will\n'+
+  'be refunded and you will proceed to pay the price of your \nreservation after editing.')
+  sendEmail = false;
   editmsg = "Reservation edited successfully.";
 
   await cancelRes(id);
@@ -772,6 +770,46 @@ async function reservationDetails(resId,userId){
   
  module.exports = router;
 
+ async function payment(req){
+  try{
+    const session = await stripe.checkout.session.create({
+      payment_method_types : ["card"],
+      mode: "payment",
+      line_items: [{
+        price_data:{
+          currency: "usd",
+          unit_amount: req.body.price*100 // discuss with frontend
+        }
+      }],
+      success_url: `${process.env.CLIENT_URL}/paySuccess`, // discuss client url with frontend
+      cancel_url: `${process.env.CLIENT_URL}/payFail`
+    })
+    res.json({url: session.url})
+  }
+  catch(e){
+    res.status(500).json({error:e.message});
+  }
+ }
+// router.route('/payment').post(verifyJWT, async (req,res)=>{
+//   try{
+//     const session = await stripe.checkout.session.create({
+//       payment_method_types : ["card"],
+//       mode: "payment",
+//       line_items: [{
+//         price_data:{
+//           currency: "usd",
+//           unit_amount: req.body.price*100 // discuss with frontend
+//         }
+//       }],
+//       success_url: `${process.env.CLIENT_URL}/success`,
+//       cancel_url: `${process.env.CLIENT_URL}/fail`
+//     })
+//     res.json({url: session.url})
+//   }
+//   catch(e){
+//     res.status(500).json({error:e.message});
+//   }
+// })
 //http://localhost:8000/user/res
 // the request body:
 // {

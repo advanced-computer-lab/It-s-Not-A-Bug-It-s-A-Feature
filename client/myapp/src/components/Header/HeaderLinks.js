@@ -13,6 +13,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axios from 'axios';
 
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
@@ -36,7 +37,7 @@ const useStyles = makeStyles(styles);
 export default function HeaderLinks(props) {
   const classes = useStyles();
   let history = useHistory();
-  const [isLogged, setLogged] =useState(props.isLogged);
+  const [isLogged, setLogged] =useState(localStorage.getItem("token")!=null);
 
   // const onSubmit = (e) => { 
   //   // i want to change the navbar links here
@@ -71,7 +72,22 @@ export default function HeaderLinks(props) {
      id="logout"
       onClick={(e) => {
         setLogged(false);
-        
+        const token = localStorage.getItem("token");
+    axios.delete('http://localhost:8000/user/logout/', {
+      headers: {
+        'authorization': token
+      },
+      data: {
+        token:token
+      }
+    }).then((response) => {
+      console.log('response',response.data)
+
+    })
+      .catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
         //onSubmit(e);
         history.push('/home')
    }}
