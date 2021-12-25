@@ -14,7 +14,15 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 - For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style** :scroll:
-### We are following this [Code Style](.editorconfig) for consistency. 
+### We are following this [Code Style](.editorconfig) for consistency. This [.editorconfig](.editorconfig) file specifies our coding practices and ensures they are maintained throughout the entire project.
+
+## Examples of Coding Standards We are Maintaining in Our Project:
+
+- Indentation style
+- Indentation size
+- How we deal with trailing whitespaces
+- Whether or not we insert a final newline
+
 
 # **Tech/Frameworks used**
 ## MERN Stack was used to create this project.
