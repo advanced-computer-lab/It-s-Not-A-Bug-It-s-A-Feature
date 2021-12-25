@@ -116,24 +116,32 @@ node App.js
    You can now reserve a flight by clicking 'Confirm Reservation'.
     
   ### D) Choose Seats: :seat:
+  
    - You can then choose the seats you prefer both the departure plane and the return plane.
+
 
    - If you are not logged in, you will be prompted your username and password first.
 
 ![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
 
+
    - If you do not have an account click "I Don't Have an Account" so you can sign up.
     
 ![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
+
 
   ### E) Pay Using Credit Card: :credit_card:
    Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo). :moneybag:
 
 ![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
 
+
+
 If you get this page, your transaction was successful. You should expect a confirmation email. 
 
 ![PaymentSuccess](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentSuccess.png)
+
+
 
 If you get this page, your transaction has failed. You need to revise your card details and try again. 
 
@@ -143,6 +151,7 @@ If you get this page, your transaction has failed. You need to revise your card 
   ## In My Profile Page, you can:
 
    ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
+
 
    ### A) Change Your Personal Details :boy:
    
@@ -163,7 +172,9 @@ If you get this page, your transaction has failed. You need to revise your card 
 
   ##### 1) Change Seats :seat:
 
+
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
+
 
  #####  2) Change Departure Flight
 
@@ -179,6 +190,7 @@ If you get this page, your transaction has failed. You need to revise your card 
    
    ![All Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AllFlights.PNG)
 
+
   ### B) Edit Flights
   
    If you wish to edit a flight, click the 'update' button in the All Flights Page on the right of the row of the flight you wish to update.
@@ -191,16 +203,19 @@ If you get this page, your transaction has failed. You need to revise your card 
 
    ![New Flight](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/createFlight.PNG)
 
+
   ### E)  Search for a Flight :mag:
 
 ![Admin Search](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/adminSearch.PNG)
+
 
   ## In the About Us Page:
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
    
 ![About Us](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AboutUs.PNG)
 
-# Code Example
+
+# Code Examples:
 
 ## Change password backend function
 ``` 
