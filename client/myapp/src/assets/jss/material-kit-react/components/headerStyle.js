@@ -11,6 +11,8 @@ import {
   boxShadow,
   drawerWidth,
 } from "./../../material-kit-react.js";
+import imagesStyle from "./../imagesStyles.js";
+
 
 const headerStyle = {
   appBar: {
@@ -31,6 +33,22 @@ const headerStyle = {
     position: "relative",
     zIndex: "unset",
   },
+  imgFluid: {
+    maxWidth: "100%",
+    height: "auto",
+  },
+  imgRounded: {
+    borderRadius: "6px !important",
+  },
+  imgRoundedCircle: {
+    borderRadius: "50% !important",
+  },
+  imgRaised: {
+    boxShadow:
+      "0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+  },
+  ...imagesStyle,
+
   absolute: {
     position: "absolute",
     zIndex: "1100",

@@ -15,13 +15,21 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "./../../assets/jss/material-kit-react/components/headerStyle.js";
-import logo from "./../../assets/img/icons/black.png";
+import logoBlack from "./../../assets/img/icons/black.png";
 import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
 
 const useStyles = makeStyles(styles);
 
 export default function Header(props) {
     const classes = useStyles();
+
+    const imageClasses = classNames(
+        classes.imgFluid,
+        classes.imgCardOverlay
+      );
+    const [logo, setlogo] = useState(logoBlack);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     React.useEffect(() => {
         if (props.changeColorOnScroll) {
@@ -69,9 +77,9 @@ export default function Header(props) {
             history.push('/Home')
         }}
         className={classes.title} >
-            {brand}
-            {/* <img src={logo} alt="Third slide" className="slick-image" /> */}
-        </Button>;
+            {/* {brand} */}
+            <img src={logo} alt="..." className={imageClasses} />
+                    </Button>;
     return (
         <AppBar className={appBarClasses}>
             <Toolbar className={classes.container}>
