@@ -22,7 +22,7 @@ import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
 import WorkSection from "./Sections/WorkSection.js";
 import Search from "./Sections/SearchSection";
-
+import SectionCarousel from "./Sections/SectionCarousel";
 //import SectionBasics from "./Sections/SectionBasics.js";
 
 const dashboardRoutes = [];
@@ -87,9 +87,9 @@ export default function LandingPage(props) {
         <div className={classes.container}style={{marginTop:0,paddingTop:0,transform: `translate(0, -120px)`}}>
           
           <ProductSection />
-      
-          {/* <TeamSection />
-          <WorkSection /> */}
+          <SectionCarousel />
+          {/* <TeamSection /> */}
+          {/* <WorkSection /> */}
         </div>
       </div>
       <Footer />

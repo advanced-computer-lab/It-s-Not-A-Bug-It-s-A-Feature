@@ -108,6 +108,7 @@ export default function ProductSection() {
         </GridItem>
       </GridContainer>
       <div>
+        <br/>
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
           <Card sx={{ maxWidth: 345 }}>
