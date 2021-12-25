@@ -36,9 +36,9 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
 
-## My Profile :boy:
+## Payment :moneybag:
 
-![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
+![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.PNG)
 
 # **Tech/Frameworks used**
 ## MERN Stack was used to create this project.
