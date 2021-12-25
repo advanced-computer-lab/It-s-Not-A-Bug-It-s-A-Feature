@@ -9,7 +9,7 @@ The purpose of this project is to learn how to work on a large-scale MERN projec
 This basically explains the current build status of the project. If there is a bug /error which needs addressing. This is done so for two different reasons The user understands that this is an issue and does not spend more time figuring if it was a mistake on their part.A developer who is familiar with the issue can suggest some solutions directly without going through the whole code.
 
 # **Code Style**
-This lets the users know that you have used a particular code style and helps them when contributing to your project so that the whole project code style stays the same. Some common code styles: standard, xo, etc.
+In order to maintain a consistent code style, we decided to stick to the following [Code Style](.editorconfig)
 
 # **Screenshots**
 As the saying goes, a picture is equal to a thousand words. Most people will be interested if there is a visual representation of what the project is about. It helps them understand better. A visual representation can be snapshots of the project or a video of the functioning of the project.
@@ -25,7 +25,9 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 
 # **Features**
 This is where you write what all extra features have been done in your project. Basically this is where you try to make your project stand out from the rest.
-
+ Find News About Our Top Destinations:
+    At the bottom of the Home Page, you will find some interesting news about OverReact's top destinations.
+    
 # **Code Examples**
 This is where you try to compress your project and make the reader understand what it does as simply as possible. This should help the reader understand if your code solves their issue.
 
@@ -96,14 +98,14 @@ Open http://localhost:3000/home to view the homepage in your browser.
 
     If you do not have an account click "I Don't Have an Account" so you can sign up.
     
-  ### E) Find News About Our Top Destinations:
-    At the bottom of the Home Page, you will find some interesting news about OverReact's top destinations.
+  ### E) Pay Using Credit Card:
+    Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
 
   ## In My Profile Page, you can:
 
-    A)Change Your Personal Details
+   ### A) Change Your Personal Details
 
-    B) View Your Upcoming Flights:
+   ### B) View Your Upcoming Flights:
 
        a) Cancel Reservation
 
@@ -115,14 +117,27 @@ Open http://localhost:3000/home to view the homepage in your browser.
 
          3) Change Return Flight
 
-       c) Email Yourself Your Trip Itenrary
+       c) Email Yourself With Your Trip Itenrary
        
-  ## In My Profile Page, you can:
+  ## Admins can:
+  
+   ### A) View All Flights
+    
+   ### B) Search for a Flight 
+    
+   ### C) Create New Flights
+    
+   ### D) Edit Flights
 
+
+  ## In the About Us Page:
+  You can find out more about us, OverReact Team. You can find different social media platforms through which you can connect with us. 
 
 
 # **Contribute**
-This is where you let them know that they can contribute and help you out. A guideline on how to contribute is also helpful
+
+If you would like to contribute to our website, check our [Contribution Guidelines](CONTRIBUTING.md) 
+    
 
 # **Credits**
 
