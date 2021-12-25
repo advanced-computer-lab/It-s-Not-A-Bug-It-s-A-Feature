@@ -172,7 +172,39 @@ export default function ProfilePage(props) {
         }
       })
         .then((response) => {
-          window.location.reload(true);
+          if (response.data === "Reservation not found." 
+          || response.data ==="Cannot cancel reservation because less than 48 hours are left.") {
+            store.addNotification({
+              title: "Error",
+              message:response.data,
+              type: "danger",
+              container: 'top-right',
+              insert: "top",
+              animationIn: ["animated", "fadeIn"],
+              animationOut: ["animated", "fadeOut"],
+              dismiss: {
+                duration: 3000
+              },
+              width: 400
+            });
+          }
+          else {
+            store.addNotification({
+              title: "Done",
+              message: "Reservation canceled",
+              type: "info",
+              container: 'top-right',
+              insert: "top",
+              animationIn: ["animated", "fadeIn"],
+              animationOut: ["animated", "fadeOut"],
+              dismiss: {
+                duration: 3000
+              },
+              width: 400
+            });
+            window.location.reload(true);
+          }
+
         })
 
     }
@@ -258,7 +290,7 @@ export default function ProfilePage(props) {
         }}
         {...rest}
       />
-      
+
       <Parallax
         small
         filter
@@ -317,18 +349,18 @@ export default function ProfilePage(props) {
                                     icon={Check}
                                   /> */}
                                   {store.addNotification({
-                                      title: 'Done',
-                                      message: successMess,
-                                      type: 'success',
-                                      container: 'top-right',
-                                      insert: "top",
-                                      animationIn: ["animated", "fadeIn"],
-                                      animationOut: ["animated", "fadeOut"],
-                                      dismiss: {
-                                        duration: 3000
-                                      },
-                                      width: 400
-                                    }),
+                                    title: 'Done',
+                                    message: successMess,
+                                    type: 'success',
+                                    container: 'top-right',
+                                    insert: "top",
+                                    animationIn: ["animated", "fadeIn"],
+                                    animationOut: ["animated", "fadeOut"],
+                                    dismiss: {
+                                      duration: 3000
+                                    },
+                                    width: 400
+                                  }),
                                     setsuccess(null)}
 
 

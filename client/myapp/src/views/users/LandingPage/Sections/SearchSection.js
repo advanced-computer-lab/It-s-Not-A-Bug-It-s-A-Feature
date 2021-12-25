@@ -226,7 +226,7 @@ export default function Main() {
         else {
             setCountAdults(1);
             // rather than alert we just need to make the button fadeout 
-            setmessage("Must Have atleast 1 adult");
+            setmessage("Must have at least 1 adult");
         }
     };
 
