@@ -158,23 +158,23 @@ export default function SignUp(props) {
 
     //____________________________________________________ done_____________________________________
 
-    // error --> text field color 
-    const [Epass, setEpass] = useState("primary");
-    const [EEmail, setEmail] = useState("primary");
-    const [Euname, setEuname] = useState("primary");
-    const [Efname, setEfname] = useState("primary");
-    const [Elname, setElname] = useState("primary");
-    const [Epassword, setEpassword] = useState("primary");
-    const [Eadd, setEadd] = useState("primary");
-    const [Ecount, setEcount] = useState("primary");
-    const [Ephone, setEphone] = useState("primary");
-    const [Ebirth, setEBirth] = useState("primary");
-    const [Eport, setEport] = useState("primary");
-    const [Ecv, setEcv] = useState("primary");
-    const [Ecard, setEcard] = useState("primary");
-    const [Eexp, setEexp] = useState("primary");
-    const [Ecfname, setEcfname] = useState("primary");
-    const [Eclname, setEclname] = useState("primary");
+    // error --> text field error
+    const [Epass, setEpass] = useState(false);
+    const [EEmail, setEmail] = useState(false);
+    const [Euname, setEuname] = useState(false);
+    const [Efname, setEfname] = useState(false);
+    const [Elname, setElname] = useState(false);
+    const [Epassword, setEpassword] = useState(false);
+    const [Eadd, setEadd] = useState(false);
+    const [Ecount, setEcount] = useState(false);
+    const [Ephone, setEphone] = useState(false);
+    const [Ebirth, setEBirth] = useState(false);
+    const [Eport, setEport] = useState(false);
+    const [Ecv, setEcv] = useState(false);
+    const [Ecard, setEcard] = useState(false);
+    const [Eexp, setEexp] = useState(false);
+    const [Ecfname, setEcfname] = useState(false);
+    const [Eclname, setEclname] = useState(false);
 
 
     // helper texts
@@ -198,67 +198,67 @@ export default function SignUp(props) {
     function Sethelper() {
         if (passport === "") {
             setpass("This field is required");
-            setEpass("error");
+            setEpass(true);
         }
         if (firstname === "") {
             setfname("This field is required");
-            setEfname("error");
+            setEfname(true);
         }
         if (lastname === "") {
             setlname("This field is required");
-            setElname("error");
+            setElname(true);
         }
         if (username === "") {
             setuname("This field is required");
-            setEuname("error");
+            setEuname(true);
         }
         if (email === "") {
             setmail("This field is required");
-            setEmail("error");
+            setEmail(true);
         }
         if (password1 === "") {
             setpassword("This field is required");
-            setEpassword("error");
+            setEpassword(true);
         }
         if (address === "") {
             setadd("This field is required");
-            setEadd("error");
+            setEadd(true);
         }
         if (country === "") {
             setcount("This field is required");
-            setEcount("error");
+            setEcount(true);
         }
         if (phone1 === "") {
             setphone("This field is required");
-            setEphone("error");
+            setEphone(true);
         }
         if (birthdate === null) {
             setBirth("This field is required");
-            setEBirth("error");
+            setEBirth(true);
         }
         if (passport === "") {
             setport("This field is required");
-            setEport("error");
+            setEport(true);
         }
         if (credit === "") {
             setcard("This field is required");
-            setEcard("error");
+            setEcard(true);
         }
         if (cvv === "") {
             setcv("This field is required");
-            setEcv("error");
+            setEcv(true);
         }
         if (expirydate === null) {
             setexp("This field is required");
-            setEexp("error");
+            setEexp(true);
         }
         if (creditfirstname === "") {
             setcfname("This field is required");
-            setEcfname("error");
+            setEcfname(true);
         }
         if (creditlastname === "") {
             setclname("This field is required");
-            setEclname("error");
+            setEclname(true);
         }
 
     }
@@ -361,7 +361,12 @@ export default function SignUp(props) {
                 console.log(res);
                 console.log("signed up succesfully");
                 history.push('/login');
-            }).catch(err => console.log(err))
+            }).catch((error) => {
+                if (error.response) {
+                    return (setuname("This user name is already taken"),
+                    setEuname("error"))
+                }
+            });
         }
 
 
@@ -432,15 +437,15 @@ export default function SignUp(props) {
                                                                             value={firstname}
                                                                             variant="standard"
                                                                             helperText={fname}
-                                                                            color={Efname}
+                                                                            error={Efname}
                                                                             onChange={(event) => {
                                                                                 setfirstname(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setfname("");
-                                                                                    setEfname("primary");
+                                                                                    setEfname(false);
                                                                                 } else {
                                                                                     setfname("This field is required");
-                                                                                    setEfname("error");
+                                                                                    setEfname(true);
                                                                                 }
                                                                             }}
 
@@ -453,16 +458,16 @@ export default function SignUp(props) {
                                                                             fullWidth
                                                                             helperText={lname}
                                                                             value={lastname}
-                                                                            color={Elname}
+                                                                            error={Elname}
                                                                             variant="standard"
                                                                             onChange={(event) => {
                                                                                 setlastname(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setlname("");
-                                                                                    setElname("primary");
+                                                                                    setElname(false);
                                                                                 } else {
                                                                                     setlname("This field is required");
-                                                                                    setElname("error");
+                                                                                    setElname(true);
                                                                                 }
                                                                             }}
 
@@ -476,15 +481,15 @@ export default function SignUp(props) {
                                                                             value={username}
                                                                             variant="standard"
                                                                             helperText={uname}
-                                                                            color={Euname}
+                                                                            error={Euname}
                                                                             onChange={(event) => {
                                                                                 setusername(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setuname("");
-                                                                                    setEuname("primary");
+                                                                                    setEuname(false);
                                                                                 } else {
                                                                                     setuname("This field is required");
-                                                                                    setEuname("error");
+                                                                                    setEuname(true);
                                                                                 }
                                                                             }}
                                                                             InputProps={{
@@ -501,7 +506,7 @@ export default function SignUp(props) {
                                                                             value={email}
                                                                             variant="standard"
                                                                             helperText={mail}
-                                                                            color={EEmail}
+                                                                            error={EEmail}
                                                                             onChange={(event) => {
                                                                                 setemail(event.target.value);
                                                                                 if (event.target.value !== "") {
@@ -509,12 +514,12 @@ export default function SignUp(props) {
                                                                                         setmail("The email should end with @gmail.com");
                                                                                     } else {
                                                                                         setmail("");
-                                                                                        setEmail("primary");
+                                                                                        setEmail(false);
                                                                                     }
 
                                                                                 } else {
                                                                                     setmail("This field is required");
-                                                                                    setEmail("eroor");
+                                                                                    setEmail(true);
                                                                                 }
 
                                                                             }}
@@ -532,7 +537,7 @@ export default function SignUp(props) {
                                                                             type={values.showPassword ? "text" : "password"}
                                                                             value={password1}
                                                                             variant="standard"
-                                                                            color={Epassword}
+                                                                            error={Epassword}
                                                                             helperText={password}
                                                                             InputProps={{
                                                                                 endAdornment: <InputAdornment position="end">
@@ -551,10 +556,10 @@ export default function SignUp(props) {
                                                                                 setpassword1(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setpassword("");
-                                                                                    setEpassword("primary");
+                                                                                    setEpassword(false);
                                                                                 } else {
                                                                                     setpassword("This field is required");
-                                                                                    setEpassword("error");
+                                                                                    setEpassword(true);
                                                                                 }
                                                                             }}
 
@@ -571,7 +576,7 @@ export default function SignUp(props) {
                                                                             value={password2}
                                                                             variant="standard"
                                                                             helperText={pass}
-                                                                            color={Epass}
+                                                                            error={Epass}
                                                                             InputProps={{
                                                                                 endAdornment: <InputAdornment position="end">
                                                                                     <IconButton
@@ -588,10 +593,10 @@ export default function SignUp(props) {
                                                                             onChange={(event) => {
                                                                                 if (event.target.value !== password1) {
                                                                                     setpass("passwords do not match ")
-                                                                                    setEpass("primary");
+                                                                                    setEpass(false);
                                                                                 } else {
                                                                                     setpass("")
-                                                                                    setEpass("primary");
+                                                                                    setEpass(false);
                                                                                 }
                                                                                 setpassword2(event.target.value);
 
@@ -602,12 +607,12 @@ export default function SignUp(props) {
                                                                 </GridContainer>
                                                             </CardBody>
                                                             <CardFooter className={classes.cardFooter}  >
-                                                                <Button simple color="primary"
+                                                                {/* <Button simple color="primary"
                                                                     size="lg"
                                                                 // onClick={(e) => { onSubmit(e); }}
                                                                 >
                                                                     Next
-                                                                </Button>
+                                                                </Button> */}
                                                             </CardFooter>
                                                         </form>
                                                     </Card>
@@ -638,17 +643,17 @@ export default function SignUp(props) {
                                                                             label="Address"
                                                                             fullWidth
                                                                             value={address}
-                                                                            color={Eadd}
+                                                                            error={Eadd}
                                                                             variant="standard"
                                                                             helperText={add}
                                                                             onChange={(event) => {
                                                                                 setaddress(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setadd("");
-                                                                                    setEadd("primary");
+                                                                                    setEadd(false);
                                                                                 } else {
                                                                                     setadd("This field is required");
-                                                                                    setEadd("error");
+                                                                                    setEadd(true);
                                                                                 }
                                                                             }}
                                                                             InputProps={{
@@ -666,15 +671,15 @@ export default function SignUp(props) {
                                                                             value={passport}
                                                                             variant="standard"
                                                                             helperText={port}
-                                                                            color={Eport}
+                                                                            error={Eport}
                                                                             onChange={(event) => {
                                                                                 setpassport(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setport("");
-                                                                                    setEport("primary");
+                                                                                    setEport(false);
                                                                                 } else {
                                                                                     setport("This field is required");
-                                                                                    setEport("error");
+                                                                                    setEport(true);
                                                                                 }
                                                                             }}
                                                                         />
@@ -694,14 +699,14 @@ export default function SignUp(props) {
                                                                                             variant="standard"
                                                                                             helperText={count}
                                                                                             value={wordEntered}
-                                                                                            color={Ecount}
+                                                                                            error={Ecount}
                                                                                             onChange={(event) => {
                                                                                                 if(event.target.value==""){
                                                                                                     setcount("This field is required");
-                                                                                                    setEcount("error");
+                                                                                                    setEcount(true);
                                                                                                 }else{
                                                                                                     setcount("");
-                                                                                                    setEcount("primary");
+                                                                                                    setEcount(false);
                                                                                                 }
                                                                                                 handleFilter(event)
                                                                                              
@@ -736,7 +741,7 @@ export default function SignUp(props) {
                                                                                     label="Birthdate"
                                                                                     fullWidth
                                                                                     helperText={birth}
-                                                                                    color={Ebirth}
+                                                                                    error={Ebirth}
                                                                                     variant="standard"
                                                                                 />
                                                                                 }
@@ -745,10 +750,10 @@ export default function SignUp(props) {
                                                                                     setbirthdate(newValue);
                                                                                     if (newValue !== "") {
                                                                                         setBirth("");
-                                                                                        setEBirth("primary");
+                                                                                        setEBirth(false);
                                                                                     } else {
                                                                                         setBirth("This field is required");
-                                                                                        setEBirth("error");
+                                                                                        setEBirth(true);
                                                                                     }
                                                                                 }}
                                                                             />
@@ -765,7 +770,7 @@ export default function SignUp(props) {
                                                                             helperText={phone}
                                                                             type="number"
                                                                             variant="standard"
-                                                                            color={Ephone}
+                                                                            error={Ephone}
                                                                             InputProps={{
                                                                                 startAdornment: <InputAdornment position="start">{"+" + countrycode}</InputAdornment>,
                                                                             }}
@@ -773,10 +778,10 @@ export default function SignUp(props) {
                                                                                 setphone1(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setphone("");
-                                                                                    setEphone("primary");
+                                                                                    setEphone(false);
                                                                                 } else {
                                                                                     setphone("This field is required");
-                                                                                    setEphone("error");
+                                                                                    setEphone(true);
                                                                                 }
 
                                                                             }}
@@ -804,7 +809,7 @@ export default function SignUp(props) {
                                                                 </GridContainer>
                                                             </CardBody>
                                                             <CardFooter className={classes.cardFooter}  >
-                                                                <Button
+                                                                {/* <Button
                                                                     simple color="primary"
                                                                     size="lg">
                                                                     back
@@ -814,7 +819,7 @@ export default function SignUp(props) {
                                                                 // onClick={(e) => { onSubmit(e); }}
                                                                 >
                                                                     Next
-                                                                </Button>
+                                                                </Button> */}
                                                             </CardFooter>
                                                         </form>
                                                     </Card>
@@ -849,15 +854,15 @@ export default function SignUp(props) {
                                                                             helperText={card}
                                                                             type="number"
                                                                             variant="standard"
-                                                                            color={Ecard}
+                                                                            error={Ecard}
                                                                             onChange={(event) => {
                                                                                 setcredit(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setcard("");
-                                                                                    setEcard("primary");
+                                                                                    setEcard(false);
                                                                                 } else {
                                                                                     setcard("This field is required");
-                                                                                    setEcard("error");
+                                                                                    setEcard(true);
                                                                                 }
                                                                             }}
 
@@ -871,16 +876,16 @@ export default function SignUp(props) {
                                                                             fullWidth
                                                                             value={cvv}
                                                                             helperText={cv}
-                                                                            color={Ecv}
+                                                                            error={Ecv}
                                                                             variant="standard"
                                                                             onChange={(event) => {
                                                                                 setcvv(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setcv("");
-                                                                                    setEcv("primary");
+                                                                                    setEcv(false);
                                                                                 } else {
                                                                                     setcv("This field is required");
-                                                                                    setEcv("error");
+                                                                                    setEcv(true);
                                                                                 }
                                                                             }}
 
@@ -894,16 +899,16 @@ export default function SignUp(props) {
                                                                             fullWidth
                                                                             value={creditfirstname}
                                                                             helperText={cfname}
-                                                                            color={Ecfname}
+                                                                            error={Ecfname}
                                                                             variant="standard"
                                                                             onChange={(event) => {
                                                                                 setcreditfirstname(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setcfname("");
-                                                                                    setEcfname("primary");
+                                                                                    setEcfname(false);
                                                                                 } else {
                                                                                     setcfname("This field is required");
-                                                                                    setEcfname("error");
+                                                                                    setEcfname(true);
                                                                                 }
                                                                             }}
                                                                         />
@@ -916,15 +921,15 @@ export default function SignUp(props) {
                                                                             helperText={clname}
                                                                             value={creditlastname}
                                                                             variant="standard"
-                                                                            color={Eclname}
+                                                                            error={Eclname}
                                                                             onChange={(event) => {
                                                                                 setcreditlastname(event.target.value);
                                                                                 if (event.target.value !== "") {
                                                                                     setclname("");
-                                                                                    setEclname("primary");
+                                                                                    setEclname(false);
                                                                                 } else {
                                                                                     setclname("This field is required");
-                                                                                    setEclname("error")
+                                                                                    setEclname(true)
                                                                                 }
                                                                             }}
                                                                         />
@@ -936,7 +941,7 @@ export default function SignUp(props) {
                                                                                 renderInput={(props) => <TextField {...props} required
                                                                                     label="Expiry Date"
                                                                                     fullWidth
-                                                                                    color={Eexp}
+                                                                                    error={Eexp}
                                                                                     variant="standard"
                                                                                 />
                                                                                 }
@@ -947,10 +952,10 @@ export default function SignUp(props) {
                                                                                     setexpirydate(newValue);
                                                                                     if (newValue !== "") {
                                                                                         setexp("");
-                                                                                        setEexp("primary");
+                                                                                        setEexp(false);
                                                                                     } else {
                                                                                         setexp("This field is required");
-                                                                                        setEexp("error");
+                                                                                        setEexp(true);
                                                                                     }
                                                                                 }}
                                                                             />
@@ -960,11 +965,11 @@ export default function SignUp(props) {
                                                             </CardBody>
 
                                                             <CardFooter className={classes.cardFooter}  >
-                                                                <Button
+                                                                {/* <Button
                                                                     simple color="primary"
                                                                     size="lg">
                                                                     back
-                                                                </Button>
+                                                                </Button> */}
                                                                 <Button simple color="primary"
                                                                     size="lg"
                                                                     onClick={(e) => { onSubmit(e); }}
