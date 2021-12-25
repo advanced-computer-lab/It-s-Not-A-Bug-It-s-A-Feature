@@ -105,32 +105,33 @@ export default function ProductSection() {
             {"'"}t scroll to get here. Add a button if you want the user to see
             more.
           </h5>  */}
-                </GridItem>
-            </GridContainer>
-            <div>
-                <GridContainer>
-                    <GridItem xs={12} sm={12} md={4}>
-                        <Card sx={{ maxWidth: 345 }}>
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={luxorPic}
-                                    alt="luxor"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        Luxor, Egypt
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Seven-thousand year old civilization
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={4}>
-                        {/* <InfoArea
+        </GridItem>
+      </GridContainer>
+      <div>
+        <br/>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+          <Card sx={{ maxWidth: 345 }}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image = {luxorPic}
+                  alt="luxor"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Luxor, Egypt
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Seven-thousand year old civilization
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            {/* <InfoArea
               title="Verified Users"
               description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
               icon={VerifiedUser}

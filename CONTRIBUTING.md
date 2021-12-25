@@ -9,7 +9,7 @@ The following is a set of guidelines for contributing to OverReact.
 
  ## How Can I Contribute?
 
-    - Reporting Bugs  via 'overreact1@gmail.com' 
-    - Suggesting Enhancements  via 'overreact1@gmail.com' 
-    - Pull Requests on GitHub
+   - Reporting Bugs  via 'overreact1@gmail.com' 
+   - Suggesting Enhancements  via 'overreact1@gmail.com' 
+   - Pull Requests on GitHub
     
