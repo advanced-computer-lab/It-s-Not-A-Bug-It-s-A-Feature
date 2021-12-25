@@ -72,14 +72,14 @@ export default function Header(props) {
     });
     let history = useHistory();
     const brandComponent = <Button
-    
+        size="small"
         onClick={() => {
             history.push('/Home')
         }}
         className={classes.title} >
             {/* {brand} */}
-            <img src={logo} alt="..." className={imageClasses} />
-                    </Button>;
+            <img src={logo}  />
+        </Button>;
     return (
         <AppBar className={appBarClasses}>
             <Toolbar className={classes.container}>
