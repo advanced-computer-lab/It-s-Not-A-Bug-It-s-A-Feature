@@ -83,11 +83,8 @@ node App.js
 
 # **How to Use?**
 
-   Open http://localhost:3000/home to view the homepage in your browser.
+   Open http://localhost:3000/search to view the homepage in your browser.
 
-After Logging In, you will be redirected to your profilr
-![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
- 
 
 ## In the Home Page, you can:
 
@@ -115,19 +112,22 @@ After Logging In, you will be redirected to your profilr
 
    - If you are not logged in, you will be prompted your username and password first.
 
+![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
+
    - If you do not have an account click "I Don't Have an Account" so you can sign up.
-    
     
 ![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
 
   ### E) Pay Using Credit Card: :credit_card:
-   Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
-
-:moneybag:
+   Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo). :moneybag:
 
 ![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
 
+If you get this page, your transaction was successful. You should expect a confirmation email. 
+
 ![PaymentSuccess](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentSuccess.png)
+
+If you get this page, your transaction has failed. You need to revise your card details and try again. 
 
 ![PaymentError](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentError.png)
 
@@ -135,8 +135,15 @@ After Logging In, you will be redirected to your profilr
   ## In My Profile Page, you can:
 
    ### A) Change Your Personal Details :boy:
+   
+   ![Edit Info](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/editInfo.PNG)
 
-   ### B) View Your Upcoming Flights:
+   
+   ### b)  Change Your Password
+   
+![Change Password](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changePassword.PNG)
+
+   ### C) View Your Upcoming Flights:
 
    a) Cancel Reservation :x:
    
@@ -151,6 +158,8 @@ After Logging In, you will be redirected to your profilr
    3) Change Return Flight
 
    c) Email Yourself With Your Trip Itenrary :mailbox:
+   
+   
         
   ## Admins can:
   
