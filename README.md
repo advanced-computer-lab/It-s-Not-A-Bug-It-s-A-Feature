@@ -16,15 +16,26 @@ For reporting bugs or offering contributions or enhancements please check our Co
 We are following this [Code Style](.editorconfig) for consistency.
 
 # **Screenshots**
+## Search Flights
 ![Search Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/search.PNG)
+
+## Search Results
 
 ![Search Results](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/searchResult.PNG)
 
+## Sign Up
+
 ![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
+
+## Top Destinations
 
 ![Top Destinations](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Top%20Destinations.PNG)
 
+## Change Seats
+
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
+
+## My Profile
 
 ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
 
