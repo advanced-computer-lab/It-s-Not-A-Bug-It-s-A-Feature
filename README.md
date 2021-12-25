@@ -91,7 +91,7 @@ node App.js
 
 # **How to Use?**
 
-   Open http://localhost:3000/ to view the homepage in your browser.
+   Open http://localhost:3000/home to view the homepage in your browser.
 
 
 ## In the Home Page, you can:
