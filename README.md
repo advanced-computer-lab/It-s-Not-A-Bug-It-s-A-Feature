@@ -1,4 +1,4 @@
-# **OverReact**
+![logo](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/client/myapp/src/assets/img/icons/whitelogo.png) 
 ![header](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/header.jpg)
 
 OverReact is an Airline Reservation System through which users can reserve and pay for flights in order to travel to various countries and cities. :earth_americas: :airplane:
@@ -84,6 +84,10 @@ node App.js
 # **How to Use?**
 
    Open http://localhost:3000/home to view the homepage in your browser.
+
+After Logging In, you will be redirected to your profilr
+![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
+ 
 
 ## In the Home Page, you can:
 
