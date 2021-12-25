@@ -134,6 +134,8 @@ If you get this page, your transaction has failed. You need to revise your card 
 
   ## In My Profile Page, you can:
 
+   ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
+
    ### A) Change Your Personal Details :boy:
    
    ![Edit Info](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/editInfo.PNG)
@@ -144,6 +146,8 @@ If you get this page, your transaction has failed. You need to revise your card 
 ![Change Password](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changePassword.PNG)
 
    ### C) View Your Upcoming Flights:
+   
+  After cicking 'Upcoming Flights' in your Profle, you'll have a list of all your upcoming flights.
 
    #### a) Cancel Reservation :x:
    
@@ -185,7 +189,39 @@ If you get this page, your transaction has failed. You need to revise your card 
 
   ## In the About Us Page:
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
+   
+![About Us](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AboutUs.PNG)
 
+# Code Example
+
+## Change password backend function
+``` 
+router.route('/changePassword').post(verifyJWT, (req, res) => {
+    const passwords = req.body;
+    User.findOne({ _id: req.user.id })
+        .then(async (dbUser) => {
+            if (!dbUser) {
+                return res.json({ message: "User not Found." });
+            }
+            let oldPass = passwords.old;
+            bcrypt.compare(oldPass, dbUser.password)
+                .then(async (isCorrect) => {
+                    if (!isCorrect) {
+                        return res.json({ message: "Old password does not match the current one." });
+                    }
+                    let newPass = passwords.new;
+                    if (newPass === oldPass) {
+                        return res.json({ message: "The new password must be different from the current one." });
+                    }
+                    newPass = await hashIt(newPass);
+                    await User.findOneAndUpdate({ _id: req.user.id }, { password: newPass });
+                    return res.json({ message: "Password updated successfully." });
+
+                });
+        })
+});
+
+```
 
 # **Contribute** :handshake:
 
