@@ -151,7 +151,7 @@ export default function TeamSection() {
                             </h4>
                             <CardBody>
                                 <p className={classes.description}>
-                                   Be proud of how far you\'ve come.
+                                   Be proud of how far you've come.
                                 
                                 </p>
                             </CardBody>
