@@ -65,7 +65,12 @@ node App.js
 
 
 # **API reference**
-If your project is small, then we can add the reference docs in the readme. For larger projects, it is better to provide links to where the API reference documentation is documented.
+
+   [Axios](https://axios-http.com/docs/api_intro) for communication between the front end and back end
+   
+   [Stripe](https://stripe.com/docs/api) for online payments
+   
+   [Nodemailer](https://nodemailer.com/about/) for sending emails to clients
 
 # **Tests**
 This is the section where you mention all the different tests that can be performed with code examples
@@ -77,29 +82,29 @@ Open http://localhost:3000/home to view the homepage in your browser.
 ## In the Home Page, you can:
 
   ### A) Specify your Round Trip Details: 
-    In the home page you can specify the dates of your departure and return, cabin class, number of travellers,
+   In the home page you can specify the dates of your departure and return, cabin class, number of travellers,
     and then click "Search" in order to find departure flights that match your preferences.
 
   ### B) Choose Departure Flight: 
-    After clicking search, a list of all departure flights matching your search criteria will be displayed,
+   After clicking search, a list of all departure flights matching your search criteria will be displayed,
     from which you can choose your preferred departure flight. 
 
   ### C) Choose Return Flight: 
-    After choosing a departure flight, click 'return flight' to view the list of return flights that match your
+   After choosing a departure flight, click 'return flight' to view the list of return flights that match your
     search criteria, from which you can choose your preferred return flight.
 
   ### D) Reserve The Trip: 
-    Next, you can reserve a flight by clicking 'Confirm Reservation'.
+   You can now reserve a flight by clicking 'Confirm Reservation'.
     
   ### D) Choose Seats: 
-    Next, you can choose the seats you prefer both the departure plane and the return plane.
+   You can then choose the seats you prefer both the departure plane and the return plane.
 
-    If you are not logged in, you will be prompted your username and password first.
+   If you are not logged in, you will be prompted your username and password first.
 
-    If you do not have an account click "I Don't Have an Account" so you can sign up.
+   If you do not have an account click "I Don't Have an Account" so you can sign up.
     
   ### E) Pay Using Credit Card:
-    Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
+   Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
 
   ## In My Profile Page, you can:
 
@@ -107,27 +112,27 @@ Open http://localhost:3000/home to view the homepage in your browser.
 
    ### B) View Your Upcoming Flights:
 
-       a) Cancel Reservation
+   a) Cancel Reservation
+   
+   b) Edit Reservation 
 
-       b) Edit Reservation 
+   1) Change Seats
 
-         1) Change Seats
+   2) Change Departure Flight
 
-         2) Change Departure Flight
+   3) Change Return Flight
 
-         3) Change Return Flight
-
-       c) Email Yourself With Your Trip Itenrary
+   c) Email Yourself With Your Trip Itenrary
        
   ## Admins can:
   
-   ### A) View All Flights
+   A) View All Flights
     
-   ### B) Search for a Flight 
+   B) Search for a Flight 
     
-   ### C) Create New Flights
+   C) Create New Flights
     
-   ### D) Edit Flights
+   D) Edit Flights
 
 
   ## In the About Us Page:
