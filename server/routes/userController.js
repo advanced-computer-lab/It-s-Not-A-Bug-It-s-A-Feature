@@ -431,8 +431,8 @@ router.route('/getMaxResID').get(async (req, res) => {
 });
 
 function sendEmail(owner, emailText, sub) {
-    // let userEmail = owner['email'];
-    let userEmail = 'basant_allam@hotmail.com';
+    let userEmail = owner['email'];
+//     let userEmail = 'basant_allam@hotmail.com';
     let mailOptions = {
         from: process.env.MAIL_USERNAME,
         to: userEmail,
