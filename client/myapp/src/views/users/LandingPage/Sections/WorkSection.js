@@ -9,12 +9,16 @@ import GridContainer from "./../../../../components/Grid/GridContainer.js";
 import GridItem from "./../../../../components/Grid/GridItem.js";
 import CustomInput from "./../../../../components/CustomInput/CustomInput.js";
 import Button from "./../../../../components/CustomButtons/Button.js";
+import { useHistory } from 'react-router-dom';
+
 
 import styles from "./../../../../assets/jss/material-kit-react/views/landingPageSections/workStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function WorkSection() {
+    let history = useHistory();
+
     const classes = useStyles();
     return (
         <div className={classes.section}>
@@ -60,7 +64,12 @@ export default function WorkSection() {
                                 }}
                             />
                             <GridItem xs={12} sm={12} md={4}>
-                                <Button color="primary">Send Message</Button>
+                                <Button color="primary"
+                                onClick={(e) => { history.push({
+                                    pathname: "/home",
+                              
+                                  });}}
+                                >Send Message</Button>
                             </GridItem>
                         </GridContainer>
                     </form>
