@@ -56,312 +56,312 @@ import CardBody from '../../../../components/Card/CardBody.js';
 
 const useStyles = makeStyles(styles);
 export default function Main() {
-  const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const classes = useStyles();
-  // ----------------------------------  for the number of passengers ------------------------------
+    const history = useHistory();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const classes = useStyles();
+    // ----------------------------------  for the number of passengers ------------------------------
 
-  const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
-  const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
-
-
-
-  var departFlights; // variable to hold the departure flights of the search query
-  var returnFlights; // variable to hold the return flights of the search query
-  // const [departFlights, setdepartFlights] = useState([]);
-  // const [returnFlights, setreturnFlights] = useState([]);
-
-  // we will use this to to fade the buttons 
-  const [buttonFade1, setButtonFade1] = useState(false);
-  const [buttonFade2, setButtonFade2] = useState(false);
-
-  //
-  const [arrival, setarrival] = useState("");
-  const [departure, setdeparture] = useState("");
-  const [arrivalDate, setarrivalDate] = useState("");
-  const [departureDate, setdepartureDate] = useState("");
-  const [value, setValue] = React.useState([null,null]);
+    const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
+    const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
 
 
-  const [message, setmessage] = useState(null);
-  const today = new Date();
+
+    var departFlights; // variable to hold the departure flights of the search query
+    var returnFlights; // variable to hold the return flights of the search query
+    // const [departFlights, setdepartFlights] = useState([]);
+    // const [returnFlights, setreturnFlights] = useState([]);
+
+    // we will use this to to fade the buttons 
+    const [buttonFade1, setButtonFade1] = useState(false);
+    const [buttonFade2, setButtonFade2] = useState(false);
+
+    //
+    const [arrival, setarrival] = useState("");
+    const [departure, setdeparture] = useState("");
+    const [arrivalDate, setarrivalDate] = useState("");
+    const [departureDate, setdepartureDate] = useState("");
+    const [value, setValue] = React.useState([null, null]);
 
 
-  //_______ADULT__________
-  const [countAdults, setCountAdults] = useState(1);
-  const IncNumAdults = () => {
-    setCountAdults(countAdults + 1);
-    setCountPassengers(countPassengers + 1);
+    const [message, setmessage] = useState(null);
+    const today = new Date();
 
-  };
 
-  const DecNumAdults = () => {
-    if (countAdults > 1) {
-      setCountPassengers(countPassengers - 1);
-      setCountAdults(countAdults - 1);
+    //_______ADULT__________
+    const [countAdults, setCountAdults] = useState(1);
+    const IncNumAdults = () => {
+        setCountAdults(countAdults + 1);
+        setCountPassengers(countPassengers + 1);
+
+    };
+
+    const DecNumAdults = () => {
+        if (countAdults > 1) {
+            setCountPassengers(countPassengers - 1);
+            setCountAdults(countAdults - 1);
+        }
+        else {
+            setCountAdults(1);
+            // rather than alert we just need to make the button fadeout 
+            setmessage("Must Have atleast 1 adult");
+        }
+    };
+
+    //_______CHILDREN_________
+
+    const [countChild, setCountChild] = useState(0);
+
+    const IncNumChild = () => {
+        setCountChild(countChild + 1);
+        setCountPassengers(countPassengers + 1);
+    };
+    const DecNumChild = () => {
+        if (countChild > 0) {
+            setCountPassengers(countPassengers - 1);
+            setCountChild(countChild - 1);
+        }
+        else {
+
+            setCountChild(0);
+            // rather than alert we just need to make the button fadeout 
+        }
+    };
+    Date.prototype.addHours = function (h) {
+        this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+        return this;
     }
-    else {
-      setCountAdults(1);
-      // rather than alert we just need to make the button fadeout 
-      setmessage("Must Have atleast 1 adult");
-    }
-  };
 
-  //_______CHILDREN_________
+    const onSubmit = () => {
+        setdepartureDate((new Date(value[0]).addHours(4)).toISOString());
+        setarrivalDate((new Date(value[1]).addHours(4)).toISOString());
 
-  const [countChild, setCountChild] = useState(0);
-
-  const IncNumChild = () => {
-    setCountChild(countChild + 1);
-    setCountPassengers(countPassengers + 1);
-  };
-  const DecNumChild = () => {
-    if (countChild > 0) {
-      setCountPassengers(countPassengers - 1);
-      setCountChild(countChild - 1);
-    }
-    else {
-
-      setCountChild(0);
-      // rather than alert we just need to make the button fadeout 
-    }
-  };
-  Date.prototype.addHours = function(h) {
-    this.setTime(this.getTime() + (h*60*60*1000));
-    return this;
-  }
-
-  const onSubmit = () => {
-    setdepartureDate((new Date(value[0]).addHours(4)).toISOString());
-    setarrivalDate((new Date(value[1]).addHours(4)).toISOString());
-
-    if (departure == "") { setmessage('please enter a departuring destination'); }
-    else
-      if (arrival == "") { setmessage('please enter an arrival destination'); }
-      else
-        if (departureDate === "" || arrivalDate === "") { setmessage('please enter a Date'); }
+        if (departure == "") { setmessage('please enter a departuring destination'); }
         else
-          if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
-          else {
-            history.push({
-              pathname: "/search",
-              state: {
-                arrivalAirport: arrival,
-                departureDate: departureDate,
-                departureAirport: departure,
-                arrivalDate: arrivalDate,
-                adultsNo: countAdults,
-                childrenNo: countChild,
-                type: cabin,
-                count: countPassengers
-              }
+            if (arrival == "") { setmessage('please enter an arrival destination'); }
+            else
+                if (departureDate === "" || arrivalDate === "") { setmessage('please enter a Date'); }
+                else
+                    if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
+                    else {
+                        history.push({
+                            pathname: "/search",
+                            state: {
+                                arrivalAirport: arrival,
+                                departureDate: departureDate,
+                                departureAirport: departure,
+                                arrivalDate: arrivalDate,
+                                adultsNo: countAdults,
+                                childrenNo: countChild,
+                                type: cabin,
+                                count: countPassengers
+                            }
 
-            });
-            //  else
-            //  alert("Sever is not working");
-          }
-  };
-
-
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
+                        });
+                        //  else
+                        //  alert("Sever is not working");
+                    }
+    };
 
 
-  return (
-    <div className={classes.container}>
-    <GridContainer justify="center">
-      {message ?
-        <GridItem xs={12} xm={12}>
-          <SnackbarContent
-            message={
-              <span>
-                {message}
-              </span>
-            }
-            close
-            color="danger"
+    // const handleClick = (event) => {
+    //   setAnchorEl(event.currentTarget);
+    // };
+    // const handleClose = () => {
+    //   setAnchorEl(null);
+    // };
 
-          /> </GridItem> : null}
-      <Card margin="none" color='transparent'
-      >
-        <CardBody
-        >
-         
-            <Grid container spacing={2} direction="row"  justify="center"  alignItems="center" >
-               <Grid item xs textAlign= 'center'>
-              <TextField
-              required
-              label="Leaving from"
-                id="departure"
-                variant="outlined"
-                placeholder="Select origin"
-                value={departure}
-                // color="warning"
-                onChange={(e) => {
-                  setdeparture(e.target.value);
-                }}
-                // focused 
-                />
-                </Grid>
-            
 
-                <Grid item xs >
-              <TextField
-              required
-              label="Going To"
-                variant="outlined"
-                placeholder="Select destination"
-                value={arrival}
-                onChange={(e) => {
-                  setarrival(e.target.value);
-                }}
-                />
-           </Grid>
-           
-            <Grid item xs={4} >
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDateRangePicker
-              disabledEnd
-              minDate={today}
-                  value={value}
-                  onChange={(newValue) => {
-                      setValue(newValue);
-                      // console.log((new Date(value[0]).addHours(4)).toISOString());
-                  }}
-                  renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                      <TextField {...startProps} required
-                          label="Check In"
-                          fullWidth
-                          variant="outlined"
-                          />
-                      <Box sx={{ mx: 2 }}> to </Box>
-                      <TextField {...endProps} 
-                      required
-                          label="Check Out"
-                          fullWidth
-                          variant="outlined"
-                          />
-                      </React.Fragment>
-                  )}
-                  />
+    return (
+        <div className={classes.container}>
+            <GridContainer justify="center">
+                {message ?
+                    <GridItem xs={12} xm={12}>
+                        <SnackbarContent
+                            message={
+                                <span>
+                                    {message}
+                                </span>
+                            }
+                            close
+                            color="danger"
 
-              </LocalizationProvider>
+                        /> </GridItem> : null}
+                <Card margin="none" color='transparent'
+                >
+                    <CardBody
+                    >
+
+                        <Grid container spacing={2} direction="row" justify="center" alignItems="center" >
+                            <Grid item xs textAlign='center'>
+                                <TextField
+                                    required
+                                    label="Leaving from"
+                                    id="departure"
+                                    variant="outlined"
+                                    placeholder="Select origin"
+                                    value={departure}
+                                    // color="warning"
+                                    onChange={(e) => {
+                                        setdeparture(e.target.value);
+                                    }}
+                                // focused 
+                                />
+                            </Grid>
+
+
+                            <Grid item xs >
+                                <TextField
+                                    required
+                                    label="Going To"
+                                    variant="outlined"
+                                    placeholder="Select destination"
+                                    value={arrival}
+                                    onChange={(e) => {
+                                        setarrival(e.target.value);
+                                    }}
+                                />
+                            </Grid>
+
+                            <Grid item xs={4} >
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DesktopDateRangePicker
+                                        disabledEnd
+                                        minDate={today}
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                            // console.log((new Date(value[0]).addHours(4)).toISOString());
+                                        }}
+                                        renderInput={(startProps, endProps) => (
+                                            <React.Fragment>
+                                                <TextField {...startProps} required
+                                                    label="Check In"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                />
+                                                <Box sx={{ mx: 2 }}> to </Box>
+                                                <TextField {...endProps}
+                                                    required
+                                                    label="Check Out"
+                                                    fullWidth
+                                                    variant="outlined"
+                                                />
+                                            </React.Fragment>
+                                        )}
+                                    />
+
+                                </LocalizationProvider>
 
                             </Grid>
 
-                            <Grid item xs textAlign= 'center'>
-              <CustomDropdown
-                noLiPadding
-                buttonText={(countPassengers > 1) ? countPassengers + " Travellers" : countPassengers + " Traveller"}
-                buttonProps={{
-                  className: classes.navLink,
-                  color: "transparent",
+                            <Grid item xs textAlign='center'>
+                                <CustomDropdown
+                                    noLiPadding
+                                    buttonText={(countPassengers > 1) ? countPassengers + " Travellers" : countPassengers + " Traveller"}
+                                    buttonProps={{
+                                        className: classes.navLink,
+                                        color: "transparent",
 
-                }}
-                dropdownList={[
-                  <a className={classes.dropdownLink}>
-                    <h4>  Adults</h4>
-                    <div className="main_div">
-                      <div className="center_div">
+                                    }}
+                                    dropdownList={[
+                                        <a className={classes.dropdownLink}>
+                                            <h4>  Adults</h4>
+                                            <div className="main_div">
+                                                <div className="center_div">
 
-                        <div className="btn_div">
-                          <Tooltip title="Delete">
-                            <Button2 onClick={DecNumAdults}>
-                              <RemoveCircleOutlineSharpIcon />
-                            </Button2>
-                          </Tooltip>
-                          {countAdults}
-                          <Button2 onClick={IncNumAdults}>
-                            < AddCircleOutlineSharpIcon />
-                          </Button2>
-                        </div>
-                      </div>
-                    </div>
-                  </a>,
-                  <a
-                    className={classes.dropdownLink}
-                  >
-                    <h4>   Children</h4>
-                    <br />
-                    <div className="main_div">
-                      <div className="center_div">
+                                                    <div className="btn_div">
+                                                        <Tooltip title="Delete">
+                                                            <Button2 onClick={DecNumAdults}>
+                                                                <RemoveCircleOutlineSharpIcon />
+                                                            </Button2>
+                                                        </Tooltip>
+                                                        {countAdults}
+                                                        <Button2 onClick={IncNumAdults}>
+                                                            < AddCircleOutlineSharpIcon />
+                                                        </Button2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>,
+                                        <a
+                                            className={classes.dropdownLink}
+                                        >
+                                            <h4>   Children</h4>
+                                            <br />
+                                            <div className="main_div">
+                                                <div className="center_div">
 
-                        <div className="btn_div">
-                          <Tooltip title="Delete">
-                            <Button2 onClick={DecNumChild}>
-                              <RemoveCircleOutlineSharpIcon />
-                            </Button2>
-                          </Tooltip>
-                          {countChild}
-                          <Button2
-                            onClick={IncNumChild}>
-                            < AddCircleOutlineSharpIcon />
-                          </Button2>
-                        </div>
-                      </div>
-                    </div>
-                  </a>,
-                ]}
-              />
+                                                    <div className="btn_div">
+                                                        <Tooltip title="Delete">
+                                                            <Button2 onClick={DecNumChild}>
+                                                                <RemoveCircleOutlineSharpIcon />
+                                                            </Button2>
+                                                        </Tooltip>
+                                                        {countChild}
+                                                        <Button2
+                                                            onClick={IncNumChild}>
+                                                            < AddCircleOutlineSharpIcon />
+                                                        </Button2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>,
+                                    ]}
+                                />
 
-            </Grid>
-            <Grid item xs textAlign= 'center'>
-                <CustomDropdown
-                  noLiPadding
-                  buttonText={cabin}
-                  buttonProps={{
-                    className: classes.navLink,
-                    color: "transparent",
+                            </Grid>
+                            <Grid item xs textAlign='center'>
+                                <CustomDropdown
+                                    noLiPadding
+                                    buttonText={cabin}
+                                    buttonProps={{
+                                        className: classes.navLink,
+                                        color: "transparent",
 
-                  }}
-                  dropdownList={[
-                    <Link className={classes.dropdownLink}
-                      onClick={(e) => { setCabin("Economy"); }}
-                    >
-                      <h4>  Economy </h4>
-                    </Link>,
-                    <a
-                      className={classes.dropdownLink}
-                      onClick={(e) => { setCabin("Business"); }}
-                    >
-                      <h4>   Business</h4>
+                                    }}
+                                    dropdownList={[
+                                        <Link className={classes.dropdownLink}
+                                            onClick={(e) => { setCabin("Economy"); }}
+                                        >
+                                            <h4>  Economy </h4>
+                                        </Link>,
+                                        <a
+                                            className={classes.dropdownLink}
+                                            onClick={(e) => { setCabin("Business"); }}
+                                        >
+                                            <h4>   Business</h4>
 
-                    </a>,
-                  ]}
-                />
-                </Grid>
+                                        </a>,
+                                    ]}
+                                />
+                            </Grid>
 
-                <Grid item xs textAlign= 'center'>
-              <Button
+                            <Grid item xs textAlign='center'>
+                                <Button
 
-                color="warning"
-                // color="transparent"
-                size="lg"
-                id="demo-customized-button"
-                aria-controls="demo-customized-menu"
-                aria-haspopup="true"
-                variant="contained"
-                disableElevation
-                onClick={(e) => {
-                  onSubmit(e);
-                }}
-              >Search</Button>
-            </Grid>
-            </Grid>
+                                    color="warning"
+                                    // color="transparent"
+                                    size="lg"
+                                    id="demo-customized-button"
+                                    aria-controls="demo-customized-menu"
+                                    aria-haspopup="true"
+                                    variant="contained"
+                                    disableElevation
+                                    onClick={(e) => {
+                                        onSubmit(e);
+                                    }}
+                                >Search</Button>
+                            </Grid>
+                        </Grid>
 
-          {/* </Box> */}
+                        {/* </Box> */}
 
-        </CardBody>
-      </Card>
+                    </CardBody>
+                </Card>
 
-    </GridContainer>
-    </div>
+            </GridContainer>
+        </div>
 
-  );
+    );
 };

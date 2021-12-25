@@ -21,11 +21,11 @@ import { Apps, CloudDownload } from "@material-ui/icons";
 // core components
 import CustomDropdown from "./../CustomDropdown/CustomDropdown.js";
 import Button from "./../CustomButtons/Button.js";
-import  Login from './../../views/users/login.js';
+import Login from './../../views/users/login.js';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { Router } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 
 import styles from "./../../assets/jss/material-kit-react/components/headerLinksStyle.js";
@@ -35,81 +35,81 @@ const useStyles = makeStyles(styles);
 
 
 export default function HeaderLinks(props) {
-  const classes = useStyles();
-  let history = useHistory();
-  const [isLogged, setLogged] =useState(localStorage.getItem("token")!=null);
+    const classes = useStyles();
+    let history = useHistory();
+    const [isLogged, setLogged] = useState(localStorage.getItem("token") != null);
 
-  let loginButton;
-  if(!isLogged){
-    loginButton = <Button
-      id="login"
-      onClick={(e) => {
-       // setLogged(true);
-        history.push('/login')
-        //onSubmit(e);
-        // history.push('/login')
-   }}
-      color="transparent"
-      target="_blank"
-      className={classes.navLink}
-    >
-      
-      <LoginIcon className={classes.icons} /> Login
-    </Button>;
+    let loginButton;
+    if (!isLogged) {
+        loginButton = <Button
+            id="login"
+            onClick={(e) => {
+                // setLogged(true);
+                history.push('/login')
+                //onSubmit(e);
+                // history.push('/login')
+            }}
+            color="transparent"
+            target="_blank"
+            className={classes.navLink}
+        >
+
+            <LoginIcon className={classes.icons} /> Login
+        </Button>;
     }
-    else{
-      loginButton = <div>
-    
-    <Button
-      onClick={(e) => {
-        history.push('/profile')
-   }}
-      color="transparent"
-      target="_blank"
-      className={classes.navLink}
+    else {
+        loginButton = <div>
 
-    >
-      
-      <AccountCircleIcon className={classes.icons} /> My Profile
-    </Button>
-    <Button
-     id="logout"
-      onClick={(e) => {
-        setLogged(false);
-        const token = localStorage.getItem("token");
-    axios.delete('http://localhost:8000/user/logout/', {
-      headers: {
-        'authorization': token
-      },
-      data: {
-        token:token
-      }
-    }).then((response) => {
-      console.log('response',response.data)
+            <Button
+                onClick={(e) => {
+                    history.push('/profile')
+                }}
+                color="transparent"
+                target="_blank"
+                className={classes.navLink}
 
-    })
-      .catch(err => {
-        console.log(err);
-        history.push("/error");
-      });
-      localStorage.removeItem("token");
-        //onSubmit(e);
-        history.push('/login')
-   }}
-      color="transparent"
-      target="_blank"
-      className={classes.navLink}
-    >
-      
-      <LogoutIcon className={classes.icons} /> Log Out
-    </Button>
-    </div>;
+            >
+
+                <AccountCircleIcon className={classes.icons} /> My Profile
+            </Button>
+            <Button
+                id="logout"
+                onClick={(e) => {
+                    setLogged(false);
+                    const token = localStorage.getItem("token");
+                    axios.delete('http://localhost:8000/user/logout/', {
+                        headers: {
+                            'authorization': token
+                        },
+                        data: {
+                            token: token
+                        }
+                    }).then((response) => {
+                        console.log('response', response.data)
+
+                    })
+                        .catch(err => {
+                            console.log(err);
+                            history.push("/error");
+                        });
+                    localStorage.removeItem("token");
+                    //onSubmit(e);
+                    history.push('/login')
+                }}
+                color="transparent"
+                target="_blank"
+                className={classes.navLink}
+            >
+
+                <LogoutIcon className={classes.icons} /> Log Out
+            </Button>
+        </div>;
     }
 
-  return (
-    <List className={classes.list}>
-      <ListItem className={classes.listItem}>
-        {/* <CustomDropdown
+    return (
+        <List className={classes.list}>
+            <ListItem className={classes.listItem}>
+                {/* <CustomDropdown
           noLiPadding
           buttonText="Components"
           buttonProps={{
@@ -130,13 +130,13 @@ export default function HeaderLinks(props) {
             </a>,
           ]}
         /> */}
-      </ListItem>
-      <ListItem className={classes.listItem}>
-      {loginButton}
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        
-      </ListItem>
-    </List>
-  );
+            </ListItem>
+            <ListItem className={classes.listItem}>
+                {loginButton}
+            </ListItem>
+            <ListItem className={classes.listItem}>
+
+            </ListItem>
+        </List>
+    );
 }

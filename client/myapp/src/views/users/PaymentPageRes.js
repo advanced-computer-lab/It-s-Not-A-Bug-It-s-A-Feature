@@ -55,7 +55,7 @@ export default function ProfilePageRes(props) {
     const [loading, setLoading] = useState(true);
     const [paid, setPaid] = useState(false);
     const [success, setSuccess] = useState(true);
-    
+
     const [reserved, setReserved] = useState(false);
     // const [retData, setRetData] = useState({
     //     economySeats: 0,
@@ -80,7 +80,7 @@ export default function ProfilePageRes(props) {
     );
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
-    
+
 
     const onSubmit = () => {
         axios.post('http://localhost:8000/user/res', {
@@ -151,7 +151,7 @@ export default function ProfilePageRes(props) {
                                         :
                                         <GridContainer justify="center">
                                             {/* <div className={classes.name}> */}
-                                                <h3 className={classes.title}>Itinerary</h3>
+                                            <h3 className={classes.title}>Itinerary</h3>
                                             {/* </div> */}
                                             {/* <GridItem xs={12} sm={12} md={6}> */}
                                             <PaymentInfo

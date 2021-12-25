@@ -38,7 +38,7 @@ export default function ProfilePageRes(props) {
     // const location = useLocation();
     // const key = location.state;
     const classes = useStyles();
-    console.log("before del"+localStorage);
+    console.log("before del" + localStorage);
     localStorage.removeItem('resID');
     localStorage.removeItem('adultsNo');
     localStorage.removeItem('childrenNo');
@@ -47,7 +47,7 @@ export default function ProfilePageRes(props) {
     localStorage.removeItem('arrFlight');
     localStorage.removeItem('deptSeats');
     localStorage.removeItem('arrSeats');
-    console.log("after deletion"+localStorage);
+    console.log("after deletion" + localStorage);
 
     const { ...rest } = props;
     const imageClasses = classNames(
