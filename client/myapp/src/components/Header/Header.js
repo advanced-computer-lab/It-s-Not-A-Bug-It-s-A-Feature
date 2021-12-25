@@ -16,6 +16,11 @@ import Menu from "@material-ui/icons/Menu";
 // core components
 import styles from "./../../assets/jss/material-kit-react/components/headerStyle.js";
 import logoBlack from "./../../assets/img/icons/black.png";
+import logoBlackBig from "./../../assets/img/icons/blackbig.png";
+import logoWhite from "./../../assets/img/icons/white.png";
+import logoWhiteBig from "./../../assets/img/icons/whitebig.png";
+
+
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -27,9 +32,8 @@ export default function Header(props) {
 
     const imageClasses = classNames(
         classes.imgFluid,
-        classes.imgCardOverlay
       );
-    const [logo, setlogo] = useState(logoBlack);
+    const [logo, setlogo] = useState(logoWhite);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     React.useEffect(() => {
         if (props.changeColorOnScroll) {
@@ -54,6 +58,9 @@ export default function Header(props) {
             document.body
                 .getElementsByTagName("header")[0]
                 .classList.add(classes[changeColorOnScroll.color]);
+                console.log("onchange",changeColorOnScroll," color:",color);
+                if(color==="white") setlogo(logoWhite);  else setlogo(logoBlack);   
+
         } else {
             document.body
                 .getElementsByTagName("header")[0]
@@ -61,6 +68,8 @@ export default function Header(props) {
             document.body
                 .getElementsByTagName("header")[0]
                 .classList.remove(classes[changeColorOnScroll.color]);
+                if(color==="white")setlogo(logoBlack);else setlogo(logoWhite);   
+
         }
     };
     const { color, rightLinks, leftLinks, brand, fixed, absolute } = props;
@@ -70,6 +79,7 @@ export default function Header(props) {
         [classes.absolute]: absolute,
         [classes.fixed]: fixed,
     });
+
     let history = useHistory();
     const brandComponent = <Button
         size="small"
@@ -78,7 +88,7 @@ export default function Header(props) {
         }}
         className={classes.title} >
             {/* {brand} */}
-            <img src={logo}  />
+            <img src={logo}  className={imageClasses}/>
         </Button>;
     return (
         <AppBar className={appBarClasses}>
