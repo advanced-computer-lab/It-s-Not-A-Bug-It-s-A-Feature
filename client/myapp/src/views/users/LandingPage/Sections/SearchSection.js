@@ -52,19 +52,18 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
 import CardBody from '../../../../components/Card/CardBody.js';
-// import * as airports from "airportsjs"
+import * as airports from "airportsjs"
 import FlightLandIcon from '@material-ui/icons/FlightLand';
 import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import InputAdornment from '@material-ui/core/InputAdornment';
-var worldMapData = require('city-state-country');
 const useStyles1 = makeStyles((theme) => ({
     root: {
 
         // margin: theme.spacing(1),
-        height: "50px",
+        height: "40px",
         // flex: 2,
         // position: 'absolute',
-        // direction: "flex",
+        direction: "flex",
         backgroundcolor: "white",
         msOverflowY: "auto",
         // position: "relative",
@@ -78,7 +77,7 @@ const useStyles1 = makeStyles((theme) => ({
     },
     a: {
 
-        height: "20px",
+        height: "50px",
         backgroundcolor: "white",
         '&:hover': {
             color: "grey",
@@ -95,10 +94,10 @@ const useStyles1 = makeStyles((theme) => ({
     },
     test: {
         position: "relative",
-        zIndex: 20,
-        backgroundcolor:"white",
-        overflow:"hidden",
-        msOverflowY:"auto",
+        zIndex: 40,
+        backgroundcolor: "white",
+        overflow: "hidden",
+        msOverflowY: "auto",
 
     }
 
@@ -107,18 +106,19 @@ const useStyles1 = makeStyles((theme) => ({
 
 const useStyles = makeStyles(styles);
 export default function Main() {
+    const [arrival, setarrival] = useState("");
+    const [departure, setdeparture] = useState("");
     //___________________________________________________________ search flights
 
 
-    // ---------- departure -----------
-   const [placeholder, setplaceholder] = useState("");
+    // ---------- arrival -----------
+    const [placeholder, setplaceholder] = useState("");
     const [filteredData, setFilteredData] = useState([]);
-    const [wordEntered, setWordEntered] = useState("");
     const handleFilter = (event) => {
         const searchWord = event.target.value;
         console.log("value", searchWord)
-        setWordEntered(searchWord);
-        const newFilter = worldMapData.searchCountry(searchWord)
+        setdeparture(searchWord);
+        const newFilter = airports.searchByAirportName(searchWord)
         console.log("new filter", newFilter)
         if (searchWord === "") {
             setFilteredData([]);
@@ -130,86 +130,37 @@ export default function Main() {
     };
 
     const clicked = (value, e) => {
-        setWordEntered(value.name);
-        console.log({ wordEntered });
+        setdeparture(value.name);
+        console.log({ arrival });
         console.log({ value });
         setFilteredData([]);
     };
 
-    function SearchBar({ data }) {
-        const handleFilter = (event) => {
-            const searchWord = event.target.value;
-            setWordEntered(searchWord);
-            const newFilter = data.filter((value) => {
-                return value.title.toLowerCase().includes(searchWord.toLowerCase());
-            });
 
-            if (searchWord === "")
-                setFilteredData([]);
-            else
-                setFilteredData(newFilter);
+    // ---------- departure -----------
+    const [placeholder1, setplaceholder1] = useState("");
+    const [filteredData1, setFilteredData1] = useState([]);
+    const handleFilter1 = (event) => {
+        const searchWord = event.target.value;
+        console.log("value", searchWord)
+        setarrival(searchWord);
+        const newFilter = airports.searchByAirportName(searchWord)
+        console.log("new filter", newFilter)
+        if (searchWord === "") {
+            setFilteredData1([]);
+        } else {
+            setFilteredData1(newFilter);
+        }
+        console.log("filteredData", filteredData)
 
-        };
+    };
 
-        const clearInput = () => {
-            setFilteredData([]);
-            setWordEntered("");
-        };
-
-    }
-
-
-
-
-     // ---------- arrival -----------
-     const [placeholder1, setplaceholder1] = useState("");
-     const [filteredData1, setFilteredData1] = useState([]);
-     const [wordEntered1, setWordEntered1] = useState("");
-     const handleFilter1 = (event) => {
-         const searchWord = event.target.value;
-         console.log("value", searchWord)
-         setWordEntered1(searchWord);
-         const newFilter = worldMapData.searchCountry(searchWord)
-         console.log("new filter", newFilter)
-         if (searchWord === "") {
-             setFilteredData1([]);
-         } else {
-             setFilteredData1(newFilter);
-         }
-         console.log("filteredData", filteredData)
- 
-     };
- 
-     const clicked1 = (value, e) => {
-         setWordEntered1(value.name);
-         console.log({ wordEntered });
-         console.log({ value });
-         setFilteredData([]);
-     };
- 
-     function SearchBar1({ data }) {
-         const handleFilter1 = (event) => {
-             const searchWord = event.target.value;
-             setWordEntered1(searchWord);
-             const newFilter = data.filter((value) => {
-                 return value.title.toLowerCase().includes(searchWord.toLowerCase());
-             });
- 
-             if (searchWord === "")
-                 setFilteredData1([]);
-             else
-                 setFilteredData1(newFilter);
- 
-         };
- 
-         const clearInput = () => {
-             setFilteredData1([]);
-             setWordEntered1("");
-         };
- 
-     }
- 
-
+    const clicked1 = (value, e) => {
+        setarrival(value.name);
+        console.log({ departure });
+        console.log({ value });
+        setFilteredData1([]);
+    };
     //_______________________________________________________________________________________
 
 
@@ -227,7 +178,7 @@ export default function Main() {
 
     const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
     const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
-    const styles1=useStyles1({});
+    const styles1 = useStyles1({});
 
     var departFlights; // variable to hold the departure flights of the search query
     var returnFlights; // variable to hold the return flights of the search query
@@ -239,8 +190,7 @@ export default function Main() {
     const [buttonFade2, setButtonFade2] = useState(false);
 
     //
-    const [arrival, setarrival] = useState("");
-    const [departure, setdeparture] = useState("");
+
     let arrivalDate = "";
     let departureDate = "";
     const [value, setValue] = React.useState([null, null]);
@@ -297,7 +247,10 @@ export default function Main() {
     const onSubmit = () => {
         departureDate = ((new Date(value[0]).addHours(4)).toISOString());
         arrivalDate = ((new Date(value[1]).addHours(4)).toISOString());
-
+        console.log("Arrival");
+        console.log(arrival);
+        console.log("departure");
+        console.log(departure);
         if (departure == "") { setmessage('please enter a departuring destination'); }
         else
             if (arrival == "") { setmessage('please enter an arrival destination'); }
@@ -365,14 +318,14 @@ export default function Main() {
                                                     required
                                                     type="search"
                                                     label="Departure"
-                                                    variant="standard"
-                                                    value={wordEntered}
+                                                    variant="outlined"
+                                                    value={departure}
                                                     onChange={(event) => {
                                                         handleFilter(event)
                                                     }}
                                                     InputProps={{
                                                         startAdornment: <InputAdornment position="start"> <FlightTakeoffIcon /></InputAdornment>,
-                                                    }} 
+                                                    }}
                                                 />
                                             </div>
                                             {filteredData.length != 0 && (
@@ -417,14 +370,14 @@ export default function Main() {
                                                     required
                                                     type="search"
                                                     label="Arrival"
-                                                    variant="standard"
-                                                    value={wordEntered1}
+                                                    variant="outlined"
+                                                    value={arrival}
                                                     onChange={(event) => {
                                                         handleFilter1(event)
                                                     }}
                                                     InputProps={{
                                                         startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
-                                                    }} 
+                                                    }}
                                                 />
                                             </div>
                                             {filteredData1.length != 0 && (
