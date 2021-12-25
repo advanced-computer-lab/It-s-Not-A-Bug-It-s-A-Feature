@@ -102,9 +102,10 @@ export default function Reservation(props) {
 
     const onSubmit = () => {
         axios.post('http://localhost:8000/user/changeSeats', {
-                newSeats: reservedSeats2,
-                reservationID: resInfo.reservation._id,
-                whichFlight: "deptFlight"        }, {
+            newSeats: reservedSeats2,
+            reservationID: resInfo.reservation._id,
+            whichFlight: "deptFlight"
+        }, {
             headers: {
                 'authorization': token
             }
@@ -115,9 +116,9 @@ export default function Reservation(props) {
         }).catch(err => console.log(err))
 
         axios.post('http://localhost:8000/user/changeSeats', {
-                newSeats: reservedSeats3,
-                reservationID: resInfo.reservation._id,
-                whichFlight: "arrFlight"
+            newSeats: reservedSeats3,
+            reservationID: resInfo.reservation._id,
+            whichFlight: "arrFlight"
         }, {
             headers: {
                 'authorization': token
@@ -311,14 +312,17 @@ export default function Reservation(props) {
                                                                             <Card maxwidth="xs">
                                                                                 <CardBody>
                                                                                     <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                                        <b className={classes.title}>Old Seat Numbers: {oldRetSeats}</b>
+                                                                                        {/* <b className={classes.title}>Old Seats # &nbsp; {oldRetSeats}</b> */}
+                                                                                        <b className={classes.title}>Old Seats # &nbsp;
+                                                                                            {oldRetSeats.map((seat) => "   " + "    " + seat)}</b>
                                                                                     </GridItem>
                                                                                 </CardBody>
                                                                             </Card>
                                                                             <Card maxwidth="xs">
                                                                                 <CardBody>
                                                                                     <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                                        <b className={classes.title}>New Seat Numbers: {reservedSeats3}</b>
+                                                                                        {/* <b className={classes.title}>New Seats # &nbsp; {reservedSeats3}</b> */}
+                                                                                        <b className={classes.title}>New Seats # &nbsp; {reservedSeats3.map((seat) => "   " + "    " + seat)}</b>
                                                                                     </GridItem>
                                                                                 </CardBody>
                                                                             </Card>
