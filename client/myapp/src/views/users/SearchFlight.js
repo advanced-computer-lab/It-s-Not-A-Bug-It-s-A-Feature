@@ -122,16 +122,23 @@ export default function SearchFlight(props) {
 
         }, [key]);
 
+        function loggedIn(){
+            if(localStorage.getItem("token") != null)return true;
+            else return false;
+        }
+
     const onSubmit = () => {
+        const path= loggedIn()?"/reserveSeats":"/login";
         history.push({
-            pathname: "/reserveSeats",
+            pathname: path,
             state: {
                 flight: selectedDepart,
                 ReturnFlight: selectedReturn,
                 cabin: key.type,
                 adultsNo: key.adultsNo,
                 childrenNo: key.childrenNo,
-                count: key.count
+                count: key.count,
+                message:"Please Login to continue reservation"
             }
 
         });

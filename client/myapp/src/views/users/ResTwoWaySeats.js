@@ -15,6 +15,9 @@ import GridItem from "./../../components/Grid/GridItem.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import Card from "./../../components/Card/Card.js";
+import CardBody from "./../../components/Card/CardBody.js";
+
+
 import Flight from "./../../components/Flight/Flight.js";
 import Typography from '@mui/material/Typography';
 import AllSeats from "../../components/Flight/AllSeats.js";
