@@ -68,11 +68,16 @@ export default function SearchFlight(props) {
   const [selectedDepart, setselectedDepart] = useState(null);
   const [selectedReturn, setselectedReturn] = useState(null);
 
+  const [empty, setempty] = useState(null);
+    const [loading, setLoading] = useState(false);
+
   // const location = useLocation();
   let isLogged = props.isLogged
   // const isLogged = usekeys();
   if(key)
   useEffect(() => {
+    setempty(null);
+        setLoading(true);
     console.log("new key is" + key);
     axios.get('http://localhost:8000/user/searchFlights', {
       params:
@@ -89,8 +94,8 @@ export default function SearchFlight(props) {
         // store data in a variable to be later used
         // setdepartFlights( res.data);
         setDepart(res.data);
-        console.log(depart)
-        console.log("di el depart flightsss")
+        setLoading(false);
+        if(res.data.length==0){setempty(true);}
 
       }).catch(err => console.log(err))
 
@@ -109,8 +114,8 @@ export default function SearchFlight(props) {
         // store data in a variable to be later used
         // setreturnFlights ( res.data);
         setreturnn(res.data);
-        console.log("di el set" + returnn)
-        console.log("di hia el return flight");
+        setLoading(false);
+        if(res.data.length==0){setempty(true);}
       }).catch(err => console.log(err))
 
   }, [key]);
@@ -171,8 +176,11 @@ export default function SearchFlight(props) {
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          
-                            {depart.map((curr)=>(
+                          {loading ? <CustomLinearProgress color="info" /> :null    }
+                                                {empty? <Typography>
+                                                    Sorry There is No Flights Available
+                                                </Typography>:
+                            depart.map((curr)=>(
                                <Button color={(selectedDepart==curr)?'blue':'transparent'} onClick={(e) => {
                                  if(selectedDepart!=curr)setselectedDepart(curr);
                                  else setselectedDepart(null);}}>
@@ -200,7 +208,11 @@ export default function SearchFlight(props) {
                       tabIcon: FlightLandIcon,
                       tabContent: (
                         <GridContainer justify="center">
-                          {returnn.map((curr)=>(
+                          {loading ? <CustomLinearProgress color="info" /> :null    }
+                                                {empty? <Typography>
+                                                    Sorry There is No Flights Available
+                                                </Typography>:
+                          returnn.map((curr)=>(
                                <Button color={(selectedReturn==curr)?'blue':'transparent'} onClick={(e) => {
                                  if(selectedReturn!=curr)setselectedReturn(curr);
                                  else setselectedReturn(null);}}>
