@@ -62,53 +62,54 @@ export default function ProfilePageRes(props) {
     };
 
     const token = localStorage.getItem("token");
-    useEffect(() => {
-        // axios.get('http://localhost:8000/user/getMaxResID')
-        //     .then(res => {
-        //         setResId(res.data);
-        //         console.log("max res id aho" + res.data);
-        //     }).catch(err => console.log(err))
+    // useEffect(() => {
 
-        console.log("HEREE");
-        // console.log(reservedSeats2);
-        console.log(localStorage.getItem("deptSeats"));
+        // console.log("HEREE");
+        // console.log(localStorage.getItem("deptSeats"));
 
-        axios.post('http://localhost:8000/user/res', data, {
-            headers: {
-                'authorization': token
-            }
-        }).then(res => {
+        if (localStorage.getItem("isEdit") === "false") {
+            axios.post('http://localhost:8000/user/res', data, {
+                headers: {
+                    'authorization': token
+                }
+            }).then(res => {
+                console.log(res.data);
+                localStorage.removeItem('resID');
+                localStorage.removeItem('adultsNo');
+                localStorage.removeItem('childrenNo');
+                localStorage.removeItem('seatClass');
+                localStorage.removeItem('deptFlight');
+                localStorage.removeItem('arrFlight');
+                localStorage.removeItem('deptSeats');
+                localStorage.removeItem('arrSeats');
 
+                localStorage.removeItem('isEdit');
+                // setReserved(true);
+            }).catch(err => console.log(err))
+        }
+        else {
+            axios.post('http://localhost:8000/user/editReservation/' + localStorage.getItem("res_id"), data, {
+                headers: {
+                    'authorization': token
+                }
+            }).then(res => {
+                console.log(res.data);
+                localStorage.removeItem('resID');
+                localStorage.removeItem('adultsNo');
+                localStorage.removeItem('childrenNo');
+                localStorage.removeItem('seatClass');
+                localStorage.removeItem('deptFlight');
+                localStorage.removeItem('arrFlight');
+                localStorage.removeItem('deptSeats');
+                localStorage.removeItem('arrSeats');
 
-            console.log(res.data);
-            localStorage.removeItem('resID');
-            localStorage.removeItem('adultsNo');
-            localStorage.removeItem('childrenNo');
-            localStorage.removeItem('seatClass');
-            localStorage.removeItem('deptFlight');
-            localStorage.removeItem('arrFlight');
-            localStorage.removeItem('deptSeats');
-            localStorage.removeItem('arrSeats');
-            setReserved(true);
-        }).catch(err => console.log(err))
-    }, []);
+                localStorage.removeItem('isEdit');
+                // setReserved(true);
+            }).catch(err => console.log(err))
 
-    // const onSubmit = () => {
-    //     axios.post('http://localhost:8000/user/res', {
-
-    //         resID: resID + 1,
-    //         adultsNo: key.adultsNo,
-    //         childrenNo: key.childrenNo,
-    //         seatClass: key.seatClass,
-    //         deptFlight: key.deptFlight._id,
-    //         arrFlight: key.arrFlight._id,
-    //         deptSeats: key.deptSeats,
-    //         arrSeats: key.arrSeats
-    //     }).then(res => {
-    //         console.log(res.data);
-    //         setReserved(true);
-    //     }).catch(err => console.log(err))
-    // };
+        }
+    // }
+    // , []);
 
 
     return (

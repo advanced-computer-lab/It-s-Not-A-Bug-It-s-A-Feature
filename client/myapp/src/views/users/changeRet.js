@@ -19,12 +19,13 @@ import ButtonMUI from '@mui/material/Button';
 import Card from "./../../components/Card/Card.js";
 import CardContent from '@mui/material/CardContent';
 import FlightCard from "./../../components/Flight/FlightCard.js";
+import CardBody from "./../../components/Card/CardBody.js";
 import Typography from '@mui/material/Typography';
 import AllSeats from "../../components/Flight/AllSeats.js";
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
 import Check from "@material-ui/icons/Check";
 import Grid from "@material-ui/core/Grid";
-
+import PaidIcon from '@mui/icons-material/Paid';
 import SelectSeats from "../../components/Flight/SelectSeats.js";
 import ColorCode from "../../components/Flight/colorCodeSeats.js";
 import Box from '@material-ui/core/Box';
@@ -36,6 +37,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 
 
 import ReservationCard from "./../../components/Reservation/Reservation.js";
@@ -76,7 +78,7 @@ export default function Reservation(props) {
 
     const type = key.type;
     const count = key.res.reservation.adultsNo + key.res.reservation.childrenNo;
-    const traveller = count == 1 ? " " + 1 + " Traveller" : " " + count + " Traveller";
+    const traveller = count == 1 ? " " + 1 + " Traveller" : " " + count + " Travellers";
     // const reservation =key.res;
     const arrivalFlight = key.res.arrFlight;
     const myIcon = type === "Dept" ? FlightTakeoffIcon : FlightLandIcon;
@@ -85,12 +87,23 @@ export default function Reservation(props) {
     const [allFlights, setAllFlights] = useState([]);
     const [empty, setempty] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [loading2, setLoading2] = useState(false);
+    // const [loading2, setLoading2] = useState(false);
 
     // const [deptDate, setdeptDate] = useState(null);
     const deptDate = new Date(key.res.deptFlight.departureDate);
     const [value, setValue] = React.useState(key.res.arrFlight.departureDate);
     const [cabin, setCabin] = useState(key.res.reservation.seatClass);
+    let newPrice = 0, priceDiff = 0;
+
+
+    // const [newPrice, setNewPrice] = 
+    if (key.res.deptFlight !== null && Flight !== null) {
+        newPrice = (cabin == "Business") ?
+            (count * (key.res.deptFlight.businessPrice + Flight.businessPrice)) :
+            (count * (key.res.deptFlight.economyPrice + Flight.economyPrice));
+
+        priceDiff = newPrice - key.res.reservation.price;
+    }
     const today = new Date();
 
     Date.prototype.addHours = function (h) {
@@ -136,6 +149,59 @@ export default function Reservation(props) {
             setLoading(false);
             setempty(true);
         }
+
+    };
+    //PAY THE DIFFERENCE
+    const onSubmit2 = () => {
+        const token = localStorage.getItem("token");
+        axios.post('http://localhost:8000/user/payment', {
+            price: newPrice
+        }, {
+            headers: {
+                'authorization': token
+            }
+        }).then(res => {
+            console.log(res.data);
+
+            localStorage.setItem("res_id", key.res.reservation._id);
+            localStorage.setItem("resID", key.res.reservation.reservationID);
+            localStorage.setItem("adultsNo", key.res.reservation.adultsNo);
+            localStorage.setItem("childrenNo", key.res.reservation.childrenNo);
+            localStorage.setItem("seatClass", cabin);
+            localStorage.setItem("deptFlight", key.res.deptFlight._id);
+            localStorage.setItem("arrFlight",  Flight._id);
+            localStorage.setItem("deptSeats", key.res.reservation.deptSeats);
+            localStorage.setItem("arrSeats", reservedSeats);
+
+            localStorage.setItem("isEdit", "true");
+            window.location = res.data.url;
+        })
+            .catch(err => console.log(err))
+
+    };
+    //IN CASE OF no price diff
+    const onSubmit3 = () => {
+        console.log("on submit 3: ", key.res.reservation._id);
+
+        const token = localStorage.getItem("token");
+        axios.post('http://localhost:8000/user/editReservation/' + key.res.reservation._id, {
+            resID: key.res.reservation.reservationID,
+            adultsNo: key.res.reservation.adultsNo,
+            childrenNo: key.res.reservation.childrenNo,
+            seatClass: cabin,
+            deptFlight: key.res.deptFlight._id,
+            arrFlight: Flight._id,
+            deptSeats: key.res.reservation.deptSeats,
+            arrSeats: reservedSeats
+        }, {
+            headers: {
+                'authorization': token
+            }
+        }).then(res => {
+            console.log(res.data);
+            //FEEDBACK AW NOTIFICATION
+            history.push("/profile");
+        }).catch(err => console.log(err))
 
     };
     return (
@@ -301,21 +367,115 @@ export default function Reservation(props) {
                                             <GridContainer justify="center">
 
                                                 <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-
-
+                                                    {Flight === null ?
+                                                        <div><Typography> <h3> Please Select a Return Flight</h3></Typography> </div>
+                                                        :
+                                                        <Box display="flex" flex-direction="row">
+                                                            <GridItem xs={12} sm={4}>
+                                                                <ColorCode />
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={4}>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <SelectSeats
+                                                                            flightNo={Flight.flightNo}
+                                                                            economySeats={Flight.economySeats}
+                                                                            businessSeats={Flight.businessSeats}
+                                                                            currBusinessSeats={Flight.currBusinessSeats}
+                                                                            currEconomySeats={Flight.currEconomySeats}
+                                                                            reservedSeats={Flight.reservedSeats}
+                                                                            type={cabin}
+                                                                            passengers={count}
+                                                                            isReturn="true"
+                                                                            callback={setReservedSeats}
+                                                                        />
+                                                                        <br />
+                                                                    </CardBody>
+                                                                </Card>
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={4}>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                            <b className={classes.title}>Selected Seats # &nbsp; {reservedSeats.map((seat) => "   " + "    " + seat)}</b>
+                                                                        </GridItem>
+                                                                    </CardBody>
+                                                                </Card>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                            <b className={classes.title}>{reservedSeats.length} {"/"} {count}   Seats chosen</b>
+                                                                        </GridItem>
+                                                                    </CardBody>
+                                                                </Card>
+                                                            </GridItem>
+                                                        </Box>
+                                                    }
                                                 </GridItem>
                                             </GridContainer>
                                         ),
                                     },
 
                                     {
-                                        tabButton: " Confirm Flight",
-                                        tabIcon: CheckIcon,
+                                        tabButton: " Payment ",
+                                        tabIcon: PaidIcon,
                                         tabContent: (
                                             <div>
+                                                {reservedSeats.length === count && Flight !== null && key.res.reservation !== null ?
+                                                    <GridContainer justify="center">
+                                                        <GridItem xs={12} sm={6} style={{ textAlign: "center" }}>
+                                                            <ReservationCard
+                                                                adult={key.res.reservation.adultsNo}
+                                                                child={key.res.reservation.childrenNo}
+                                                                seatClass={cabin}
+                                                                deptFlight={key.res.deptFlight}
+                                                                arrFlight={Flight}
+                                                                deptSeats={key.res.reservation.deptSeats}
+                                                                arrSeats={ reservedSeats}
+                                                                totalPrice={priceDiff}
+                                                            >
+                                                            </ReservationCard>
+                                                        </GridItem>
+                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                            {priceDiff === 0 ?
+                                                                <Button
+                                                                    color="danger"
+                                                                    size="lg"
+                                                                    onClick={(e) => { onSubmit3(e); }}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                >
+                                                                    Reserve
+                                                                </Button>
+                                                                : <div>
 
-                                                <GridContainer justify="center">
-                                                </GridContainer>
+                                                                    {priceDiff > 0 ?
+                                                                        <Button
+                                                                            color="danger"
+                                                                            size="lg"
+                                                                            onClick={(e) => { onSubmit2(e); }}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            Pay &nbsp;&nbsp;&nbsp;
+                                                                            <CreditCardIcon></CreditCardIcon>
+                                                                        </Button>
+                                                                        :
+                                                                        <Button
+                                                                            color="danger"
+                                                                            size="lg"
+                                                                            onClick={(e) => { onSubmit2(e); }}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            Refund &nbsp;&nbsp;&nbsp;
+                                                                            <CreditCardIcon></CreditCardIcon>
+                                                                        </Button>}
+                                                                </div>}
+
+                                                        </GridItem>
+                                                    </GridContainer>
+                                                    : <div><Typography> <h3> Please Select your Seats First</h3></Typography> </div>}
                                             </div>
                                         ),
                                     },

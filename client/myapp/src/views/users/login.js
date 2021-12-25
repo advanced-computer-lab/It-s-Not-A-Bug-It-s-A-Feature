@@ -23,6 +23,9 @@ import LockIcon from '@mui/icons-material/Lock';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import "animate.css";
+import "react-notifications-component/dist/theme.css";
+import { store } from 'react-notifications-component';
 
 import {
     BrowserRouter as Router,
@@ -50,6 +53,7 @@ export default function Login(props) {
        setmessage(key.message);
        setmessagecolor("info");
     }
+    console.log("state :",key);
     },[]);
 
 
@@ -89,14 +93,15 @@ export default function Login(props) {
                 document.cookie = "jwt=" + tokenWithout;
                 if (res.data.isAdmin === false){
                     console.log("key",key);
-                    if(key!==null){
-                        history.push({
-                            pathname: "/reserveSeats",
-                            state: key
-                
-                        });
+                    if(key==null){
+                        history.push("/profile");
                     }
-                    else history.push("/profile");
+                    else 
+                    history.push({
+                        pathname: "/reserveSeats",
+                        state: key
+            
+                    });
                 }
                 else
                     history.push("/admin/createFlight");
@@ -129,7 +134,7 @@ export default function Login(props) {
                     <GridContainer justify="center">
                         {message ?
                             <GridItem xs={12} xm={12}>
-                                <SnackbarContent
+                                {/* <SnackbarContent
                                     message={
                                         <span>
                                             {message}
@@ -139,7 +144,22 @@ export default function Login(props) {
                                     color={messagecolor}
 
 
-                                /> </GridItem> : null}
+                                /> */}
+                                {store.addNotification({
+                                      title: message,
+                                      message: " ",
+                                      type: messagecolor,
+                                      container: 'top-right',
+                                      insert: "top",
+                                      animationIn: ["animated", "fadeIn"],
+                                      animationOut: ["animated", "fadeOut"],
+                                      dismiss: {
+                                        duration: 3000
+                                      },
+                                      width: 400
+                                    }),
+                                    setmessage(null)}
+                                 </GridItem> : null}
                         <GridItem xs={12} sm={12} md={4}>
                             <Card className={classes[cardAnimaton]}>
                                 <form className={classes.form}>

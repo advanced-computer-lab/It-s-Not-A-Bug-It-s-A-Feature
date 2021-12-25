@@ -33,7 +33,7 @@ export default function Header(props) {
     const imageClasses = classNames(
         classes.imgFluid,
       );
-    const [logo, setlogo] = useState(color=="white"?logoWhite:logoBlack);
+    
     const [mobileOpen, setMobileOpen] = React.useState(false);
     React.useEffect(() => {
         if (props.changeColorOnScroll) {
@@ -58,7 +58,6 @@ export default function Header(props) {
             document.body
                 .getElementsByTagName("header")[0]
                 .classList.add(classes[changeColorOnScroll.color]);
-                console.log("onchange",changeColorOnScroll," color:",color);
                 if(color==="white") setlogo(logoWhite);  else setlogo(logoBlack);   
 
         } else {
@@ -79,7 +78,7 @@ export default function Header(props) {
         [classes.absolute]: absolute,
         [classes.fixed]: fixed,
     });
-    
+    const [logo, setlogo] = useState(color==="transparent"?logoWhite:logoBlack);
     let history = useHistory();
     const brandComponent = <Button
         size="small"

@@ -83,21 +83,21 @@ export default function ProfilePageRes(props) {
 
 
     const onSubmit = () => {
-        axios.post('http://localhost:8000/user/res', {
+        // axios.post('http://localhost:8000/user/res', {
 
-            resID: resID + 1,
-            adultsNo: key.adultsNo,
-            childrenNo: key.childrenNo,
-            seatClass: key.seatClass,
-            deptFlight: key.deptFlight._id,
-            arrFlight: key.arrFlight._id,
-            deptSeats: key.deptSeats,
-            arrSeats: key.arrSeats
-        }).then(res => {
-            console.log(res.data);
-            //   setResId(resID);
-            setReserved(true);
-        }).catch(err => console.log(err))
+        //     resID: resID + 1,
+        //     adultsNo: key.adultsNo,
+        //     childrenNo: key.childrenNo,
+        //     seatClass: key.seatClass,
+        //     deptFlight: key.deptFlight._id,
+        //     arrFlight: key.arrFlight._id,
+        //     deptSeats: key.deptSeats,
+        //     arrSeats: key.arrSeats
+        // }).then(res => {
+        //     console.log(res.data);
+        //     //   setResId(resID);
+        //     setReserved(true);
+        // }).catch(err => console.log(err))
     };
 
 

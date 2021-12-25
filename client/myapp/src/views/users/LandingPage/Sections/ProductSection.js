@@ -37,7 +37,12 @@ import styles from "./../../../../assets/jss/material-kit-react/views/landingPag
 
 const useStyles = makeStyles(styles);
 
+import { useHistory } from 'react-router-dom';
+
+
 export default function ProductSection() {
+  let history = useHistory();
+
     const classes = useStyles();
     // const settings = {
     //   dots: true,

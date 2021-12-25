@@ -32,7 +32,7 @@ import { AppBar } from '@mui/material';
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import Header from "./../../components/Header/HeaderAdmin.js";
+import Header from "./../../components/Header/Header.js";
 import HeaderLinks from "./../../components/Header/HeaderLinksAdmin.js";
 import Footer from "./../../components/Footer/Footer.js";
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
@@ -116,6 +116,7 @@ export default function Main(props) {
                 }}
             >
                 <div className={classes.container}>
+                    
 
                     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
                         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }} style={{ marginVertical: 50, }}>
@@ -356,7 +357,7 @@ export default function Main(props) {
 
 
 
-                    <div>{helper(rows)}</div>
+                    <div><Card>{helper(rows)}</Card></div>
                 </div>
                 <Footer />
             </div>

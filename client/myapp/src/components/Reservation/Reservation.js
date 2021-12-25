@@ -119,7 +119,11 @@ export default function Reservation(props) {
                             </GridItem>
 
                             <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {props.totalPrice}</Typography>
+                                {props.totalPrice >= 0 ?
+                                    <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {props.totalPrice}</Typography>
+                                    :
+                                    <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {props.totalPrice *-1} (Credit)</Typography>
+}
                             </GridItem>
                         </GridContainer>
                     </CardBody>
