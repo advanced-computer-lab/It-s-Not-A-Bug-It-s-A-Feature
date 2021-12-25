@@ -23,12 +23,69 @@ import Footer from "./../../components/Footer/Footer.js";
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 import image from "./../../assets/img/bg2.jpg";
 
+import * as airports from "airportsjs"
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 const useStyles = makeStyles(styles);
+const useStyles1 = makeStyles((theme) => ({
+    root: {
+
+        // margin: theme.spacing(1),
+        height: "40px",
+        // flex: 2,
+        // position: 'absolute',
+        direction: "flex",
+        backgroundcolor: "white",
+        msOverflowY: "auto",
+        // position: "relative",
+    },
+    text: {
+        // display: "flex",
+        // flexDirection: "row",
+        color: "black",
+        backgroundcolor: "white"
+
+    },
+    a: {
+
+        height: "50px",
+        backgroundcolor: "white",
+        '&:hover': {
+            color: "grey",
+            backgroundcolor: "white",
+        },
+        textdecoration: "none !important",
+        color: "black",
+    },
+
+    testssss: {
+        height: "100px",
+        width: "100px",
+        backgroundcolor: "green"
+    },
+    test: {
+        position: "relative",
+        zIndex: 40,
+        backgroundcolor: "white",
+        overflow: "hidden",
+        msOverflowY: "auto",
+
+    }
+
+}
+));
+
 
 export default function CreateFlight(props) {
+
+
+
+
+
+
+
+
     const classes = useStyles();
     const { ...rest } = props;
     const [flightData, setFlight] = useState({
@@ -245,8 +302,56 @@ const theme = createTheme();
 
 
 function DataForm(d, setData, error, setError, helperText, setHelperText) {
+    ///// _____________________________________ AirPort drop down ____________________________
+
+    // ---------- arrival -----------
+    const [placeholder, setplaceholder] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+    const handleFilter = (event) => {
+        const searchWord = event.target.value;
+        console.log("value", searchWord)
+        setData((prevState => { return { ...prevState, ["departureAirport"]: searchWord }; }));
+        const newFilter = airports.searchByAirportName(searchWord)
+        console.log("new filter", newFilter)
+        if (searchWord === "") {
+            setFilteredData([]);
+        } else {
+            setFilteredData(newFilter);
+        }
+        console.log("filteredData", filteredData)
+
+    };
+
+    const clicked = (value, e) => {
+        setData((prevState => { return { ...prevState, ["departureAirport"]: value.name }; }));
+        setFilteredData([]);
+    };
 
 
+    // ---------- departure -----------
+    const [placeholder1, setplaceholder1] = useState("");
+    const [filteredData1, setFilteredData1] = useState([]);
+    const handleFilter1 = (event) => {
+        const searchWord = event.target.value;
+        console.log("value", searchWord)
+        setData((prevState => { return { ...prevState, ["arrivalAirport"]: searchWord }; }));
+        const newFilter = airports.searchByAirportName(searchWord)
+        console.log("new filter", newFilter)
+        if (searchWord === "") {
+            setFilteredData1([]);
+        } else {
+            setFilteredData1(newFilter);
+        }
+        console.log("filteredData", filteredData1)
+
+    };
+
+    const clicked1 = (value, e) => {
+        setData((prevState => { return { ...prevState, ["arrivalAirport"]: value.name }; }));
+        setFilteredData1([]);
+    };
+    //_______________________________________________________________________________________
+    const styles1 = useStyles1({});
     return (
         <React.Fragment>
             <Grid container spacing={4}>
@@ -457,7 +562,52 @@ function DataForm(d, setData, error, setError, helperText, setHelperText) {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
+                    <form className={styles1.root} noValidate autoComplete="off">
+                        <div className={styles1.text}>
+                            <div className={styles1.test}>
+                                <div className={styles1.test}>
+                                    <TextField
+                                        fullWidth
+                                        required
+                                        name="departureAirport"
+                                        id="departureAirport"
+                                        type="search"
+                                        label="Departure Airport"
+                                        variant="standard"
+                                        value={d.departureAirport}
+                                        error={error.departureAirport}
+                                        helperText={helperText.departureAirport}
+                                        onChange={(event) => {
+                                            handleFilter(event)
+                                            const { name, value } = event.target;
+                                            if (value == '') {
+                                                setError((prevState => { return { ...prevState, [name]: true }; }));
+                                                setHelperText((prevState => { return { ...prevState, [name]: 'This field is requiered' }; }));
+                                            }
+                                            else {
+                                                setError((prevState => { return { ...prevState, [name]: false }; }));
+                                                setHelperText((prevState => { return { ...prevState, [name]: '' }; }));
+                                            }
+                                            setData((prevState => { return { ...prevState, [name]: value }; }));
+                                        }}
+                                    />
+                                </div>
+                                {filteredData.length != 0 && (
+                                    <div className={styles1.test} >
+
+                                        {filteredData.slice(0, 5).map((value, key) => {
+                                            return (
+                                                <a className={styles1.test} onClick={(e) => clicked(value, e)} target="_blank">
+                                                    <p className={styles1.a} >{value.name} </p>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </form>
+                    {/* <TextField
                         required
                         id="departureAirport"
                         name="departureAirport"
@@ -481,12 +631,63 @@ function DataForm(d, setData, error, setError, helperText, setHelperText) {
 
                         }}
 
-                    />
+                    /> */}
                     <div id="match-List"> </div>
 
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField
+                    <form className={styles1.root} noValidate autoComplete="off">
+                        <div className={styles1.text}>
+                            <div className={styles1.test}>
+                                <div className={styles1.test}>
+                                    <TextField
+                                        fullWidth
+                                        required
+                                        id="arrivalAirport"
+                                        name="arrivalAirport"
+                                        label="Arrival Airport"
+                                        type="search"
+                                        variant="standard"
+                                        value={d.arrivalAirport}
+                                        error={error.arrivalAirport}
+                                        helperText={helperText.arrivalAirport}
+                                        onChange={(event) => {
+                                            const { name, value } = event.target;
+                                            console.log("name "+ name);
+                                            console.log(value);
+                                            handleFilter1(event)
+                                            console.log("arrival airport");
+                                            console.log(d.arrivalAirport);
+                                            if (value == '') {
+                                                setError((prevState => { return { ...prevState, [name]: true }; }));
+                                                setHelperText((prevState => { return { ...prevState, [name]: 'This field is requiered' }; }));
+                                            }
+                                            else {
+                                                setError((prevState => { return { ...prevState, [name]: false }; }));
+                                                setHelperText((prevState => { return { ...prevState, [name]: '' }; }));
+                                            }
+                                            setData((prevState => { return { ...prevState, [name]: value }; }));
+
+                                           
+                                        }}
+                                    />
+                                </div>
+                                {filteredData1.length != 0 && (
+                                    <div className={styles1.test} >
+
+                                        {filteredData1.slice(0, 5).map((value, key) => {
+                                            return (
+                                                <a className={styles1.test} onClick={(e) => clicked1(value, e)} target="_blank">
+                                                    <p className={styles1.a} >{value.name} </p>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </form>
+                    {/* <TextField
                         required
                         id="arrivalAirport"
                         name="arrivalAirport"
@@ -510,7 +711,7 @@ function DataForm(d, setData, error, setError, helperText, setHelperText) {
 
                         }}
 
-                    />             <div id="match-List2"> </div>
+                    /> <div id="match-List2"> </div> */}
 
                 </Grid>
 
