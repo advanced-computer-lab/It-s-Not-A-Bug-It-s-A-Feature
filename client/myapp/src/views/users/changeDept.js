@@ -95,11 +95,11 @@ export default function Reservation(props) {
     const [cabin, setCabin] = useState(key.res.reservation.seatClass);
     // const [newPrice, setNewPrice] = useState(0);
     // const [priceDiff, setPriceDiff] = useState(0);
-    let newPrice = 0, priceDiff=0;
+    let newPrice = 0, priceDiff = 0;
 
 
     // const [newPrice, setNewPrice] = 
-    if (key.res.arrFlight !== null && Flight!== null) {
+    if (key.res.arrFlight !== null && Flight !== null) {
         newPrice = (cabin == "Business") ?
             (count * (Flight.businessPrice + key.res.arrFlight.businessPrice)) :
             (count * (Flight.economyPrice + key.res.arrFlight.economyPrice));
@@ -116,7 +116,7 @@ export default function Reservation(props) {
     const onSubmit = () => {
         setempty(null);
         setLoading(true);
-        if (cabin === key.res.reservation.seatClass)
+        // if (cabin === key.res.reservation.seatClass)
             axios.get('http://localhost:8000/user/searchFlights', {
                 params:
                 {
@@ -129,6 +129,7 @@ export default function Reservation(props) {
                 }
             })
                 .then(res => {
+                    console.log("SEARCH ", res.data);
                     setFlight(null);
                     // store data in a variable to be later used
                     // setdepartFlights( res.data);
@@ -138,19 +139,19 @@ export default function Reservation(props) {
                         setempty(true);
                     }
                 }).catch(err => console.log(err))
-        else {
-            setFlight(null);
-            setAllFlights([]);
-            setLoading(false);
-            setempty(true);
-        }
+        // else {
+        //     setFlight(null);
+        //     setAllFlights([]);
+        //     setLoading(false);
+        //     setempty(true);
+        // }
 
     };
     //PAY THE DIFFERENCE
     const onSubmit2 = () => {
         const token = localStorage.getItem("token");
-        axios.post('http://localhost:8000/user/editReservation/' + key.res._id, {
-            price: price
+        axios.post('http://localhost:8000/user/payment', {
+            price: newPrice
         }, {
             headers: {
                 'authorization': token
@@ -158,24 +159,45 @@ export default function Reservation(props) {
         }).then(res => {
             console.log(res.data);
 
+            localStorage.setItem("res_id", key.res.reservation._id);
+            localStorage.setItem("resID", key.res.reservation.reservationID);
+            localStorage.setItem("adultsNo", key.res.reservation.adultsNo);
+            localStorage.setItem("childrenNo", key.res.reservation.childrenNo);
+            localStorage.setItem("seatClass", cabin);
+            localStorage.setItem("deptFlight", Flight._id);
+            localStorage.setItem("arrFlight", key.res.arrFlight._id);
+            localStorage.setItem("deptSeats", reservedSeats);
+            localStorage.setItem("arrSeats", key.res.reservation.arrSeats);
+
+            localStorage.setItem("isEdit", "true");
+            window.location = res.data.url;
         })
             .catch(err => console.log(err))
 
     };
-    //IN CASE OF REFUND
+    //IN CASE OF no price diff
     const onSubmit3 = () => {
+        console.log("on submit 3: ", key.res.reservation._id);
+
         const token = localStorage.getItem("token");
-        axios.post('http://localhost:8000/user/editReservation/' + key.res._id, {
-            price: price
+        axios.post('http://localhost:8000/user/editReservation/' + key.res.reservation._id, {
+            resID: key.res.reservation.reservationID,
+            adultsNo: key.res.reservation.adultsNo,
+            childrenNo: key.res.reservation.childrenNo,
+            seatClass: cabin,
+            deptFlight: Flight._id,
+            arrFlight: key.res.arrFlight._id,
+            deptSeats: reservedSeats,
+            arrSeats: key.res.reservation.arrSeats
         }, {
             headers: {
                 'authorization': token
             }
         }).then(res => {
             console.log(res.data);
-            
-        })
-            .catch(err => console.log(err))
+            //FEEDBACK AW NOTIFICATION
+            history.push("/profile");
+        }).catch(err => console.log(err))
 
     };
     return (
@@ -396,7 +418,7 @@ export default function Reservation(props) {
                                         tabIcon: PaidIcon,
                                         tabContent: (
                                             <div>
-                                                {reservedSeats.length === count && Flight!==null && key.res.reservation!==null ?
+                                                {reservedSeats.length === count && Flight !== null && key.res.reservation !== null ?
                                                     <GridContainer justify="center">
                                                         <GridItem xs={12} sm={6} style={{ textAlign: "center" }}>
                                                             <ReservationCard
@@ -412,29 +434,42 @@ export default function Reservation(props) {
                                                             </ReservationCard>
                                                         </GridItem>
                                                         <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                        {priceDiff>=0 ? 
-                                                            <Button
-                                                                color="danger"
-                                                                size="lg"
-                                                                onClick={(e) => { onSubmit2(e); }}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                Pay &nbsp;&nbsp;&nbsp;
-                                                                <CreditCardIcon></CreditCardIcon>
-                                                            </Button>
-                                                            :
-                                                            <Button
-                                                                color="danger"
-                                                                size="lg"
-                                                                onClick={(e) => { onSubmit3(e); }}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                Refund &nbsp;&nbsp;&nbsp;
-                                                                <CreditCardIcon></CreditCardIcon>
-                                                            </Button>}
-                                    
+                                                            {priceDiff === 0 ?
+                                                                <Button
+                                                                    color="danger"
+                                                                    size="lg"
+                                                                    onClick={(e) => { onSubmit3(e); }}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                >
+                                                                    Reserve
+                                                                </Button>
+                                                                : <div>
+
+                                                                    {priceDiff > 0 ?
+                                                                        <Button
+                                                                            color="danger"
+                                                                            size="lg"
+                                                                            onClick={(e) => { onSubmit2(e); }}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            Pay &nbsp;&nbsp;&nbsp;
+                                                                            <CreditCardIcon></CreditCardIcon>
+                                                                        </Button>
+                                                                        :
+                                                                        <Button
+                                                                            color="danger"
+                                                                            size="lg"
+                                                                            onClick={(e) => { onSubmit2(e); }}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            Refund &nbsp;&nbsp;&nbsp;
+                                                                            <CreditCardIcon></CreditCardIcon>
+                                                                        </Button>}
+                                                                </div>}
+
                                                         </GridItem>
                                                     </GridContainer>
                                                     : <div><Typography> <h3> Please Select your Seats First</h3></Typography> </div>}

@@ -534,9 +534,9 @@ async function changeSeats(newSeats, reservationID, whichFlight) {
     // newSeats = newSeats.split(',').map(function (item) { return parseInt(item, 10); });
 
     await Reservation.findById(reservationID).then(reserv => r = reserv);
-    console.log("ressss idddd",reservationID, r);
+    console.log("ressss idddd", reservationID, r);
     var flightID = r[whichFlight];
-    
+
     await Flights.findById(flightID).then(flight => f = flight);
 
     var oldSeats;
@@ -775,17 +775,19 @@ router.route('/logout').delete(verifyJWT, (req, res) => {
 
 router.route('/editReservation/:id').post(verifyJWT, async (req, res) => {
     var id = req.params.id;
+    console.log("MY ID ", id);
     console.log('\nEditing reservation...\nAfter editing, the old reservation\'s price will\n' +
         'be refunded and you will proceed to pay the price of your \nreservation after editing.')
     send = false;
     editmsg = "Reservation edited successfully.";
 
     await cancelRes(id);
-    if (editmsg === "Reservation edited successfully.")
+    if (editmsg === "Reservation edited successfully.") {
         await addRes(req);
 
-    send = true;
-    sendItenrary(id, 'Reservation Edited Successfully');
+        send = true;
+        // sendItenrary(id, 'Reservation Edited Successfully');
+    }
     return res.json({ message: editmsg });
 })
 
@@ -815,7 +817,12 @@ async function flightDetails(flightID) {
 async function sendItenrary(resId, subject) {
     var reservation;
     var owner;
-    await Reservation.findById(resId).then(res => reservation = res).catch(err => console.log('error: No such reservation!'));
+    console.log("resId hena", resId);
+    await Reservation.findById(resId).then(async res => {
+        console.log("fetched ress", res);
+        await (reservation = res)
+    })
+        .catch(err => console.log('error: No such reservation!'));
     var userId = reservation['userID'];
     await User.findById(userId).then(result => owner = result).catch(err => console.error(err));
 

@@ -70,25 +70,25 @@ export default function Reservation(props) {
     const onSubmit = () => {
 
 
-        axios.post('http://localhost:8000/user/res', {
-            body:
-            {
-                resID: resID,
-                adultsNo: key.adultsNo,
-                childrenNo: key.childrenNo,
-                seatClass: key.type,
-                deptFlight: key.flight.flightNo,
-                arrFlight: key.ReturnFlight.flightNo,
-                deptSeats: deptSeats, //???????
-                arrSeats: arrSeats, //??????
+        // axios.post('http://localhost:8000/user/res', {
+        //     body:
+        //     {
+        //         resID: resID,
+        //         adultsNo: key.adultsNo,
+        //         childrenNo: key.childrenNo,
+        //         seatClass: key.type,
+        //         deptFlight: key.flight.flightNo,
+        //         arrFlight: key.ReturnFlight.flightNo,
+        //         deptSeats: deptSeats, //???????
+        //         arrSeats: arrSeats, //??????
 
 
-            }
-        }).then(res => {
-            console.log(res.data);
-            setResId(resID + 1);
-            setReserved(true);
-        }).catch(err => console.log(err))
+        //     }
+        // }).then(res => {
+        //     console.log(res.data);
+        //     setResId(resID + 1);
+        //     setReserved(true);
+        // }).catch(err => console.log(err))
     };
 
     return (

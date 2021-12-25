@@ -175,9 +175,8 @@ export default function Reservation(props) {
             localStorage.setItem("deptSeats", reservedSeats2);
             localStorage.setItem("arrSeats", reservedSeats3);
 
-            // console.log("HEREE");
-            // console.log(reservedSeats2);
-            // console.log(localStorage.getItem("deptSeats" ));
+            localStorage.setItem("isEdit", "false");
+
             window.location = res.data.url;
         })
             .catch(err => console.log(err))
