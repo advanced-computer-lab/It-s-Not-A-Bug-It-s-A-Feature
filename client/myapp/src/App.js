@@ -52,7 +52,7 @@ function App() {
            <Route path ={"/aboutUs"} component={About}></Route>
 
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
-           <Route path ={"/"} component={Home}></Route>
+           {/* <Route path ={"/"} component={Home}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>
