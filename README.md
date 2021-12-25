@@ -49,7 +49,7 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
    #### React(.js) - a client-side JavaScript framework
    #### Node(.js) - the premier JavaScript web server
 
-# **Features**
+# **Features** :sparkles:
 
 - Interesting news about the world's top travel destinations are featured at the Home page. :round_pushpin:
 - Users can personalize their experience by adding their favourate quote and profile photo. :boy:
@@ -64,7 +64,7 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 # **Code Examples**
    This is where you try to compress your project and make the reader understand what it does as simply as possible. This should help the reader understand if your code solves their issue.
 
-# **Installation**
+# **Installation** :arrow_down:
 
    A) Clone the Repository to your device :computer:
 
@@ -97,7 +97,7 @@ node App.js
 
 
 
-# **API Reference**
+# **API Reference** :bookmark_tabs:
 
    [Axios](https://axios-http.com/docs/api_intro) for communication between the front end and back end
    
