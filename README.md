@@ -3,10 +3,10 @@
 
 OverReact is an Airline Reservation System through which users can reserve and pay for flights in order to travel to various countries and cities. :earth_americas: :airplane:
 
-# Motivation
+# Motivation :fire:
 The purpose of this project is to learn how to work as a team on a large-scale MERN Stack project and meet specific Functional and Non-Functional Requirements. Learn how to deal with various APIs and write code in a consistent style.
 
-# **Build Status**
+# **Build Status** :hammer:
 - The website currently offers round trips only. However, in the future we intend to offer one-way trips.
 
 - The website allows you to choose one cabin class per reservation, in the future we may allow the same reservation to have different cabin classes.
@@ -28,7 +28,7 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 
 ![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
 
-## Top Destinations
+## Top Destinations :round_pushpin:
 
 ![Top Destinations](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Top%20Destinations.PNG)
 
@@ -36,7 +36,7 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
 
-## My Profile
+## My Profile :boy:
 
 ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
 
@@ -51,8 +51,8 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 
 # **Features**
 
-- Interesting news about the world's top travel destinations are featured at the Home page.
-- Users can personalize their experience by adding their favourate quote and profile photo.
+- Interesting news about the world's top travel destinations are featured at the Home page. :round_pushpin:
+- Users can personalize their experience by adding their favourate quote and profile photo. :boy:
 - Users can update their personal information any time.
 - Users can search for flights and reserve them. :airplane:
 - Auto-complete of textboxes is supported to ease the search experience.
@@ -141,11 +141,11 @@ node App.js
 
   ## In My Profile Page, you can:
 
-   ### A) Change Your Personal Details
+   ### A) Change Your Personal Details :boy:
 
    ### B) View Your Upcoming Flights:
 
-   a) Cancel Reservation
+   a) Cancel Reservation :x:
    
    b) Edit Reservation 
 
@@ -172,7 +172,7 @@ node App.js
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
 
 
-# **Contribute**
+# **Contribute** :handshake:
 
    If you would like to contribute to our website, check our [Contribution Guidelines](CONTRIBUTING.md) 
     
