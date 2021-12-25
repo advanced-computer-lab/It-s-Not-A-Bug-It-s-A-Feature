@@ -102,25 +102,22 @@ export default function Reservation(props) {
 
     const onSubmit = () => {
         axios.post('http://localhost:8000/user/changeSeats', {
-            newSeats: reservedSeats2,
-            reservationID: resInfo.reservation._id,
-            whichFlight: "deptFlight"
-        }, {
+                newSeats: reservedSeats2,
+                reservationID: resInfo.reservation._id,
+                whichFlight: "deptFlight"        }, {
             headers: {
                 'authorization': token
             }
         }).then(res => {
-
-
             console.log(res.data);
 
             setReserved(true);
         }).catch(err => console.log(err))
-        
+
         axios.post('http://localhost:8000/user/changeSeats', {
-            newSeats: reservedSeats3,
-            reservationID: resInfo.reservation._id,
-            whichFlight: "arrFlight"
+                newSeats: reservedSeats3,
+                reservationID: resInfo.reservation._id,
+                whichFlight: "arrFlight"
         }, {
             headers: {
                 'authorization': token

@@ -207,24 +207,47 @@ export default function Reservation(props) {
                                         tabContent: (
                                             <GridContainer justify="center">
                                                 <GridItem xs={12} sm={12}>
-                                                    <Typography> <h3>Choose your seats</h3></Typography>
+                                                    {/* <Typography> <h3>Choose your seats</h3></Typography> */}
                                                     {loading ? <CustomLinearProgress color="info" /> :
                                                         <Box display="flex" flex-direction="row">
-                                                            <GridItem xs={12} sm={12}>
-                                                                <SelectSeats
-                                                                    flightNo={key.flight.flightNo}
-                                                                    economySeats={deptData.economySeats}
-                                                                    businessSeats={deptData.businessSeats}
-                                                                    currBusinessSeats={deptData.currBusinessSeats}
-                                                                    currEconomySeats={deptData.currEconomySeats}
-                                                                    reservedSeats={deptData.reservedSeats}
-                                                                    type={cabin}
-                                                                    passengers={passengers}
-                                                                    isReturn="false"
-                                                                    callback={setReservedSeats2}
-                                                                />
+                                                            <GridItem xs={12} sm={4}>
+                                                                <ColorCode />
                                                             </GridItem>
-                                                            <ColorCode />
+                                                            <GridItem xs={12} sm={4}>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <SelectSeats
+                                                                            flightNo={key.flight.flightNo}
+                                                                            economySeats={deptData.economySeats}
+                                                                            businessSeats={deptData.businessSeats}
+                                                                            currBusinessSeats={deptData.currBusinessSeats}
+                                                                            currEconomySeats={deptData.currEconomySeats}
+                                                                            reservedSeats={deptData.reservedSeats}
+                                                                            type={cabin}
+                                                                            passengers={passengers}
+                                                                            isReturn="false"
+                                                                            callback={setReservedSeats2}
+                                                                        />
+                                                                        <br />
+                                                                    </CardBody>
+                                                                </Card>
+                                                            </GridItem>
+                                                            <GridItem xs={12} sm={4}>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                            <b className={classes.title}>Selected Seats # &nbsp; {reservedSeats2.map((seat) => "   " + "    " + seat)}</b>
+                                                                        </GridItem>
+                                                                    </CardBody>
+                                                                </Card>
+                                                                <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                            <b className={classes.title}>{reservedSeats2.length} {"/"} {passengers}   Seats chosen</b>
+                                                                        </GridItem>
+                                                                    </CardBody>
+                                                                </Card>
+                                                            </GridItem>
                                                         </Box>
                                                     }
 
@@ -253,7 +276,7 @@ export default function Reservation(props) {
                                                 <GridItem xs={12} sm={12}>
                                                     {reservedSeats2.length === passengers ?
                                                         <div>
-                                                            <Typography> <h3>Choose your seats</h3></Typography>
+                                                            {/* <Typography> <h3>Choose your seats</h3></Typography> */}
                                                             {loading2 ? <CustomLinearProgress color="info" /> :
                                                                 <Box display="flex" flex-direction="row">
                                                                     <GridItem xs={12} sm={12}>

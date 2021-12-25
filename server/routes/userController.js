@@ -525,16 +525,18 @@ router.route('/findAlternativeFlights').get((req, res, next) => { //takes parame
 });
 
 router.route('/changeSeats').post((req, res, next) => {
-    var rq = req.query;
+    var rq = req.body;
     res.status(400).send(changeSeats(rq.newSeats, rq.reservationID, rq.whichFlight));
 });
 
 async function changeSeats(newSeats, reservationID, whichFlight) {
     //if newSeats is already input as a Number array, we won't need the next line
-    newSeats = newSeats.split(',').map(function (item) { return parseInt(item, 10); });
+    // newSeats = newSeats.split(',').map(function (item) { return parseInt(item, 10); });
 
     await Reservation.findById(reservationID).then(reserv => r = reserv);
+    console.log("ressss idddd",reservationID, r);
     var flightID = r[whichFlight];
+    
     await Flights.findById(flightID).then(flight => f = flight);
 
     var oldSeats;

@@ -16,28 +16,29 @@ import { makeStyles } from "@material-ui/styles";
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 import SeatPicker from 'react-seat-picker';
 
-//handle currbusiness and econ seats - maybe in parent component - update flight w new values
 
 function createRows(business, econ, reserved, isBusiness) {
   // console.log("creating rows");
   const allSeats = business + econ;
   var res = [...Array(Math.ceil(allSeats / 6))].map(x => Array(6).fill(0));
   for (let k = 1, i = 0; i < res.length; i++) {
-    for (let j = 0; j <= 6; j++) {
-      if (j == 3 || k > allSeats) {
-        res[i][j] = { number: "", isReserved: true };
+      for (let j = 0; j <= 6; j++) {
+          if (j == 3 || k > allSeats) {
+              res[i][j] = { number: "", isReserved: true };
+          }
+          else {
+              if (reserved.includes(k) || (isBusiness && k > business) || (!isBusiness && k <= business)) {
+                  res[i][j] = { number: k++, isReserved: true };
+              }
+              else {
+                  res[i][j] = { number: k++ };
+              }
+          }
       }
-      else {
-        if (reserved.includes(k) || (isBusiness && k > business) || (!isBusiness && k <= business)) {
-          res[i][j] = { number: k++, isReserved: true };
-        }
-        else {
-          res[i][j] = { number: k++ };
-        }
-      }
-    }
-    return res;
   }
+  return res;
+}
+
 
   const useStyles = makeStyles(styles);
 
@@ -53,15 +54,11 @@ function createRows(business, econ, reserved, isBusiness) {
     SeatPicker.defaultProps = {
       addSeatCallback: function addSeatCallback(row, number, id) {
         console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-        console.log("my seatcheck is  ", props.seatsCheck);
-        // if (passengers > props.seatsCheck) {
         props.callback(prevState => [...prevState, number]);
-        // }
       },
 
       removeSeatCallback: function removeSeatCallback(row, number, id) {
         console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-        console.log("my seatcheck is  ", props.seatsCheck);
 
         props.callback(prevState => prevState.filter(item => item !== number));
         console.log("set sel hena");
@@ -89,4 +86,4 @@ function createRows(business, econ, reserved, isBusiness) {
         </div>
       </div>
     );
-  }}
+  }
