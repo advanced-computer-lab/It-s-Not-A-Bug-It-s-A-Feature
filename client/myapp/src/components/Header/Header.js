@@ -33,7 +33,7 @@ export default function Header(props) {
     const imageClasses = classNames(
         classes.imgFluid,
       );
-    const [logo, setlogo] = useState(color=="white"?logoWhite:logoBlack);
+    const [logo, setlogo] = useState(color==null||color==="white"?logoWhite:logoBlack);
     const [mobileOpen, setMobileOpen] = React.useState(false);
     React.useEffect(() => {
         if (props.changeColorOnScroll) {
