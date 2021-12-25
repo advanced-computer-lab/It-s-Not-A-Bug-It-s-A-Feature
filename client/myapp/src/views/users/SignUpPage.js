@@ -110,7 +110,6 @@ function searchCountry({ placeholder, data }) {
 
 }
 
-
 const useStyles = makeStyles(styles);
 
 export default function SignUp(props) {
@@ -148,7 +147,6 @@ export default function SignUp(props) {
 
   //____________________________________________________ done_____________________________________
 
-
 // error --> text field color 
   const [Epass, setEpass] = useState("primary");
   const [EEmail, setEmail] = useState("primary");
@@ -168,7 +166,6 @@ export default function SignUp(props) {
   const [Eclname, setEclname] = useState("primary");
 
 
-
   // helper texts
   const [pass, setpass] = useState("");
   const [mail, setmail] = useState("");
@@ -186,9 +183,6 @@ export default function SignUp(props) {
   const [exp, setexp] = useState("");
   const [cfname, setcfname] = useState("");
   const [clname, setclname] = useState("");
-
-
-
 
   function Sethelper() {
     if (passport === "") {
