@@ -4,6 +4,7 @@ import React from "react";
 import classNames from "classnames";
 
 import { makeStyles } from "@material-ui/styles";
+import Checkbox from "@material-ui/core/Checkbox";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
 // core components
@@ -24,6 +25,8 @@ import SelectSeats from "../../components/Flight/SelectSeats.js";
 import ColorCode from "../../components/Flight/colorCodeSeats.js";
 import Box from '@material-ui/core/Box';
 import CardBody from "./../../components/Card/CardBody.js";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
 
 import ReservationCard from "./../../components/Reservation/Reservation.js";
 
@@ -60,23 +63,6 @@ export default function Reservation(props) {
     // const childrenNo = key.childrenNo;
     // const adultsNo = key.adultsNo;
     const [loading, setLoading] = useState(true);
-    // const [loading2, setLoading2] = useState(true);
-    // const [retData, setRetData] = useState({
-    //     economySeats: 0,
-    //     businessSeats: 0,
-    //     currBusinessSeats: 0,
-    //     currEconomySeats: 0,
-    //     reservedSeats: []
-    // });
-    // const [deptData, setDeptData] = useState({
-    //     economySeats: 0,
-    //     businessSeats: 0,
-    //     currBusinessSeats: 0,
-    //     currEconomySeats: 0,
-    //     reservedSeats: []
-    // });
-    // const cabin = key.cabin;
-    // const passengers = key.passengers;
     const [reservedSeats2, setReservedSeats2] = useState([]);
     const [reservedSeats3, setReservedSeats3] = useState([]);
     const [oldDeptSeats, setOldDeptSeats] = useState([]);
@@ -90,6 +76,7 @@ export default function Reservation(props) {
     });
     const token = localStorage.getItem("token");
     useEffect(() => {
+
         axios.get('http://localhost:8000/user/myReservations/' + key.id, {
             headers: {
                 'authorization': token
@@ -109,26 +96,42 @@ export default function Reservation(props) {
             setLoading(false);
         }).catch(err => console.log(err))
 
-        //    userRes = {reservation: reserv, deptFlight: resDeptFlight, arrFlight: resArrFlight};
 
 
     }, []);
 
     const onSubmit = () => {
-        history.push({
-            //TODO - fl return method
-            //display old seat numbers
-            //TODO
-            //axios post req hena to edit seats
-            // "/changeSeats"
-            // give it resID,  key.resID
-            // whichFligh (string), //h3ml nboth wla eh??????
-            //give option to stay w old seats
-            //display old seats
-            // new arr of seats, resSeat 2 w 3
+        axios.post('http://localhost:8000/user/changeSeats', {
+                newSeats: reservedSeats2,
+                reservationID: resInfo.reservation._id,
+                whichFlight: "deptFlight"        }, {
+            headers: {
+                'authorization': token
+            }
+        }).then(res => {
+            console.log(res.data);
 
-            //deptFlight
-            // arrFlight
+            setReserved(true);
+        }).catch(err => console.log(err))
+
+        axios.post('http://localhost:8000/user/changeSeats', {
+                newSeats: reservedSeats3,
+                reservationID: resInfo.reservation._id,
+                whichFlight: "arrFlight"
+        }, {
+            headers: {
+                'authorization': token
+            }
+        }).then(res => {
+
+
+            console.log(res.data);
+
+            setReserved(true);
+        }).catch(err => console.log(err))
+
+        history.push({
+
         });
 
 
@@ -172,33 +175,66 @@ export default function Reservation(props) {
                                                     {loading ? <CustomLinearProgress color="info" /> :
                                                         <div>
                                                             <Box display="flex" flex-direction="row">
-                                                                <GridItem xs={12} sm={8}>
-                                                                    <SelectSeats
-                                                                        flightNo={resInfo.deptFlight.flightNo}
-                                                                        economySeats={resInfo.deptFlight.economySeats}
-                                                                        businessSeats={resInfo.deptFlight.businessSeats}
-                                                                        currBusinessSeats={resInfo.deptFlight.currBusinessSeats}
-                                                                        currEconomySeats={resInfo.deptFlight.currEconomySeats}
-                                                                        reservedSeats={resInfo.deptFlight.reservedSeats}
-                                                                        type={cabin}
-                                                                        passengers={passengers}
-                                                                        isReturn="false"
-                                                                        callback={setReservedSeats2}
-                                                                    />
-                                                                </GridItem>
                                                                 <GridItem xs={12} sm={4}>
                                                                     <ColorCode />
+                                                                    {/* <Card maxwidth="xs">
+                                                                        <CardBody>
+                                                                            <FormControlLabel
+                                                                                control={
+                                                                                    <Checkbox
+                                                                                        tabIndex={-1}
+                                                                                        onClick={() => 
+                                                                                            reservedSeats2 === oldDeptSeats? 
+                                                                                            setReservedSeats2([]):
+                                                                                            setReservedSeats2(oldDeptSeats)}
+                                                                                        checked={reservedSeats2 === oldDeptSeats ? true:false}
+                                                                                        checkedIcon={<Check className={classes.checkedIcon} />}
+                                                                                        icon={<Check className={classes.uncheckedIcon} />}
+                                                                                        classes={{
+                                                                                            checked: classes.checked,
+                                                                                            root: classes.checkRoot,
+                                                                                        }}
+                                                                                    />
+                                                                                }
+                                                                                classes={{  label: classes.title, root: classes.labelRoot }}
+                                                                                label="Keep my old seats"
+                                                                            />
+                                                                        </CardBody>
+                                                                    </Card> */}
+                                                                </GridItem>
+                                                                <GridItem xs={12} sm={4}>
+                                                                    <Card maxwidth="xs">
+                                                                        <CardBody>
+                                                                            <SelectSeats
+                                                                                flightNo={resInfo.deptFlight.flightNo}
+                                                                                economySeats={resInfo.deptFlight.economySeats}
+                                                                                businessSeats={resInfo.deptFlight.businessSeats}
+                                                                                currBusinessSeats={resInfo.deptFlight.currBusinessSeats}
+                                                                                currEconomySeats={resInfo.deptFlight.currEconomySeats}
+                                                                                reservedSeats={resInfo.deptFlight.reservedSeats.filter(item => !oldDeptSeats.includes(item))}
+                                                                                type={cabin}
+                                                                                passengers={passengers}
+                                                                                isReturn="false"
+                                                                                callback={setReservedSeats2}
+                                                                            />
+                                                                            <br />
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </GridItem>
+                                                                <GridItem xs={12} sm={4}>
+                                                                    {/* <ColorCode /> */}
                                                                     <Card maxwidth="xs">
                                                                         <CardBody>
                                                                             <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                                <b className={classes.title}>Old Seat Numbers: {oldDeptSeats}</b>
+                                                                                <b className={classes.title}>Old Seats # &nbsp;
+                                                                                    {oldDeptSeats.map((seat) => "   " + "    " + seat)}</b>
                                                                             </GridItem>
                                                                         </CardBody>
                                                                     </Card>
                                                                     <Card maxwidth="xs">
                                                                         <CardBody>
                                                                             <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                                <b className={classes.title}>New Seat Numbers: {reservedSeats2}</b>
+                                                                                <b className={classes.title}>New Seats # &nbsp; {reservedSeats2.map((seat) => "   " + "    " + seat)}</b>
                                                                             </GridItem>
                                                                         </CardBody>
                                                                     </Card>
@@ -210,6 +246,7 @@ export default function Reservation(props) {
                                                                         </CardBody>
                                                                     </Card>
                                                                 </GridItem>
+
                                                             </Box>
 
 
@@ -232,22 +269,68 @@ export default function Reservation(props) {
                                                             {reservedSeats2.length === passengers ?
                                                                 <div>
                                                                     <Box display="flex" flex-direction="row">
-                                                                        <GridItem xs={12} sm={8}>
-                                                                            <SelectSeats
-                                                                                flightNo={resInfo.arrFlight.flightNo}
-                                                                                economySeats={resInfo.arrFlight.economySeats}
-                                                                                businessSeats={resInfo.arrFlight.businessSeats}
-                                                                                currBusinessSeats={resInfo.arrFlight.currBusinessSeats}
-                                                                                currEconomySeats={resInfo.arrFlight.currEconomySeats}
-                                                                                reservedSeats={resInfo.arrFlight.reservedSeats}
-                                                                                type={cabin}
-                                                                                passengers={passengers}
-                                                                                callback={setReservedSeats3}
-                                                                                isReturn="true"
-                                                                            />
+                                                                        <GridItem xs={12} sm={4}>
+
+                                                                            <ColorCode />
+                                                                            <GridContainer justify="center">
+                                                                                <GridItem xs={12} sm={3}></GridItem>
+                                                                                <GridItem xs={12} sm={9}>
+                                                                                    {(reservedSeats3.length === passengers) ?
+                                                                                        <Button
+                                                                                            color="danger"
+                                                                                            size="lg"
+                                                                                            onClick={(e) => { onSubmit(e); }}
+                                                                                            target="_blank"
+                                                                                            rel="noopener noreferrer"
+                                                                                        >
+                                                                                            Reserve
+                                                                                        </Button> : null}
+                                                                                </GridItem>
+                                                                            </GridContainer>
                                                                         </GridItem>
                                                                         <GridItem xs={12} sm={4}>
-                                                                            <ColorCode />
+                                                                            <Card maxwidth="xs">
+                                                                                <CardBody>
+                                                                                    <SelectSeats
+                                                                                        flightNo={resInfo.arrFlight.flightNo}
+                                                                                        economySeats={resInfo.arrFlight.economySeats}
+                                                                                        businessSeats={resInfo.arrFlight.businessSeats}
+                                                                                        currBusinessSeats={resInfo.arrFlight.currBusinessSeats}
+                                                                                        currEconomySeats={resInfo.arrFlight.currEconomySeats}
+                                                                                        reservedSeats={resInfo.arrFlight.reservedSeats.filter(item => !oldRetSeats.includes(item))}
+                                                                                        type={cabin}
+                                                                                        passengers={passengers}
+                                                                                        callback={setReservedSeats3}
+                                                                                        isReturn="true"
+                                                                                    />
+                                                                                    <br />
+                                                                                </CardBody>
+                                                                            </Card>
+                                                                        </GridItem>
+                                                                        <GridItem xs={12} sm={4}>
+                                                                            <Card maxwidth="xs">
+                                                                                <CardBody>
+                                                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                        <b className={classes.title}>Old Seat Numbers: {oldRetSeats}</b>
+                                                                                    </GridItem>
+                                                                                </CardBody>
+                                                                            </Card>
+                                                                            <Card maxwidth="xs">
+                                                                                <CardBody>
+                                                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                        <b className={classes.title}>New Seat Numbers: {reservedSeats3}</b>
+                                                                                    </GridItem>
+                                                                                </CardBody>
+                                                                            </Card>
+                                                                            <Card maxwidth="xs">
+                                                                                <CardBody>
+                                                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                        <b className={classes.title}>{reservedSeats3.length} {"/"} {passengers}   Seats chosen</b>
+                                                                                    </GridItem>
+                                                                                </CardBody>
+                                                                            </Card>
+                                                                        </GridItem>
+                                                                        {/* <GridItem xs={12} sm={4}>
                                                                             <Card maxwidth="xs">
                                                                                 <CardBody>
                                                                                     <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
@@ -255,7 +338,7 @@ export default function Reservation(props) {
                                                                                     </GridItem>
                                                                                 </CardBody>
                                                                             </Card>
-                                                                        </GridItem>
+                                                                        </GridItem> */}
                                                                         {/* <GridItem xs={12} sm={2}></GridItem> */}
                                                                     </Box>
                                                                 </div>

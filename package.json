@@ -9,6 +9,7 @@
     "@material-ui/icons": "4.11.2",
     "@mui/system": "^5.2.2",
     "airportsjs": "^0.3.1",
+    "city-state-country": "^1.0.3",
     "classnames": "2.3.1",
     "lodash.reduce": "^4.6.0",
     "lodash.startswith": "^4.2.1",
