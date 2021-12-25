@@ -43,46 +43,56 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import { cssClasses } from "nouislider";
-import { set } from "lodash";
+import Grid from '@mui/material/Grid';
 var worldMapData = require('city-state-country');
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
+const useStyles1 = makeStyles((theme) => ({
+    root: {
 
-//     margin: theme.spacing(1),
-//     height: "71px",
-//     flex: 1,
-//     // position: 'absolute',
-//     direction: "flex",
-//   },
-//   text: {
-//     display: "flex",
-//     flexDirection: "row",
-//     color: "black",
+        // margin: theme.spacing(1),
+        height: "50px",
+        // flex: 2,
+        // position: 'absolute',
+        // direction: "flex",
+        backgroundcolor: "white",
+        msOverflowY: "auto",
+        // position: "relative",
+    },
+    text: {
+        // display: "flex",
+        // flexDirection: "row",
+        color: "black",
+        backgroundcolor: "white"
 
-//   },
+    },
+    a: {
 
+        height: "20px",
+        backgroundcolor: "white",
+        '&:hover': {
+            color: "grey",
+            backgroundcolor: "white",
+        },
+        textdecoration: "none !important",
+        color: "black",
+    },
 
-//   a: {
-//     '&:hover': {
-//       color: "grey",
-//     },
-//     textdecoration: "none!important",
-//     color: "black"
-//   },
+    testssss: {
+        height: "100px",
+        width: "100px",
+        backgroundcolor: "green"
+    },
+    test: {
+        position: "relative",
+        zIndex: 20,
+        backgroundcolor:"white",
+        overflow:"hidden",
+        msOverflowY:"auto",
 
-//   testssss: {
-//     height: "100px",
-//     width: "100px",
-//     backgroundcolor: "green"
-//   }
+    }
 
-
-// }
-// ));
+}
+));
 
 
 
@@ -115,6 +125,7 @@ const useStyles = makeStyles(styles);
 export default function SignUp(props) {
 
     // ____________________________________________________search componenet_______________________________
+    const styles1 = useStyles1({});
     const styles = useStyles({
     });
     const [placeholder, setplaceholder] = useState("Country");
@@ -669,11 +680,11 @@ export default function SignUp(props) {
                                                                         />
                                                                     </GridItem>
                                                                     <GridItem xs={12} sm={6} >
-                                                                        <form className={styles.root} noValidate autoComplete="off">
-                                                                            <div className={styles.text}>
+                                                                        <form className={styles1.root} noValidate autoComplete="off">
+                                                                            <div className={styles1.text}>
 
-                                                                                <div className="resultsTo">
-                                                                                    <div className="searchInputTo">
+                                                                                <div className={styles1.test}>
+                                                                                    <div className=  {styles1.test}>
 
                                                                                         <TextField
                                                                                             fullWidth
@@ -685,24 +696,31 @@ export default function SignUp(props) {
                                                                                             value={wordEntered}
                                                                                             color={Ecount}
                                                                                             onChange={(event) => {
+                                                                                                if(event.target.value==""){
+                                                                                                    setcount("This field is required");
+                                                                                                    setEcount("error");
+                                                                                                }else{
+                                                                                                    setcount("");
+                                                                                                    setEcount("primary");
+                                                                                                }
                                                                                                 handleFilter(event)
+                                                                                             
                                                                                             }}
                                                                                         />
                                                                                     </div>
                                                                                     {filteredData.length != 0 && (
-                                                                                        <div className="dataResultTo" >
+                                                                                        <div className={styles1.test} >
 
-                                                                                            {filteredData.slice(0, 15).map((value, key) => {
+                                                                                            {filteredData.slice(0, 5).map((value, key) => {
                                                                                                 return (
-                                                                                                    <a onClick={(e) => clicked(value, e)} target="_blank">
-                                                                                                        <MenuItem>{value.name} </MenuItem>
-                                                                                                    </a>);
+                                                                                                        <a className={styles1.test} onClick={(e) => clicked(value, e)} target="_blank">
+                                                                                                            <p className={styles1.a} >{value.name} </p>
+                                                                                                        </a>
+                                                                                                );
                                                                                             })}
                                                                                         </div>
                                                                                     )}
                                                                                 </div>
-
-
                                                                             </div>
 
                                                                         </form>
@@ -725,11 +743,11 @@ export default function SignUp(props) {
                                                                                 value={birthdate}
                                                                                 onChange={(newValue) => {
                                                                                     setbirthdate(newValue);
-                                                                                    if (event.target.value !== "") {
-                                                                                        setbirth("");
+                                                                                    if (newValue !== "") {
+                                                                                        setBirth("");
                                                                                         setEBirth("primary");
                                                                                     } else {
-                                                                                        setbirth("This field is required");
+                                                                                        setBirth("This field is required");
                                                                                         setEBirth("error");
                                                                                     }
                                                                                 }}
@@ -927,7 +945,7 @@ export default function SignUp(props) {
                                                                                 helperText={exp}
                                                                                 onChange={(newValue) => {
                                                                                     setexpirydate(newValue);
-                                                                                    if (event.target.value !== "") {
+                                                                                    if (newValue !== "") {
                                                                                         setexp("");
                                                                                         setEexp("primary");
                                                                                     } else {
