@@ -38,8 +38,6 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 
 ![Top Destinations](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Top%20Destinations.PNG)
     
-# **Code Examples**
-   This is where you try to compress your project and make the reader understand what it does as simply as possible. This should help the reader understand if your code solves their issue.
 
 # **Installation** :arrow_down:
 
@@ -82,8 +80,6 @@ node App.js
    
    [Nodemailer](https://nodemailer.com/about/) for sending emails to clients :mailbox:
 
-# **Tests**
-   This is the section where you mention all the different tests that can be performed with code examples
 
 # **How to Use?**
 
