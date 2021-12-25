@@ -19,6 +19,9 @@ const MongoURI = process.env.ATLAS_URI;
 var cors = require('cors');
 var ReactDOM = require('react-dom')
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+}
 //app.use(cors())
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
