@@ -136,11 +136,11 @@ export default function Reservation(props) {
     }, []);
 
     useEffect(() => {
-            axios.get('http://localhost:8000/user/getMaxResID')
-        .then(res => {
-            setResId(res.data);
-            console.log("max res id aho" + res.data);
-        }).catch(err => console.log(err))
+        axios.get('http://localhost:8000/user/getMaxResID')
+            .then(res => {
+                setResId(res.data);
+                console.log("max res id aho" + res.data);
+            }).catch(err => console.log(err))
     }, []);
 
     const onSubmit = () => {
@@ -153,14 +153,14 @@ export default function Reservation(props) {
             }
         }).then(res => {
             console.log(res.data);
-            
-            localStorage.setItem("resID",resID + 1 );
-            localStorage.setItem("adultsNo",key.adultsNo );
-            localStorage.setItem("childrenNo",key.childrenNo );
+
+            localStorage.setItem("resID", resID + 1);
+            localStorage.setItem("adultsNo", key.adultsNo);
+            localStorage.setItem("childrenNo", key.childrenNo);
             localStorage.setItem("seatClass", key.cabin);
             localStorage.setItem("deptFlight", key.flight._id);
             localStorage.setItem("arrFlight", key.ReturnFlight._id);
-            localStorage.setItem("deptSeats",reservedSeats2 );
+            localStorage.setItem("deptSeats", reservedSeats2);
             localStorage.setItem("arrSeats", reservedSeats3);
 
             // console.log("HEREE");

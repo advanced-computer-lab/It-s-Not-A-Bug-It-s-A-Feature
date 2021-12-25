@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+// import "./Searchbar.css";
+
 import * as airports from "airportsjs"
 
 import SearchIcon from "@material-ui/icons/Search";
@@ -13,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import FlightLandIcon from '@material-ui/icons/FlightLand';
+var worldMapData = require('city-state-country');
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,19 +53,22 @@ const useStyles = makeStyles((theme) => ({
 ));
 
 
+
+
 export default function BasicTextFields() {
     const styles = useStyles({
 
     });
-    const [placeholder, setplaceholder] = useState("");
+    const [placeholder, setplaceholder] = useState("Select Airport");
     const [filteredData, setFilteredData] = useState([]);
+    const [destination, setdestination] = useState("");
     const [wordEntered, setWordEntered] = useState("");
     // const value = {input};
     const handleFilter = (event) => {
         const searchWord = event.target.value;
         console.log("value", searchWord)
         setWordEntered(searchWord);
-        const newFilter = airports.searchByAirportName(searchWord)
+        const newFilter = worldMapData.searchCountry(searchWord)
         //   (value) => {
         //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
         // });
@@ -87,7 +93,11 @@ export default function BasicTextFields() {
         console.log("destination", destination)
     };
 
-    function SearchBar({ data }) {
+
+
+    function SearchBar({ placeholder, data }) {
+
+
         const handleFilter = (event) => {
             const searchWord = event.target.value;
             setWordEntered(searchWord);
@@ -95,11 +105,11 @@ export default function BasicTextFields() {
                 return value.title.toLowerCase().includes(searchWord.toLowerCase());
             });
 
-            if (searchWord === "")
+            if (searchWord === "") {
                 setFilteredData([]);
-            else
+            } else {
                 setFilteredData(newFilter);
-
+            }
         };
 
         const clearInput = () => {
@@ -115,7 +125,9 @@ export default function BasicTextFields() {
 
                 <div className="resultsTo">
                     <div className="searchInputTo">
+
                         <TextField
+
                             id="filled-basic" value={wordEntered} onChange={(event) => { handleFilter(event) }} type="search" label={placeholder} variant="filled"
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
@@ -126,6 +138,7 @@ export default function BasicTextFields() {
 
                             {filteredData.slice(0, 15).map((value, key) => {
                                 return (
+
                                     <a className="aTo" onClick={(e) => clicked(value, e)} target="_blank">
                                         <p>{value.name} </p>
                                     </a>
@@ -135,7 +148,10 @@ export default function BasicTextFields() {
                         </div>
                     )}
                 </div>
+
+
             </div>
+
         </form>
     );
 }

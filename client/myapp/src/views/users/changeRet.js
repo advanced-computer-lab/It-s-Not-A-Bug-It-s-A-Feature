@@ -74,12 +74,12 @@ export default function Reservation(props) {
     const { ...rest } = props;
     console.log(key.res);
 
-    const type =key.type;
-    const count = key.res.reservation.adultsNo+key.res.reservation.childrenNo;
-    const traveller= count==1? " "+1+" Traveller":" "+count+" Traveller";
-  // const reservation =key.res;
-  const arrivalFlight = key.res.arrFlight;
-    const myIcon=type==="Dept"?FlightTakeoffIcon:FlightLandIcon;
+    const type = key.type;
+    const count = key.res.reservation.adultsNo + key.res.reservation.childrenNo;
+    const traveller = count == 1 ? " " + 1 + " Traveller" : " " + count + " Traveller";
+    // const reservation =key.res;
+    const arrivalFlight = key.res.arrFlight;
+    const myIcon = type === "Dept" ? FlightTakeoffIcon : FlightLandIcon;
     const [reservedSeats, setReservedSeats] = useState([]);
     const [Flight, setFlight] = useState(null);
     const [allFlights, setAllFlights] = useState([]);
@@ -87,56 +87,57 @@ export default function Reservation(props) {
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
 
-   // const [deptDate, setdeptDate] = useState(null);
-   const deptDate = new Date(key.res.deptFlight.departureDate);
-    const [value, setValue] = React.useState( key.res.arrFlight.departureDate);
+    // const [deptDate, setdeptDate] = useState(null);
+    const deptDate = new Date(key.res.deptFlight.departureDate);
+    const [value, setValue] = React.useState(key.res.arrFlight.departureDate);
     const [cabin, setCabin] = useState(key.res.reservation.seatClass);
     const today = new Date();
 
-    Date.prototype.addHours = function(h) {
-        this.setTime(this.getTime() + (h*60*60*1000));
+    Date.prototype.addHours = function (h) {
+        this.setTime(this.getTime() + (h * 60 * 60 * 1000));
         return this;
-      }
+    }
     const onSubmit = () => {
         setempty(null);
         setLoading(true);
         console.log(arrivalFlight.departureAirport,
-           (new Date(value).addHours(4)).toISOString(),
+            (new Date(value).addHours(4)).toISOString(),
             arrivalFlight.arrivalAirport,
-           cabin,
+            cabin,
             key.res.reservation.adultsNo,
             key.res.reservation.childrenNo);
-            
-       if(cabin===key.res.reservation.seatClass)
-        axios.get('http://localhost:8000/user/searchFlights', {
-            params:
-            {
-                departureAirport: arrivalFlight.departureAirport,
-              departureDate:(new Date(value).addHours(4)).toISOString(),
-              arrivalAirport: arrivalFlight.arrivalAirport,
-              cabin: cabin,
-              adultsNo: key.res.reservation.adultsNo,
-              childrenNo: key.res.reservation.childrenNo
-            }
-          })
-            .then(res => {
-              // store data in a variable to be later used
-              // setdepartFlights( res.data);
-              setAllFlights(res.data);
-              console.log(res);
-              setFlight(null);
-              setLoading(false);
-              if(res.data.length==0){setempty(true);
-            }
-            }).catch(err => console.log(err))
-        else{
+
+        if (cabin === key.res.reservation.seatClass)
+            axios.get('http://localhost:8000/user/searchFlights', {
+                params:
+                {
+                    departureAirport: arrivalFlight.departureAirport,
+                    departureDate: (new Date(value).addHours(4)).toISOString(),
+                    arrivalAirport: arrivalFlight.arrivalAirport,
+                    cabin: cabin,
+                    adultsNo: key.res.reservation.adultsNo,
+                    childrenNo: key.res.reservation.childrenNo
+                }
+            })
+                .then(res => {
+                    // store data in a variable to be later used
+                    // setdepartFlights( res.data);
+                    setAllFlights(res.data);
+                    console.log(res);
+                    setFlight(null);
+                    setLoading(false);
+                    if (res.data.length == 0) {
+                        setempty(true);
+                    }
+                }).catch(err => console.log(err))
+        else {
             setFlight(null);
             setAllFlights([]);
             setLoading(false);
             setempty(true);
         }
-              
-      };
+
+    };
     return (
 
         <div>
@@ -162,98 +163,98 @@ export default function Reservation(props) {
                     <GridContainer justify="center">
                         <Card>
                             <CardContent>
-                            <Grid container spacing={1} direction="row"  justify="center"  alignItems="center" >
-                        <Grid item xs textAlign= 'center'>
-                                <Typography textAlign= 'center'>
-                                   Leaving From
-                                </Typography>
-                                <Typography textAlign= 'center'>
-                                    {arrivalFlight.departureAirport}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs>
-                            <Typography textAlign= 'center'>
-                                   Going To
-                                </Typography>
-                                <Typography textAlign= 'center'>
-                                    {arrivalFlight.arrivalAirport}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs>
-                                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DatePicker
-                                        disabledEnd
-                                        minDate={deptDate}
-                                            value={value}
-                                            onChange={(newValue) => {
-                                                setValue(newValue);
-                                            }}
-                                            renderInput={(props) => (
-                                                <React.Fragment>
-                                                <TextField {...props} required
-                                                    label="Date"
-                                                    fullWidth
-                                                    variant="standard"
-                                                    />
-                                                
-                                                </React.Fragment>
-                                            )}
+                                <Grid container spacing={1} direction="row" justify="center" alignItems="center" >
+                                    <Grid item xs textAlign='center'>
+                                        <Typography textAlign='center'>
+                                            Leaving From
+                                        </Typography>
+                                        <Typography textAlign='center'>
+                                            {arrivalFlight.departureAirport}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs>
+                                        <Typography textAlign='center'>
+                                            Going To
+                                        </Typography>
+                                        <Typography textAlign='center'>
+                                            {arrivalFlight.arrivalAirport}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs>
+                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                            <DatePicker
+                                                disabledEnd
+                                                minDate={deptDate}
+                                                value={value}
+                                                onChange={(newValue) => {
+                                                    setValue(newValue);
+                                                }}
+                                                renderInput={(props) => (
+                                                    <React.Fragment>
+                                                        <TextField {...props} required
+                                                            label="Date"
+                                                            fullWidth
+                                                            variant="standard"
+                                                        />
+
+                                                    </React.Fragment>
+                                                )}
                                             />
-                                        
+
                                         </LocalizationProvider>
 
-                            </Grid>
-                            <Grid item xs>
-                                <Typography textAlign= 'center'>
-                                {traveller}
-                                </Typography>
-                               
-                            </Grid>
-                            <Grid item xs textAlign= 'center'>
-                            <CustomDropdown
-                                noLiPadding
-                                buttonText={cabin}
-                                buttonProps={{
-                                    className: classes.navLink,
-                                    color: "transparent",
+                                    </Grid>
+                                    <Grid item xs>
+                                        <Typography textAlign='center'>
+                                            {traveller}
+                                        </Typography>
 
-                                }}
+                                    </Grid>
+                                    <Grid item xs textAlign='center'>
+                                        <CustomDropdown
+                                            noLiPadding
+                                            buttonText={cabin}
+                                            buttonProps={{
+                                                className: classes.navLink,
+                                                color: "transparent",
+
+                                            }}
                                             dropdownList={[
-                                    <Link className={classes.dropdownLink}
-                                    onClick={(e) => { setCabin("Economy"); }}
-                                    >
-                                    <h4>  Economy </h4>
-                                    </Link>,
-                                    <a
-                                    className={classes.dropdownLink}
-                                    onClick={(e) => { setCabin("Business"); }}
-                                    >
-                                    <h4>   Business</h4>
+                                                <Link className={classes.dropdownLink}
+                                                    onClick={(e) => { setCabin("Economy"); }}
+                                                >
+                                                    <h4>  Economy </h4>
+                                                </Link>,
+                                                <a
+                                                    className={classes.dropdownLink}
+                                                    onClick={(e) => { setCabin("Business"); }}
+                                                >
+                                                    <h4>   Business</h4>
 
-                                    </a>,
-                                ]}
-                                />
-                            </Grid>
-                            <Grid item xs textAlign= 'center'>
-                            <Button
+                                                </a>,
+                                            ]}
+                                        />
+                                    </Grid>
+                                    <Grid item xs textAlign='center'>
+                                        <Button
 
-                                color="warning"
-                                // color="transparent"
-                                size="lg"
-                                id="demo-customized-button"
-                                aria-controls="demo-customized-menu"
-                                aria-haspopup="true"
-                                variant="contained"
-                                disableElevation
-                                onClick={(e) => {
-                                onSubmit(e);
-                                }}
-                                >Search</Button>
-                            </Grid>
-                        </Grid>
+                                            color="warning"
+                                            // color="transparent"
+                                            size="lg"
+                                            id="demo-customized-button"
+                                            aria-controls="demo-customized-menu"
+                                            aria-haspopup="true"
+                                            variant="contained"
+                                            disableElevation
+                                            onClick={(e) => {
+                                                onSubmit(e);
+                                            }}
+                                        >Search</Button>
+                                    </Grid>
+                                </Grid>
                             </CardContent>
                         </Card>
-                       
+
                         <GridItem xs={12} sm={12}>
                             <NavPills
                                 alignCenter
@@ -264,32 +265,33 @@ export default function Reservation(props) {
                                         tabIcon: myIcon,
                                         tabContent: (
                                             <GridContainer justify="center">
-                                                {loading ? <CustomLinearProgress color="info" /> :null    }
-                                                {empty? <Typography>
+                                                {loading ? <CustomLinearProgress color="info" /> : null}
+                                                {empty ? <Typography>
                                                     Sorry There is No Flights Available
-                                                </Typography>:
-                                                    allFlights.map((curr)=>(
-                                                        <Button color={(Flight==curr)?'blue':'transparent'} onClick={(e) => {
-                                                          if(Flight!=curr)setFlight(curr);
-                                                          else setFlight(null);}}>
-                                                            
-                                                       <GridItem xs={12} sm={12}> 
-                                                         <FlightCard
-                                                         flight={curr}
-                                                         type={cabin}
-                                                         Number={count}
-                                                        adult={key.res.reservation.adultsNo}
-                                                        child={key.res.reservation.childrenNo}
-                                                         
-                                                         />
-                                                          
-                                                         </GridItem>
-                                                         </Button>
-                                                     ))
+                                                </Typography> :
+                                                    allFlights.map((curr) => (
+                                                        <Button color={(Flight == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                                                            if (Flight != curr) setFlight(curr);
+                                                            else setFlight(null);
+                                                        }}>
+
+                                                            <GridItem xs={12} sm={12}>
+                                                                <FlightCard
+                                                                    flight={curr}
+                                                                    type={cabin}
+                                                                    Number={count}
+                                                                    adult={key.res.reservation.adultsNo}
+                                                                    child={key.res.reservation.childrenNo}
+
+                                                                />
+
+                                                            </GridItem>
+                                                        </Button>
+                                                    ))
 
                                                 }
                                             </GridContainer>
-                                                
+
                                         ),
                                     },
                                     {
@@ -297,9 +299,9 @@ export default function Reservation(props) {
                                         tabIcon: AirlineSeatReclineExtraIcon,
                                         tabContent: (
                                             <GridContainer justify="center">
-                                               
+
                                                 <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                   
+
 
                                                 </GridItem>
                                             </GridContainer>
@@ -311,9 +313,9 @@ export default function Reservation(props) {
                                         tabIcon: CheckIcon,
                                         tabContent: (
                                             <div>
-                                            
+
                                                 <GridContainer justify="center">
-                                                    </GridContainer>
+                                                </GridContainer>
                                             </div>
                                         ),
                                     },

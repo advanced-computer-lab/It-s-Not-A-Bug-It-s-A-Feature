@@ -70,15 +70,15 @@ export default function ProfilePageRes(props) {
         //     }).catch(err => console.log(err))
 
         console.log("HEREE");
-            // console.log(reservedSeats2);
-            console.log(localStorage.getItem("deptSeats" ));
+        // console.log(reservedSeats2);
+        console.log(localStorage.getItem("deptSeats"));
 
         axios.post('http://localhost:8000/user/res', data, {
             headers: {
                 'authorization': token
             }
         }).then(res => {
-            
+
 
             console.log(res.data);
             localStorage.removeItem('resID');
@@ -90,7 +90,7 @@ export default function ProfilePageRes(props) {
             localStorage.removeItem('deptSeats');
             localStorage.removeItem('arrSeats');
             setReserved(true);
-        }).catch(err => console.log(err)) 
+        }).catch(err => console.log(err))
     }, []);
 
     // const onSubmit = () => {

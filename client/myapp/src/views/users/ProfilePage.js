@@ -29,6 +29,8 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
+import Check from "@material-ui/icons/Check";
+
 
 import Card from "./../../components/Card/Card.js";
 import CardBody from "./../../components/Card/CardBody.js";
@@ -78,6 +80,7 @@ export default function ProfilePage(props) {
 
 
   const [message, setmessage] = useState(null);
+  const [successMess, setsuccess] = useState(null);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -207,10 +210,10 @@ export default function ProfilePage(props) {
     if(confirmError===false && pass!==""&& oldPass!=="" && confirmPass!==""){
     const token = localStorage.getItem("token");
     axios.post('http://localhost:8000/user/changePassword/', {
-      body:{
+      
         old:oldPass,
         new:pass
-      }
+    
     }, {
       headers: {
         'authorization': token
@@ -294,6 +297,19 @@ export default function ProfilePage(props) {
 
 
                             <GridContainer justify="center">
+                              {successMess ? 
+                              <GridItem  xs={12} sm={12}>
+                              <SnackbarContent
+                  
+                                                    message={
+                                                        <span>
+                                                            {successMess}
+                                                        </span>
+                                                    }
+                                                    close
+                                                    color="success"
+                                                    icon={Check}
+                                                /> </GridItem>: null}
                               <GridItem xs={12} sm={12} >
                                 <b>UserName : </b> {Profile.username}
                               </GridItem>

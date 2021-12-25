@@ -30,36 +30,36 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 export default function LandingPage(props) {
-  const classes = useStyles();
-  const { ...rest } = props;
-  // const location = useLocation();
-  let isLogged = props.isLogged
-  // const isLogged = useParams();
-  console.log(isLogged);
-  return (
-    <div>
-      <Header
-        color="transparent"
-        routes={dashboardRoutes}
-        brand="OverReact"
-        rightLinks={<HeaderLinks isLogged = {isLogged}/>}
-        fixed
-        changeColorOnScroll={{
-          height: 400,
-          color: "white",
-        }}
-        {...rest}
-      />
-      <Parallax filter image={require("./../../../assets/img/plane-window.jpg").default}>
-        <div className={classes.container}>
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Your Story Starts With Us.</h1>
-              <h4>
-                You are in the right place.
-              </h4>
-              <br />
-              {/* <Button
+    const classes = useStyles();
+    const { ...rest } = props;
+    // const location = useLocation();
+    let isLogged = props.isLogged
+    // const isLogged = useParams();
+    console.log(isLogged);
+    return (
+        <div>
+            <Header
+                color="transparent"
+                routes={dashboardRoutes}
+                brand="OverReact"
+                rightLinks={<HeaderLinks isLogged={isLogged} />}
+                fixed
+                changeColorOnScroll={{
+                    height: 400,
+                    color: "white",
+                }}
+                {...rest}
+            />
+            <Parallax filter image={require("./../../../assets/img/plane-window.jpg").default}>
+                <div className={classes.container}>
+                    <GridContainer>
+                        <GridItem xs={12} sm={12} md={6}>
+                            <h1 className={classes.title}>Your Story Starts With Us.</h1>
+                            <h4>
+                                You are in the right place.
+                            </h4>
+                            <br />
+                            {/* <Button
                 color="danger"
                 size="lg"
                 href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
@@ -69,30 +69,30 @@ export default function LandingPage(props) {
                 <i className="fas fa-play" />
                 Watch video
               </Button> */}
-            </GridItem>
-          </GridContainer>
-        
-        </div>
-      </Parallax>
-      {/* <div className={classNames(classes.main, classes.mainRaised)}>
+                        </GridItem>
+                    </GridContainer>
+
+                </div>
+            </Parallax>
+            {/* <div className={classNames(classes.main, classes.mainRaised)}>
       <Search align="center"/>
       <br/>
       <br/>
       <br/>
       </div> */}
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.profile}>
-          <Search/>
-        </div>
-        <div className={classes.container}style={{marginTop:0,paddingTop:0,transform: `translate(0, -120px)`}}>
-          
-          <ProductSection />
-      
-          {/* <TeamSection />
+            <div className={classNames(classes.main, classes.mainRaised)}>
+                <div className={classes.profile}>
+                    <Search />
+                </div>
+                <div className={classes.container} style={{ marginTop: 0, paddingTop: 0, transform: `translate(0, -120px)` }}>
+
+                    <ProductSection />
+
+                    {/* <TeamSection />
           <WorkSection /> */}
+                </div>
+            </div>
+            <Footer />
         </div>
-      </div>
-      <Footer />
-    </div>
-  );
+    );
 }

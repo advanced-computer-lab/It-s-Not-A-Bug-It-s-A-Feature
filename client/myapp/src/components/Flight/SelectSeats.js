@@ -36,58 +36,57 @@ function createRows(business, econ, reserved, isBusiness) {
         }
       }
     }
+    return res;
   }
-  return res;
-}
 
-const useStyles = makeStyles(styles);
+  const useStyles = makeStyles(styles);
 
-export default function Flight(props) {
-  // const [deptSeats, setDeptSeats] = useState([]);
-  // const [retSeats, setRetSeats] = useState([]);
-  const cabin = props.type;
-  const passengers = props.passengers;
-  const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats), props.reservedSeats, cabin === "Business");
-  const isReturn = props.isReturn === "true";
-  const classes = useStyles();
+  export default function Flight(props) {
+    // const [deptSeats, setDeptSeats] = useState([]);
+    // const [retSeats, setRetSeats] = useState([]);
+    const cabin = props.type;
+    const passengers = props.passengers;
+    const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats), props.reservedSeats, cabin === "Business");
+    const isReturn = props.isReturn === "true";
+    const classes = useStyles();
 
-  SeatPicker.defaultProps = {
-    addSeatCallback: function addSeatCallback(row, number, id) {
-      console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-      console.log("my seatcheck is  ",props.seatsCheck);
-      // if (passengers > props.seatsCheck) {
+    SeatPicker.defaultProps = {
+      addSeatCallback: function addSeatCallback(row, number, id) {
+        console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
+        console.log("my seatcheck is  ", props.seatsCheck);
+        // if (passengers > props.seatsCheck) {
         props.callback(prevState => [...prevState, number]);
-      // }
-    },
+        // }
+      },
 
-    removeSeatCallback: function removeSeatCallback(row, number, id) {
-      console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-      console.log("my seatcheck is  ",props.seatsCheck);
+      removeSeatCallback: function removeSeatCallback(row, number, id) {
+        console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
+        console.log("my seatcheck is  ", props.seatsCheck);
 
-      props.callback(prevState => prevState.filter(item => item !== number));
-      console.log("set sel hena");
-    },
-  };
+        props.callback(prevState => prevState.filter(item => item !== number));
+        console.log("set sel hena");
+      },
+    };
 
-  let title;
-  if (isReturn) {
-    title = <h3 className={classes.title}>Return flight</h3>
-  }
-  else {
-    title = <h3 className={classes.title}>Departure flight</h3>
-  }
-  return (
-    <div className="App">
-      <div
-        display="flex"
-        flex-flexDirection="row"
-      >
-        <div >
-          {title}
-          <br />
-          <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
+    let title;
+    if (isReturn) {
+      title = <h3 className={classes.title}>Return flight</h3>
+    }
+    else {
+      title = <h3 className={classes.title}>Departure flight</h3>
+    }
+    return (
+      <div className="App">
+        <div
+          display="flex"
+          flex-flexDirection="row"
+        >
+          <div >
+            {title}
+            <br />
+            <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }}

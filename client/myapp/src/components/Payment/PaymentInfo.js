@@ -18,7 +18,7 @@ export default function PaymentInfo(props) {
     var deptSeats = props.deptSeats;
     var arrSeats = props.arrSeats;
 
-    var passengers = adults+children;
+    var passengers = adults + children;
 
     console.log(props);
 

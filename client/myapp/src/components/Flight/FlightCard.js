@@ -24,20 +24,20 @@ export default function FlightCard(props) {
     const classes = useStyles();
     return (
         <div>
-             <Card  maxWidth="sm" >
+            <Card maxWidth="sm" >
                 <form className={classes.form} >
-                  <CardBody>
-                  < Flight 
-                  flight={props.flight}
-                  Number={props.Number}
-                  type={props.type}
-                  adult={props.adult}
-                  child={props.child}
-                  ></Flight>  
-                  
-                  </CardBody>
+                    <CardBody>
+                        < Flight
+                            flight={props.flight}
+                            Number={props.Number}
+                            type={props.type}
+                            adult={props.adult}
+                            child={props.child}
+                        ></Flight>
+
+                    </CardBody>
                 </form>
-              </Card>
+            </Card>
         </div>
     )
 }
