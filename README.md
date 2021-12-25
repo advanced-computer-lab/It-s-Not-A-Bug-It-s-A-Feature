@@ -189,6 +189,36 @@ If you get this page, your transaction has failed. You need to revise your card 
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
 ![About Us](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AboutUs.PNG)
 
+# Code Example
+
+## Change password backend function
+``` 
+router.route('/changePassword').post(verifyJWT, (req, res) => {
+    const passwords = req.body;
+    User.findOne({ _id: req.user.id })
+        .then(async (dbUser) => {
+            if (!dbUser) {
+                return res.json({ message: "User not Found." });
+            }
+            let oldPass = passwords.old;
+            bcrypt.compare(oldPass, dbUser.password)
+                .then(async (isCorrect) => {
+                    if (!isCorrect) {
+                        return res.json({ message: "Old password does not match the current one." });
+                    }
+                    let newPass = passwords.new;
+                    if (newPass === oldPass) {
+                        return res.json({ message: "The new password must be different from the current one." });
+                    }
+                    newPass = await hashIt(newPass);
+                    await User.findOneAndUpdate({ _id: req.user.id }, { password: newPass });
+                    return res.json({ message: "Password updated successfully." });
+
+                });
+        })
+});
+
+```
 
 # **Contribute** :handshake:
 
