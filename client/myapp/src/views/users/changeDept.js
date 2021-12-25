@@ -116,7 +116,7 @@ export default function Reservation(props) {
     const onSubmit = () => {
         setempty(null);
         setLoading(true);
-        // if (cabin === key.res.reservation.seatClass)
+        if (cabin === key.res.reservation.seatClass)
             axios.get('http://localhost:8000/user/searchFlights', {
                 params:
                 {
@@ -139,12 +139,12 @@ export default function Reservation(props) {
                         setempty(true);
                     }
                 }).catch(err => console.log(err))
-        // else {
-        //     setFlight(null);
-        //     setAllFlights([]);
-        //     setLoading(false);
-        //     setempty(true);
-        // }
+        else {
+            setFlight(null);
+            setAllFlights([]);
+            setLoading(false);
+            setempty(true);
+        }
 
     };
     //PAY THE DIFFERENCE
