@@ -19,8 +19,8 @@ export default function colorCodeSeats() {
             <Card maxWidth="xs">
                 <CardBody>
                     <GridContainer justify="center">
-                        <GridItem  xs={12} sm={12}>
-                                <h3 className={classes.title}> Color Code </h3>                   
+                        <GridItem xs={12} sm={12}>
+                            <h3 className={classes.title}> Color Code </h3>
                         </GridItem>
                         <GridItem xs={12} sm={6}>
                             <SeatPicker rows={seat} maxReservableSeats={0} visible />

@@ -85,6 +85,15 @@ export default function Reservation(props) {
 
     let price = (cabin == "Business") ? passengers * (key.flight.businessPrice + key.ReturnFlight.businessPrice) : passengers * (key.flight.economyPrice + key.ReturnFlight.economyPrice);
 
+    function loggedIn(){
+        if(localStorage.getItem("token") != null)return true;
+        else return false;
+    }
+
+    useEffect(()=>{
+        if(!loggedIn())
+            history.push("/error");
+    },[]);
 
 
     useEffect(() => {
@@ -136,11 +145,11 @@ export default function Reservation(props) {
     }, []);
 
     useEffect(() => {
-            axios.get('http://localhost:8000/user/getMaxResID')
-        .then(res => {
-            setResId(res.data);
-            console.log("max res id aho" + res.data);
-        }).catch(err => console.log(err))
+        axios.get('http://localhost:8000/user/getMaxResID')
+            .then(res => {
+                setResId(res.data);
+                console.log("max res id aho" + res.data);
+            }).catch(err => console.log(err))
     }, []);
 
     const onSubmit = () => {
@@ -153,14 +162,14 @@ export default function Reservation(props) {
             }
         }).then(res => {
             console.log(res.data);
-            
-            localStorage.setItem("resID",resID + 1 );
-            localStorage.setItem("adultsNo",key.adultsNo );
-            localStorage.setItem("childrenNo",key.childrenNo );
+
+            localStorage.setItem("resID", resID + 1);
+            localStorage.setItem("adultsNo", key.adultsNo);
+            localStorage.setItem("childrenNo", key.childrenNo);
             localStorage.setItem("seatClass", key.cabin);
             localStorage.setItem("deptFlight", key.flight._id);
             localStorage.setItem("arrFlight", key.ReturnFlight._id);
-            localStorage.setItem("deptSeats",reservedSeats2 );
+            localStorage.setItem("deptSeats", reservedSeats2);
             localStorage.setItem("arrSeats", reservedSeats3);
 
             // console.log("HEREE");
@@ -312,21 +321,12 @@ export default function Reservation(props) {
                                         tabButton: " Confirm Seats",
                                         tabIcon: CheckIcon,
                                         tabContent: (
-                                            <div>
-                                                {/* {reserved ? <SnackbarContent
-                                                    message={
-                                                        <span>
-                                                            <b>Reservation Confirmed!</b> reservation # {resID - 1}   Have a nice flight
-                                                        </span>
-                                                    }
-                                                    close
-                                                    color="success"
-                                                    icon={Check}
-                                                /> : null} */}
-                                                <GridContainer justify="center">
+                                           
+                                                <div>
+                                               
                                                     {reservedSeats3.length === passengers ?
-                                                        <div>
-                                                            <GridItem xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
+                                                       <GridContainer justify="center">
+                                                            <GridItem xs={12} sm={6}  style={{ textAlign: "center" }}>
 
 
 
@@ -354,10 +354,10 @@ export default function Reservation(props) {
                                                                     Pay
                                                                 </Button>
                                                             </GridItem>
-                                                        </div>
+                                                            </GridContainer>
                                                         : <div><Typography> <h3> Please Select your Seats First</h3></Typography> </div>}
-                                                </GridContainer>
-                                            </div>
+                                               
+                                                </div>
                                         ),
                                     },
                                 ]}

@@ -1,4 +1,4 @@
-const countries =[
+const countries = [
     {
         "name": "Afghanistan",
         "dialCode": "+93",

@@ -59,7 +59,7 @@ export default function BasicTextFields() {
     const styles = useStyles({
 
     });
-    const [placeholder, setplaceholder]=useState("Select Airport");
+    const [placeholder, setplaceholder] = useState("Select Airport");
     const [filteredData, setFilteredData] = useState([]);
     const [destination, setdestination] = useState("");
     const [wordEntered, setWordEntered] = useState("");
@@ -89,7 +89,7 @@ export default function BasicTextFields() {
         console.log({ value });
         // final={value};
         setFilteredData([]);
-        
+
         console.log("destination", destination)
     };
 
@@ -132,13 +132,13 @@ export default function BasicTextFields() {
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
                             }} />
-                                         </div>
+                    </div>
                     {filteredData.length != 0 && (
                         <div className="dataResultTo" >
 
                             {filteredData.slice(0, 15).map((value, key) => {
                                 return (
-                                 
+
                                     <a className="aTo" onClick={(e) => clicked(value, e)} target="_blank">
                                         <p>{value.name} </p>
                                     </a>

@@ -187,25 +187,25 @@ export default function Reservation(props) {
                                                                     isReturn="true"
                                                                 />
                                                             </GridItem>
-                                                            
+
 
                                                         </Box>
-                                                        
+
                                                     }
 
                                                 </GridItem>
-                                                {reservedSeats3.length=== passengers?
-                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                            <Button
-                                                                color="danger"
-                                                                size="lg"
-                                                                onClick={(e) => { onSubmit(e); }}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                Reserve
-                                                            </Button>
-                                                        </GridItem>: null}
+                                                {reservedSeats3.length === passengers ?
+                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                        <Button
+                                                            color="danger"
+                                                            size="lg"
+                                                            onClick={(e) => { onSubmit(e); }}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            Reserve
+                                                        </Button>
+                                                    </GridItem> : null}
                                             </GridContainer>
                                         ),
                                     },

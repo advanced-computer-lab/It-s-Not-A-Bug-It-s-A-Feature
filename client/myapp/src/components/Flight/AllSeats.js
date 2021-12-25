@@ -42,8 +42,8 @@ export default function AllSeats(props) {
         reservedSeats: []
     });
     const [selDeptSeats, setSelDeptSeats] = useState([]);
-    
-    
+
+
     useEffect(() => {
         axios.get('http://localhost:8000/admin/searchFlights', {
             params:
@@ -94,43 +94,43 @@ export default function AllSeats(props) {
         console.log("selected seats" + selDeptSeats);
     }, [selDeptSeats]);
 
- 
+
     return (
         <div className={classes.container}>
-        <GridContainer justify="center">
-            <GridItem xs={12} sm={12}>
-            {loading2 || loading ? <CustomLinearProgress color="info" /> :
-                <Box display = "flex" flex-direction ="row">
-                    <GridItem xs={12} sm={12}>
-                        <SelectSeats
-                            flightNo={deptFlight}
-                            economySeats={deptData.economySeats}
-                            businessSeats={deptData.businessSeats}
-                            currBusinessSeats={deptData.currBusinessSeats}
-                            currEconomySeats={deptData.currEconomySeats}
-                            reservedSeats={deptData.reservedSeats}
-                            type={type}
-                            passengers={passengers}
-                            isReturn="false"
-                            callback={setSelDeptSeats} />
-                    </GridItem>
-                    <GridItem xs={12} sm={12}>
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={12}>
+                    {loading2 || loading ? <CustomLinearProgress color="info" /> :
+                        <Box display="flex" flex-direction="row">
+                            <GridItem xs={12} sm={12}>
+                                <SelectSeats
+                                    flightNo={deptFlight}
+                                    economySeats={deptData.economySeats}
+                                    businessSeats={deptData.businessSeats}
+                                    currBusinessSeats={deptData.currBusinessSeats}
+                                    currEconomySeats={deptData.currEconomySeats}
+                                    reservedSeats={deptData.reservedSeats}
+                                    type={type}
+                                    passengers={passengers}
+                                    isReturn="false"
+                                    callback={setSelDeptSeats} />
+                            </GridItem>
+                            <GridItem xs={12} sm={12}>
 
-                        <SelectSeats
-                            flightNo={retFlight}
-                            economySeats={retData.economySeats}
-                            businessSeats={retData.businessSeats}
-                            currBusinessSeats={retData.currBusinessSeats}
-                            currEconomySeats={retData.currEconomySeats}
-                            reservedSeats={retData.reservedSeats}
-                            type={type}
-                            passengers={passengers}
-                            isReturn="true"
-                             />
-                    </GridItem>
-                </Box>
-            }
-            </GridItem>
+                                <SelectSeats
+                                    flightNo={retFlight}
+                                    economySeats={retData.economySeats}
+                                    businessSeats={retData.businessSeats}
+                                    currBusinessSeats={retData.currBusinessSeats}
+                                    currEconomySeats={retData.currEconomySeats}
+                                    reservedSeats={retData.reservedSeats}
+                                    type={type}
+                                    passengers={passengers}
+                                    isReturn="true"
+                                />
+                            </GridItem>
+                        </Box>
+                    }
+                </GridItem>
             </GridContainer>
         </div>
     )

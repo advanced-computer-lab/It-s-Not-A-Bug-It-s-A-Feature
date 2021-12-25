@@ -30,52 +30,52 @@ const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 export default function LandingPage(props) {
-  const classes = useStyles();
-  const { ...rest } = props;
-  // const location = useLocation();
-  let isLogged = props.isLogged
-  // const isLogged = useParams();
-  console.log(isLogged);
-  return (
-    <div>
-      <Header
-        color="transparent"
-        routes={dashboardRoutes}
-        brand="OverReact"
-        rightLinks={<HeaderLinks isLogged = {isLogged}/>}
-        fixed
-        changeColorOnScroll={{
-          height: 400,
-          color: "white",
-        }}
-        {...rest}
-      />
-      <Parallax filter small image={require("./../../../assets/img/plane-window.jpg").default}>
-      <div className={classes.container}>
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
-              <h1 className={classes.title}>Our Amazing Team</h1>
-              {/* <h4>
+    const classes = useStyles();
+    const { ...rest } = props;
+    // const location = useLocation();
+    let isLogged = props.isLogged
+    // const isLogged = useParams();
+    console.log(isLogged);
+    return (
+        <div>
+            <Header
+                color="transparent"
+                routes={dashboardRoutes}
+                brand="OverReact"
+                rightLinks={<HeaderLinks isLogged={isLogged} />}
+                fixed
+                changeColorOnScroll={{
+                    height: 400,
+                    color: "white",
+                }}
+                {...rest}
+            />
+            <Parallax filter small image={require("./../../../assets/img/plane-window.jpg").default}>
+                <div className={classes.container}>
+                    <GridContainer>
+                        <GridItem xs={12} sm={12} md={6}>
+                            <h1 className={classes.title}>Our Amazing Team</h1>
+                            {/* <h4>
                 You are in the right place.
               </h4> */}
-              <br />
-            </GridItem>
-          </GridContainer>
-        
-        </div>
-      </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)}>
-      
-        <div className={classes.container}>
-          <br/>
-          {/* <Search/>
+                            <br />
+                        </GridItem>
+                    </GridContainer>
+
+                </div>
+            </Parallax>
+            <div className={classNames(classes.main, classes.mainRaised)}>
+
+                <div className={classes.container}>
+                    <br />
+                    {/* <Search/>
           <ProductSection /> */}
-      
-          <TeamSection />
-          <WorkSection />
+
+                    <TeamSection />
+                    <WorkSection />
+                </div>
+            </div>
+            <Footer />
         </div>
-      </div>
-      <Footer />
-    </div>
-  );
+    );
 }

@@ -38,67 +38,67 @@ import styles from "./../../../../assets/jss/material-kit-react/views/landingPag
 const useStyles = makeStyles(styles);
 
 export default function ProductSection() {
-  const classes = useStyles();
-  // const settings = {
-  //   dots: true,
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 2,
-  //   slidesToScroll: 1,
-  //   autoplay: true,
-  // };
-  return (
-    // <div>hi</div>
-    // <div className={classes.section}>
-    //   <div className={classes.container}>
-    //     <GridContainer>
-    //       <GridItem xs={12} sm={12} md={12} className={classes.marginAuto}>
-    //         <Card carousel>
-    //           <Carousel {...settings}>
-    //             <div>
-    //               <img src={medinaPic} alt="First slide" className="slick-image" />
-    //               <div className="slick-caption">
-    //                 <h4>
-    //                   <LocationOn className="slick-icons" />
-    //                   Yellowstone National Park, United States
-    //                 </h4>
-    //               </div>
-    //             </div>
-    //             <div>
-    //               <img
-    //                 src={venicePic}
-    //                 alt="Second slide"
-    //                 className="slick-image"
-    //               />
-    //               <div className="slick-caption">
-    //                 <h4>
-    //                   <LocationOn className="slick-icons" />
-    //                   Somewhere Beyond, United States
-    //                 </h4>
-    //               </div>
-    //             </div>
-    //             <div>
-    //               <img src={luxorPic} alt="Third slide" className="slick-image" />
-    //               <div className="slick-caption">
-    //                 <h4>
-    //                   <LocationOn className="slick-icons" />
-    //                   Yellowstone National Park, United States
-    //                 </h4>
-    //               </div>
-    //             </div>
-    //           </Carousel>
-    //         </Card>
-    //       </GridItem>
-    //     </GridContainer>
-    //   </div>
-    // </div>
+    const classes = useStyles();
+    // const settings = {
+    //   dots: true,
+    //   infinite: true,
+    //   speed: 500,
+    //   slidesToShow: 2,
+    //   slidesToScroll: 1,
+    //   autoplay: true,
+    // };
+    return (
+        // <div>hi</div>
+        // <div className={classes.section}>
+        //   <div className={classes.container}>
+        //     <GridContainer>
+        //       <GridItem xs={12} sm={12} md={12} className={classes.marginAuto}>
+        //         <Card carousel>
+        //           <Carousel {...settings}>
+        //             <div>
+        //               <img src={medinaPic} alt="First slide" className="slick-image" />
+        //               <div className="slick-caption">
+        //                 <h4>
+        //                   <LocationOn className="slick-icons" />
+        //                   Yellowstone National Park, United States
+        //                 </h4>
+        //               </div>
+        //             </div>
+        //             <div>
+        //               <img
+        //                 src={venicePic}
+        //                 alt="Second slide"
+        //                 className="slick-image"
+        //               />
+        //               <div className="slick-caption">
+        //                 <h4>
+        //                   <LocationOn className="slick-icons" />
+        //                   Somewhere Beyond, United States
+        //                 </h4>
+        //               </div>
+        //             </div>
+        //             <div>
+        //               <img src={luxorPic} alt="Third slide" className="slick-image" />
+        //               <div className="slick-caption">
+        //                 <h4>
+        //                   <LocationOn className="slick-icons" />
+        //                   Yellowstone National Park, United States
+        //                 </h4>
+        //               </div>
+        //             </div>
+        //           </Carousel>
+        //         </Card>
+        //       </GridItem>
+        //     </GridContainer>
+        //   </div>
+        // </div>
 
 
-    <div className={classes.section}>
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Top Destinations</h2>
-           {/* <h5 className={classes.description}>
+        <div className={classes.section}>
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={12} md={8}>
+                    <h2 className={classes.title}>Top Destinations</h2>
+                    {/* <h5 className={classes.description}>
             This is the paragraph where you can write more details about your
             product. Keep you user engaged by providing meaningful information.
             Remember that by this time, the user is curious, otherwise he wouldn
@@ -138,48 +138,48 @@ export default function ProductSection() {
               iconColor="success"
               vertical
             /> */}
-            <Card sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image = {medinaPic}
-                  alt="medina"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Medina, Saudi Arabia
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Your peaceful, relegious getaway
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-          <Card sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image = {venicePic}
-                  alt="venice"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Venice, Itay
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    The heart of art and architecture
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-            
-          </GridItem>
-        </GridContainer>
-      </div>
-    </div>
-  );
+                        <Card sx={{ maxWidth: 345 }}>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={medinaPic}
+                                    alt="medina"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Medina, Saudi Arabia
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Your peaceful, relegious getaway
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                        <Card sx={{ maxWidth: 345 }}>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={venicePic}
+                                    alt="venice"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Venice, Itay
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        The heart of art and architecture
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+
+                    </GridItem>
+                </GridContainer>
+            </div>
+        </div>
+    );
 }

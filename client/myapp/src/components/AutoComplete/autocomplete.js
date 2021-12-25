@@ -54,7 +54,7 @@ export default function BasicTextFields() {
     const styles = useStyles({
 
     });
-    const [placeholder, setplaceholder]=useState("");
+    const [placeholder, setplaceholder] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");
     // const value = {input};
@@ -83,7 +83,7 @@ export default function BasicTextFields() {
         console.log({ value });
         // final={value};
         setFilteredData([]);
-        
+
         console.log("destination", destination)
     };
 
@@ -95,11 +95,11 @@ export default function BasicTextFields() {
                 return value.title.toLowerCase().includes(searchWord.toLowerCase());
             });
 
-            if (searchWord === "") 
+            if (searchWord === "")
                 setFilteredData([]);
-             else 
+            else
                 setFilteredData(newFilter);
-            
+
         };
 
         const clearInput = () => {
@@ -120,7 +120,7 @@ export default function BasicTextFields() {
                             InputProps={{
                                 startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
                             }} />
-                                         </div>
+                    </div>
                     {filteredData.length != 0 && (
                         <div className="dataResultTo" >
 
