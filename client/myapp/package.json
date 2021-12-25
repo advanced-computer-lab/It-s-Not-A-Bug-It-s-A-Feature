@@ -22,6 +22,7 @@
     "convert-source-map": "^1.8.0",
     "cors": "^2.8.5",
     "countriesjs": "^1.0.3",
+    "country-state-city": "^3.0.1",
     "cross-spawn": "^7.0.3",
     "date-fns": "^2.27.0",
     "moment": "2.29.1",

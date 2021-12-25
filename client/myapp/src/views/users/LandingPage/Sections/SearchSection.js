@@ -79,8 +79,8 @@ export default function Main() {
     //
     const [arrival, setarrival] = useState("");
     const [departure, setdeparture] = useState("");
-    const [arrivalDate, setarrivalDate] = useState("");
-    const [departureDate, setdepartureDate] = useState("");
+    let arrivalDate="";
+    let departureDate="";
     const [value, setValue] = React.useState([null, null]);
 
 
@@ -133,8 +133,8 @@ export default function Main() {
     }
 
     const onSubmit = () => {
-        setdepartureDate((new Date(value[0]).addHours(4)).toISOString());
-        setarrivalDate((new Date(value[1]).addHours(4)).toISOString());
+        departureDate = ((new Date(value[0]).addHours(4)).toISOString());
+        arrivalDate =((new Date(value[1]).addHours(4)).toISOString());
 
         if (departure == "") { setmessage('please enter a departuring destination'); }
         else
