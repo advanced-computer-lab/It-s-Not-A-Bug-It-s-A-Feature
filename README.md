@@ -13,14 +13,14 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 
 - For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
-# **Code Style**
+# **Code Style** :scroll:
 ### We are following this [Code Style](.editorconfig) for consistency.
 
 # **Screenshots**
-## Search Flights :airplane:
+## Search Flights :airplane: :mag:
 ![Search Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/search.PNG)
 
-## Search Results
+## Search Results :mag:
 
 ![Search Results](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/searchResult.PNG)
 
@@ -54,8 +54,8 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 - Interesting news about the world's top travel destinations are featured at the Home page. :round_pushpin:
 - Users can personalize their experience by adding their favourate quote and profile photo. :boy:
 - Users can update their personal information any time.
-- Users can search for flights and reserve them. :airplane:
-- Auto-complete of textboxes is supported to ease the search experience.
+- Users can search for flights and reserve them. :airplane: 
+- Auto-complete of textboxes is supported to ease the search experience. :mag:
 - Online payments are supported.
 - Users are emailed with any changes the make in their resrevations or if a flight is edited or cancelled. :mailbox:
 
@@ -114,7 +114,7 @@ node App.js
 
 ## In the Home Page, you can:
 
-  ### A) Specify your Round Trip Details: 
+  ### A) Specify your Round Trip Details: :mag:
    In the home page you can specify the dates of your departure and return, cabin class, number of travellers,
     and then click "Search" in order to find departure flights that match your preferences.
 
@@ -161,7 +161,7 @@ node App.js
   
    A) View All Flights
     
-   B) Search for a Flight 
+   B) Search for a Flight :mag:
     
    C) Create New Flights
     
