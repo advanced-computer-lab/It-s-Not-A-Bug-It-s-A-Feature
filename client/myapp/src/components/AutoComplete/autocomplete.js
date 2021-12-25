@@ -57,15 +57,11 @@ export default function BasicTextFields() {
     const [placeholder, setplaceholder] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");
-    // const value = {input};
     const handleFilter = (event) => {
         const searchWord = event.target.value;
         console.log("value", searchWord)
         setWordEntered(searchWord);
         const newFilter = airports.searchByAirportName(searchWord)
-        //   (value) => {
-        //   return value.name.toLowerCase().includes(searchWord.toLowerCase());
-        // });
         console.log("new filter", newFilter)
         if (searchWord === "") {
             setFilteredData([]);
@@ -76,15 +72,11 @@ export default function BasicTextFields() {
 
     };
 
-    const final = null;
     const clicked = (value, e) => {
         setWordEntered(value.name);
         console.log({ wordEntered });
         console.log({ value });
-        // final={value};
         setFilteredData([]);
-
-        console.log("destination", destination)
     };
 
     function SearchBar({ data }) {
@@ -108,7 +100,7 @@ export default function BasicTextFields() {
         };
 
     }
-    //   SearchBar({placeholder,data})
+
     return (
         <form className={styles.root} noValidate autoComplete="off">
             <div className={styles.text}>

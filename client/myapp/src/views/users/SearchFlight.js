@@ -95,7 +95,6 @@ export default function SearchFlight(props) {
                 .then(res => {
                     // store data in a variable to be later used
                     // setdepartFlights( res.data);
-                    setDepart(res.data);
                     setLoading(false);
                     if (res.data.length == 0) { setempty(true); }
 
@@ -122,16 +121,23 @@ export default function SearchFlight(props) {
 
         }, [key]);
 
+        function loggedIn(){
+            if(localStorage.getItem("token") != null)return true;
+            else return false;
+        }
+
     const onSubmit = () => {
+        const path= loggedIn()?"/reserveSeats":"/login";
         history.push({
-            pathname: "/reserveSeats",
+            pathname: path,
             state: {
                 flight: selectedDepart,
                 ReturnFlight: selectedReturn,
                 cabin: key.type,
                 adultsNo: key.adultsNo,
                 childrenNo: key.childrenNo,
-                count: key.count
+                count: key.count,
+                message:"Please Login to continue reservation"
             }
 
         });

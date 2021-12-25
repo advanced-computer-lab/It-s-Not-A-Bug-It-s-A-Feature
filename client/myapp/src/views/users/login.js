@@ -24,6 +24,12 @@ import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import {
+    BrowserRouter as Router,
+    Switch,
+    useLocation
+} from "react-router-dom";
+
 
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 
@@ -31,10 +37,20 @@ import image from "./../../assets/img/bg7.jpg";
 const useStyles = makeStyles(styles);
 
 export default function Login(props) {
+    const location = useLocation();
+    const key = location.state;
+
     const [userName, setuserName] = useState("");
     const [password, setpassword] = useState("");
     const [message, setmessage] = useState(null);
     const [messagecolor, setmessagecolor] = useState("danger");
+
+    useEffect(()=>{
+       if(key!=null){
+       setmessage(key.message);
+       setmessagecolor("info");
+    }
+    },[]);
 
 
 
@@ -71,8 +87,17 @@ export default function Login(props) {
                 localStorage.setItem("token", res.data.token);
                 const tokenWithout = res.data.token.split(' ')[1]
                 document.cookie = "jwt=" + tokenWithout;
-                if (res.data.isAdmin === false)
-                    history.push("/profile");
+                if (res.data.isAdmin === false){
+                    console.log("key",key);
+                    if(key!==null){
+                        history.push({
+                            pathname: "/reserveSeats",
+                            state: key
+                
+                        });
+                    }
+                    else history.push("/profile");
+                }
                 else
                     history.push("/admin/createFlight");
             }

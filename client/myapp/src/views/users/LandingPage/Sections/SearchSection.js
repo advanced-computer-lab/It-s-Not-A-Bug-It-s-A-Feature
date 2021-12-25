@@ -52,10 +52,124 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
 import CardBody from '../../../../components/Card/CardBody.js';
+import * as airports from "airportsjs"
+import FlightLandIcon from '@material-ui/icons/FlightLand';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import InputAdornment from '@material-ui/core/InputAdornment';
+const useStyles1 = makeStyles((theme) => ({
+    root: {
 
+        // margin: theme.spacing(1),
+        height: "40px",
+        // flex: 2,
+        // position: 'absolute',
+        direction: "flex",
+        backgroundcolor: "white",
+        msOverflowY: "auto",
+        // position: "relative",
+    },
+    text: {
+        // display: "flex",
+        // flexDirection: "row",
+        color: "black",
+        backgroundcolor: "white"
+
+    },
+    a: {
+
+        height: "50px",
+        backgroundcolor: "white",
+        '&:hover': {
+            color: "grey",
+            backgroundcolor: "white",
+        },
+        textdecoration: "none !important",
+        color: "black",
+    },
+
+    testssss: {
+        height: "100px",
+        width: "100px",
+        backgroundcolor: "green"
+    },
+    test: {
+        position: "relative",
+        zIndex: 40,
+        backgroundcolor: "white",
+        overflow: "hidden",
+        msOverflowY: "auto",
+
+    }
+
+}
+));
 
 const useStyles = makeStyles(styles);
 export default function Main() {
+    const [arrival, setarrival] = useState("");
+    const [departure, setdeparture] = useState("");
+    //___________________________________________________________ search flights
+
+
+    // ---------- arrival -----------
+    const [placeholder, setplaceholder] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+    const handleFilter = (event) => {
+        const searchWord = event.target.value;
+        console.log("value", searchWord)
+        setdeparture(searchWord);
+        const newFilter = airports.searchByAirportName(searchWord)
+        console.log("new filter", newFilter)
+        if (searchWord === "") {
+            setFilteredData([]);
+        } else {
+            setFilteredData(newFilter);
+        }
+        console.log("filteredData", filteredData)
+
+    };
+
+    const clicked = (value, e) => {
+        setdeparture(value.name);
+        console.log({ arrival });
+        console.log({ value });
+        setFilteredData([]);
+    };
+
+
+    // ---------- departure -----------
+    const [placeholder1, setplaceholder1] = useState("");
+    const [filteredData1, setFilteredData1] = useState([]);
+    const handleFilter1 = (event) => {
+        const searchWord = event.target.value;
+        console.log("value", searchWord)
+        setarrival(searchWord);
+        const newFilter = airports.searchByAirportName(searchWord)
+        console.log("new filter", newFilter)
+        if (searchWord === "") {
+            setFilteredData1([]);
+        } else {
+            setFilteredData1(newFilter);
+        }
+        console.log("filteredData", filteredData)
+
+    };
+
+    const clicked1 = (value, e) => {
+        setarrival(value.name);
+        console.log({ departure });
+        console.log({ value });
+        setFilteredData1([]);
+    };
+    //_______________________________________________________________________________________
+
+
+
+
+
+
+
+
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -64,8 +178,7 @@ export default function Main() {
 
     const [countPassengers, setCountPassengers] = useState(1); //since we must have 1 adult
     const [cabin, setCabin] = useState("Economy"); // will store the name of the cabin that we choose 
-
-
+    const styles1 = useStyles1({});
 
     var departFlights; // variable to hold the departure flights of the search query
     var returnFlights; // variable to hold the return flights of the search query
@@ -77,10 +190,9 @@ export default function Main() {
     const [buttonFade2, setButtonFade2] = useState(false);
 
     //
-    const [arrival, setarrival] = useState("");
-    const [departure, setdeparture] = useState("");
-    let arrivalDate="";
-    let departureDate="";
+
+    let arrivalDate = "";
+    let departureDate = "";
     const [value, setValue] = React.useState([null, null]);
 
 
@@ -134,8 +246,11 @@ export default function Main() {
 
     const onSubmit = () => {
         departureDate = ((new Date(value[0]).addHours(4)).toISOString());
-        arrivalDate =((new Date(value[1]).addHours(4)).toISOString());
-
+        arrivalDate = ((new Date(value[1]).addHours(4)).toISOString());
+        console.log("Arrival");
+        console.log(arrival);
+        console.log("departure");
+        console.log(departure);
         if (departure == "") { setmessage('please enter a departuring destination'); }
         else
             if (arrival == "") { setmessage('please enter an arrival destination'); }
@@ -193,7 +308,43 @@ export default function Main() {
                     >
 
                         <Grid container spacing={2} direction="row" justify="center" alignItems="center" >
-                            <Grid item xs textAlign='center'>
+                            <Grid item xs textalign='center'>
+                                <form className={styles1.root} noValidate autoComplete="off">
+                                    <div className={styles1.text}>
+                                        <div className={styles1.test}>
+                                            <div className={styles1.test}>
+                                                <TextField
+                                                    fullWidth
+                                                    required
+                                                    type="search"
+                                                    label="Departure"
+                                                    variant="outlined"
+                                                    value={departure}
+                                                    onChange={(event) => {
+                                                        handleFilter(event)
+                                                    }}
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position="start"> <FlightTakeoffIcon /></InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                            {filteredData.length != 0 && (
+                                                <div className={styles1.test} >
+
+                                                    {filteredData.slice(0, 5).map((value, key) => {
+                                                        return (
+                                                            <a className={styles1.test} onClick={(e) => clicked(value, e)} target="_blank">
+                                                                <p className={styles1.a} >{value.name} </p>
+                                                            </a>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </form>
+                            </Grid >
+                            {/* <Grid item xs textAlign='center'>
                                 <TextField
                                     required
                                     label="Leaving from"
@@ -207,10 +358,45 @@ export default function Main() {
                                     }}
                                 // focused 
                                 />
-                            </Grid>
+                            </Grid> */}
 
+                            <Grid item xs>
+                                <form className={styles1.root} noValidate autoComplete="off">
+                                    <div className={styles1.text}>
+                                        <div className={styles1.test}>
+                                            <div className={styles1.test}>
+                                                <TextField
+                                                    fullWidth
+                                                    required
+                                                    type="search"
+                                                    label="Arrival"
+                                                    variant="outlined"
+                                                    value={arrival}
+                                                    onChange={(event) => {
+                                                        handleFilter1(event)
+                                                    }}
+                                                    InputProps={{
+                                                        startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
+                                                    }}
+                                                />
+                                            </div>
+                                            {filteredData1.length != 0 && (
+                                                <div className={styles1.test} >
 
-                            <Grid item xs >
+                                                    {filteredData1.slice(0, 2).map((value, key) => {
+                                                        return (
+                                                            <a className={styles1.test} onClick={(e) => clicked1(value, e)} target="_blank">
+                                                                <p className={styles1.a} >{value.name} </p>
+                                                            </a>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </form>
+                            </Grid >
+                            {/* <Grid item xs >
                                 <TextField
                                     required
                                     label="Going To"
@@ -221,7 +407,7 @@ export default function Main() {
                                         setarrival(e.target.value);
                                     }}
                                 />
-                            </Grid>
+                            </Grid> */}
 
                             <Grid item xs={4} >
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>

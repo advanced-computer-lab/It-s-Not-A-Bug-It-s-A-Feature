@@ -1,3 +1,4 @@
+import { StoreMallDirectory } from "@material-ui/icons";
 import {
   container,
   defaultFont,
@@ -11,6 +12,8 @@ import {
   boxShadow,
   drawerWidth,
 } from "./../../material-kit-react.js";
+import imagesStyle from "./../imagesStyles.js";
+
 
 const headerStyle = {
   appBar: {
@@ -31,6 +34,13 @@ const headerStyle = {
     position: "relative",
     zIndex: "unset",
   },
+  imgFluid: {
+    maxWidth: "100%",
+    position: "absolute",
+    height: "auto",
+  },
+  ...imagesStyle,
+
   absolute: {
     position: "absolute",
     zIndex: "1100",

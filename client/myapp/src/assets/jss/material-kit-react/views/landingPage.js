@@ -33,7 +33,7 @@ const landingPageStyle = {
   },
   profile: {
     textAlign: "center",
-      width: "90%",
+      width: "100%",
       margin: "0 auto",
       transform: "translate3d(0, -50%, 0)",
     

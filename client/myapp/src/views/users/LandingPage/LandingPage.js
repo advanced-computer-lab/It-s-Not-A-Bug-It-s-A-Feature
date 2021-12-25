@@ -84,7 +84,7 @@ export default function LandingPage(props) {
                 <div className={classes.profile}>
                     <Search />
                 </div>
-                <div className={classes.container} style={{ marginTop: 0, paddingTop: 0, transform: `translate(0, -120px)` }}>
+                <div className={classes.container} >
 
                     <ProductSection />
                     <SectionCarousel/>

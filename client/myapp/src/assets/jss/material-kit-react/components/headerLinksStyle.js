@@ -1,8 +1,15 @@
 import { defaultFont } from "./../../material-kit-react.js";
+import { container, title } from "./../../material-kit-react.js";
+
 
 import tooltip from "./../../material-kit-react/tooltipsStyle.js";
 
 const headerLinksStyle = (theme) => ({
+  container: {
+    zIndex: "13",
+    color: "#FFFFFF",
+    ...container,
+  },
   list: {
     ...defaultFont,
     fontSize: "14px",
@@ -37,6 +44,8 @@ const headerLinksStyle = (theme) => ({
     padding: "0 !important",
   },
   navLink: {
+    
+    zIndex: "13",
     color: "inherit",
     position: "relative",
     padding: "0.9375rem",
@@ -101,6 +110,8 @@ const headerLinksStyle = (theme) => ({
     marginRight: "4px",
   },
   dropdownLink: {
+    
+    zIndex: "13",
     "&,&:hover,&:focus": {
       color: "inherit",
       textDecoration: "none",

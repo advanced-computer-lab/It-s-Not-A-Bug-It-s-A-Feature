@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import Header from "./../../components/Header/HeaderAdmin.js";
+import Header from "./../../components/Header/Header.js";
 import HeaderLinks from "./../../components/Header/HeaderLinksAdmin.js";
 import Footer from "./../../components/Footer/Footer.js";
 import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";

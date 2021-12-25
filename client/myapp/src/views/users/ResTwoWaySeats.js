@@ -24,9 +24,7 @@ import Check from "@material-ui/icons/Check";
 import SelectSeats from "../../components/Flight/SelectSeats.js";
 import ColorCode from "../../components/Flight/colorCodeSeats.js";
 import Box from '@material-ui/core/Box';
-
 import ReservationCard from "./../../components/Reservation/Reservation.js";
-
 import axios from 'axios';
 axios.defaults.withCredentials = true
 import { useHistory } from 'react-router-dom';
