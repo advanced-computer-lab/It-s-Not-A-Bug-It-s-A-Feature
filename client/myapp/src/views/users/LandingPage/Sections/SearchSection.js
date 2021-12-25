@@ -261,6 +261,8 @@ export default function Main() {
         else
             if (arrival == "") { setmessage('please enter an arrival destination'); }
             else
+            if(departure==arrival) { setmessage('Can not have the departure and arrival the same'); }
+            else
                 if (departureDate === "" || arrivalDate === "") { setmessage('please enter a Date'); }
                 else
                     if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
