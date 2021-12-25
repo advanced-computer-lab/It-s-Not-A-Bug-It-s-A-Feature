@@ -3,13 +3,15 @@
 OverReact is an Airline Reservation System through which users can reserve and pay for flights in order to travel to various countries and cities.
 
 # Motivation
-The purpose of this project is to learn how to work on a large-scale MERN project and meet specific Functional and Non-Functional Requirements.
+The purpose of this project is to learn how to work as a team on a large-scale MERN Stack project and meet specific Functional and Non-Functional Requirements. Learn how to deal with various APIs and write code in a consistent style.
 
 # **Build Status**
-This basically explains the current build status of the project. If there is a bug /error which needs addressing. This is done so for two different reasons The user understands that this is an issue and does not spend more time figuring if it was a mistake on their part.A developer who is familiar with the issue can suggest some solutions directly without going through the whole code.
+The website currently offers round trips only. However, in the future we intend to offer one-way trips.
+The website allows you to choose one cabin class per reservation, in the future we may allow the same reservation to have different cabin classes.
+For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style**
-In order to maintain a consistent code style, we decided to stick to the following [Code Style](.editorconfig)
+We followed this [Code Style](.editorconfig) for consistency.
 
 # **Screenshots**
 As the saying goes, a picture is equal to a thousand words. Most people will be interested if there is a visual representation of what the project is about. It helps them understand better. A visual representation can be snapshots of the project or a video of the functioning of the project.
@@ -18,15 +20,22 @@ As the saying goes, a picture is equal to a thousand words. Most people will be 
 ## MERN Stack was used to create this project.
 MERN stands for MongoDB, Express, React, Node, after the four key technologies that make up the stack.
 
-    MongoDB - document database
-    Express(.js) - Node.js web framework
-    React(.js) - a client-side JavaScript framework
-    Node(.js) - the premier JavaScript web server
+   ### MongoDB - document database
+   ### Express(.js) - Node.js web framework
+   ### React(.js) - a client-side JavaScript framework
+   ### Node(.js) - the premier JavaScript web server
 
 # **Features**
-This is where you write what all extra features have been done in your project. Basically this is where you try to make your project stand out from the rest.
- Find News About Our Top Destinations:
-    At the bottom of the Home Page, you will find some interesting news about OverReact's top destinations.
+
+- Interesting news about the world's top travel destinations are featured at the Home page.
+- Users can personalize their experience by adding their favourate quote and profile photo.
+- Users can update their personal information any time.
+- Users can search for flights and reserve them.
+- Auto-complete of textboxes is supported to ease the search experience.
+- Online payments are supported.
+- Users are emailed with any changes the make in their resrevations or if a flight is edited or cancelled.
+
+
     
 # **Code Examples**
 This is where you try to compress your project and make the reader understand what it does as simply as possible. This should help the reader understand if your code solves their issue.
@@ -64,7 +73,7 @@ node App.js
 
 
 
-# **API reference**
+# **API Reference**
 
    [Axios](https://axios-http.com/docs/api_intro) for communication between the front end and back end
    
@@ -146,7 +155,7 @@ If you would like to contribute to our website, check our [Contribution Guidelin
 
 # **Credits**
 
-The main resources we used in creating this project:
+### The main resources we used in creating this project are:
 
   https://blog.logrocket.com/mern-stack-tutorial/
 
