@@ -445,7 +445,13 @@ export default function Reservation(props) {
                                                                     Reserve
                                                                 </Button>
                                                                 : <div>
-
+                                                                    {/* <Card maxwidth="xs">
+                                                                    <CardBody>
+                                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                            <b> the old reservation{" ' "}s price will be refunded and you will proceed to pay the price of your "new" reservation.</b>
+                                                                        </GridItem>
+                                                                    </CardBody>
+                                                                </Card> */}
                                                                     {priceDiff > 0 ?
                                                                         <Button
                                                                             color="danger"

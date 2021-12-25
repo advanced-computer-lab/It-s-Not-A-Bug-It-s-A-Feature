@@ -13,8 +13,6 @@ import Book from './views/users/book';
 import  Profile from './views/users/ProfilePage';
 import  SearchFlight from './views/users/SearchFlight.js';
 import  Error from './views/users/error.js';
-import  deptReserveFlight from './views/users/ReservationDeptSeats.js';
-import  retReserveFlight from './views/users/ReservationRetSeats.js';
 import  Payment from './views/users/PaymentPageRes.js';
 import bothSeats from './views/users/ResTwoWaySeats.js';
 import editRes from './views/users/editRes.js';
@@ -32,6 +30,8 @@ import { ThemeProvider } from '@material-ui/styles';
 // import HorizontalLinearStepper from './views/users/test2.js';
 // import testsearch from './views/users/LandingPage/Sections/testsearch.js';
  import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+ import ReactNotifications from 'react-notifications-component'
+
 
    let theme = createTheme();
  theme = responsiveFontSizes(theme);
@@ -41,6 +41,7 @@ import { ThemeProvider } from '@material-ui/styles';
 function App() {
   return(
     <ThemeProvider theme={theme}>
+      <ReactNotifications />
          <Router> 
            <Route path ={"/login"} component={Login}></Route>
            <Route path ={"/signUp"} component={SignUp}></Route>
@@ -51,7 +52,6 @@ function App() {
            <Route path ={"/aboutUs"} component={About}></Route>
 
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
-
            <Route path ={"/"} component={Home}></Route>
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
