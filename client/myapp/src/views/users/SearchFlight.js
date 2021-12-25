@@ -16,6 +16,7 @@ import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import ButtonMUI from '@mui/material/Button';
 import Card from "./../../components/Card/Card.js";
+
 import Flight from "./../../components/Flight/FlightCard.js";
 import SearchAirports from "./../../components/AutoComplete/autocomplete.js";
 // import AllSeats from "./../.../components/Flight/AllSeats.js";
@@ -153,7 +154,12 @@ export default function SearchFlight(props) {
       >
 
         <div className={classes.container}>
-          <SearchBar />
+          <Card>
+            <CardBody>
+            <SearchBar />
+            </CardBody>
+          </Card>
+          
           <GridContainer justify="center">
           <GridItem xs={12} sm={12}>
                 <NavPills

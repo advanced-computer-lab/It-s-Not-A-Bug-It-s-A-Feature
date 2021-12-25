@@ -4,6 +4,8 @@ import CreateFlight from './views/admin/createFlight';
 import  ViewAllFlights from './views/admin/viewAllFlights.js';
 
 import  Home from './views/users/LandingPage/LandingPage.js';
+import  About from './views/users/LandingPage/About.js';
+
 // import  userHome from './views/users/LandingPage/userLandingPage.js';
 import  Login from './views/users/login.js';
 import SignUp from './views/users/SignUpPage.js';
@@ -46,12 +48,15 @@ function App() {
            <Route path ={"/book"} component={Book}></Route>
            <Route path ={"/search"} component={SearchFlight}></Route>
            <Route path ={"/Error"} component={Error}></Route>
+           <Route path ={"/aboutUs"} component={About}></Route>
+
            {/* <Route path ={"/reserve"} component={ReserveFlight}></Route> */}
            <Route path ={"/home"} component={Home}></Route>
            <Route path ={"/admin/allFlights"} component={ViewAllFlights}></Route>
            <Route path='/admin/createFlight' component={CreateFlight}></Route>
            <Route path='/admin/editFlight/:id' component={EditFlight} />
            <Route path ={"/admin/search"} component={Search}/>
+           
            {/* <Route path ={"/reserveDept"} component={deptReserveFlight}/>
            <Route path ={"/reserveRet"} component={retReserveFlight}/> */}
            <Route path ={"/paySuccess"} component={paySuccess}/>

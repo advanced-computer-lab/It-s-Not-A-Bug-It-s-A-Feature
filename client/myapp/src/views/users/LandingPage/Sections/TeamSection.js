@@ -58,7 +58,9 @@ export default function TeamSection() {
                   color="transparent"
                   className={classes.margin5}
                 >
-                  <i className={classes.socials + " fab fa-twitter"} />
+                  <a className={classes.socials + " fab fa-twitter"} 
+                   href="https://www.creative-tim.com/?ref=mkr-footer"
+                  />
                 </Button>
                 <Button
                   justIcon

@@ -23,14 +23,13 @@ import Typography from '@mui/material/Typography';
 import AllSeats from "../../components/Flight/AllSeats.js";
 import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
 import Check from "@material-ui/icons/Check";
-import Grid from "@material-ui/core/Grid";
 
 import SelectSeats from "../../components/Flight/SelectSeats.js";
 import ColorCode from "../../components/Flight/colorCodeSeats.js";
 import Box from '@material-ui/core/Box';
 import { Link } from "react-router-dom";
 
-
+import Grid from "@material-ui/core/Grid";
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
