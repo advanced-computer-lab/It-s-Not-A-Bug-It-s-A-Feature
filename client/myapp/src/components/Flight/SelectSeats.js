@@ -12,7 +12,8 @@ import { List, ListItem, Tooltip } from "@material-ui/core";
 import { useState, useEffect } from 'react';
 import Button from "./../../components/CustomButtons/Button.js";
 import { useHistory } from 'react-router-dom';
-
+import { makeStyles } from "@material-ui/styles";
+import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
 import SeatPicker from 'react-seat-picker';
 
 //handle currbusiness and econ seats - maybe in parent component - update flight w new values
@@ -27,11 +28,11 @@ function createRows(business, econ, reserved, isBusiness) {
         res[i][j] = { number: "", isReserved: true };
       }
       else {
-        if(reserved.includes(k) || (isBusiness && k>business) || (!isBusiness && k<=business)){
+        if (reserved.includes(k) || (isBusiness && k > business) || (!isBusiness && k <= business)) {
           res[i][j] = { number: k++, isReserved: true };
         }
-        else{
-        res[i][j] = { number: k++ };
+        else {
+          res[i][j] = { number: k++ };
         }
       }
     }
@@ -39,36 +40,41 @@ function createRows(business, econ, reserved, isBusiness) {
   return res;
 }
 
+const useStyles = makeStyles(styles);
 
 export default function Flight(props) {
   // const [deptSeats, setDeptSeats] = useState([]);
   // const [retSeats, setRetSeats] = useState([]);
   const cabin = props.type;
   const passengers = props.passengers;
-  const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats), props.reservedSeats, cabin ==="Business");
+  const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats), props.reservedSeats, cabin === "Business");
   const isReturn = props.isReturn === "true";
+  const classes = useStyles();
 
   SeatPicker.defaultProps = {
     addSeatCallback: function addSeatCallback(row, number, id) {
       console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-
-      props.callback(prevState => [...prevState, number] );
+      console.log("my seatcheck is  ",props.seatsCheck);
+      // if (passengers > props.seatsCheck) {
+        props.callback(prevState => [...prevState, number]);
+      // }
     },
 
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
+      console.log("my seatcheck is  ",props.seatsCheck);
 
-          props.callback(prevState => prevState.filter(item => item !== number));
-          console.log("set sel hena");
+      props.callback(prevState => prevState.filter(item => item !== number));
+      console.log("set sel hena");
     },
   };
 
   let title;
   if (isReturn) {
-    title = <h4>Return flight</h4>
+    title = <h3 className={classes.title}>Return flight</h3>
   }
   else {
-    title = <h4>Departure flight</h4>
+    title = <h3 className={classes.title}>Departure flight</h3>
   }
   return (
     <div className="App">
@@ -78,6 +84,7 @@ export default function Flight(props) {
       >
         <div >
           {title}
+          <br />
           <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
         </div>
       </div>

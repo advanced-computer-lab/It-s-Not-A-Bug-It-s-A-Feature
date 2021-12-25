@@ -119,7 +119,8 @@ export default function ProfilePage(props) {
         else {
           setMyReservation(res.data);
           console.log("Reservation");
-          console.log(res); setLoading(false);
+          console.log(res); 
+          setLoading(false);
         }
       })
       .catch(err => {
