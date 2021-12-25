@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import axios from 'axios';
-import {useState,useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,11 +16,49 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
 import {Link}from 'react-router-dom';
 
-function ViewAllFlights() {
+
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import Header from "./../../components/Header/HeaderAdmin.js";
+import HeaderLinks from "./../../components/Header/HeaderLinksAdmin.js";
+import Footer from "./../../components/Footer/Footer.js";
+import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
+import image from "./../../assets/img/bg2.jpg";
+
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+
+import { useHistory } from 'react-router-dom';
+
+
+const useStyles = makeStyles(styles);
+
+function ViewAllFlights(props) {
+  
+  let history = useHistory();
+  const classes = useStyles();
+  const { ...rest } = props;
     const[rows, setRows]= useState([]); 
+
     useEffect(()=>{
-        axios.get('http://localhost:8000/Admin/allFlights')
-      .then(res=> {setRows(res.data);console.log(res)}).catch(err=>console.log(err))
+      const token = localStorage.getItem("token");
+
+        axios.get('http://localhost:8000/Admin/allFlights',{
+          headers: {
+            'authorization': token
+          }
+        })
+      .then(res=> {
+        console.log(res.data);
+        if (res.data.message === "Access denied. Admins only are allowed.") {
+          history.push("/error");
+        }else{
+        setRows(res.data);console.log(res)}}).catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
       
      },[]);
     
@@ -31,7 +67,29 @@ function ViewAllFlights() {
     // }
 
     return (
-      helper(rows)
+      <div>
+      <Header
+      absolute
+      color="transparent"
+      brand="OverReact"
+      rightLinks={<HeaderLinks />}
+      {...rest}
+    />
+    
+    <div
+      className={classes.pageHeader}
+      style={{
+        backgroundImage: "url(" + image + ")",
+        backgroundSize: "cover",
+        backgroundPosition: "top center",
+      }}
+    >
+      <div className={classes.container}>
+      {helper(rows)}
+      </div>
+      <Footer/>
+      </div>
+      </div>
     )
     
 }
@@ -104,7 +162,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   
   function helper(rows){
     return(<TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table sx={{ minWidth: 800 }} aria-label="customized table">
         <TableHead>
           <TableRow>
           <StyledTableHead>Flight Number</StyledTableHead>

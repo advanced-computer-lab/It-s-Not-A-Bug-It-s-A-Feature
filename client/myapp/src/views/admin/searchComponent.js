@@ -29,19 +29,43 @@ import axios from 'axios';
 import { AppBar } from '@mui/material';
 
  
-export default function Main() { 
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import Header from "./../../components/Header/HeaderAdmin.js";
+import HeaderLinks from "./../../components/Header/HeaderLinksAdmin.js";
+import Footer from "./../../components/Footer/Footer.js";
+import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
+import image from "./../../assets/img/bg2.jpg";
+
+
+import Card from "./../../components/Card/Card.js";
+import CardContent from '@mui/material/CardContent';
+
+axios.defaults.withCredentials = true;
+
+import { useHistory } from 'react-router-dom';
+
+
+const useStyles = makeStyles(styles);
+export default function Main(props) { 
+  let history = useHistory();
+  const classes = useStyles();
+  const { ...rest } = props;
+    const[rows, setRows]= useState([]); 
   const theme = createTheme();
     const [d, setData] =useState({
         flightNo:"",departureAirport:"",arrivalAirport:"",departureTerminal:"",arrivalTerminal:"",
         departureDate:"",arrivalDate:"",departureTime:"",arrivalTime:""
       });
 
-      const[rows, setRows]= useState([]); 
      const onSubmit=()=>{
        if(d.departureTime!=""&&d.departureDate==""){alert('Cannot Add Time without Date');
        setData((prevState => {return {...prevState,["departureTime"]: '' };}));}
        if(d.arrivalTime!=""&&d.arrivalDate==""){alert('Cannot Add Time without Date');
        setData((prevState => {return {...prevState,["arrivalTime"]: '' };}));}
+       const token = localStorage.getItem("token");
+
       axios.get('http://localhost:8000/Admin/searchFlights',{ params:
           {
             flightNo:d.flightNo,
@@ -55,6 +79,10 @@ export default function Main() {
             departureTime:d.departureTime 
           
           }     
+    },{
+      headers: {
+        'authorization': token
+      }
     })
     .then(res=> {
       console.log(d)
@@ -65,26 +93,29 @@ export default function Main() {
    };
 
   return (
-    <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <AppBar
-        position="absolute"
-        color="default"
-        elevation={0}
-        sx={{
-          position: 'relative',
-          borderBottom: (t) => `1px solid ${t.palette.divider}`,
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            overReact
-          </Typography>
-        </Toolbar>
-      </AppBar>
     <div>
-    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+    <Header
+      absolute
+      color="transparent"
+      brand="OverReact"
+      rightLinks={<HeaderLinks />}
+      {...rest}
+    />
+    
+    <div
+      className={classes.pageHeader}
+      style={{
+        backgroundImage: "url(" + image + ")",
+        backgroundSize: "cover",
+        backgroundPosition: "top center",
+      }}
+    >
+      <div className={classes.container}>
+        
+          <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
           <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}style={{marginVertical:50,}}>
+          <Card>
+          <CardContent>
             <Typography component="h2" variant="h4" align="center">
                Search Flights
             </Typography>
@@ -312,21 +343,18 @@ export default function Main() {
         </Button>
         </Box>
         </div>
-        
+        </CardContent>
+        </Card>
         </Paper>
         </Container>
+          
+    
 
         <div>{helper(rows)}</div>  
     </div>
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        overReact
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-    </ThemeProvider>
+      <Footer/>
+      </div>
+      </div>
 
   );
       }

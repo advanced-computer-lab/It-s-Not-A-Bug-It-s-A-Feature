@@ -17,14 +17,15 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import Header from "./../../components/Header/Header.js";
-import HeaderLinks from "./../../components/Header/HeaderLinks.js";
+import Header from "./../../components/Header/HeaderAdmin.js";
+import HeaderLinks from "./../../components/Header/HeaderLinksAdmin.js";
 import Footer from "./../../components/Footer/Footer.js";
-import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
-import image from "./../../assets/img/bg7.jpg";
+import styles from "./../../assets/jss/material-kit-react/views/loginPage.js";
+import image from "./../../assets/img/bg2.jpg";
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 const useStyles = makeStyles(styles);
 
 export default function CreateFlight(props) {
@@ -107,10 +108,13 @@ export default function CreateFlight(props) {
     
      const onSubmit = (e) => { 
       e.preventDefault();
+      const token = localStorage.getItem("token");
       if(validateData())
-  
-  
-      axios.post('http://localhost:8000/admin/createFlight/' , flightData)
+      axios.post('http://localhost:8000/admin/createFlight/' , flightData, {
+        headers: {
+          'authorization': token
+        }
+      })
         .then(res => alert('Flight Added Successfuly'), )
         .catch((error) => {
           if( error.response ){
@@ -141,10 +145,9 @@ export default function CreateFlight(props) {
           backgroundSize: "cover",
           backgroundPosition: "top center",
         }}
-      ></div>
-    <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {myAppBar()}
+      >
+        <div className={classes.container}>
+        
         <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
           <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
             <Typography component="h1" variant="h4" align="center">
@@ -152,7 +155,7 @@ export default function CreateFlight(props) {
             </Typography>
             <React.Fragment>
             
-                <React.Fragment>
+               
                   {DataForm(flightData,setFlight,flightError,setFlightError,errorMessage,setErrorMessage)}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
   
@@ -165,15 +168,16 @@ export default function CreateFlight(props) {
                       Create
                     </Button>
                   </Box>
-                </React.Fragment>
+                
               
             </React.Fragment>
           </Paper>
-          <Copyright />
         </Container>
 
         
-      </ThemeProvider>
+      </div>
+      <Footer/>
+      </div>
       </div>
     )
   

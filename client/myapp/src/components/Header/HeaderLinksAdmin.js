@@ -19,16 +19,16 @@ axios.defaults.withCredentials = true
 import { Apps, CloudDownload } from "@material-ui/icons";
 
 // core components
-import CustomDropdown from "./../CustomDropdown/CustomDropdown.js";
-import Button from "./../CustomButtons/Button.js";
-import  Login from './../../views/users/login.js';
+import CustomDropdown from "../CustomDropdown/CustomDropdown.js";
+import Button from "../CustomButtons/Button.js";
+import  Login from '../../views/users/login.js';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 // import { Router } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
 
-import styles from "./../../assets/jss/material-kit-react/components/headerLinksStyle.js";
+import styles from "../../assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
@@ -39,6 +39,15 @@ export default function HeaderLinks(props) {
   let history = useHistory();
   const [isLogged, setLogged] =useState(localStorage.getItem("token")!=null);
 
+  // const onSubmit = (e) => { 
+  //   // i want to change the navbar links here
+  //   e.preventDefault();
+  //   if(e.target.id === 'login'){
+  //       setLogged(true);}
+  //   else{
+  //       setLogged(false);}
+  // }
+  // let isLogged = props.isLogged
   let loginButton;
   if(!isLogged){
     loginButton = <Button
@@ -92,7 +101,7 @@ export default function HeaderLinks(props) {
     </Button>
     <Button
       onClick={(e) => {
-        history.push('/profile')
+        history.push('/admin/allFlights')
    }}
       color="transparent"
       target="_blank"
@@ -100,8 +109,33 @@ export default function HeaderLinks(props) {
 
     >
       
-      <AccountCircleIcon className={classes.icons} /> My Profile
+      <AccountCircleIcon className={classes.icons} /> All Flights
     </Button>
+    <Button
+      onClick={(e) => {
+        history.push('/admin/createFlight')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+
+    >
+      
+      <AccountCircleIcon className={classes.icons} /> Create Flight
+    </Button>
+    <Button
+      onClick={(e) => {
+        history.push('/admin/search')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+
+    >
+      
+      <AccountCircleIcon className={classes.icons} /> Search Flights
+    </Button>
+    
     </div>;
     }
 
