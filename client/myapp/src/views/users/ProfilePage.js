@@ -24,9 +24,13 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Parallax from "./../../components/Parallax/Parallax.js";
 
-
+import { Link } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+
+import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
+import Check from "@material-ui/icons/Check";
+
 
 import Card from "./../../components/Card/Card.js";
 import CardBody from "./../../components/Card/CardBody.js";
@@ -35,20 +39,23 @@ import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
 import LockIcon from '@mui/icons-material/Lock';
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
-
-
+import CustomDropdown from "./../../components/CustomDropdown/CustomDropdown.js";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
-
-
 import Reservation from "./../../components/Reservation/Reservation.js";
-import profile from "./../../assets/img/faces/michael.jpg";
-
+import michael from "./../../assets/img/faces/michael.jpg";
+import gego from "./../../assets/img/faces/khadija.jpg";
+import buzz from "./../../assets/img/faces/buzz.jpg";
+import cloud from "./../../assets/img/cloud.jpg";
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true
+
+
+import { useHistory } from 'react-router-dom';
+import { ContactsOutlined, SentimentDissatisfiedRounded } from "@material-ui/icons";
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
@@ -59,10 +66,21 @@ export default function ProfilePage(props) {
   const classes = useStyles();
   const [MyReservation, setMyReservation] = useState([]);
   const [Profile, setProfile] = useState([]);
+  const [age, setage] = useState([]);
   const [ProfileEdit, setProfileEdit] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [edit, setedit] = useState(null);
+  const [editPass, seteditPass] = useState(null);
+  const [pass, setpass] = useState("");
+  const [confirmError, setconfirmError] = useState(false);
+  const [confirmPass, setconfirmPass] = useState("");
+  const [oldPass, setoldPass] = useState("");
+  const [confirmMess, setconfirmMess] = useState("");
+
+
+  const [message, setmessage] = useState(null);
+  const [successMess, setsuccess] = useState(null);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -70,30 +88,85 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+  let history = useHistory();
 
+  function agee(){
+    if(Profile.birthDate){
+     return getAge(Profile.birthDate);
+    }
+    return Profile.age;
+  }
+  function getAge(dateString) 
+{
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
+}
   useEffect(() => {
-    axios.get('http://localhost:8000/user/myReservations')
-      .then(res => { setMyReservation(res.data); console.log(res); setLoading(false); }).catch(err => console.log(err));
-
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/myReservations', {
+      headers: {
+        'authorization': token,
+      }
+    })
+      .then(res => {
+        if (res.data.message === "Please log in to continue.") {
+          history.push("/error");
+        }
+        else {
+          setMyReservation(res.data);
+          console.log("Reservation");
+          console.log(res); 
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/user/editProfile/')
-      .then(res => {
-        setProfile(res.data); console.log(res);
-        setProfileEdit(res.data);
+    const token = localStorage.getItem("token");
+    axios.get('http://localhost:8000/user/editProfile/', {
+      headers: {
+        'authorization': token
       }
-      ).catch(err => console.log(err));
+    })
+      .then(res => {
+        if (res.data === "Access not allowed. Please login to proceed.") {
+          history.push("/error");
+        }
+        else {
+          setProfile(res.data);setage(agee()); console.log(res);
+          setProfileEdit(res.data);
+        }
+      }
+      ).catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
 
   }, []);
 
   function onCancel(reserv) {
     // confirmation alert is shown before deletion
     const resNo = (reserv).reservationID;
-    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");
+    const r = window.confirm("Do you really want to Cancel Reservation " + resNo + " ?");//change
     if (r === true) {
       const id = (reserv)._id;
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`)
+      const token = localStorage.getItem("token");
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, [],{
+        headers: {
+          'authorization': token
+        }
+      })
         .then((response) => {
           window.location.reload(true);
         })
@@ -103,10 +176,69 @@ export default function ProfilePage(props) {
 
   }
 
+  function editRes(resID) {
+    history.push({
+      pathname: "/editResFront",
+      state: {
+
+        // adultsNo: key.adultsNo,
+        // childrenNo: key.childrenNo,
+        // seatClass: key.cabin,
+        // deptFlight: key.flight,
+        // arrFlight: key.ReturnFlight,
+        // deptSeats: reservedSeats2,
+        // arrSeats: reservedSeats3,
+        // totalPrice: price
+      }
+
+    });
+  }
+
   const onEdit = () => {
-    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit)
+    const token = localStorage.getItem("token");
+    axios.post('http://localhost:8000/user/editProfile/', ProfileEdit, {
+      headers: {
+        'authorization': token
+      }
+    })
       .then(res => { setProfile(ProfileEdit); setedit(null); }
       ).catch(err => console.log(err));
+  }
+
+  const onChangePass = () => {
+    
+    if(confirmError===false && pass!==""&& oldPass!=="" && confirmPass!==""){
+    const token = localStorage.getItem("token");
+    axios.post('http://localhost:8000/user/changePassword/', {
+      
+        old:oldPass,
+        new:pass
+    
+    }, {
+      headers: {
+        'authorization': token
+      }
+    })
+      .then(res => { if(res.data.message === "Password updated successfully."){
+        seteditPass(null);
+        setconfirmError(false);setconfirmPass("");
+        setpass("");
+        setoldPass("");
+        setconfirmMess("");
+        setsuccess(res.data.message);
+      
+      }
+    else{
+      setmessage(res.data.message);
+    }
+    }
+      ).catch(err => {console.log(err)});
+    }
+    else{
+      if(pass==="" || oldPass==="" || confirmPass===""){
+        setmessage("Please Fill all the Fields");
+      }
+    }
   }
   return (
     <div>
@@ -124,7 +256,7 @@ export default function ProfilePage(props) {
       <Parallax
         small
         filter
-        image={require("./../../assets/img/profile-bg.jpg").default}
+        image={require("./../../assets/img/cloud.jpg").default}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div>
@@ -133,7 +265,9 @@ export default function ProfilePage(props) {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img src={profile} alt="..." className={imageClasses} />
+                    {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
+                      :
+                      <img src={buzz} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{Profile.firstName} {Profile.lastName}</h3>
@@ -159,11 +293,24 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <div>
 
-                          {!edit &&
+                          {!edit && !editPass &&
 
 
-                            <GridContainer justify="flex-start" justifyContent="flex-start" alignItems="left">
-                              <GridItem xs={12} sm={12} justifyContent="flex-start" alignItems="left">
+                            <GridContainer justify="center">
+                              {successMess ? 
+                              <GridItem  xs={12} sm={12}>
+                              <SnackbarContent
+                  
+                                                    message={
+                                                        <span>
+                                                            {successMess}
+                                                        </span>
+                                                    }
+                                                    close
+                                                    color="success"
+                                                    icon={Check}
+                                                /> </GridItem>: null}
+                              <GridItem xs={12} sm={12} >
                                 <b>UserName : </b> {Profile.username}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
@@ -176,8 +323,12 @@ export default function ProfilePage(props) {
                                 <b>Email : </b> {Profile.email}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Phone Number : </b> {Profile.phoneNo}
+                                <b>Phone Number : </b> 0{Profile.phoneNo}
                               </GridItem>
+                              {Profile.phoneNoOptional &&
+                              <GridItem xs={12} sm={12}  >
+                                <b>2nd Phone Number : </b> 0{Profile.phoneNoOptional}
+                              </GridItem>}
                               <GridItem xs={12} sm={12}  >
                                 <b>CreditCard Number : </b> {Profile.creditCardNo}
                               </GridItem>
@@ -185,17 +336,31 @@ export default function ProfilePage(props) {
                                 <b>Passport Number : </b> {Profile.passportNo}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
-                                <b>Age : </b> {Profile.age}
+                                <b>Age : </b> {age}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
                                 <b>Address : </b> {Profile.address}
                               </GridItem>
 
-                              <GridItem xs={12} sm={12}  >
+                              <GridItem xs={8} sm={4} textAlign= 'center' >
+                                <br />
+                                <Button
+                                  color="danger"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {
+                                    seteditPass(true);
+                                  }}
+                                >Change Password</Button>
+                              </GridItem>
+                              <GridItem xs={8} sm={4}  textAlign= 'center' >
                                 <br />
                                 <Button
                                   color="warning"
-                                  // color="transparent"
                                   size="lg"
                                   id="demo-customized-button"
                                   aria-controls="demo-customized-menu"
@@ -205,7 +370,7 @@ export default function ProfilePage(props) {
                                   onClick={(e) => {
                                     setedit(true);
                                   }}
-                                >Edit </Button>
+                                >Edit Info</Button>
                               </GridItem>
                             </GridContainer>
 
@@ -219,7 +384,6 @@ export default function ProfilePage(props) {
                                 <form className={classes.form}>
                                   <CardBody>
                                     <TextField
-
                                       label="First Name..."
                                       id="firstName"
                                       name="firstName"
@@ -234,7 +398,6 @@ export default function ProfilePage(props) {
                                     />
                                     <br /><br />
                                     <TextField
-
                                       label="Last Name"
                                       id="lastName"
                                       name="lastName"
@@ -248,9 +411,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Email"
                                       id="email"
                                       name="email"
@@ -264,9 +425,7 @@ export default function ProfilePage(props) {
                                       }}
                                     />
                                     <br /><br />
-
                                     <TextField
-
                                       label="Passport Number"
                                       id="passportNo"
                                       name="passportNo"
@@ -293,7 +452,6 @@ export default function ProfilePage(props) {
                                         setedit(null);
                                       }}
                                     >Cancel </Button>
-
                                     <Button
                                       color="warning"
                                       // color="transparent"
@@ -307,14 +465,123 @@ export default function ProfilePage(props) {
                                         onEdit(e);
                                       }}
                                     >Save </Button>
-
-
-
-
                                   </CardBody>
                                 </form>
+                              </GridItem>
+                            </GridContainer>
+                          }
+                           {editPass &&
+                            <GridContainer justify="center" >
+                              {message ?
+                                <GridItem xs={12} xm={12}>
+                                  <SnackbarContent
+                                    message={
+                                      <span>
+                                        {message}
+                                      </span>
+                                    }
+                                    close
+                                    color="danger"
 
+                                  /> </GridItem> : null}
 
+                              <GridItem xs={6} sm={6}>
+
+                                <form className={classes.form}>
+                                  <CardBody>
+                                    <TextField
+                                    required
+                                      label="Curr Password"
+                                      id="oldPass"
+                                      name="oldPass"
+                                      variant="standard"
+                                      value={oldPass}
+                                      type="password"
+                                      fullWidth
+                                      onChange=
+                                      {(event) => {
+                                        setoldPass(event.target.value);
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                    <TextField
+                                    required
+                                      label="New Password"
+                                      id="newPass"
+                                      name="newPass"
+                                      variant="standard"
+                                      value={pass}
+                                      type="password"
+                                      fullWidth
+                                      onChange=
+                                      {(event) => {
+                                        setpass(event.target.value);
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                    <TextField
+                                      label="Confirm New Password"
+                                      required
+                                      id="newPass"
+                                      name="newPass"
+                                      variant="standard"
+                                      value={confirmPass}
+                                      type="password"
+                                      fullWidth
+                                      error={confirmError}
+                                      helperText={confirmMess}
+                                      onChange=
+                                      {(event) => {
+                                        setconfirmPass(event.target.value);
+                                        if(event.target.value===pass){setconfirmError(false);
+                                        setconfirmMess("");
+                                        }
+                                        else{
+                                          setconfirmError(true);
+                                          setconfirmMess("Passwords do not match");
+                                        }
+                                        
+                                        
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                   
+                                    <Button alignItems="right"
+                                      color="transparent"
+                                      // color="transparent"
+                                      size="lg"
+                                      id="demo-customized-button"
+                                      aria-controls="demo-customized-menu"
+                                      aria-haspopup="true"
+                                      variant="contained"
+                                      // disableElevation
+                                      onClick={(e) => {
+                                        seteditPass(null);
+                                        setconfirmError(false);setconfirmPass("");
+                                        setpass("");
+                                        setoldPass("");
+                                        setconfirmMess("");
+                                      }}
+                                    >Cancel </Button>
+                                    <Button
+                                      color="warning"
+                            
+                                      // color="transparent"
+                                      size="lg"
+                                      id="demo-customized-button"
+                                      aria-controls="demo-customized-menu"
+                                      aria-haspopup="true"
+                                      variant="contained"
+                                      // disableElevation
+                                      onClick={(e) => {
+                                        onChangePass(e);
+                                      }}
+                                    >Save </Button>
+                                  </CardBody>
+                                </form>
                               </GridItem>
                             </GridContainer>
                           }
@@ -327,52 +594,133 @@ export default function ProfilePage(props) {
                       tabButton: "Upcoming Flights",
                       tabIcon: FlightTakeoffIcon,
                       tabContent: (
-                        <GridContainer justify="center">
+                        <div className={classes.container}>
                           {loading ? <CustomLinearProgress color="info" /> :
-                          <GridContainer justify="center">
-                            {
-                              MyReservation.map((curr) => (
+                            <GridContainer justify="center">
+                              {
+                                MyReservation.map((curr) => (
+                                  
+                                    <GridContainer justify="center">
+                                    <GridItem xs={8} sm={8}>
+                                      <Reservation
+                                        deptFlight={curr.deptFlight}
+                                        count={curr.reservation.adultsNo}
+                                        seatClass={curr.reservation.seatClass}
+                                        reservationID={curr.reservation.reservationID}
+                                        deptSeats={curr.reservation.deptSeats}
+                                        arrFlight={curr.arrFlight}
+                                        arrSeats={curr.reservation.arrSeats}
+                                        totalPrice={curr.reservation.price}
+                                        child={curr.reservation.childrenNo}
+                                        adult={curr.reservation.adultsNo}
+                                      ></Reservation>
+                                    </GridItem>
+                                    
+                                    <Grid container spacing={0} direction="row" justify="center" alignItems="center" >
+                                    <Grid item xs textAlign='center'>
+                                       <Button
+                                          color="primary"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                          // disableElevation
+                                          onClick={(e) => {
+                                            axios.post('http://localhost:8000/user/sendItenrary', {
+                                              resId: curr.reservation._id
+                                                }).then(res => {
+                                                    console.log(res.data);
+                                                }).catch(err => console.log(err))
+                                          }}
+                                        >Send me my itinerary</Button>
+                                       </Grid>
+                                       {/* <GridItem  xs={12} sm={1} ></GridItem> */}
+                                       <Grid item xs textAlign='center'>
+                                       <CustomDropdown
+                                          noLiPadding
+                                          buttonText={"Edit"}
+                                          buttonProps={{
+                                            size: "lg",
+                                            id: "demo-customized-button",
+                                            variant: "contained",
+                                            className: classes.navLink,
+                                            color: "warning",
+                                          }}
+                                          dropdownList={[
+                                            <a className={classes.dropdownLink}
+                                              onClick={() => {
+                                                history.push({
+                                                  pathname: "/changeDept",
+                                                  state: { 
+                                              
+                                                   res:curr,
+                                                   type:"Dept"
+                                                  }
+                                            
+                                                });
+                                              }
+                                                 }>
+                                              <h4>    change departure flight   </h4>
+                                            </a>,
+                                            <a
+                                              className={classes.dropdownLink}
+                                              onClick={(e) => { history.push({
+                                                pathname: "/changeRet",
+                                                state: { 
+                                                
+                                                 res:curr,
+                                                 type:"Ret"
+                                                }
+                                          
+                                              });}}>
+                                              <h4>     change return flight   </h4>
+                                            </a>,
+                                            <a
+                                              className={classes.dropdownLink}
+                                              onClick={(e) => {
+                                                history.push({
+                                                  pathname: "/changeSeats",
+                                                  state: {
+                                                    resID: curr.reservation.resID,
+                                                    id:curr.reservation._id
+                                                  }
 
-                                <div>
-                                  <GridItem xs={12} sm={12}>
-                                    <Reservation
-                                      deptFlight={curr.deptFlight}
-                                      count={curr.reservation.adultsNo}
-                                      seatClass={curr.reservation.seatClass}
-                                      reservationID={curr.reservation.reservationID}
-                                      deptSeats={curr.reservation.deptSeats}
-                                      arrFlight={curr.arrFlight}
-                                      arrSeats={curr.reservation.arrSeats}
-                                      totalPrice={curr.reservation.price}
-                                      child={curr.reservation.childrenNo}
-                                      adult={curr.reservation.adultsNo}
-                                    ></Reservation>
+                                                });
+                                              }}>
+                                              <h4>     switch seats    </h4>
+                                            </a>,
+                                          ]}
+                                        />
+                                       </Grid>
+                                       <Grid item xs textAlign='center'>
 
+                                       <Button
+                                          color="danger"
+                                          // color="transparent"
+                                          size="lg"
+                                          id="demo-customized-button"
+                                          aria-controls="demo-customized-menu"
+                                          aria-haspopup="true"
+                                          variant="contained"
+                                          // disableElevation
+                                          onClick={(e) => {
+                                            onCancel(curr.reservation);
+                                          }}
+                                        >Cancel Reservation </Button>
+                                       </Grid>
+                                       
+                                       
+                                        
+                                    </Grid>
+                                    <br /><br />
 
-                                  </GridItem>
-                                  <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                    </GridContainer>
 
-                                    <Button
-                                      color="warning"
-                                      // color="transparent"
-                                      size="lg"
-                                      id="demo-customized-button"
-                                      aria-controls="demo-customized-menu"
-                                      aria-haspopup="true"
-                                      variant="contained"
-                                      // disableElevation
-                                      onClick={(e) => {
-                                        onCancel(curr.reservation);
-                                      }}
-                                    >Cancel Reservation </Button>
-                                  </GridItem>
-                                  <br /><br />
-                                </div>
-
-                              ))
-                            }
+                                ))
+                              }
                             </GridContainer>}
-                        </GridContainer>
+                        </div>
 
                       ),
                     },

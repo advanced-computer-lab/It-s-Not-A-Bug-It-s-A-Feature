@@ -1,5 +1,6 @@
 import SelectSeats from "./SelectSeats.js";
 import axios from 'axios';
+axios.defaults.withCredentials = true
 import { useState, useEffect } from 'react';
 import React from 'react'
 import CustomLinearProgress from "./../../components/CustomLinearProgress/CustomLinearProgress.js";
@@ -41,8 +42,8 @@ export default function AllSeats(props) {
         reservedSeats: []
     });
     const [selDeptSeats, setSelDeptSeats] = useState([]);
-    
-    
+
+
     useEffect(() => {
         axios.get('http://localhost:8000/admin/searchFlights', {
             params:
@@ -93,80 +94,43 @@ export default function AllSeats(props) {
         console.log("selected seats" + selDeptSeats);
     }, [selDeptSeats]);
 
-    // const handleChange = e => setSelDeptSeats(e.target.deptSeats);
-
-    // console.log("all seats - dept seats" + selDeptSeats);
-    // const onSubmit = () => {
-
-    //     axios.post('http://localhost:8000/user/res', {
-    //         body:
-    //         {
-    //             resID: Number(props.resID),
-    //             adultsNo: Number(props.adultsNo),
-
-    //             childrenNo: Number(props.childrenNo),
-    //             seatClass: type,
-    //             deptFlight: deptFlight,
-    //             arrFlight: retFlight,
-    //             deptSeats: deptSeats, //???????
-    //             arrSeats: arrSeats, //??????
-
-
-    //         }
-    //     }).then(res => {
-    //         console.log(res.data);
-    //     }).catch(err => console.log(err))
-    //     // history.push({
-    //     //   pathname: "/home", //ARO7 FEEEN B3D KEDA - mmkn profile
-    //     //   state: {
-    //     //     deptSeats: ,
-    //     //     retSeats: retSeats
-    //     //   }
-    //     // });
-    // };
-    // console.log(deptData);
-    // // console.log(retData);
-    // console.log("ana hena w yarab teshta3'al");
 
     return (
         <div className={classes.container}>
-        {/* <Box padding="35px"> */}
-            
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={12}>
+                    {loading2 || loading ? <CustomLinearProgress color="info" /> :
+                        <Box display="flex" flex-direction="row">
+                            <GridItem xs={12} sm={12}>
+                                <SelectSeats
+                                    flightNo={deptFlight}
+                                    economySeats={deptData.economySeats}
+                                    businessSeats={deptData.businessSeats}
+                                    currBusinessSeats={deptData.currBusinessSeats}
+                                    currEconomySeats={deptData.currEconomySeats}
+                                    reservedSeats={deptData.reservedSeats}
+                                    type={type}
+                                    passengers={passengers}
+                                    isReturn="false"
+                                    callback={setSelDeptSeats} />
+                            </GridItem>
+                            <GridItem xs={12} sm={12}>
 
-        <GridContainer justify="center">
-            <GridItem xs={12} sm={12}>
-            {loading2 || loading ? <CustomLinearProgress color="info" /> :
-                <Box display = "flex" flex-direction ="row">
-                    <GridItem xs={12} sm={12}>
-                        <SelectSeats
-                            flightNo={deptFlight}
-                            economySeats={deptData.economySeats}
-                            businessSeats={deptData.businessSeats}
-                            currBusinessSeats={deptData.currBusinessSeats}
-                            currEconomySeats={deptData.currEconomySeats}
-                            reservedSeats={deptData.reservedSeats}
-                            type={type}
-                            passengers={passengers}
-                            isReturn="false"
-                            callback={setSelDeptSeats} />
-                    </GridItem>
-                    <GridItem xs={12} sm={12}>
-
-                        <SelectSeats
-                            flightNo={retFlight}
-                            economySeats={retData.economySeats}
-                            businessSeats={retData.businessSeats}
-                            currBusinessSeats={retData.currBusinessSeats}
-                            currEconomySeats={retData.currEconomySeats}
-                            reservedSeats={retData.reservedSeats}
-                            type={type}
-                            passengers={passengers}
-                            isReturn="true"
-                             />
-                    </GridItem>
-                </Box>
-            }
-            </GridItem>
+                                <SelectSeats
+                                    flightNo={retFlight}
+                                    economySeats={retData.economySeats}
+                                    businessSeats={retData.businessSeats}
+                                    currBusinessSeats={retData.currBusinessSeats}
+                                    currEconomySeats={retData.currEconomySeats}
+                                    reservedSeats={retData.reservedSeats}
+                                    type={type}
+                                    passengers={passengers}
+                                    isReturn="true"
+                                />
+                            </GridItem>
+                        </Box>
+                    }
+                </GridItem>
             </GridContainer>
         </div>
     )

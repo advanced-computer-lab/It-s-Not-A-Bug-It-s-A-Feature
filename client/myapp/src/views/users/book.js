@@ -24,18 +24,18 @@ export default function book() {
 
     return (
         <div>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={6} md={4}>
-            <Flight flight={{
-      flightNo:"45",
-      economySeats:"45",businessSeats:"45",departureAirport:"Cairo",arrivalAirport:"ter",departureTerminal:"ter",arrivalTerminal:"bn",
-      departureDate:"2016-05-12T21:29:00.000Z",arrivalDate:"2016-05-12T21:29:00.000Z",economyPrice:"25",businessPrice:"25",economyBaggage:"52",businessBaggage:"25"
-    }}
-            type ="business"
-            Number ="5"
-            />
-            </GridItem>
-            {/* <GridItem xs={12} sm={6} md={4}>
+            <GridContainer justify="center">
+                <GridItem xs={12} sm={6} md={4}>
+                    <Flight flight={{
+                        flightNo: "45",
+                        economySeats: "45", businessSeats: "45", departureAirport: "Cairo", arrivalAirport: "ter", departureTerminal: "ter", arrivalTerminal: "bn",
+                        departureDate: "2016-05-12T21:29:00.000Z", arrivalDate: "2016-05-12T21:29:00.000Z", economyPrice: "25", businessPrice: "25", economyBaggage: "52", businessBaggage: "25"
+                    }}
+                        type="business"
+                        Number="5"
+                    />
+                </GridItem>
+                {/* <GridItem xs={12} sm={6} md={4}>
             <Flight
             flightNo = "45"
             departureDate = "2016-05-12T21:29:00.000Z"
@@ -52,38 +52,38 @@ export default function book() {
             />
              </GridItem> */}
             </GridContainer>
-        <CustomDropdown
-          noLiPadding
-          buttonText="Components"
-          buttonProps={{
-            className: classes.navLink,
-            color: "transparent",
-          }}
-          buttonIcon={Apps}
-          dropdownList={[
-            <Link to="/" className={classes.dropdownLink}>
-              All components
-            </Link>,
-            <a
-              href="https://creativetimofficial.github.io/material-kit-react/#/documentation?ref=mkr-navbar"
-              target="_blank"
-              className={classes.dropdownLink}
-            >
-              Documentation
-            </a>,
-          ]}
-        />
-        <AllSeats
-        type = "Business"
-        passengers = "3"
-        deptFlight = "215"
-        retFlight = "363"
-        adultsNo = "2"
-        childrenNo="1"
-        resID="199"
-        />
-        
-        
+            <CustomDropdown
+                noLiPadding
+                buttonText="Components"
+                buttonProps={{
+                    className: classes.navLink,
+                    color: "transparent",
+                }}
+                buttonIcon={Apps}
+                dropdownList={[
+                    <Link to="/" className={classes.dropdownLink}>
+                        All components
+                    </Link>,
+                    <a
+                        href="https://creativetimofficial.github.io/material-kit-react/#/documentation?ref=mkr-navbar"
+                        target="_blank"
+                        className={classes.dropdownLink}
+                    >
+                        Documentation
+                    </a>,
+                ]}
+            />
+            <AllSeats
+                type="Business"
+                passengers="3"
+                deptFlight="215"
+                retFlight="363"
+                adultsNo="2"
+                childrenNo="1"
+                resID="199"
+            />
+
+
         </div>
     )
 }
