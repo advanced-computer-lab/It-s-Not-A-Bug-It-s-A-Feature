@@ -94,7 +94,7 @@ export default function SearchFlight(props) {
             })
                 .then(res => {
                     // store data in a variable to be later used
-                    // setdepartFlights( res.data);
+                    setDepart( res.data);
                     setLoading(false);
                     if (res.data.length == 0) { setempty(true); }
 
