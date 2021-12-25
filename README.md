@@ -11,7 +11,7 @@ The website allows you to choose one cabin class per reservation, in the future 
 For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style**
-We followed this [Code Style](.editorconfig) for consistency.
+We are following this [Code Style](.editorconfig) for consistency.
 
 # **Screenshots**
 As the saying goes, a picture is equal to a thousand words. Most people will be interested if there is a visual representation of what the project is about. It helps them understand better. A visual representation can be snapshots of the project or a video of the functioning of the project.
