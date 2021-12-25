@@ -21,12 +21,13 @@ import changeRet from './views/users/changeRet.js';
 import  changeSeats from './views/users/changeSeats.js';
 import payFail from './views/users/payFail.js';
 import paySuccess from './views/users/paySuccess.js';
-import BasicTextFields from './views/users/test.js';
+// import BasicTextFields from './views/users/test.js';
 // import { render } from "react-dom";
 import EditFlight from './views/admin/EditFlight';
 import Search from './views/admin/searchComponent.js'
 //import { ThemeProvider } from "@mui/styles";
 import { ThemeProvider } from '@material-ui/styles';
+// import HorizontalLinearStepper from './views/users/test2.js';
 // import testsearch from './views/users/LandingPage/Sections/testsearch.js';
  import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
@@ -61,7 +62,8 @@ function App() {
            <Route path ={"/changeDept"} component={changeDept}/>
            <Route path ={"/changeRet"} component={changeRet}/>
            <Route path ={"/changeSeats"} component={changeSeats}/>
-           <Route path ={"/test"} component={BasicTextFields}/>
+           {/* <Route path ={"/test"} component={BasicTextFields}/> */}
+           {/* <Route path ={"/test2"} component={HorizontalLinearStepper}/> */}
          </Router> 
          </ThemeProvider>
 

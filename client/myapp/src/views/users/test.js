@@ -138,6 +138,7 @@ export default function BasicTextFields() {
 
                             {filteredData.slice(0, 15).map((value, key) => {
                                 return (
+                                 
                                     <a className="aTo" onClick={(e) => clicked(value, e)} target="_blank">
                                         <p>{value.name} </p>
                                     </a>

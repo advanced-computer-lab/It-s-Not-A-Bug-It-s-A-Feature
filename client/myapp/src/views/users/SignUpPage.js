@@ -21,7 +21,6 @@ import CardHeader from "./../../components/Card/CardHeader.js";
 import CardFooter from "./../../components/Card/CardFooter.js";
 import CustomInput from "./../../components/CustomInput/CustomInput.js";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import LockIcon from '@mui/icons-material/Lock';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PhoneIphoneRoundedIcon from '@mui/icons-material/PhoneIphoneRounded';
@@ -36,15 +35,18 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+import { Link } from "react-router-dom";
 
 
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 
-import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import { cssClasses } from "nouislider";
+import { set } from "lodash";
 var worldMapData = require('city-state-country');
 
 // const useStyles = makeStyles((theme) => ({
@@ -113,15 +115,9 @@ const useStyles = makeStyles(styles);
 
 export default function SignUp(props) {
 
-  // search componenet
+  // ____________________________________________________search componenet_______________________________
   const styles = useStyles({
-
   });
-
-
-
-  const [pass, setpass] = useState("");
-
   const [placeholder, setplaceholder] = useState("Country");
   const [filteredData, setFilteredData] = useState([]);
   const [destination, setdestination] = useState("");
@@ -140,7 +136,6 @@ export default function SignUp(props) {
     console.log("filteredData", filteredData)
 
   };
-
   const final = null;
   const clicked = (value, e) => {
     setWordEntered(value.name);
@@ -149,16 +144,123 @@ export default function SignUp(props) {
     console.log({ wordEntered });
     console.log({ value });
     setFilteredData([]);
-    console.log("destination", destination);
-    console.log("lets see");
-    console.log(value.name);
-    console.log(value.phoneCode);
+};
 
-  };
+  //____________________________________________________ done_____________________________________
 
-  //// done
-  
 
+// error --> text field color 
+  const [Epass, setEpass] = useState("primary");
+  const [EEmail, setEmail] = useState("primary");
+  const [Euname, setEuname] = useState("primary");
+  const [Efname, setEfname] = useState("primary");
+  const [Elname, setElname] = useState("primary");
+  const [Epassword, setEpassword] = useState("primary");
+  const [Eadd, setEadd] = useState("primary");
+  const [Ecount, setEcount] = useState("primary");
+  const [Ephone, setEphone] = useState("primary");
+  const [Ebirth, setEBirth] = useState("primary");
+  const [Eport, setEport] = useState("primary");
+  const [Ecv, setEcv] = useState("primary");
+  const [Ecard, setEcard] = useState("primary");
+  const [Eexp, setEexp] = useState("primary");
+  const [Ecfname, setEcfname] = useState("primary");
+  const [Eclname, setEclname] = useState("primary");
+
+
+
+  // helper texts
+  const [pass, setpass] = useState("");
+  const [mail, setmail] = useState("");
+  const [uname, setuname] = useState("");
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [password, setpassword] = useState("");
+  const [add, setadd] = useState("");
+  const [count, setcount] = useState("");
+  const [phone, setphone] = useState("");
+  const [birth, setBirth] = useState("");
+  const [port, setport] = useState("");
+  const [cv, setcv] = useState("");
+  const [card, setcard] = useState("");
+  const [exp, setexp] = useState("");
+  const [cfname, setcfname] = useState("");
+  const [clname, setclname] = useState("");
+
+
+
+
+  function Sethelper() {
+    if (passport === "") {
+      setpass("This field is required");
+      setEpass("error");
+    }
+    if (firstname === "") {
+      setfname("This field is required");
+      setEfname("error");
+    }
+    if (lastname === "") {
+      setlname("This field is required");
+      setElname("error");
+    }
+    if (username === "") {
+      setuname("This field is required");
+      setEuname("error");
+    }
+    if (email === "") {
+      setmail("This field is required");
+      setEmail("error");
+    }
+    if (password1 === "") {
+      setpassword("This field is required");
+      setEpassword("error");
+    }
+    if (address === "") {
+      setadd("This field is required");
+      setEadd("error");
+    }
+    if (country === "") {
+      setcount("This field is required");
+      setEcount("error");
+    }
+    if (phone1 === "") {
+      setphone("This field is required");
+      setEphone("error");
+    }
+    if (birthdate === null) {
+      setBirth("This field is required");
+      setEBirth("error");
+    }
+    if (passport === "") {
+      setport("This field is required");
+      setEport("error");
+    }
+    if (credit === "") {
+      setcard("This field is required");
+      setEcard("error");
+    }
+    if (cvv === "") {
+      setcv("This field is required");
+      setEcv("error");
+    }
+    if (expirydate === null) {
+      setexp("This field is required");
+      setEexp("error");
+    }
+    if (creditfirstname === "") {
+      setcfname("This field is required");
+      setEcfname("error");
+    }
+    if (creditlastname === "") {
+      setclname("This field is required");
+      setEclname("error");
+    }
+
+  }
+
+  function validate() {
+    return (password1 === "" || password2 === "" || email === "" || username === "" || firstname === "" || lastname === "" || password2 === "" || address === "" || country === "" || phone1 === "" || birthdate === null || passport === "" || cvv === "" || credit === "" || expirydate === null && creditfirstname === "" && creditlastname === "");
+  }
 
   //________________________ variables send to backend__________________________
 
@@ -186,49 +288,77 @@ export default function SignUp(props) {
 
   // __________________________________________________ for password visibility _______________________________
   const [values, setValues] = React.useState({
-    amount: '',
     password: '',
-    weight: '',
-    weightRange: '',
     showPassword: false,
   });
-
+  const [values1, setValues1] = React.useState({
+    password: '',
+    showPassword: false,
+  });
   const handleClickShowPassword = () => {
     setValues({
       ...values,
       showPassword: !values.showPassword,
     });
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleClickShowPassword1 = () => {
+    setValues1({
+      ...values1,
+      showPassword: !values1.showPassword,
+    });
+  };
+  const handleMouseDownPassword1 = (event) => {
+    event.preventDefault();
+  };
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+  const handleChange1 = (prop) => (event) => {
+    setValues1({ ...values1, [prop]: event.target.value });
+  };
 
   //_______________________________________________________________________________
+
+  // errors handeling
+  const onNext1 = (e) => {
+    e.preventDefault();
+  }
+  // errors handeling
+  const onNext2 = (e) => {
+    e.preventDefault();
+  };
+
+
   // signup
   const onSubmit = (e) => {
-    // country code 
-    axios.post('http://localhost:8000/user/register', {
-      username: username,
-      password: password1,
-      email: email,
-      firstName: firstname,
-      lastName: lastname,
-      address: address,
-      countryCode: countrycode,
-      phoneNo: phone1,
-      nationality: country,
-      creditCardNo: credit,
-      passportNo: passport,
-      phoneNoOptional: phone2,
-      birthDate: birthdate,
+    Sethelper();
+    if (!validate()) {
+      axios.post('http://localhost:8000/user/register', {
+        username: username,
+        password: password1,
+        email: email,
+        firstName: firstname,
+        lastName: lastname,
+        address: address,
+        countryCode: countrycode,
+        phoneNo: phone1,
+        nationality: country,
+        creditCardNo: credit,
+        passportNo: passport,
+        phoneNoOptional: phone2,
+        birthDate: birthdate,
 
-    }).then(res => {
+      }).then(res => {
 
-      console.log(res);
-      console.log("signed up succesfully");
-      history.push('/login');
-    }).catch(err => console.log(err))
+        console.log(res);
+        console.log("signed up succesfully");
+        history.push('/login');
+      }).catch(err => console.log(err))
+    }
+
 
   }
 
@@ -243,18 +373,6 @@ export default function SignUp(props) {
   const [isLogged, setLogged] = useState(false);
 
 
-  // errors handeling
-  const onNext1 = (e) => {
-
-
-
-
-    e.preventDefault();
-  }
-  // errors handeling
-  const onNext2 = (e) => {
-    e.preventDefault();
-  };
 
   return (
     <div>
@@ -308,8 +426,17 @@ export default function SignUp(props) {
                                       fullWidth
                                       value={firstname}
                                       variant="standard"
+                                      helperText={fname}
+                                      color={Efname}
                                       onChange={(event) => {
                                         setfirstname(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setfname("");
+                                          setEfname("primary");
+                                        } else {
+                                          setfname("This field is required");
+                                          setEfname("error");
+                                        }
                                       }}
 
                                     />
@@ -319,10 +446,19 @@ export default function SignUp(props) {
                                       required
                                       label="Last Name"
                                       fullWidth
+                                      helperText={lname}
                                       value={lastname}
+                                      color={Elname}
                                       variant="standard"
                                       onChange={(event) => {
                                         setlastname(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setlname("");
+                                          setElname("primary");
+                                        } else {
+                                          setlname("This field is required");
+                                          setElname("error");
+                                        }
                                       }}
 
                                     />
@@ -334,8 +470,20 @@ export default function SignUp(props) {
                                       fullWidth
                                       value={username}
                                       variant="standard"
+                                      helperText={uname}
+                                      color={Euname}
                                       onChange={(event) => {
                                         setusername(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setuname("");
+                                          setEuname("primary");
+                                        } else {
+                                          setuname("This field is required");
+                                          setEuname("error");
+                                        }
+                                      }}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end"><People /></InputAdornment>,
                                       }}
 
                                     />
@@ -347,8 +495,26 @@ export default function SignUp(props) {
                                       fullWidth
                                       value={email}
                                       variant="standard"
+                                      helperText={mail}
+                                      color={EEmail}
                                       onChange={(event) => {
                                         setemail(event.target.value);
+                                        if (event.target.value !== "") {
+                                          if (!((event.target.value).toLowerCase()).endsWith("@gmail.com")) {
+                                            setmail("The email should end with @gmail.com");
+                                          } else {
+                                            setmail("");
+                                            setEmail("primary");
+                                          }
+
+                                        } else {
+                                          setmail("This field is required");
+                                          setEmail("eroor");
+                                        }
+
+                                      }}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end"><Email /></InputAdornment>,
                                       }}
 
                                     />
@@ -358,64 +524,69 @@ export default function SignUp(props) {
                                       required
                                       label="Password"
                                       fullWidth
-                                      type="password"
+                                      type={values.showPassword ? "text" : "password"}
                                       value={password1}
                                       variant="standard"
+                                      color={Epassword}
+                                      helperText={password}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                          <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                          >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                          </IconButton>
+                                        </InputAdornment>,
+                                      }}
+                                      onChange={handleChange('password')}
                                       onChange={(event) => {
                                         setpassword1(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setpassword("");
+                                          setEpassword("primary");
+                                        } else {
+                                          setpassword("This field is required");
+                                          setEpassword("error");
+                                        }
                                       }}
+
 
                                     />
                                   </GridItem>
                                   <GridItem xs={12} sm={12} >
-                                    {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                                      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                      <Input
-                                        id="outlined-adornment-password"
-                                        type={values.showPassword ? 'text' : 'password'}
-                                        value={values.password}
-                                        onChange={handleChange('password')}
-                                        endAdornment={
-                                          <InputAdornment position="end">
-                                            <IconButton
-                                              aria-label="toggle password visibility"
-                                              onClick={handleClickShowPassword}
-                                              onMouseDown={handleMouseDownPassword}
-                                              edge="end"
-                                            >
-                                              {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                          </InputAdornment>
-                                        }
-                                        label="Password"
-                                      />
-                                    </FormControl> */}
 
                                     <TextField
                                       required
                                       label="Confirm Password"
                                       fullWidth
-                                      type="password"
+                                      type={values1.showPassword ? "text" : "password"}
                                       value={password2}
                                       variant="standard"
                                       helperText={pass}
-                                      // endAdornment={
-                                      //   <InputAdornment position="end">
-                                      //     <IconButton
-                                      //       aria-label="toggle password visibility"
-                                      //       onClick={handleClickShowPassword}
-                                      //       onMouseDown={handleMouseDownPassword}
-                                      //       edge="end"
-                                      //     >
-                                      //       {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                      //     </IconButton>
-                                      //   </InputAdornment>
-                                      // }
+                                      color={Epass}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                          <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword1}
+                                            onMouseDown={handleMouseDownPassword1}
+                                            edge="end"
+                                          >
+                                            {values1.showPassword ? <Visibility /> : <VisibilityOff />}
+                                          </IconButton>
+                                        </InputAdornment>,
+                                      }}
+                                      onChange={handleChange1('password')}
                                       onChange={(event) => {
-                                        if(event.target.value!==password1){
-                                              setpass("passwords do not match ")
-                                        }else{
+                                        if (event.target.value !== password1) {
+                                          setpass("passwords do not match ")
+                                          setEpass("primary");
+                                        } else {
                                           setpass("")
+                                          setEpass("primary");
                                         }
                                         setpassword2(event.target.value);
 
@@ -462,9 +633,21 @@ export default function SignUp(props) {
                                       label="Address"
                                       fullWidth
                                       value={address}
+                                      color={Eadd}
                                       variant="standard"
+                                      helperText={add}
                                       onChange={(event) => {
                                         setaddress(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setadd("");
+                                          setEadd("primary");
+                                        } else {
+                                          setadd("This field is required");
+                                          setEadd("error");
+                                        }
+                                      }}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end"><HomeRoundedIcon /></InputAdornment>,
                                       }}
 
                                     />
@@ -477,10 +660,18 @@ export default function SignUp(props) {
                                       fullWidth
                                       value={passport}
                                       variant="standard"
+                                      helperText={port}
+                                      color={Eport}
                                       onChange={(event) => {
                                         setpassport(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setport("");
+                                          setEport("primary");
+                                        } else {
+                                          setport("This field is required");
+                                          setEport("error");
+                                        }
                                       }}
-
                                     />
                                   </GridItem>
                                   <GridItem xs={12} sm={6} >
@@ -496,7 +687,9 @@ export default function SignUp(props) {
                                               type="search"
                                               label="Country"
                                               variant="standard"
+                                              helperText={count}
                                               value={wordEntered}
+                                              color={Ecount}
                                               onChange={(event) => {
                                                 handleFilter(event)
                                               }}
@@ -507,11 +700,9 @@ export default function SignUp(props) {
 
                                               {filteredData.slice(0, 15).map((value, key) => {
                                                 return (
-                                                  <a className="aTo" onClick={(e) => clicked(value, e)} target="_blank">
-                                                    <p>{value.name} </p>
-                                                  </a>
-
-                                                );
+                                                  <a onClick={(e) => clicked(value, e)} target="_blank">
+                                                    <MenuItem>{value.name} </MenuItem>
+                                                  </a>);
                                               })}
                                             </div>
                                           )}
@@ -532,12 +723,21 @@ export default function SignUp(props) {
                                         renderInput={(props) => <TextField {...props} required
                                           label="Birthdate"
                                           fullWidth
+                                          helperText={birth}
+                                          color={Ebirth}
                                           variant="standard"
                                         />
                                         }
                                         value={birthdate}
                                         onChange={(newValue) => {
                                           setbirthdate(newValue);
+                                          if (event.target.value !== "") {
+                                            setbirth("");
+                                            setEBirth("primary");
+                                          } else {
+                                            setbirth("This field is required");
+                                            setEBirth("error");
+                                          }
                                         }}
                                       />
                                     </LocalizationProvider>
@@ -550,13 +750,22 @@ export default function SignUp(props) {
                                       label="Phone Number"
                                       fullWidth
                                       value={phone1}
+                                      helperText={phone}
                                       type="number"
                                       variant="standard"
+                                      color={Ephone}
                                       InputProps={{
                                         startAdornment: <InputAdornment position="start">{"+" + countrycode}</InputAdornment>,
                                       }}
                                       onChange={(event) => {
                                         setphone1(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setphone("");
+                                          setEphone("primary");
+                                        } else {
+                                          setphone("This field is required");
+                                          setEphone("error");
+                                        }
 
                                       }}
 
@@ -625,11 +834,19 @@ export default function SignUp(props) {
                                       label="Card Number"
                                       fullWidth
                                       value={credit}
-
+                                      helperText={card}
                                       type="number"
                                       variant="standard"
+                                      color={Ecard}
                                       onChange={(event) => {
                                         setcredit(event.target.value);
+                                        if (event.target.value !=="") {
+                                          setcard("");
+                                          setEcard("primary");
+                                        } else {
+                                          setcard("This field is required");
+                                          setEcard("error");
+                                        }
                                       }}
 
                                     />
@@ -641,9 +858,18 @@ export default function SignUp(props) {
                                       label="CVV"
                                       fullWidth
                                       value={cvv}
+                                      helperText={cv}
+                                      color={Ecv}
                                       variant="standard"
                                       onChange={(event) => {
                                         setcvv(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setcv("");
+                                          setEcv("primary");
+                                        } else {
+                                          setcv("This field is required");
+                                          setEcv("error");
+                                        }
                                       }}
 
                                     />
@@ -655,9 +881,18 @@ export default function SignUp(props) {
                                       label="First Name"
                                       fullWidth
                                       value={creditfirstname}
+                                      helperText={cfname}
+                                      color={Ecfname}
                                       variant="standard"
                                       onChange={(event) => {
                                         setcreditfirstname(event.target.value);
+                                        if (event.target.value !== "") {
+                                          setcfname("");
+                                          setEcfname("primary");
+                                        } else {
+                                          setcfname("This field is required");
+                                          setEcfname("error");
+                                        }
                                       }}
                                     />
                                   </GridItem>
@@ -666,10 +901,19 @@ export default function SignUp(props) {
                                       required
                                       label="Last Name"
                                       fullWidth
+                                      helperText={clname}
                                       value={creditlastname}
                                       variant="standard"
+                                      color={Eclname}
                                       onChange={(event) => {
                                         setcreditlastname(event.target.value);
+                                        if (event.target.value !=="") {
+                                          setclname("");
+                                          setEclname("primary");
+                                        } else {
+                                          setclname("This field is required");
+                                          setEclname("error")
+                                        }
                                       }}
                                     />
                                   </GridItem>
@@ -680,13 +924,22 @@ export default function SignUp(props) {
                                         renderInput={(props) => <TextField {...props} required
                                           label="Expiry Date"
                                           fullWidth
+                                          color={Eexp}
                                           variant="standard"
                                         />
                                         }
                                         value={expirydate}
                                         minDate={currentdate}
+                                        helperText={exp}
                                         onChange={(newValue) => {
                                           setexpirydate(newValue);
+                                          if (event.target.value !== "") {
+                                            setexp("");
+                                            setEexp("primary");
+                                          } else {
+                                            setexp("This field is required");
+                                            setEexp("error");
+                                          }
                                         }}
                                       />
                                     </LocalizationProvider>
