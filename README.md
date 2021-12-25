@@ -127,9 +127,9 @@ After Logging In, you will be redirected to your profilr
 
 ![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
 
-![PaymentSuccess](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/paymentSuccess.png)
+![PaymentSuccess](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentSuccess.png)
 
-![PaymentError](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/paymentError.png)
+![PaymentError](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentError.png)
 
 
   ## In My Profile Page, you can:
