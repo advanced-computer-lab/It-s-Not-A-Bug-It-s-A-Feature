@@ -134,6 +134,8 @@ If you get this page, your transaction has failed. You need to revise your card 
 
   ## In My Profile Page, you can:
 
+   ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
+
    ### A) Change Your Personal Details :boy:
    
    ![Edit Info](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/editInfo.PNG)
@@ -185,6 +187,7 @@ If you get this page, your transaction has failed. You need to revise your card 
 
   ## In the About Us Page:
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
+![About Us](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AboutUs.PNG)
 
 
 # **Contribute** :handshake:
