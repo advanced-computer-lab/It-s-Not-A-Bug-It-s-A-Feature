@@ -220,6 +220,17 @@ If you get this page, your transaction has failed. You need to revise your card 
 
 ![image](https://user-images.githubusercontent.com/30272808/147393598-789019de-22c1-4a0b-8196-5c55e0d5ae53.png)
 
+# **Tests**
+
+## If you'd like to test the website:
+
+- try signing up
+- try opening your profile
+- try searching for a trip form Cairo to Berlin, with Check In on 11th of January 2022 and Check Out on the 14th of April 2022.
+- try reserving a flight 
+- try editing your reservation
+- try deleting your reservation
+- try changing your password
 
 # **Contribute** :handshake:
 
