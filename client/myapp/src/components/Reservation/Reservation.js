@@ -125,7 +125,6 @@ export default function Reservation(props) {
                     </CardBody>
                 </form>
             </Card>
-
         </div>
     )
 }

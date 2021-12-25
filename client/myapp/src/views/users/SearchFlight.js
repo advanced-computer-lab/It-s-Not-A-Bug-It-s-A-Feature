@@ -161,11 +161,9 @@ export default function SearchFlight(props) {
             >
 
                 <div className={classes.container}>
-                    <Card>
-                        <CardBody>
+                    
                             <SearchBar />
-                        </CardBody>
-                    </Card>
+                       
 
                     <GridContainer justify="center">
                         <GridItem xs={12} sm={12}>

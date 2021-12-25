@@ -85,6 +85,15 @@ export default function Reservation(props) {
 
     let price = (cabin == "Business") ? passengers * (key.flight.businessPrice + key.ReturnFlight.businessPrice) : passengers * (key.flight.economyPrice + key.ReturnFlight.economyPrice);
 
+    function loggedIn(){
+        if(localStorage.getItem("token") != null)return true;
+        else return false;
+    }
+
+    useEffect(()=>{
+        if(!loggedIn())
+            history.push("/error");
+    },[]);
 
 
     useEffect(() => {
@@ -312,21 +321,12 @@ export default function Reservation(props) {
                                         tabButton: " Confirm Seats",
                                         tabIcon: CheckIcon,
                                         tabContent: (
-                                            <div>
-                                                {/* {reserved ? <SnackbarContent
-                                                    message={
-                                                        <span>
-                                                            <b>Reservation Confirmed!</b> reservation # {resID - 1}   Have a nice flight
-                                                        </span>
-                                                    }
-                                                    close
-                                                    color="success"
-                                                    icon={Check}
-                                                /> : null} */}
-                                                <GridContainer justify="center">
+                                           
+                                                <div>
+                                               
                                                     {reservedSeats3.length === passengers ?
-                                                        <div>
-                                                            <GridItem xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
+                                                       <GridContainer justify="center">
+                                                            <GridItem xs={12} sm={6}  style={{ textAlign: "center" }}>
 
 
 
@@ -354,10 +354,10 @@ export default function Reservation(props) {
                                                                     Pay
                                                                 </Button>
                                                             </GridItem>
-                                                        </div>
+                                                            </GridContainer>
                                                         : <div><Typography> <h3> Please Select your Seats First</h3></Typography> </div>}
-                                                </GridContainer>
-                                            </div>
+                                               
+                                                </div>
                                         ),
                                     },
                                 ]}
