@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 dotenv.config({path:__dirname+'/.env'});
 
-
+const cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
 
 //App variables
 const app = express();
@@ -20,7 +22,7 @@ var ReactDOM = require('react-dom')
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-
+app.use(cookieParser());
 
 
 const usersRouter = require('./routes/adminController.js');
@@ -39,8 +41,95 @@ mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result =>console.log("MongoDB is now connected") )
 .catch(err => console.log(err));
 
+app.post("/register", async (req,res)=>{
+  const user = req.body;
+  const takenUsername = await User.findOne({username: user.username});
+  const takenEmail = await User.findOne({email: user.email});
+
+  if(takenUsername || takenEmail){
+    res.json({message: "Username or email has already been taken"});
+  }else{
+    user.password = await hashIt(req.body.password);
+    const dbUser = new User({
+      username: user.username.toLowerCase(),
+      email: user.email.toLowerCase(),
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      address: user.address,
+      countryCode:user.countryCode ,
+      phoneNo: user.phoneNo,
+      phoneNoOptional:user.phoneNoOptional,
+      birthDate:user.birthDate,
+      nationality:user.nationality.toLowerCase(),
+      creditCardNo:user.creditCardNo,
+      passportNo: user.passportNo,
+      isAdmin:false
+    })
+
+    dbUser.save();
+    res.json({message: "success"});
+  }
+});
+
+async function hashIt(password){
+  const salt = await bcrypt.genSalt(6);
+  const hashed = await bcrypt.hash(password, salt);
+  return hashed;
+}
 
 
+app.post("/login",async (req,res)=>{
+  const userLoggingIn = req.body;
+  User.findOne({username: userLoggingIn.username})
+  .then(async (dbUser)=>{
+    // console.log(dbUser);
+    if(!dbUser){
+      return res.json({message: "Invalid username"});
+    }
+    
+    bcrypt.compare(userLoggingIn.password, dbUser.password)
+    .then(isCorrect => {
+      if(isCorrect){
+        const payload = {
+          id: dbUser._id,
+          email: dbUser.email,
+          isAdmin: dbUser.isAdmin
+        }
+        console.log('it is correct');
+        // curUserId = dbUser._id;
+        jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          {expiresIn: 86400},
+          (err, token) => {
+            console.log("inside callback")
+            if(err){
+              console.log(err);
+              return res.json({message: err})
+            } 
+            console.log('Success');
+            // tokens.push(token);
+            res.cookie('jwt', token, {httpOnly: true, maxAge:86400});
+            return res.json({
+              message: "success",
+              token: "Bearer " + token
+            })
+          }
+        )
+      }else{
+        console.log('not correct');
+        return res.json({message: "Invalid password"});
+      }
+      
+    })
+  })
+})
+
+app.delete('/logout', (req,res)=>{
+  res.cookie('jwt', '', {maxAge: 1});
+  res.json({message: 'logout successful'});
+})
 
  app.get("/Home", (req, res) => {
     res.status(200).send("Hello World!");
