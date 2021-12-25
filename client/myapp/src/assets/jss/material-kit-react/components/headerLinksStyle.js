@@ -6,7 +6,6 @@ import tooltip from "./../../material-kit-react/tooltipsStyle.js";
 
 const headerLinksStyle = (theme) => ({
   container: {
-    zIndex: "13",
     color: "#FFFFFF",
     ...container,
   },
@@ -45,7 +44,6 @@ const headerLinksStyle = (theme) => ({
   },
   navLink: {
     
-    zIndex: "13",
     color: "inherit",
     position: "relative",
     padding: "0.9375rem",

@@ -58,6 +58,7 @@ import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 const useStyles1 = makeStyles((theme) => ({
     root: {
+        fontSize:5,
         top: "100%",
         zIndex: "1000",
         // margin: theme.spacing(1),
@@ -72,6 +73,8 @@ const useStyles1 = makeStyles((theme) => ({
     text: {
         // display: "flex",
         // flexDirection: "row",
+        fontSize:5,
+
         color: "black",
         backgroundcolor: "white !important"
 
@@ -94,6 +97,8 @@ const useStyles1 = makeStyles((theme) => ({
         backgroundcolor: "green"
     },
     test: {
+        fontSize:5,
+
         position: "relative",
         zIndex: 40,
         backgroundcolor: "white",
@@ -320,13 +325,15 @@ export default function Main() {
                                                     type="search"
                                                     label="Departure"
                                                     variant="outlined"
-                                                    inputStyle={{ fontSize: "5px" }}
+                                                    inputStyle={{style: {resize: {
+                                                        fontSize: 10
+                                                     },}}}
                                                     value={departure}
                                                     onChange={(event) => {
                                                         handleFilter(event)
                                                     }}
                                                     InputProps={{
-                                                        startAdornment: <InputAdornment position="flex-start"> <FlightTakeoffIcon /></InputAdornment>,
+                                                        startAdornment: <InputAdornment position="start"> <FlightTakeoffIcon /></InputAdornment>,
                                                     }}
                                                 />
                                             </div>
