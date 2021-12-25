@@ -59,6 +59,19 @@ export default function HeaderLinks(props) {
     }
     else{
       loginButton = <div>
+    
+    <Button
+      onClick={(e) => {
+        history.push('/profile')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+
+    >
+      
+      <AccountCircleIcon className={classes.icons} /> My Profile
+    </Button>
     <Button
      id="logout"
       onClick={(e) => {
@@ -89,18 +102,6 @@ export default function HeaderLinks(props) {
     >
       
       <LogoutIcon className={classes.icons} /> Log Out
-    </Button>
-    <Button
-      onClick={(e) => {
-        history.push('/profile')
-   }}
-      color="transparent"
-      target="_blank"
-      className={classes.navLink}
-
-    >
-      
-      <AccountCircleIcon className={classes.icons} /> My Profile
     </Button>
     </div>;
     }

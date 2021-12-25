@@ -68,37 +68,7 @@ export default function HeaderLinks(props) {
     }
     else{
       loginButton = <div>
-    <Button
-     id="logout"
-      onClick={(e) => {
-        setLogged(false);
-        const token = localStorage.getItem("token");
-    axios.delete('http://localhost:8000/user/logout/', {
-      headers: {
-        'authorization': token
-      },
-      data: {
-        token:token
-      }
-    }).then((response) => {
-      console.log('response',response.data)
-
-    })
-      .catch(err => {
-        console.log(err);
-        history.push("/error");
-      });
-      localStorage.removeItem("token");
-        //onSubmit(e);
-        history.push('/login')
-   }}
-      color="transparent"
-      target="_blank"
-      className={classes.navLink}
-    >
-      
-      <LogoutIcon className={classes.icons} /> Log Out
-    </Button>
+    
     <Button
       onClick={(e) => {
         history.push('/admin/allFlights')
@@ -134,6 +104,37 @@ export default function HeaderLinks(props) {
     >
       
       <AccountCircleIcon className={classes.icons} /> Search Flights
+    </Button>
+    <Button
+     id="logout"
+      onClick={(e) => {
+        setLogged(false);
+        const token = localStorage.getItem("token");
+    axios.delete('http://localhost:8000/user/logout/', {
+      headers: {
+        'authorization': token
+      },
+      data: {
+        token:token
+      }
+    }).then((response) => {
+      console.log('response',response.data)
+
+    })
+      .catch(err => {
+        console.log(err);
+        history.push("/error");
+      });
+      localStorage.removeItem("token");
+        //onSubmit(e);
+        history.push('/login')
+   }}
+      color="transparent"
+      target="_blank"
+      className={classes.navLink}
+    >
+      
+      <LogoutIcon className={classes.icons} /> Log Out
     </Button>
     
     </div>;
