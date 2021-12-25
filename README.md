@@ -14,31 +14,7 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 - For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style** :scroll:
-### We are following this [Code Style](.editorconfig) for consistency.
-
-# **Screenshots**
-## Search Flights :airplane: :mag:
-![Search Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/search.PNG)
-
-## Search Results :mag:
-
-![Search Results](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/searchResult.PNG)
-
-## Sign Up
-
-![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
-
-## Top Destinations :round_pushpin:
-
-![Top Destinations](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Top%20Destinations.PNG)
-
-## Change Seats :seat:
-
-![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
-
-## Payment :moneybag:
-
-![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
+### We are following this [Code Style](.editorconfig) for consistency. 
 
 # **Tech/Frameworks used**
 ## MERN Stack was used to create this project.
@@ -60,6 +36,7 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 - Users are emailed with any changes the make in their resrevations or if a flight is edited or cancelled. :mailbox:
 
 
+![Top Destinations](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Top%20Destinations.PNG)
     
 # **Code Examples**
    This is where you try to compress your project and make the reader understand what it does as simply as possible. This should help the reader understand if your code solves their issue.
@@ -114,13 +91,17 @@ node App.js
 
 ## In the Home Page, you can:
 
-  ### A) Specify your Round Trip Details: :mag:
+  ### A) Specify your Round Trip Details: :airplane: :mag:
    In the home page you can specify the dates of your departure and return, cabin class, number of travellers,
     and then click "Search" in order to find departure flights that match your preferences.
+    
+![Search Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/search.PNG)
 
   ### B) Choose Departure Flight: :airplane:
    After clicking search, a list of all departure flights matching your search criteria will be displayed,
     from which you can choose your preferred departure flight. 
+    
+![Search Results](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/searchResult.PNG)
 
   ### C) Choose Return Flight: :airplane:
    After choosing a departure flight, click 'return flight' to view the list of return flights that match your
@@ -136,8 +117,16 @@ node App.js
 
    - If you do not have an account click "I Don't Have an Account" so you can sign up.
     
+    
+![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
+
   ### E) Pay Using Credit Card: :credit_card:
    Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
+
+:moneybag:
+
+![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
+
 
   ## In My Profile Page, you can:
 
@@ -150,6 +139,8 @@ node App.js
    b) Edit Reservation 
 
    1) Change Seats :seat:
+
+![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
 
    2) Change Departure Flight
 
@@ -197,5 +188,5 @@ node App.js
 
   https://ant.design/components/auto-complete/
 
-# **License**
+# **License** :copyright:
   [MIT License](LICENSE)
