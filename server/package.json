@@ -45,8 +45,9 @@
     "typescript": "4.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node App.js",
+    "build": "cd ../client/myapp && npm run build",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint:check": "eslint . --ext=js,jsx;  exit 0",

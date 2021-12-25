@@ -62,32 +62,36 @@ import { store } from 'react-notifications-component';
 
 const useStyles1 = makeStyles((theme) => ({
     root: {
-
+        fontSize:5,
+        top: "100%",
+        zIndex: "1000",
         // margin: theme.spacing(1),
         height: "40px",
         // flex: 2,
         // position: 'absolute',
         direction: "flex",
-        backgroundcolor: "white",
+        backgroundcolor: "white !important",
         msOverflowY: "auto",
         // position: "relative",
     },
     text: {
         // display: "flex",
         // flexDirection: "row",
+        fontSize:5,
+
         color: "black",
-        backgroundcolor: "white"
+        backgroundcolor: "white !important"
 
     },
     a: {
 
         height: "50px",
-        backgroundcolor: "white",
+        backgroundcolor: "white !important",
         '&:hover': {
             color: "grey",
             backgroundcolor: "white",
         },
-        textdecoration: "none !important",
+        // textdecoration: "none !important",
         color: "black",
     },
 
@@ -97,6 +101,8 @@ const useStyles1 = makeStyles((theme) => ({
         backgroundcolor: "green"
     },
     test: {
+        fontSize:5,
+
         position: "relative",
         zIndex: 40,
         backgroundcolor: "white",
@@ -259,6 +265,8 @@ export default function Main() {
         else
             if (arrival == "") { setmessage('please enter an arrival destination'); }
             else
+            if(departure==arrival) { setmessage('Can not have the departure and arrival the same'); }
+            else
                 if (departureDate === "" || arrivalDate === "") { setmessage('please enter a Date'); }
                 else
                     if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
@@ -339,6 +347,9 @@ export default function Main() {
                                                     type="search"
                                                     label="Departure"
                                                     variant="outlined"
+                                                    inputStyle={{style: {resize: {
+                                                        fontSize: 10
+                                                     },}}}
                                                     value={departure}
                                                     onChange={(event) => {
                                                         handleFilter(event)
@@ -395,7 +406,7 @@ export default function Main() {
                                                     onChange={(event) => {
                                                         handleFilter1(event)
                                                     }}
-                                                    InputProps={{
+                                                    InputProps={{style: {fontSize: 15},
                                                         startAdornment: <InputAdornment position="start"> <FlightLandIcon /></InputAdornment>,
                                                     }}
                                                 />
@@ -429,7 +440,7 @@ export default function Main() {
                                 />
                             </Grid> */}
 
-                            <Grid item xs={4} >
+                            <Grid item xs={3} >
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DesktopDateRangePicker
                                         disabledEnd
@@ -446,7 +457,7 @@ export default function Main() {
                                                     fullWidth
                                                     variant="outlined"
                                                 />
-                                                <Box sx={{ mx: 2 }}> to </Box>
+                                                <Box sx={{ mx: 0.5 }}> to </Box>
                                                 <TextField {...endProps}
                                                     required
                                                     label="Check Out"
@@ -461,7 +472,7 @@ export default function Main() {
 
                             </Grid>
 
-                            <Grid item xs textAlign='center'>
+                            <Grid item xs={1.5} textAlign='center'>
                                 <CustomDropdown
                                     noLiPadding
                                     buttonText={(countPassengers > 1) ? countPassengers + " Travellers" : countPassengers + " Traveller"}
@@ -517,7 +528,7 @@ export default function Main() {
                                 />
 
                             </Grid>
-                            <Grid item xs textAlign='center'>
+                            <Grid item xs={1.5} textAlign='center'>
                                 <CustomDropdown
                                     noLiPadding
                                     buttonText={cabin}
@@ -543,7 +554,7 @@ export default function Main() {
                                 />
                             </Grid>
 
-                            <Grid item xs textAlign='center'>
+                            <Grid item xs={2} textAlign='center'>
                                 <Button
 
                                     color="warning"

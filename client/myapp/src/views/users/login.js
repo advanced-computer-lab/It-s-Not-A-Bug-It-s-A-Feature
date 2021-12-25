@@ -53,6 +53,7 @@ export default function Login(props) {
        setmessage(key.message);
        setmessagecolor("info");
     }
+    console.log("state :",key);
     },[]);
 
 
@@ -92,14 +93,15 @@ export default function Login(props) {
                 document.cookie = "jwt=" + tokenWithout;
                 if (res.data.isAdmin === false){
                     console.log("key",key);
-                    if(key!==null){
-                        history.push({
-                            pathname: "/reserveSeats",
-                            state: key
-                
-                        });
+                    if(key==null){
+                        history.push("/profile");
                     }
-                    else history.push("/profile");
+                    else 
+                    history.push({
+                        pathname: "/reserveSeats",
+                        state: key
+            
+                    });
                 }
                 else
                     history.push("/admin/createFlight");

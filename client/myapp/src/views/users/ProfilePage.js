@@ -526,7 +526,7 @@ export default function ProfilePage(props) {
                                   }
                                 </GridItem> : null}
 
-                              <GridItem xs={12} sm={12}>
+                              <GridItem xs={6} sm={6}>
 
                                 <form className={classes.form}>
                                   <CardBody>

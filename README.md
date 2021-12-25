@@ -14,7 +14,15 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 - For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style** :scroll:
-### We are following this [Code Style](.editorconfig) for consistency. 
+### We are following this [Code Style](.editorconfig) for consistency. This [.editorconfig](.editorconfig) file specifies our coding practices and ensures they are maintained throughout the entire project.
+
+## Examples of Coding Standards We are Maintaining in Our Project:
+
+- Indentation style
+- Indentation size
+- How we deal with trailing whitespaces
+- Whether or not we insert a final newline
+
 
 # **Tech/Frameworks used**
 ## MERN Stack was used to create this project.
@@ -41,11 +49,11 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 
 # **Installation** :arrow_down:
 
-   A) Clone the Repository to your device :computer:
+   ### A) Clone the Repository to your device :computer:
 
-   B) Open 2 Terminals
+   ### B) Open 2 Terminals
 
-   C) In the first terminal, run the front end by running the following commands in order:
+   ### C) In the first terminal, run the front end by running the following commands in order:
 
 ```
 cd client/myapp 
@@ -59,7 +67,7 @@ npm install
 npm start
 ```
 
-   D) In the second terminal, run the back end by running the following commands in order:
+  ### D) In the second terminal, run the back end by running the following commands in order:
 
 ```
 cd server 
@@ -83,11 +91,8 @@ node App.js
 
 # **How to Use?**
 
-   Open http://localhost:3000/home to view the homepage in your browser.
+   Open http://localhost:3000/search to view the homepage in your browser.
 
-After Logging In, you will be redirected to your profilr
-![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
- 
 
 ## In the Home Page, you can:
 
@@ -111,61 +116,135 @@ After Logging In, you will be redirected to your profilr
    You can now reserve a flight by clicking 'Confirm Reservation'.
     
   ### D) Choose Seats: :seat:
+  
    - You can then choose the seats you prefer both the departure plane and the return plane.
+
 
    - If you are not logged in, you will be prompted your username and password first.
 
+![Login](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/LogIn.PNG)
+
+
    - If you do not have an account click "I Don't Have an Account" so you can sign up.
-    
     
 ![Sign Up](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/signUp.PNG)
 
-  ### E) Pay Using Credit Card: :credit_card:
-   Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo).
 
-:moneybag:
+  ### E) Pay Using Credit Card: :credit_card:
+   Finally, you can pay using a credit card (Do not enter real credit card information, this is only a demo). :moneybag:
 
 ![Payment](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/payment.png)
 
+
+
+If you get this page, your transaction was successful. You should expect a confirmation email. 
+
 ![PaymentSuccess](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentSuccess.png)
+
+
+
+If you get this page, your transaction has failed. You need to revise your card details and try again. 
 
 ![PaymentError](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/PaymentError.png)
 
 
   ## In My Profile Page, you can:
 
+   ![Profile](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/Profile.PNG)
+
+
    ### A) Change Your Personal Details :boy:
-
-   ### B) View Your Upcoming Flights:
-
-   a) Cancel Reservation :x:
    
-   b) Edit Reservation 
+   ![Edit Info](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/editInfo.PNG)
 
-   1) Change Seats :seat:
+   
+   ### b)  Change Your Password
+   
+![Change Password](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changePassword.PNG)
+
+   ### C) View Your Upcoming Flights:
+   
+  After cicking 'Upcoming Flights' in your Profle, you'll have a list of all your upcoming flights.
+
+   #### a) Cancel Reservation :x:
+   
+  #### b) Edit Reservation 
+
+  ##### 1) Change Seats :seat:
+
 
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
 
-   2) Change Departure Flight
 
-   3) Change Return Flight
+ #####  2) Change Departure Flight
 
-   c) Email Yourself With Your Trip Itenrary :mailbox:
+ #####  3) Change Return Flight
+
+ #### c) Email Yourself With Your Trip Itenrary :mailbox:
+   
+   
         
   ## Admins can:
   
-   A) View All Flights
+  ### A) View All Flights
+   
+   ![All Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AllFlights.PNG)
+
+
+  ### B) Edit Flights
+  
+   If you wish to edit a flight, click the 'update' button in the All Flights Page on the right of the row of the flight you wish to update.
     
-   B) Search for a Flight :mag:
-    
-   C) Create New Flights
-    
-   D) Edit Flights
+  ### C) Delete Flights
+  
+  If you wish to delete a flight, click the 'delete' button in the All Flights Page on the right of the row of the flight you wish to delete.
+  
+  ### D) Create New Flights
+
+   ![New Flight](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/createFlight.PNG)
+
+
+  ### E)  Search for a Flight :mag:
+
+![Admin Search](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/adminSearch.PNG)
 
 
   ## In the About Us Page:
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
+   
+![About Us](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AboutUs.PNG)
 
+
+# Code Examples:
+
+## Change password backend function
+``` 
+router.route('/changePassword').post(verifyJWT, (req, res) => {
+    const passwords = req.body;
+    User.findOne({ _id: req.user.id })
+        .then(async (dbUser) => {
+            if (!dbUser) {
+                return res.json({ message: "User not Found." });
+            }
+            let oldPass = passwords.old;
+            bcrypt.compare(oldPass, dbUser.password)
+                .then(async (isCorrect) => {
+                    if (!isCorrect) {
+                        return res.json({ message: "Old password does not match the current one." });
+                    }
+                    let newPass = passwords.new;
+                    if (newPass === oldPass) {
+                        return res.json({ message: "The new password must be different from the current one." });
+                    }
+                    newPass = await hashIt(newPass);
+                    await User.findOneAndUpdate({ _id: req.user.id }, { password: newPass });
+                    return res.json({ message: "Password updated successfully." });
+
+                });
+        })
+});
+
+```
 
 # **Contribute** :handshake:
 
