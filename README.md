@@ -7,7 +7,9 @@ The purpose of this project is to learn how to work as a team on a large-scale M
 
 # **Build Status**
 The website currently offers round trips only. However, in the future we intend to offer one-way trips.
+
 The website allows you to choose one cabin class per reservation, in the future we may allow the same reservation to have different cabin classes.
+
 For reporting bugs or offering contributions or enhancements please check our Contributions section below.
 
 # **Code Style**
