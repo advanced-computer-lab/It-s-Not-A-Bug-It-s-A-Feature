@@ -41,11 +41,11 @@ MERN stands for MongoDB, Express, React, Node, after the four key technologies t
 
 # **Installation** :arrow_down:
 
-   A) Clone the Repository to your device :computer:
+   ### A) Clone the Repository to your device :computer:
 
-   B) Open 2 Terminals
+   ### B) Open 2 Terminals
 
-   C) In the first terminal, run the front end by running the following commands in order:
+   ### C) In the first terminal, run the front end by running the following commands in order:
 
 ```
 cd client/myapp 
@@ -59,7 +59,7 @@ npm install
 npm start
 ```
 
-   D) In the second terminal, run the back end by running the following commands in order:
+  ### D) In the second terminal, run the back end by running the following commands in order:
 
 ```
 cd server 
@@ -145,32 +145,43 @@ If you get this page, your transaction has failed. You need to revise your card 
 
    ### C) View Your Upcoming Flights:
 
-   a) Cancel Reservation :x:
+   #### a) Cancel Reservation :x:
    
-   b) Edit Reservation 
+  #### b) Edit Reservation 
 
-   1) Change Seats :seat:
+  ##### 1) Change Seats :seat:
 
 ![Change Seats](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/changeSeats.PNG)
 
-   2) Change Departure Flight
+ #####  2) Change Departure Flight
 
-   3) Change Return Flight
+ #####  3) Change Return Flight
 
-   c) Email Yourself With Your Trip Itenrary :mailbox:
+ #### c) Email Yourself With Your Trip Itenrary :mailbox:
    
    
         
   ## Admins can:
   
-   A) View All Flights
-    
-   B) Search for a Flight :mag:
-    
-   C) Create New Flights
-    
-   D) Edit Flights
+  ### A) View All Flights
+   
+   ![All Flights](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/AllFlights.PNG)
 
+  ### B) Edit Flights
+  
+   If you wish to edit a flight, click the 'update' button in the All Flights Page on the right of the row of the flight you wish to update.
+    
+  ### C) Delete Flights
+  
+  If you wish to delete a flight, click the 'delete' button in the All Flights Page on the right of the row of the flight you wish to delete.
+  
+  ### D) Create New Flights
+
+   ![New Flight](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/createFlight.PNG)
+
+  ### E)  Search for a Flight :mag:
+
+![Admin Search](https://github.com/advanced-computer-lab/It-s-Not-A-Bug-It-s-A-Feature/blob/dev3/Screenshots/adminSearch.PNG)
 
   ## In the About Us Page:
    You can find out more about us, OverReact Team. You can find different social media platforms through which you can contact us. :grinning:
