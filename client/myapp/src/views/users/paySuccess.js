@@ -20,6 +20,7 @@ import error from "./../../assets/img/error.jpg";
 import styles from "../../assets/jss/material-kit-react/views/profilePage.js";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.withCredentials = true
 import { Cancel } from "@material-ui/icons";
 
 import { useHistory } from 'react-router-dom';
@@ -68,11 +69,17 @@ export default function ProfilePageRes(props) {
         //         console.log("max res id aho" + res.data);
         //     }).catch(err => console.log(err))
 
+        console.log("HEREE");
+            // console.log(reservedSeats2);
+            console.log(localStorage.getItem("deptSeats" ));
+
         axios.post('http://localhost:8000/user/res', data, {
             headers: {
                 'authorization': token
             }
         }).then(res => {
+            
+
             console.log(res.data);
             localStorage.removeItem('resID');
             localStorage.removeItem('adultsNo');

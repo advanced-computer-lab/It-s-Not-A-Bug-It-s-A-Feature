@@ -1,4 +1,4 @@
-import { container } from "./../../material-kit-react.js";
+import { container, title } from "./../../material-kit-react.js";
 
 const signupPageStyle = {
   container: {
@@ -85,6 +85,14 @@ const signupPageStyle = {
   },
   inputIconsColor: {
     color: "#495057",
+  },
+  title: {
+    ...title,
+    display: "inline-block",
+    position: "relative",
+    marginTop: "30px",
+    minHeight: "32px",
+    textDecoration: "none",
   },
   dropdownLink: {
     "&,&:hover,&:focus": {

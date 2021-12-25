@@ -34,7 +34,6 @@ import { getTime } from "date-fns";
 import { fontSize, textAlign } from "@mui/system";
 
 export default function Flight(props) {
-  console.log("Flight : ",props);
   // if(props.all!=null)
   //  props = props.all;
   const res=props.res;

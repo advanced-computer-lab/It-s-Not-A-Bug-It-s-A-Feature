@@ -23,6 +23,7 @@ import Check from "@material-ui/icons/Check";
 import SelectSeats from "../../components/Flight/SelectSeats.js";
 import ColorCode from "../../components/Flight/colorCodeSeats.js";
 import Box from '@material-ui/core/Box';
+import CardBody from "./../../components/Card/CardBody.js";
 
 import ReservationCard from "./../../components/Reservation/Reservation.js";
 
@@ -78,6 +79,8 @@ export default function Reservation(props) {
     // const passengers = key.passengers;
     const [reservedSeats2, setReservedSeats2] = useState([]);
     const [reservedSeats3, setReservedSeats3] = useState([]);
+    const [oldDeptSeats, setOldDeptSeats] = useState([]);
+    const [oldRetSeats, setOldRetSeats] = useState([]);
     const [cabin, setCabin] = useState([]);
     const [passengers, setPassengers] = useState([]);
     const [resInfo, setResInfo] = useState({
@@ -85,25 +88,24 @@ export default function Reservation(props) {
         deptFlight: null,
         retFlight: null
     });
-
-    //TOKENNNNNNNNNN
+    const token = localStorage.getItem("token");
     useEffect(() => {
-        axios.get('http://localhost:8000/user/myReservations/', {
-            params:
-            {
-                id: key.id
-            }
+        axios.get('http://localhost:8000/user/myReservations/' + key.id, {
+            headers: {
+                'authorization': token
+            },
         }).then(res => {
-            console.log("ana f myresss" + res.data);
+            console.log("ana f myresss");
+            console.log(res.data);
             setResInfo({
                 reservation: res.data.reservation,
                 deptFlight: res.data.deptFlight,
                 arrFlight: res.data.arrFlight
             });
-            setReservedSeats2(res.data.reservation.deptSeats);
-            setReservedSeats3(res.data.reservation.arrSeats);
-            setCabin(resInfo.reservation.seatClass);
-            setPassengers(resInfo.reservation.adultsNo + resInfo.reservation.childrenNo);
+            setOldDeptSeats(res.data.reservation.deptSeats);
+            setOldRetSeats(res.data.reservation.arrSeats);
+            setCabin(res.data.reservation.seatClass);
+            setPassengers(res.data.reservation.adultsNo + res.data.reservation.childrenNo);
             setLoading(false);
         }).catch(err => console.log(err))
 
@@ -166,11 +168,11 @@ export default function Reservation(props) {
                                         tabContent: (
                                             <GridContainer justify="center">
                                                 <GridItem xs={12} sm={12}>
-                                                    <Typography> <h3>Choose your seats</h3></Typography>
+                                                    {/* <Typography> <h3>Choose your seats</h3></Typography> */}
                                                     {loading ? <CustomLinearProgress color="info" /> :
                                                         <div>
                                                             <Box display="flex" flex-direction="row">
-                                                                <GridItem xs={12} sm={12}>
+                                                                <GridItem xs={12} sm={8}>
                                                                     <SelectSeats
                                                                         flightNo={resInfo.deptFlight.flightNo}
                                                                         economySeats={resInfo.deptFlight.economySeats}
@@ -184,11 +186,33 @@ export default function Reservation(props) {
                                                                         callback={setReservedSeats2}
                                                                     />
                                                                 </GridItem>
-                                                                <ColorCode />
+                                                                <GridItem xs={12} sm={4}>
+                                                                    <ColorCode />
+                                                                    <Card maxwidth="xs">
+                                                                        <CardBody>
+                                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                <b className={classes.title}>Old Seat Numbers: {oldDeptSeats}</b>
+                                                                            </GridItem>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                    <Card maxwidth="xs">
+                                                                        <CardBody>
+                                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                <b className={classes.title}>New Seat Numbers: {reservedSeats2}</b>
+                                                                            </GridItem>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                    <Card maxwidth="xs">
+                                                                        <CardBody>
+                                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                <b className={classes.title}>{reservedSeats2.length} {"/"} {passengers}   Seats chosen</b>
+                                                                            </GridItem>
+                                                                        </CardBody>
+                                                                    </Card>
+                                                                </GridItem>
                                                             </Box>
-                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                                <h3>{reservedSeats2.length} {"/"} {passengers} Seats chosen</h3>
-                                                            </GridItem>
+
+
                                                         </div>
                                                     }
 
@@ -207,9 +231,8 @@ export default function Reservation(props) {
                                                         <GridItem xs={12} sm={12}>
                                                             {reservedSeats2.length === passengers ?
                                                                 <div>
-                                                                    <Typography> <h3>Choose your seats</h3></Typography>
                                                                     <Box display="flex" flex-direction="row">
-                                                                        <GridItem xs={12} sm={12}>
+                                                                        <GridItem xs={12} sm={8}>
                                                                             <SelectSeats
                                                                                 flightNo={resInfo.arrFlight.flightNo}
                                                                                 economySeats={resInfo.arrFlight.economySeats}
@@ -223,16 +246,23 @@ export default function Reservation(props) {
                                                                                 isReturn="true"
                                                                             />
                                                                         </GridItem>
-                                                                        <ColorCode />
+                                                                        <GridItem xs={12} sm={4}>
+                                                                            <ColorCode />
+                                                                            <Card maxwidth="xs">
+                                                                                <CardBody>
+                                                                                    <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                                        <b className={classes.title}>{reservedSeats3.length} {"/"} {passengers} Seats chosen</b>
+                                                                                    </GridItem>
+                                                                                </CardBody>
+                                                                            </Card>
+                                                                        </GridItem>
+                                                                        {/* <GridItem xs={12} sm={2}></GridItem> */}
                                                                     </Box>
                                                                 </div>
                                                                 :
                                                                 <div>
                                                                     <div class="center"><Typography> <h3> Please Select the Departure Flight Seats First</h3></Typography> </div>
                                                                 </div>}
-                                                        </GridItem>
-                                                        <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
-                                                            <h3>{reservedSeats3.length} {"/"} {passengers} Seats chosen</h3>
                                                         </GridItem>
                                                     </div>}
                                             </GridContainer>

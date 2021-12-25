@@ -3,7 +3,6 @@ import * as React from 'react';
 import Box from '@material-ui/core/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import TextField from '@material-ui/core/TextField';
 import Location from '@material-ui/icons/LocationOnSharp';
 import CssBaseline from '@mui/material/CssBaseline';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
@@ -12,10 +11,14 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
 import GridItem from "./../../../../components/Grid/GridItem.js";
 import Stack from '@mui/material/Stack';
 // import Button from '@material-ui/core/Button';
-import Color from 'color';
-import Card from '@mui/material/Card';
+// import Color from 'color';
+// import Card from '@mui/material/Card';
+// import CardContent from '@mui/material/CardContent';
+import Card from "../../../../components/Card/Card.js";
+
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+
 import Button from "../../../../components/CustomButtons/Button.js";
 import SnackbarContent from "../../../../components/Snackbar/SnackbarContent.js";
 
@@ -42,47 +45,14 @@ import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import GridContainer from '../../../../components/Grid/GridContainer.js';
 
+import Grid from "@material-ui/core/Grid";
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
+import CardBody from '../../../../components/Card/CardBody.js';
 
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color:
-      theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
-    },
-  },
-}));
 
 const useStyles = makeStyles(styles);
 export default function Main() {
@@ -111,8 +81,12 @@ export default function Main() {
   const [departure, setdeparture] = useState("");
   const [arrivalDate, setarrivalDate] = useState("");
   const [departureDate, setdepartureDate] = useState("");
+  const [value, setValue] = React.useState([null,null]);
+
 
   const [message, setmessage] = useState(null);
+  const today = new Date();
+
 
   //_______ADULT__________
   const [countAdults, setCountAdults] = useState(1);
@@ -130,7 +104,7 @@ export default function Main() {
     else {
       setCountAdults(1);
       // rather than alert we just need to make the button fadeout 
-      setmessage("min limit reached");
+      setmessage("Must Have atleast 1 adult");
     }
   };
 
@@ -153,14 +127,20 @@ export default function Main() {
       // rather than alert we just need to make the button fadeout 
     }
   };
+  Date.prototype.addHours = function(h) {
+    this.setTime(this.getTime() + (h*60*60*1000));
+    return this;
+  }
 
   const onSubmit = () => {
+    setdepartureDate((new Date(value[0]).addHours(4)).toISOString());
+    setarrivalDate((new Date(value[1]).addHours(4)).toISOString());
 
     if (departure == "") { setmessage('please enter a departuring destination'); }
     else
       if (arrival == "") { setmessage('please enter an arrival destination'); }
       else
-        if (departureDate == "" || arrivalDate == "") { setmessage('please enter a Date'); }
+        if (departureDate === "" || arrivalDate === "") { setmessage('please enter a Date'); }
         else
           if (departureDate >= arrivalDate || ((new Date(arrivalDate).getTime() - new Date(departureDate).getTime()) < 1000 * 60 * 60 * 48)) { setmessage('please choose an arrival date after at least 2 days from departure'); }
           else {
@@ -193,7 +173,8 @@ export default function Main() {
 
 
   return (
-    <GridContainer>
+    <div className={classes.container}>
+    <GridContainer justify="center">
       {message ?
         <GridItem xs={12} xm={12}>
           <SnackbarContent
@@ -206,97 +187,75 @@ export default function Main() {
             color="danger"
 
           /> </GridItem> : null}
-      <Card margin="none"
+      <Card margin="none" color='transparent'
       >
-        <CardContent
+        <CardBody
         >
-          <Box
-            component="form"
-            sx={{
-              '& > :not(style)': { m: 0.5, width: '24ch' },
-
-            }}
-            noValidate
-            autoComplete="on"
-            textAlign="on"
-            alignSelf="on"
-            display="flex"
-            flex-flexDirection="row"
-
-          >
-            <div>
-
-
-
-              <Typography sx={{ fontSize: 17 }} gutterBottom  >
-                Leaving from
-              </Typography>
+         
+            <Grid container spacing={2} direction="row"  justify="center"  alignItems="center" >
+               <Grid item xs textAlign= 'center'>
               <TextField
+              required
+              label="Leaving from"
                 id="departure"
                 variant="outlined"
                 placeholder="Select origin"
                 value={departure}
-                color="warning"
+                // color="warning"
                 onChange={(e) => {
                   setdeparture(e.target.value);
                 }}
-                focused />
-            </div>
+                // focused 
+                />
+                </Grid>
+            
 
-            {/* <SwapHorizIcon sx={{mt:28}}color="primary"/> */}
-            <div>
-              <Typography sx={{ fontSize: 17 }} gutterBottom >
-                Going to
-              </Typography>
+                <Grid item xs >
               <TextField
-
-                id="outlined-basic"
+              required
+              label="Going To"
                 variant="outlined"
                 placeholder="Select destination"
                 value={arrival}
                 onChange={(e) => {
                   setarrival(e.target.value);
                 }}
-                focused />
-            </div>
+                />
+           </Grid>
+           
+            <Grid item xs={4} >
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDateRangePicker
+              disabledEnd
+              minDate={today}
+                  value={value}
+                  onChange={(newValue) => {
+                      setValue(newValue);
+                      // console.log((new Date(value[0]).addHours(4)).toISOString());
+                  }}
+                  renderInput={(startProps, endProps) => (
+                      <React.Fragment>
+                      <TextField {...startProps} required
+                          label="Check In"
+                          fullWidth
+                          variant="outlined"
+                          />
+                      <Box sx={{ mx: 2 }}> to </Box>
+                      <TextField {...endProps} 
+                      required
+                          label="Check Out"
+                          fullWidth
+                          variant="outlined"
+                          />
+                      </React.Fragment>
+                  )}
+                  />
 
-            <div>
-              <Typography sx={{ fontSize: 17 }} gutterBottom >
-                Check in
-              </Typography>
-              <TextField
-                id="outlined-basic"
-                type="date"
-                variant="outlined"
-                placeholder="Select destination"
-                value={departureDate}
-                onChange={(e) => {
-                  setdepartureDate(e.target.value);
-                }}
-                focused />
-            </div>
-            <div>
-              <Typography sx={{ fontSize: 17 }} gutterBottom >
-                Check out
-              </Typography>
-              <TextField
-                id="outlined-basic"
-                type="date"
-                variant="outlined"
-                Container=""
-                placeholder="Select destination"
-                value={arrivalDate}
-                onChange={(e) => {
-                  setarrivalDate(e.target.value);
-                }}
-                focused />
-            </div>
+              </LocalizationProvider>
 
-            <div>
-              <Typography sx={{ fontSize: 17 }} gutterBottom >
-                <br />
-              </Typography>
-              < div />
+                            </Grid>
+
+                            <Grid item xs textAlign= 'center'>
               <CustomDropdown
                 noLiPadding
                 buttonText={(countPassengers > 1) ? countPassengers + " Travellers" : countPassengers + " Traveller"}
@@ -351,13 +310,8 @@ export default function Main() {
                 ]}
               />
 
-            </div>
-            <div>
-              <div>
-                <Typography sx={{ fontSize: 17 }} gutterBottom >
-                  <br />
-                </Typography>
-                < div />
+            </Grid>
+            <Grid item xs textAlign= 'center'>
                 <CustomDropdown
                   noLiPadding
                   buttonText={cabin}
@@ -381,80 +335,9 @@ export default function Main() {
                     </a>,
                   ]}
                 />
-                <div />
-              </div>
-              {/* <Button
-       
-        id="demo-customized-button"
-        aria-controls="demo-customized-menu"
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        // variant="contained"
-        disableElevation
-        onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
-        size="large"
-      >
-       {countPassengers}_Traveller(s)
-      </Button> */}
-              {/* <StyledMenu
-        id="demo-customized-menu"
-        MenuListProps={{
-          'aria-labelledby': 'demo-customized-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      > */}
-              {/* Adults         
-        <div className="main_div">
-        <div className="center_div">
-      
-          <div className="btn_div">
-            <Tooltip title="Delete">
-            <Button2 onClick={DecNumAdults}>
-              <RemoveCircleOutlineSharpIcon />
-            </Button2>
-            </Tooltip>
-            {countAdults}
-            <Button2 onClick={IncNumAdults}>
-                < AddCircleOutlineSharpIcon />
-              </Button2>
-            </div>
-        </div>
-      </div> */}
+                </Grid>
 
-              {/* <br/> */}
-
-              {/* Children         
-        <div className="main_div">
-        <div className="center_div"> */}
-              {/* <Typography sx={{ fontSize: 18 ,align :"right"}}  gutterBottom >
-       Helloo
-        </Typography> */}
-              {/* <div className="btn_div">
-            <Tooltip title="Delete">
-            <Button2 onClick={DecNumChild}>
-              <RemoveCircleOutlineSharpIcon />
-            </Button2>
-            </Tooltip> */}
-              {/* {countChild}
-            <Button2
-               onClick={IncNumChild}>
-                < AddCircleOutlineSharpIcon />
-              </Button2>
-            </div>
-        </div>
-      </div>
-      <br/>
-      </StyledMenu> */}
-            </div>
-
-            <div>
-
-              <Typography sx={{ fontSize: 17 }} gutterBottom >
-                <br />
-              </Typography>
+                <Grid item xs textAlign= 'center'>
               <Button
 
                 color="warning"
@@ -469,14 +352,16 @@ export default function Main() {
                   onSubmit(e);
                 }}
               >Search</Button>
-            </div>
+            </Grid>
+            </Grid>
 
-          </Box>
+          {/* </Box> */}
 
-        </CardContent>
+        </CardBody>
       </Card>
 
     </GridContainer>
+    </div>
 
   );
 };

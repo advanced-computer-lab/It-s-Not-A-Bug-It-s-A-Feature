@@ -41,56 +41,25 @@ function createRows(business, econ, reserved, isBusiness) {
 
 
 export default function Flight(props) {
-  // const [loading, setLoading] = useState(false);
-  // const [currBusSeats, setCurrBusSeats] = useState(Number(props.currBusinessSeats));
-  // const [currEconSeats, setCurrEconSeats] = useState(Number(props.currEconomySeats));
-  const [deptSeats, setDeptSeats] = useState([]);
-  const [retSeats, setRetSeats] = useState([]);
-  // let chosenSeats = [];
+  // const [deptSeats, setDeptSeats] = useState([]);
+  // const [retSeats, setRetSeats] = useState([]);
   const cabin = props.type;
   const passengers = props.passengers;
   const rows = createRows((Number)(props.businessSeats), (Number)(props.economySeats), props.reservedSeats, cabin ==="Business");
   const isReturn = props.isReturn === "true";
 
-  // console.log("hello from select seats class");
-
   SeatPicker.defaultProps = {
     addSeatCallback: function addSeatCallback(row, number, id) {
       console.log('Added seat ' + number + ', row ' + row + ', id ' + id);
-      // if (cabin === "Business" || cabin === "business") {
-      //   setCurrBusSeats(currBusinessSeats - 1);
-      // }
-      // else {
-      //   setCurrEconSeats(currEconSeats - 1);
-      // }
-      props.callback(prevState => [...prevState, number] );
 
-      // console.log(currBusSeats);
-      // console.log(currEconSeats);
-      // console.log(deptSeats);
-      // console.log(retSeats);
+      props.callback(prevState => [...prevState, number] );
     },
+
     removeSeatCallback: function removeSeatCallback(row, number, id) {
       console.log('Removed seat ' + number + ', row ' + row + ', id ' + id);
-      // if (cabin === "Business" || cabin === "business") {
-      //   setCurrBusSeats(currBusinessSeats + 1);
-      // }
-      // else {
-      //   setCurrEconSeats(currEconSeats + 1);
-      // }
 
-        // var index = deptSeats.indexOf(number);
-        // if (index > -1) {
-          // setDeptSeats(prevDeptSeats => prevDeptSeats.filter(item => item !== number));
           props.callback(prevState => prevState.filter(item => item !== number));
           console.log("set sel hena");
-        // }
-      
-    
-      // console.log(currBusSeats);
-      // console.log(currEconSeats);
-      // console.log(deptSeats);
-      // console.log(retSeats);
     },
   };
 
@@ -108,7 +77,6 @@ export default function Flight(props) {
         flex-flexDirection="row"
       >
         <div >
-
           {title}
           <SeatPicker id="return" rows={rows} maxReservableSeats={passengers} visible />
         </div>

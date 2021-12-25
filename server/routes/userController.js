@@ -61,8 +61,10 @@ router.route('/allRes').get((req, res) => {
 
 router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtrip .. 2 flightIDs should be passed from frontend 
   await payment(req, res)
+  console.log("Body ",req.body);
   addRes(req)
-    .then(
+    .then((a)=>
+      console.log(a)
       // (msg)=>res.json({ message:msg})
       )
     .catch(
@@ -72,6 +74,9 @@ router.route('/res').post(verifyJWT, async (req, res) => { //reserving a roundtr
   
 });
 
+// 1. add reserved seats to already existing flight seats
+// 2. add reserved seats only to new reservation
+
 async function addRes(req){
   console.log('\nAdding new reservation...');
   const adultsNo = Number(req.body.adultsNo);
@@ -79,34 +84,75 @@ async function addRes(req){
     const seatClass = req.body.seatClass;
     const deptFlight = req.body.deptFlight;//selected flight from frontend
     const arrFlight = req.body.arrFlight;//selected flight from frontend
-    var deptSeats = [];
-    var arrSeats = [];
-    deptSeats.push(...req.body.deptSeats);
-    arrSeats.push(...req.body.arrSeats);
+    var deptSeats;
+    var arrSeats;
+    // deptSeats.push(...req.body.deptSeats);
+    // arrSeats.push(...req.body.arrSeats);
+
+    // TODO: get dept and arr flights' reserved seats
+    await Flights.findById(deptFlight)
+    .then( (flight) => {
+      console.log(flight.reservedSeats);
+      deptSeats = flight.reservedSeats
+    })
+    .catch(err => console.log(err));
+
+    await Flights.findById(arrFlight)
+    .then(async (flight) => arrSeats = flight.reservedSeats)
+    .catch(err => console.log(err));
+    let resDeptSeats = req.body.deptSeats;
+    let resDeptSeats2=[];
+    let resArrSeats = req.body.arrSeats;
+    let resArrSeats2=[];
+    console.log(resDeptSeats)
+    var n="";
+    for(var i=0; i<resDeptSeats.length;i++){
+      if(resDeptSeats[i]===','){
+        deptSeats.push(Number(n));
+        resDeptSeats2.push(Number(n));
+        n="";
+      }
+      else{
+        n+=resDeptSeats[i];
+      }
+    }
+    deptSeats.push(Number(n));
+    resDeptSeats2.push(Number(n));
+        n="";
+        for(var i=0; i<resArrSeats.length;i++){
+          if(resArrSeats[i]===','){
+            arrSeats.push(Number(n));
+            resArrSeats2.push(Number(n));
+            n="";
+          }
+          else{
+            n+=resArrSeats[i];
+          }
+        }
+        arrSeats.push(Number(n));
+        
+        resArrSeats2.push(Number(n));
+    // deptSeats.push();
+    // arrSeats.push([...req.body.arrSeats]);
 
     // calculate price, then proceed to payment before changing any
     // entries in the database.
     const passengers = adultsNo + childrenNo;
     var price = await calculatePrice(deptFlight, seatClass, passengers)
       + await calculatePrice(arrFlight, seatClass, passengers);
-    
-    // let paymsg = await payment(price);
-    // if(paymsg === fail){
-    //   return 'Payment failed. Reservation was not made.';
-    // }
 
     //update reservedSeats in dept and return fligthts
     if(seatClass === 'Business'){
       await Flights.findByIdAndUpdate({ _id: (deptFlight) },
       {
-        $inc : {currBusinessSeats: -deptSeats.length},
+        $inc : {currBusinessSeats: -resDeptSeats2.length},
         reservedSeats: deptSeats
       })
     }
     else{
       await Flights.findByIdAndUpdate({ _id: (deptFlight) },
       {
-        $inc : {currEconomySeats: -deptSeats.length},
+        $inc : {currEconomySeats: -resDeptSeats2.length},
         reservedSeats: deptSeats
       })
     }
@@ -114,14 +160,14 @@ async function addRes(req){
     if(seatClass === 'Business'){
       await Flights.findByIdAndUpdate({ _id: (arrFlight) },
       {
-        $inc : {currBusinessSeats: -arrSeats.length},
+        $inc : {currBusinessSeats: -resArrSeats2.length},
         reservedSeats: deptSeats
       })
     }
     else{
       await Flights.findByIdAndUpdate({ _id: (arrFlight) },
       {
-        $inc : {currEconomySeats: -arrSeats.length},
+        $inc : {currEconomySeats: -resArrSeats2.length},
         reservedSeats: deptSeats
       })
     }
@@ -130,16 +176,25 @@ async function addRes(req){
     // const userID = ObjectID("61a41cc5c93682f2a06ea6dd"); //change to commented line below
     const userID = req.user.id;  //userID of logged in user which is a global var saved in back end
 
+    
     const newRes = new Reservation({
-      reservationID, userID, adultsNo, childrenNo, seatClass,
-      deptFlight, arrFlight, deptSeats, arrSeats, price
+      reservationID: reservationID,
+      userID: userID,
+      adultsNo:adultsNo,
+      childrenNo: childrenNo,
+      seatClass:seatClass,
+      deptFlight: deptFlight,
+      arrFlight: arrFlight,
+      deptSeats: resDeptSeats2,
+      arrSeats: resArrSeats2,
+      price:price,
     });
-
-    payment
+    console.log("resArrivalSeats",newRes.arrSeats," entered:",resArrSeats);
+    // payment
     newRes.save()
       .then()
       .catch(err => console.error(err));
-
+    
     return 'Reservation added successfully.';
   }
 
@@ -648,13 +703,16 @@ function verifyJWT(req,res,next){
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
-  if (token ==null) 
+  if (token ===null) 
     return res.sendStatus(401);
   jwt.verify(token,process.env.JWT_SECRET,(err,user)=>{
         if (err)
          return res.sendStatus(403);
-        if(req.cookies.jwt !== token)
+        if(req.cookies.jwt !== token){
+          console.log(req.cookies.jwt,token);
           return res.json({message: "Please log in to continue."});
+        
+        }
         req.user = user
         req.token = token
         next()
