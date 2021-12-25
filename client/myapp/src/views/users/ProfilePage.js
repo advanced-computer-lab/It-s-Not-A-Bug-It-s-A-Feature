@@ -28,6 +28,8 @@ import { Link } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
+import SnackbarContent from "./../../components/Snackbar/SnackbarContent.js";
+
 import Card from "./../../components/Card/Card.js";
 import CardBody from "./../../components/Card/CardBody.js";
 import CardHeader from "./../../components/Card/CardHeader.js";
@@ -67,6 +69,15 @@ export default function ProfilePage(props) {
   const [loading, setLoading] = useState(true);
 
   const [edit, setedit] = useState(null);
+  const [editPass, seteditPass] = useState(null);
+  const [pass, setpass] = useState("");
+  const [confirmError, setconfirmError] = useState(false);
+  const [confirmPass, setconfirmPass] = useState("");
+  const [oldPass, setoldPass] = useState("");
+  const [confirmMess, setconfirmMess] = useState("");
+
+
+  const [message, setmessage] = useState(null);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -189,6 +200,42 @@ export default function ProfilePage(props) {
       .then(res => { setProfile(ProfileEdit); setedit(null); }
       ).catch(err => console.log(err));
   }
+
+  const onChangePass = () => {
+    
+    if(confirmError===false && pass!==""&& oldPass!=="" && confirmPass!==""){
+    const token = localStorage.getItem("token");
+    axios.post('http://localhost:8000/user/changePassword/', {
+      body:{
+        old:oldPass,
+        new:pass
+      }
+    }, {
+      headers: {
+        'authorization': token
+      }
+    })
+      .then(res => { if(res.data.message === "Password updated successfully."){
+        seteditPass(null);
+        setconfirmError(false);setconfirmPass("");
+        setpass("");
+        setoldPass("");
+        setconfirmMess("");
+        setsuccess(res.data.message);
+      
+      }
+    else{
+      setmessage(res.data.message);
+    }
+    }
+      ).catch(err => {console.log(err)});
+    }
+    else{
+      if(pass==="" || oldPass==="" || confirmPass===""){
+        setmessage("Please Fill all the Fields");
+      }
+    }
+  }
   return (
     <div>
       <Header
@@ -242,11 +289,11 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <div>
 
-                          {!edit &&
+                          {!edit && !editPass &&
 
 
-                            <GridContainer justify="flex-start" justifyContent="flex-start" alignItems="left">
-                              <GridItem xs={12} sm={12} justifyContent="flex-start" alignItems="left">
+                            <GridContainer justify="center">
+                              <GridItem xs={12} sm={12} >
                                 <b>UserName : </b> {Profile.username}
                               </GridItem>
                               <GridItem xs={12} sm={12}  >
@@ -278,7 +325,22 @@ export default function ProfilePage(props) {
                                 <b>Address : </b> {Profile.address}
                               </GridItem>
 
-                              <GridItem xs={12} sm={12}  >
+                              <GridItem xs={8} sm={4} textAlign= 'center' >
+                                <br />
+                                <Button
+                                  color="danger"
+                                  size="lg"
+                                  id="demo-customized-button"
+                                  aria-controls="demo-customized-menu"
+                                  aria-haspopup="true"
+                                  variant="contained"
+                                  // disableElevation
+                                  onClick={(e) => {
+                                    seteditPass(true);
+                                  }}
+                                >Change Password</Button>
+                              </GridItem>
+                              <GridItem xs={8} sm={4}  textAlign= 'center' >
                                 <br />
                                 <Button
                                   color="warning"
@@ -291,7 +353,7 @@ export default function ProfilePage(props) {
                                   onClick={(e) => {
                                     setedit(true);
                                   }}
-                                >Edit </Button>
+                                >Edit Info</Button>
                               </GridItem>
                             </GridContainer>
 
@@ -384,6 +446,121 @@ export default function ProfilePage(props) {
                                       // disableElevation
                                       onClick={(e) => {
                                         onEdit(e);
+                                      }}
+                                    >Save </Button>
+                                  </CardBody>
+                                </form>
+                              </GridItem>
+                            </GridContainer>
+                          }
+                           {editPass &&
+                            <GridContainer justify="center" >
+                              {message ?
+                                <GridItem xs={12} xm={12}>
+                                  <SnackbarContent
+                                    message={
+                                      <span>
+                                        {message}
+                                      </span>
+                                    }
+                                    close
+                                    color="danger"
+
+                                  /> </GridItem> : null}
+
+                              <GridItem xs={12} sm={12}>
+
+                                <form className={classes.form}>
+                                  <CardBody>
+                                    <TextField
+                                    required
+                                      label="Curr Password"
+                                      id="oldPass"
+                                      name="oldPass"
+                                      variant="standard"
+                                      value={oldPass}
+                                      type="password"
+                                      fullWidth
+                                      onChange=
+                                      {(event) => {
+                                        setoldPass(event.target.value);
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                    <TextField
+                                    required
+                                      label="New Password"
+                                      id="newPass"
+                                      name="newPass"
+                                      variant="standard"
+                                      value={pass}
+                                      type="password"
+                                      fullWidth
+                                      onChange=
+                                      {(event) => {
+                                        setpass(event.target.value);
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                    <TextField
+                                      label="Confirm New Password"
+                                      required
+                                      id="newPass"
+                                      name="newPass"
+                                      variant="standard"
+                                      value={confirmPass}
+                                      type="password"
+                                      fullWidth
+                                      error={confirmError}
+                                      helperText={confirmMess}
+                                      onChange=
+                                      {(event) => {
+                                        setconfirmPass(event.target.value);
+                                        if(event.target.value===pass){setconfirmError(false);
+                                        setconfirmMess("");
+                                        }
+                                        else{
+                                          setconfirmError(true);
+                                          setconfirmMess("Passwords do not match");
+                                        }
+                                        
+                                        
+                                        
+                                      }}
+                                    />
+                                    <br /><br />
+                                   
+                                    <Button alignItems="right"
+                                      color="transparent"
+                                      // color="transparent"
+                                      size="lg"
+                                      id="demo-customized-button"
+                                      aria-controls="demo-customized-menu"
+                                      aria-haspopup="true"
+                                      variant="contained"
+                                      // disableElevation
+                                      onClick={(e) => {
+                                        seteditPass(null);
+                                        setconfirmError(false);setconfirmPass("");
+                                        setpass("");
+                                        setoldPass("");
+                                        setconfirmMess("");
+                                      }}
+                                    >Cancel </Button>
+                                    <Button
+                                      color="warning"
+                            
+                                      // color="transparent"
+                                      size="lg"
+                                      id="demo-customized-button"
+                                      aria-controls="demo-customized-menu"
+                                      aria-haspopup="true"
+                                      variant="contained"
+                                      // disableElevation
+                                      onClick={(e) => {
+                                        onChangePass(e);
                                       }}
                                     >Save </Button>
                                   </CardBody>
@@ -516,16 +693,7 @@ export default function ProfilePage(props) {
                                         >Cancel Reservation </Button>
                                        </GridItem>
                                        
-                                        {/* TRANSPARENT BUTTON */}
-                                        {/* <Button alignItems="right"
-                                          color="transparent"
-                                          // color="transparent"
-                                          size="lg"
-                                          id="demo-customized-button"
-                                          aria-controls="demo-customized-menu"
-                                          aria-haspopup="true"
-                                          variant="contained"
-                                        > </Button> */}
+                                       
                                         
                                     </GridContainer>
                                     <br /><br />

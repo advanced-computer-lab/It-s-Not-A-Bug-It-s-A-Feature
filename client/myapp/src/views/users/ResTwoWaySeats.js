@@ -326,7 +326,7 @@ export default function Reservation(props) {
                                                 <GridContainer justify="center">
                                                     {reservedSeats3.length === passengers ?
                                                         <div>
-                                                            <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                            <GridItem xs={12} sm={12} md={6} style={{ textAlign: "center" }}>
 
 
 
