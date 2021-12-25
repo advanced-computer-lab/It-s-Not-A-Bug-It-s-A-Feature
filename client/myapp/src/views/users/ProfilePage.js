@@ -14,6 +14,7 @@ import FlightLandIcon from '@material-ui/icons/FlightLand';
 import Favorite from "@material-ui/icons/Favorite";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
+
 // core components
 import Header from "./../../components/Header/Header.js";
 import Footer from "./../../components/Footer/Footer.js";
@@ -46,7 +47,12 @@ import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
 import buzz from "./../../assets/img/faces/buzz.jpg";
+import "animate.css";
+import "react-notifications-component/dist/theme.css";
+import { store } from 'react-notifications-component';
 import cloud from "./../../assets/img/cloud.jpg";
+// import { NotificationContainer, NotificationManager } from 'react-notifications';
+import ReactNotifications from 'react-notifications-component';
 
 import styles from "./../../assets/jss/material-kit-react/views/profilePage.js";
 import { useState, useEffect } from 'react';
@@ -90,24 +96,22 @@ export default function ProfilePage(props) {
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
   let history = useHistory();
 
-  function agee(){
-    if(Profile.birthDate){
-     return getAge(Profile.birthDate);
+  function agee() {
+    if (Profile.birthDate) {
+      return getAge(Profile.birthDate);
     }
     return Profile.age;
   }
-  function getAge(dateString) 
-{
+  function getAge(dateString) {
     var today = new Date();
     var birthDate = new Date(dateString);
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age--;
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
     return age;
-}
+  }
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get('http://localhost:8000/user/myReservations', {
@@ -122,7 +126,7 @@ export default function ProfilePage(props) {
         else {
           setMyReservation(res.data);
           console.log("Reservation");
-          console.log(res); 
+          console.log(res);
           setLoading(false);
         }
       })
@@ -144,7 +148,7 @@ export default function ProfilePage(props) {
           history.push("/error");
         }
         else {
-          setProfile(res.data);setage(agee()); console.log(res);
+          setProfile(res.data); setage(agee()); console.log(res);
           setProfileEdit(res.data);
         }
       }
@@ -162,7 +166,7 @@ export default function ProfilePage(props) {
     if (r === true) {
       const id = (reserv)._id;
       const token = localStorage.getItem("token");
-      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, [],{
+      axios.post(`http://localhost:8000/user/cancelReservation/${id}`, [], {
         headers: {
           'authorization': token
         }
@@ -206,36 +210,37 @@ export default function ProfilePage(props) {
   }
 
   const onChangePass = () => {
-    
-    if(confirmError===false && pass!==""&& oldPass!=="" && confirmPass!==""){
-    const token = localStorage.getItem("token");
-    axios.post('http://localhost:8000/user/changePassword/', {
-      
-        old:oldPass,
-        new:pass
-    
-    }, {
-      headers: {
-        'authorization': token
-      }
-    })
-      .then(res => { if(res.data.message === "Password updated successfully."){
-        seteditPass(null);
-        setconfirmError(false);setconfirmPass("");
-        setpass("");
-        setoldPass("");
-        setconfirmMess("");
-        setsuccess(res.data.message);
-      
-      }
-    else{
-      setmessage(res.data.message);
+
+    if (confirmError === false && pass !== "" && oldPass !== "" && confirmPass !== "") {
+      const token = localStorage.getItem("token");
+      axios.post('http://localhost:8000/user/changePassword/', {
+
+        old: oldPass,
+        new: pass
+
+      }, {
+        headers: {
+          'authorization': token
+        }
+      })
+        .then(res => {
+          if (res.data.message === "Password updated successfully.") {
+            seteditPass(null);
+            setconfirmError(false); setconfirmPass("");
+            setpass("");
+            setoldPass("");
+            setconfirmMess("");
+            setsuccess(res.data.message);
+
+          }
+          else {
+            setmessage(res.data.message);
+          }
+        }
+        ).catch(err => { console.log(err) });
     }
-    }
-      ).catch(err => {console.log(err)});
-    }
-    else{
-      if(pass==="" || oldPass==="" || confirmPass===""){
+    else {
+      if (pass === "" || oldPass === "" || confirmPass === "") {
         setmessage("Please Fill all the Fields");
       }
     }
@@ -253,6 +258,7 @@ export default function ProfilePage(props) {
         }}
         {...rest}
       />
+      
       <Parallax
         small
         filter
@@ -297,19 +303,36 @@ export default function ProfilePage(props) {
 
 
                             <GridContainer justify="center">
-                              {successMess ? 
-                              <GridItem  xs={12} sm={12}>
-                              <SnackbarContent
-                  
-                                                    message={
-                                                        <span>
-                                                            {successMess}
-                                                        </span>
-                                                    }
-                                                    close
-                                                    color="success"
-                                                    icon={Check}
-                                                /> </GridItem>: null}
+                              {successMess ?
+                                <GridItem xs={12} sm={12}>
+                                  {/* <SnackbarContent
+
+                                    message={
+                                      <span>
+                                        {successMess}
+                                      </span>
+                                    }
+                                    close
+                                    color="success"
+                                    icon={Check}
+                                  /> */}
+                                  {store.addNotification({
+                                      title: 'Done',
+                                      message: successMess,
+                                      type: 'success',
+                                      container: 'top-right',
+                                      insert: "top",
+                                      animationIn: ["animated", "fadeIn"],
+                                      animationOut: ["animated", "fadeOut"],
+                                      dismiss: {
+                                        duration: 3000
+                                      },
+                                      width: 400
+                                    }),
+                                    setsuccess(null)}
+
+
+                                </GridItem> : null}
                               <GridItem xs={12} sm={12} >
                                 <b>UserName : </b> {Profile.username}
                               </GridItem>
@@ -326,9 +349,9 @@ export default function ProfilePage(props) {
                                 <b>Phone Number : </b> 0{Profile.phoneNo}
                               </GridItem>
                               {Profile.phoneNoOptional &&
-                              <GridItem xs={12} sm={12}  >
-                                <b>2nd Phone Number : </b> 0{Profile.phoneNoOptional}
-                              </GridItem>}
+                                <GridItem xs={12} sm={12}  >
+                                  <b>2nd Phone Number : </b> 0{Profile.phoneNoOptional}
+                                </GridItem>}
                               <GridItem xs={12} sm={12}  >
                                 <b>CreditCard Number : </b> {Profile.creditCardNo}
                               </GridItem>
@@ -342,7 +365,7 @@ export default function ProfilePage(props) {
                                 <b>Address : </b> {Profile.address}
                               </GridItem>
 
-                              <GridItem xs={8} sm={4} textAlign= 'center' >
+                              <GridItem xs={8} sm={4} textAlign='center' >
                                 <br />
                                 <Button
                                   color="danger"
@@ -357,7 +380,7 @@ export default function ProfilePage(props) {
                                   }}
                                 >Change Password</Button>
                               </GridItem>
-                              <GridItem xs={8} sm={4}  textAlign= 'center' >
+                              <GridItem xs={8} sm={4} textAlign='center' >
                                 <br />
                                 <Button
                                   color="warning"
@@ -470,11 +493,11 @@ export default function ProfilePage(props) {
                               </GridItem>
                             </GridContainer>
                           }
-                           {editPass &&
+                          {editPass &&
                             <GridContainer justify="center" >
                               {message ?
                                 <GridItem xs={12} xm={12}>
-                                  <SnackbarContent
+                                  {/* <SnackbarContent
                                     message={
                                       <span>
                                         {message}
@@ -483,14 +506,32 @@ export default function ProfilePage(props) {
                                     close
                                     color="danger"
 
-                                  /> </GridItem> : null}
+                                  /> */}
+                                  {
+                                    setmessage(null),
+                                    store.addNotification({
+                                      title: 'Invalid',
+                                      message: message,
+                                      type: 'danger',
+                                      container: 'top-right',
+                                      insert: "top",
+                                      animationIn: ["animated", "fadeIn"],
+                                      animationOut: ["animated", "fadeOut"],
+                                      dismiss: {
+                                        duration: 3000
+                                      },
+                                      width: 400
+                                    })
+
+                                  }
+                                </GridItem> : null}
 
                               <GridItem xs={12} sm={12}>
 
                                 <form className={classes.form}>
                                   <CardBody>
                                     <TextField
-                                    required
+                                      required
                                       label="Curr Password"
                                       id="oldPass"
                                       name="oldPass"
@@ -501,12 +542,12 @@ export default function ProfilePage(props) {
                                       onChange=
                                       {(event) => {
                                         setoldPass(event.target.value);
-                                        
+
                                       }}
                                     />
                                     <br /><br />
                                     <TextField
-                                    required
+                                      required
                                       label="New Password"
                                       id="newPass"
                                       name="newPass"
@@ -517,7 +558,7 @@ export default function ProfilePage(props) {
                                       onChange=
                                       {(event) => {
                                         setpass(event.target.value);
-                                        
+
                                       }}
                                     />
                                     <br /><br />
@@ -535,20 +576,21 @@ export default function ProfilePage(props) {
                                       onChange=
                                       {(event) => {
                                         setconfirmPass(event.target.value);
-                                        if(event.target.value===pass){setconfirmError(false);
-                                        setconfirmMess("");
+                                        if (event.target.value === pass) {
+                                          setconfirmError(false);
+                                          setconfirmMess("");
                                         }
-                                        else{
+                                        else {
                                           setconfirmError(true);
                                           setconfirmMess("Passwords do not match");
                                         }
-                                        
-                                        
-                                        
+
+
+
                                       }}
                                     />
                                     <br /><br />
-                                   
+
                                     <Button alignItems="right"
                                       color="transparent"
                                       // color="transparent"
@@ -560,7 +602,7 @@ export default function ProfilePage(props) {
                                       // disableElevation
                                       onClick={(e) => {
                                         seteditPass(null);
-                                        setconfirmError(false);setconfirmPass("");
+                                        setconfirmError(false); setconfirmPass("");
                                         setpass("");
                                         setoldPass("");
                                         setconfirmMess("");
@@ -568,7 +610,7 @@ export default function ProfilePage(props) {
                                     >Cancel </Button>
                                     <Button
                                       color="warning"
-                            
+
                                       // color="transparent"
                                       size="lg"
                                       id="demo-customized-button"
@@ -599,8 +641,8 @@ export default function ProfilePage(props) {
                             <GridContainer justify="center">
                               {
                                 MyReservation.map((curr) => (
-                                  
-                                    <GridContainer justify="center">
+
+                                  <GridContainer justify="center">
                                     <GridItem xs={8} sm={8}>
                                       <Reservation
                                         deptFlight={curr.deptFlight}
@@ -615,10 +657,10 @@ export default function ProfilePage(props) {
                                         adult={curr.reservation.adultsNo}
                                       ></Reservation>
                                     </GridItem>
-                                    
+
                                     <Grid container spacing={0} direction="row" justify="center" alignItems="center" >
-                                    <Grid item xs textAlign='center'>
-                                       <Button
+                                      <Grid item xs textAlign='center'>
+                                        <Button
                                           color="primary"
                                           size="lg"
                                           id="demo-customized-button"
@@ -629,15 +671,15 @@ export default function ProfilePage(props) {
                                           onClick={(e) => {
                                             axios.post('http://localhost:8000/user/sendItenrary', {
                                               resId: curr.reservation._id
-                                                }).then(res => {
-                                                    console.log(res.data);
-                                                }).catch(err => console.log(err))
+                                            }).then(res => {
+                                              console.log(res.data);
+                                            }).catch(err => console.log(err))
                                           }}
                                         >Send me my itinerary</Button>
-                                       </Grid>
-                                       {/* <GridItem  xs={12} sm={1} ></GridItem> */}
-                                       <Grid item xs textAlign='center'>
-                                       <CustomDropdown
+                                      </Grid>
+                                      {/* <GridItem  xs={12} sm={1} ></GridItem> */}
+                                      <Grid item xs textAlign='center'>
+                                        <CustomDropdown
                                           noLiPadding
                                           buttonText={"Edit"}
                                           buttonProps={{
@@ -652,28 +694,30 @@ export default function ProfilePage(props) {
                                               onClick={() => {
                                                 history.push({
                                                   pathname: "/changeDept",
-                                                  state: { 
-                                              
-                                                   res:curr,
-                                                   type:"Dept"
+                                                  state: {
+
+                                                    res: curr,
+                                                    type: "Dept"
                                                   }
-                                            
+
                                                 });
                                               }
-                                                 }>
+                                              }>
                                               <h4>    change departure flight   </h4>
                                             </a>,
                                             <a
                                               className={classes.dropdownLink}
-                                              onClick={(e) => { history.push({
-                                                pathname: "/changeRet",
-                                                state: { 
-                                                
-                                                 res:curr,
-                                                 type:"Ret"
-                                                }
-                                          
-                                              });}}>
+                                              onClick={(e) => {
+                                                history.push({
+                                                  pathname: "/changeRet",
+                                                  state: {
+
+                                                    res: curr,
+                                                    type: "Ret"
+                                                  }
+
+                                                });
+                                              }}>
                                               <h4>     change return flight   </h4>
                                             </a>,
                                             <a
@@ -683,7 +727,7 @@ export default function ProfilePage(props) {
                                                   pathname: "/changeSeats",
                                                   state: {
                                                     resID: curr.reservation.resID,
-                                                    id:curr.reservation._id
+                                                    id: curr.reservation._id
                                                   }
 
                                                 });
@@ -692,10 +736,10 @@ export default function ProfilePage(props) {
                                             </a>,
                                           ]}
                                         />
-                                       </Grid>
-                                       <Grid item xs textAlign='center'>
+                                      </Grid>
+                                      <Grid item xs textAlign='center'>
 
-                                       <Button
+                                        <Button
                                           color="danger"
                                           // color="transparent"
                                           size="lg"
@@ -708,14 +752,14 @@ export default function ProfilePage(props) {
                                             onCancel(curr.reservation);
                                           }}
                                         >Cancel Reservation </Button>
-                                       </Grid>
-                                       
-                                       
-                                        
+                                      </Grid>
+
+
+
                                     </Grid>
                                     <br /><br />
 
-                                    </GridContainer>
+                                  </GridContainer>
 
                                 ))
                               }
