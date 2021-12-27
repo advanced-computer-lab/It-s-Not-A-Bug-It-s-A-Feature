@@ -153,7 +153,7 @@ export default function Reservation(props) {
             }).catch(err => console.log(err))
     }, []);
 
-    const onSubmit = () => {
+    const  onSubmit = () => {
         const token = localStorage.getItem("token");
         axios.post('http://localhost:8000/user/payment', {
             price: price

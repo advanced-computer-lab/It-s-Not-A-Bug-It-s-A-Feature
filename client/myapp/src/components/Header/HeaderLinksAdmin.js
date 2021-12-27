@@ -13,11 +13,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FlightTakeoffIcon from '@material-ui/icons/FlightTakeoff';
+import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 axios.defaults.withCredentials = true
 // @material-ui/icons
 import { Apps, CloudDownload } from "@material-ui/icons";
-
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 // core components
 import CustomDropdown from "../CustomDropdown/CustomDropdown.js";
 import Button from "../CustomButtons/Button.js";
@@ -79,7 +81,7 @@ export default function HeaderLinks(props) {
 
             >
 
-                <AccountCircleIcon className={classes.icons} /> All Flights
+                <FlightTakeoffIcon className={classes.icons} /> All Flights
             </Button>
             <Button
                 onClick={(e) => {
@@ -91,7 +93,7 @@ export default function HeaderLinks(props) {
 
             >
 
-                <AccountCircleIcon className={classes.icons} /> Create Flight
+                <BorderColorIcon className={classes.icons} /> Create Flight
             </Button>
             <Button
                 onClick={(e) => {
@@ -103,7 +105,7 @@ export default function HeaderLinks(props) {
 
             >
 
-                <AccountCircleIcon className={classes.icons} /> Search Flights
+                <SearchIcon className={classes.icons} /> Search Flights
             </Button>
             <Button
                 id="logout"
