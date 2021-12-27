@@ -336,6 +336,7 @@ async function cancelRes(id) {
         console.log(`owner = ${own}`);
         var textmsg = 'Hi, ' + own['firstName'] + '!\n' + '\t Your reservation ' + reservation['reservationID'] +
             ' has been canceled. $' + reservation['price'] + ' has been refunded to your account.';
+            console.log(textmsg);
         sendEmail(own, textmsg, 'Reservation Cancelled Successfully');
     }
     return "done";
@@ -804,8 +805,8 @@ router.route('/editReservation/:id').post(verifyJWT, async (req, res) => {
     return res.json({ message: editmsg });
 })
 
-router.route('/sendItenrary').post(async (req, res) => {
-    var resId = req.query.resId;
+router.route('/sendItenrary/:id').post(async (req, res) => {
+    var resId = req.params.id;
     sendItenrary(resId, 'Reservation Details');
 
 });

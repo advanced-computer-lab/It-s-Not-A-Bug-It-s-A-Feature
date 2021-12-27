@@ -817,9 +817,7 @@ const handleChange2 = (prop) => (event) => {
                                           variant="contained"
                                           // disableElevation
                                           onClick={(e) => {
-                                            axios.post('http://localhost:8000/user/sendItenrary', {
-                                              resId: curr.reservation._id
-                                            }).then(res => {
+                                            axios.post(`http://localhost:8000/user/sendItenrary/${id}`).then(res => {
                                               console.log(res.data);
                                             }).catch(err => console.log(err))
                                           }}
