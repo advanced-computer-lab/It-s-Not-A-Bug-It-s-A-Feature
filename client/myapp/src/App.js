@@ -68,7 +68,7 @@ function App() {
            <Route path ={"/changeDept"} component={changeDept}/>
            <Route path ={"/changeRet"} component={changeRet}/>
            <Route path ={"/changeSeats"} component={changeSeats}/>
-           {/* <Route path ={"/test"} component={BasicTextFields}/> */}
+           {/* <Route path ={"/test"} component={HorizontalLinearStepper}/> */}
          </Router> 
          </ThemeProvider>
 

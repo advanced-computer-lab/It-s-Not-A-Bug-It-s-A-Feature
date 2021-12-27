@@ -125,9 +125,17 @@ function searchCountry({ placeholder, data }) {
 
 }
 
+
+
 const useStyles = makeStyles(styles);
 
 export default function SignUp(props) {
+
+
+  // _______________________________________________________Error Message Handeling
+  const [message, setmessage] = useState(null);
+  const [messagecolor, setmessagecolor] = useState("danger");
+   // ____________________________________________________________________________
 
     // ____________________________________________________search componenet_______________________________
     const styles1 = useStyles1({});
@@ -230,7 +238,7 @@ export default function SignUp(props) {
             setEadd(true);
         }
         if (country === "") {
-            setcount("This field is required");
+            setcount("Please select country");
             setEcount(true);
         }
         if (phone1 === "") {
@@ -364,11 +372,14 @@ export default function SignUp(props) {
             }).then(res => {
                 console.log(res);
                 if(res.data.message==="Username or email has already been taken"){
-
-                    return (setuname("This user name is already taken"),
+                    
+                    return (
+                    setuname("This user name is already taken"),
                     setEuname(true),
                     setEmail(true),
-                    setmail("Username or email has already been taken"))
+                    setmail("Username or email has already been taken"),
+                    setmessage("Username or email has already been taken \n Please change it from step 1"))
+                    
                 }else{
                    
                     console.log("signed up succesfully");
@@ -376,7 +387,7 @@ export default function SignUp(props) {
                 }
                ;
             }).catch((error) => {
-                console.log(err);
+                console.log(error);
             });
         }
 
@@ -415,6 +426,22 @@ export default function SignUp(props) {
             >
                 <div className={classes.container}>
                     <GridContainer justify="center" >
+                    {message ?
+                            <GridItem xs={12} xm={12}>
+                                {setmessage(null),store.addNotification({
+                                      title: message,
+                                      message: " ",
+                                      type: messagecolor,
+                                      container: 'top-right',
+                                      insert: "top",
+                                      animationIn: ["animated", "fadeIn"],
+                                      animationOut: ["animated", "fadeOut"],
+                                      dismiss: {
+                                        duration: 3000
+                                      },
+                                      width: 400
+                                    })}
+                                 </GridItem> : null}
                         <GridItem xs={12} sm={12} md={7}
                         >
                             <NavPills
@@ -713,7 +740,7 @@ export default function SignUp(props) {
                                                                                             error={Ecount}
                                                                                             onChange={(event) => {
                                                                                                 if(event.target.value==""){
-                                                                                                    setcount("This field is required");
+                                                                                                    setcount("Please select country");
                                                                                                     setEcount(true);
                                                                                                 }else{
                                                                                                     setcount("");

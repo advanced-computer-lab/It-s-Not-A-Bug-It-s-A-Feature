@@ -7,6 +7,11 @@ import Icon from "@material-ui/core/Icon";
 import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
 // core components
+// for password
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+//_________________
 import Header from "./../../components/Header/Header.js";
 import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import Footer from "./../../components/Footer/Footer.js";
@@ -40,6 +45,29 @@ import image from "./../../assets/img/bg7.jpg";
 const useStyles = makeStyles(styles);
 
 export default function Login(props) {
+
+    //______________________________________________ password eye 
+
+    const [values, setValues] = React.useState({
+        password: '',
+        showPassword: false,
+    });
+
+    const handleClickShowPassword = () => {
+        setValues({
+            ...values,
+            showPassword: !values.showPassword,
+        });
+    };
+
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    //___________________________________________________________
     const location = useLocation();
     const key = location.state;
 
@@ -198,19 +226,28 @@ export default function Login(props) {
                                                 fullWidth: true,
                                             }}
                                             inputProps={{
-                                                type: "password",
+                                                type:values.showPassword ? "text" : "password",
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <LockIcon className={classes.inputIconsColor}>
-                                                        </LockIcon>
+                                                        <IconButton
+                                                        aria-label="toggle password visibility"
+                                                        onClick={handleClickShowPassword}
+                                                        onMouseDown={handleMouseDownPassword}
+                                                        edge="end"
+                                                    >
+                                                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                    </IconButton>
                                                     </InputAdornment>
                                                 ),
                                                 autoComplete: "off",
                                                 readOnly: false,
                                                 onChange: (event) => {
                                                     setpassword(event.target.value);
+                                                    handleChange('password');
                                                 },
+                                              
                                             }}
+                                         
                                         />
                                     </CardBody>
                                     <CardFooter className={classes.cardFooter}>
