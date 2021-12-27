@@ -99,6 +99,7 @@ export default function ProfilePage(props) {
   function agee() {
     if (Profile.birthDate) {
       return getAge(Profile.birthDate);
+      
     }
     return Profile.age;
   }
@@ -148,8 +149,14 @@ export default function ProfilePage(props) {
           history.push("/error");
         }
         else {
-          setProfile(res.data); setage(agee()); console.log(res);
+          setProfile(res.data); console.log(res);
           setProfileEdit(res.data);
+          if (res.data.birthDate) {
+             setage(getAge(res.data.birthDate));
+            
+          }
+          else
+          setage(getAge(res.data.age));
         }
       }
       ).catch(err => {

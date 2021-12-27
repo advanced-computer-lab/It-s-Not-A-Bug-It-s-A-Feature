@@ -35,6 +35,11 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+
+import "animate.css";
+import "react-notifications-component/dist/theme.css";
+import { store } from 'react-notifications-component';
+
 import { Link } from "react-router-dom";
 
 
