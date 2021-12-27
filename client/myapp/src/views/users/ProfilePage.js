@@ -14,6 +14,11 @@ import FlightLandIcon from '@material-ui/icons/FlightLand';
 import Favorite from "@material-ui/icons/Favorite";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
+// for password
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+//_________________
 
 // core components
 import Header from "./../../components/Header/Header.js";
@@ -65,6 +70,67 @@ import { ContactsOutlined, SentimentDissatisfiedRounded } from "@material-ui/ico
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
+
+
+
+  /// password
+
+
+
+  const [values, setValues] = React.useState({
+    password: '',
+    showPassword: false,
+});
+const [values1, setValues1] = React.useState({
+    password: '',
+    showPassword: false,
+});
+const [values2, setValues2] = React.useState({
+  password: '',
+  showPassword: false,
+});
+const handleClickShowPassword = () => {
+    setValues({
+        ...values,
+        showPassword: !values.showPassword,
+    });
+};
+const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+};
+const handleClickShowPassword1 = () => {
+    setValues1({
+        ...values1,
+        showPassword: !values1.showPassword,
+    });
+};
+const handleClickShowPassword2 = () => {
+  setValues2({
+      ...values2,
+      showPassword: !values2.showPassword,
+  });
+};
+const handleMouseDownPassword1 = (event) => {
+    event.preventDefault();
+};
+const handleMouseDownPassword2 = (event) => {
+  event.preventDefault();
+};
+const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+};
+const handleChange1 = (prop) => (event) => {
+    setValues1({ ...values1, [prop]: event.target.value });
+};
+
+const handleChange2 = (prop) => (event) => {
+  setValues2({ ...values2, [prop]: event.target.value });
+};
+
+
+
+
+
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -576,13 +642,28 @@ export default function ProfilePage(props) {
                                       name="oldPass"
                                       variant="standard"
                                       value={oldPass}
-                                      type="password"
+                                      type={values.showPassword ? "text" : "password"}
                                       fullWidth
-                                      onChange=
-                                      {(event) => {
-                                        setoldPass(event.target.value);
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>,
+                                    }}
+                                    onChange=
+                                    {(event) => {
+                                      setoldPass(event.target.value);
+                                      handleChange('password')
 
-                                      }}
+                                    }}
+                                    // onChange={handleChange('password')}
+                                     
                                     />
                                     <br /><br />
                                     <TextField
@@ -592,13 +673,27 @@ export default function ProfilePage(props) {
                                       name="newPass"
                                       variant="standard"
                                       value={pass}
-                                      type="password"
+                                      type={values1.showPassword ? "text" : "password"}
                                       fullWidth
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword1}
+                                                onMouseDown={handleMouseDownPassword1}
+                                                edge="end"
+                                            >
+                                                {values1.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>,
+                                    }}
                                       onChange=
                                       {(event) => {
                                         setpass(event.target.value);
+                                        handleChange1('password');
 
                                       }}
+                                      // onChange={handleChange1('password')}
                                     />
                                     <br /><br />
                                     <TextField
@@ -608,12 +703,25 @@ export default function ProfilePage(props) {
                                       name="newPass"
                                       variant="standard"
                                       value={confirmPass}
-                                      type="password"
+                                      type={values2.showPassword ? "text" : "password"}
                                       fullWidth
                                       error={confirmError}
                                       helperText={confirmMess}
+                                      InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword2}
+                                                onMouseDown={handleMouseDownPassword2}
+                                                edge="end"
+                                            >
+                                                {values2.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>,
+                                    }}
                                       onChange=
                                       {(event) => {
+                                        handleChange2('password');
                                         setconfirmPass(event.target.value);
                                         if (event.target.value === pass) {
                                           setconfirmError(false);
@@ -627,6 +735,7 @@ export default function ProfilePage(props) {
 
 
                                       }}
+                                      // onChange={handleChange2('password')}
                                     />
                                     <br /><br />
 
