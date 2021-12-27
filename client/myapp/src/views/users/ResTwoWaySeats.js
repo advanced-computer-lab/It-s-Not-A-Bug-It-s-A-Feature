@@ -188,7 +188,7 @@ export default function Reservation(props) {
                 absolute
                 brand="OverReact"
                 fixed={true}
-                rightLinks={<HeaderLinks isLogged={true} />}
+                rightLinks={<HeaderLinks />}
                 {...rest}
             />
             <div
