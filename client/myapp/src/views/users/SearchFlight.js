@@ -12,6 +12,8 @@ import HeaderLinks from "./../../components/Header/HeaderLinks.js";
 import Footer from "./../../components/Footer/Footer.js";
 import GridContainer from "./../../components/Grid/GridContainer.js";
 import GridItem from "./../../components/Grid/GridItem.js";
+import Grid from "@material-ui/core/Grid";
+
 import NavPills from "./../../components/NavPills/NavPills.js";
 import Button from "./../../components/CustomButtons/Button.js";
 import ButtonMUI from '@mui/material/Button';
@@ -187,12 +189,14 @@ export default function SearchFlight(props) {
                                                     Sorry There is No Flights Available
                                                 </Typography> :
                                                     depart.map((curr) => (
-                                                        <Button color={(selectedDepart == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                                                        <GridItem xs={7} sm={7}>
+                                                        <Button style={{padding:'0px', paddingBottom: '0px',display: 'inline-block',
+    padding:0,paddingRight: '15px',paddingLeft: '15px',margin:0,minHeight: 0,}} color={(selectedDepart == curr) ? 'blue' : 'transparent'} onClick={(e) => {
                                                             if (selectedDepart != curr) setselectedDepart(curr);
                                                             else setselectedDepart(null);
                                                         }}>
 
-                                                            <GridItem xs={12} sm={12}>
+                                                            
                                                                 {console.log("adult ", key.adultsNo)}
                                                                 <Flight
                                                                     flight={curr}
@@ -203,8 +207,9 @@ export default function SearchFlight(props) {
 
                                                                 />
 
-                                                            </GridItem>
+                                                           
                                                         </Button>
+                                                        </GridItem>
                                                     ))}
 
                                             </GridContainer>
@@ -220,12 +225,14 @@ export default function SearchFlight(props) {
                                                     Sorry There is No Flights Available
                                                 </Typography> :
                                                     returnn.map((curr) => (
-                                                        <Button color={(selectedReturn == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                                                        <GridItem xs={7} sm={7}>
+                                                        <Button style={{padding:'0px', paddingBottom: '0px',display: 'inline-block',
+    padding:0,paddingRight: '15px',paddingLeft: '15px',margin:0,minHeight: 0,}} color={(selectedReturn == curr) ? 'blue' : 'transparent'} onClick={(e) => {
                                                             if (selectedReturn != curr) setselectedReturn(curr);
                                                             else setselectedReturn(null);
                                                         }}>
 
-                                                            <GridItem xs={12} sm={12}>
+                                                            
 
                                                                 <Flight
                                                                     flight={curr}
@@ -236,8 +243,8 @@ export default function SearchFlight(props) {
                                                                     child={key.childrenNo}
 
                                                                 />
+                                                                </Button>
                                                             </GridItem>
-                                                        </Button>
                                                     ))}
                                             </GridContainer>
                                         ),
@@ -252,7 +259,7 @@ export default function SearchFlight(props) {
                                                 {(() => {
                                                     if (selectedDepart == null) {
                                                         return (
-                                                            <div><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
+                                                            <div  ><Typography> <h3> Please Select a Departure Flight</h3></Typography> </div>
                                                         )
                                                     } else if (selectedReturn == null) {
                                                         return (
@@ -264,11 +271,11 @@ export default function SearchFlight(props) {
                                                         totalPrice = (priceD + priceR) * key.count;
 
                                                         return (
-                                                            <div>
-                                                                <GridItem xs={12} sm={12}>
+                                                            <GridContainer justify='center'>
+                                                                <GridItem xs={7} sm={7} >
                                                                     <Typography> <h3>Departure Flight</h3></Typography>
                                                                 </GridItem>
-                                                                <GridItem xs={12} sm={12}>
+                                                                <GridItem xs={7} sm={7}>
                                                                     <Flight
                                                                         flight={selectedDepart}
                                                                         type={key.type}
@@ -280,10 +287,10 @@ export default function SearchFlight(props) {
                                                                     >
                                                                     </Flight>
                                                                 </GridItem>
-                                                                <GridItem xs={12} sm={12}>
+                                                                <GridItem xs={7} sm={7}>
                                                                     <Typography> <h3>Return Flight</h3></Typography>
                                                                 </GridItem>
-                                                                <GridItem xs={12} sm={12}>
+                                                                <GridItem xs={7} sm={7}>
                                                                     <Flight
                                                                         flight={selectedReturn}
                                                                         type={key.type}
@@ -294,10 +301,10 @@ export default function SearchFlight(props) {
                                                                     </Flight>
 
                                                                 </GridItem>
-                                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}><Card>
+                                                                <GridItem xs={7} sm={7} style={{ textAlign: "center" }}><Card>
                                                                     <Typography color="#f44336" fontWeight="bold" fontSize="24px">Total : $ {totalPrice}</Typography> </Card>
                                                                 </GridItem>
-                                                                <GridItem xs={12} sm={12} style={{ textAlign: "center" }}>
+                                                                <GridItem xs={7} sm={7} style={{ textAlign: "center" }}>
                                                                     <Button
                                                                         color="danger"
                                                                         size="lg"
@@ -309,7 +316,7 @@ export default function SearchFlight(props) {
                                                                         Reserve
                                                                     </Button>
                                                                 </GridItem>
-                                                            </div>
+                                                            </GridContainer>
                                                         )
                                                     }
                                                 })()}
