@@ -824,7 +824,7 @@ function DataForm(d, setData, error, setError, helperText, setHelperText) {
                                 helperText={helperText.arrivalDate} />
                             }
                             minDate={d.departureDate}
-                            maxDate={new Date(d.departureDate.getTime()+(2*24*60*60*1000))}
+                            maxDate={new Date(d.departureDate).getTime()+(1*24*60*60*1000)}
                             id="arrivalDate"
                             name="arrivalDate"
                             value={d.arrivalDate}
