@@ -125,8 +125,9 @@ export default function HeaderLinks(props) {
                             console.log(err);
                             history.push("/error");
                         });
+                        document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+
                     localStorage.removeItem("token");
-                    document.cookie = 'jwt=; Max-Age=-99999999'
 
                     //onSubmit(e);
                     history.push('/login')
