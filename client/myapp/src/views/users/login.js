@@ -90,6 +90,7 @@ export default function Login(props) {
                 setmessage(res.data.message);
                 localStorage.setItem("token", res.data.token);
                 const tokenWithout = res.data.token.split(' ')[1]
+                document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT'
                 document.cookie = "jwt=" + tokenWithout;
                 if (res.data.isAdmin === false){
                     console.log("key",key);
@@ -103,8 +104,8 @@ export default function Login(props) {
             
                     });
                 }
-                else
-                    history.push("/admin/createFlight");
+                else{
+                    history.push("/admin/createFlight");}
             }
 
         }).catch(err => console.log(err))

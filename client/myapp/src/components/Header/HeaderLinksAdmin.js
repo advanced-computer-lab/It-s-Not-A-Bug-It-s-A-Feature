@@ -125,7 +125,10 @@ export default function HeaderLinks(props) {
                             console.log(err);
                             history.push("/error");
                         });
+                        document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+
                     localStorage.removeItem("token");
+
                     //onSubmit(e);
                     history.push('/login')
                 }}

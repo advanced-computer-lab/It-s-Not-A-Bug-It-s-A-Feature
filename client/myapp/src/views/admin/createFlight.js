@@ -76,14 +76,24 @@ const useStyles1 = makeStyles((theme) => ({
 }
 ));
 
+import { useHistory } from 'react-router-dom';
 
 export default function CreateFlight(props) {
+    let history = useHistory();
 
 
 
 
 
+    function loggedIn() {
+        if (localStorage.getItem("token") != null) return true;
+        else return false;
+    }
 
+    useEffect(() => {
+        if (!loggedIn())
+            history.push("/error");
+    }, []);
 
 
     const classes = useStyles();
@@ -185,7 +195,7 @@ export default function CreateFlight(props) {
                     'authorization': token
                 }
             })
-                .then(res => alert('Flight Added Successfuly'),)
+                .then(res =>{console.log(res);alert('Flight Added Successfuly');} )
                 .catch((error) => {
                     if (error.response) {
                         return (setFlightError((prevState => { return { ...prevState, ["flightNo"]: true }; })),
@@ -813,6 +823,8 @@ function DataForm(d, setData, error, setError, helperText, setHelperText) {
                                 variant="standard" error={error.arrivalDate}
                                 helperText={helperText.arrivalDate} />
                             }
+                            minDate={d.departureDate}
+                            maxDate={new Date(d.departureDate).getTime()+(1*24*60*60*1000)}
                             id="arrivalDate"
                             name="arrivalDate"
                             value={d.arrivalDate}

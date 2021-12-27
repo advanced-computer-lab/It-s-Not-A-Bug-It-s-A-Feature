@@ -336,12 +336,14 @@ export default function Reservation(props) {
                                                     Sorry There is No Flights Available
                                                 </Typography> :
                                                     allFlights.map((curr) => (
-                                                        <Button color={(Flight == curr) ? 'blue' : 'transparent'} onClick={(e) => {
+                                                        <GridItem xs={7} sm={7}>
+                                                        <Button style={{padding:'0px', paddingBottom: '0px',display: 'inline-block',
+                                                        padding:0,paddingRight: '15px',paddingLeft: '15px',margin:0,minHeight: 0,}} color={(Flight == curr) ? 'blue' : 'transparent'} onClick={(e) => {
                                                             if (Flight != curr) setFlight(curr);
                                                             else setFlight(null);
                                                         }}>
 
-                                                            <GridItem xs={12} sm={12}>
+                                                           
                                                                 <FlightCard
                                                                     flight={curr}
                                                                     type={cabin}
@@ -350,9 +352,9 @@ export default function Reservation(props) {
                                                                     child={key.res.reservation.childrenNo}
 
                                                                 />
-
+                                                                </Button>
                                                             </GridItem>
-                                                        </Button>
+                                                        
                                                     ))
 
                                                 }

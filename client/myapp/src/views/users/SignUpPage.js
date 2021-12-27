@@ -35,6 +35,11 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 
+
+import "animate.css";
+import "react-notifications-component/dist/theme.css";
+import { store } from 'react-notifications-component';
+
 import { Link } from "react-router-dom";
 
 
@@ -357,15 +362,21 @@ export default function SignUp(props) {
                 birthDate: birthdate,
 
             }).then(res => {
-
                 console.log(res);
-                console.log("signed up succesfully");
-                history.push('/login');
-            }).catch((error) => {
-                if (error.response) {
+                if(res.data.message==="Username or email has already been taken"){
+
                     return (setuname("This user name is already taken"),
-                    setEuname("error"))
+                    setEuname(true),
+                    setEmail(true),
+                    setmail("Username or email has already been taken"))
+                }else{
+                   
+                    console.log("signed up succesfully");
+                    history.push('/login')
                 }
+               ;
+            }).catch((error) => {
+                console.log(err);
             });
         }
 
@@ -996,3 +1007,4 @@ export default function SignUp(props) {
         </div>
     );
 }
+

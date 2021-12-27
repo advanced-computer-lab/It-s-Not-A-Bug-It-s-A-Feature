@@ -263,8 +263,10 @@ function verifyJWT(req, res, next) {
             return res.sendStatus(403);
         if (!user.isAdmin)
             return res.json({ message: 'Access denied. Admins only are allowed.' });
-        if (req.cookies.jwt !== token)
-            return res.json({ message: "Please log in to continue." });
+        if (req.cookies.jwt !== token){
+            console.log('cookie : ',req.cookies.jwt,'\n token :', token);
+
+            return res.json({ message: "Please log in to continue." });}
         req.user = user
         req.token = token
         next()
