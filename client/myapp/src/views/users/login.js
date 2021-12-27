@@ -90,6 +90,7 @@ export default function Login(props) {
                 setmessage(res.data.message);
                 localStorage.setItem("token", res.data.token);
                 const tokenWithout = res.data.token.split(' ')[1]
+                document.cookie = 'jwt=; Max-Age=-99999999'
                 document.cookie = "jwt=" + tokenWithout;
                 if (res.data.isAdmin === false){
                     console.log("key",key);

@@ -473,14 +473,27 @@ function seatQuery(adults, children, cabin) {
     return seatQuery;
 }
 
+function validAirport(airport){
+    var res='';
+    for (let i = 0; i < airport.length; i++) {
+        if(airport[i]=='(')break;
+        res += airport[i];
+        
+    }
+    return res;
+}
+
 router.route('/searchFlights').get((req, res, next) => {
     var query = [];
     var rq = req.query;
     console.log(rq);
     //may add price range later
 
-    if (rq.arrivalAirport !== '') query.push({ arrivalAirport: new RegExp(rq.arrivalAirport, 'i') });
-    if (rq.departureAirport !== '') query.push({ departureAirport: new RegExp(rq.departureAirport, 'i') });
+    const validArrAirport =validAirport(rq.arrivalAirport);
+    const validDeptAirport =validAirport(rq.departureAirport);
+
+    if (rq.arrivalAirport !== '') query.push({ arrivalAirport: new RegExp(validArrAirport, 'i') });
+    if (rq.departureAirport !== '') query.push({ departureAirport: new RegExp(validDeptAirport, 'i') });
 
     if (rq.departureDate !== '') query.push(dateQuery(rq.departureDate, 'departureDate'));
     if (rq.cabin !== '' && rq.adultsNo !== '') query.push(seatQuery(rq.adultsNo, rq.childrenNo, rq.cabin));

@@ -131,7 +131,7 @@ export default function Reservation(props) {
             setReserved(true);
         }).catch(err => console.log(err))
 
-        history.push({
+        history.push({pathname:'/profile'
 
         });
 

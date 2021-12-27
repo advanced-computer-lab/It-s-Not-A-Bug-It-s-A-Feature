@@ -88,7 +88,7 @@ export default function Flight(props) {
                     </GridItem>}
                 <GridItem xs={12} sm={3}>
                     <p><Typography style={styleTime}>{departureTime}</Typography></p>
-                    <p style={{ textAlign: "center" }}>{firstAirport}</p>
+                    <p  style={{ textAlign: "center", whiteSpace:'normal'}}numberOfLines={5}>{firstAirport}</p>
                     {res && <p style={{ textAlign: "center" }}> Terminal {firstTerminal}</p>}
                 </GridItem>
                 <GridItem xs={12} sm={3} >
@@ -115,7 +115,7 @@ export default function Flight(props) {
                 </GridItem>
                 <GridItem xs={12} sm={3}>
                     <p style={styleTime}>{arrivalTime}</p>
-                    <p style={{ textAlign: "center" }}>{secondAirport}</p>
+                    <p style={{ textAlign: "center" ,whiteSpace:'normal'}}>{secondAirport}</p>
                     {res && <p style={{ textAlign: "center" }}> Terminal {secondTerminal}</p>}
                 </GridItem>
                 {!res && <GridItem xs={12} sm={3}>

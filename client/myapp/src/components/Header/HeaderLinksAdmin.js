@@ -126,6 +126,8 @@ export default function HeaderLinks(props) {
                             history.push("/error");
                         });
                     localStorage.removeItem("token");
+                    document.cookie = 'jwt=; Max-Age=-99999999'
+
                     //onSubmit(e);
                     history.push('/login')
                 }}
