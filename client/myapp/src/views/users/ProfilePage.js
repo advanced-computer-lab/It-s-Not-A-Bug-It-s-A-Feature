@@ -52,6 +52,8 @@ import Reservation from "./../../components/Reservation/Reservation.js";
 import michael from "./../../assets/img/faces/michael.jpg";
 import gego from "./../../assets/img/faces/khadija.jpg";
 import buzz from "./../../assets/img/faces/buzz.jpg";
+import tom from "./../../assets/img/faces/tom.jpg";
+
 import "animate.css";
 import "react-notifications-component/dist/theme.css";
 import { store } from 'react-notifications-component';
@@ -377,7 +379,7 @@ const handleChange2 = (prop) => (event) => {
                 <div className={classes.profile}>
                   <div>
                     {(Profile.username === "gego") ? <img src={gego} alt="..." className={imageClasses} />
-                      :
+                      :(Profile.username === "tom") ? <img src={tom} alt="..." className={imageClasses} />:
                       <img src={buzz} alt="..." className={imageClasses} />}
                   </div>
                   <div className={classes.name}>
